@@ -1,0 +1,304 @@
+\chapter{Problema LCS}
+
+\section{Introduzione}
+
+\paragraph{Definizioni}
+
+\subparagraph{Alfabeto}
+
+Un alfabeto $\Sigma$ e' un insieme finito e non vuoto di simboli.
+
+Si usano le prime lettere dell'alfabeto minuscolo per identificare i simboli generici.
+
+\subparagraph{Stringa}
+
+Una stringa (o parola) $w$ e' una giustapposizione (o concatenazione) di simboli dell'Alfabeto $\Sigma$.
+
+Si usano le ultime lettere dell'alfabeto minuscolo per identificare il nome di una stringa.
+Esempio: una stringa $X = a \cdot b \cdot c \cdot d$.
+Sempre sara' indicata in futuro senza l'operatore per semplicita'.
+
+\subparagraph{Sequenza}
+
+Una sequenza $S$ e' un concetto analogo alla stringa, ma e' generalmente concepita come una elencazione di simboli di un alfabeto.
+La principale differenza sta nel fatto che questa puo' avere elementi di altri alfabeti.
+
+Si usano le ultime lettere dell'alfabeto maiuscolo per identificare il nome di una sequenza.
+Si indica con $X$ = < $a$, $b$, $c$, $d$ >
+
+L'i-esimo elemento si indica con $x_{i}$.
+La lunghezza puo' essere indicata tramite $|X|$.
+
+\subparagraph{Sottostringa}
+
+Una sottostringa $S$ di una stringa (o sequenza) e' una stringa che sia la concatenazione di elementi consecutivi della stringa o sequenza di partenza.
+Di solito prodotta tagliando un pezzo di lunghezza $m$ dal capo, un pezzo di lunghezza $n$ dalla coda.
+
+\subparagraph{Sottosequenza}
+
+Una sottosequenza $S$ di una stringa (o sequenza) e' una sequenza di elementi della stringa o sequenza di partenza che mantenga l'ordine degli stessi. (Non per forza la consecutivita'!).
+In questo senso una sottostringa e' analoga ad una sottosequenza che mantenga la consecutivita'.
+Di solito prodotta tramite la cancellazione di $k$ elementi.
+
+\subparagraph{Prefisso}
+
+Un prefisso di lunghezza $i$ e' una sottosequenza composta dai primi $i$ elementi consecutivi di una stringa o sequenza.
+Detta X una stringa, si indica con $X_{i}$.
+
+\subparagraph{Suffisso}
+
+Un suffisso di indice $i$ e' una sottosequenza composta da tutti gli elementi consecutivi a partire dall'indice $i$.
+
+\paragraph{LCS}
+
+\subparagraph{Introduzione}
+
+Il problema LCS (Longest Common Subsequence) consiste nel cercare in tempo ragionevole la sottosequenza piu' lunga comune a due sequenze o stringhe.
+
+\subparagraph{Esempi}
+
+\begin{enumerate}
+
+\item
+
+$X$ = < S, C, O, I, A, T, T, O, L, O > \\
+$Y$ = < B, A, R, A, T, T, O, L, O > \\
+La LCS e' $Z$ = < A, T, T, O, L, O >
+\textbf{nota: puo' essere usata sia la prima che la seconda 'A' di $Y$}.
+
+\item
+
+$X$ = < M, A, G, I, C, O > \\
+$Y$ = < M, A, N, T, E, N, E, R, E > \\
+La LCS e' $Z$ = < M, A >
+
+\item
+
+$X$ = < M, A, I, A, L, E > \\
+$Y$ = < N, A, T, A, L, E > \\
+La LCS e' $Z$ = < A, A, L, E >
+
+\end{enumerate}
+
+\section{Algoritmo Banale}
+
+\paragraph{Ragionamento}
+
+Detti $X$, $Y$ due sequenze, $i$, $j$ i rispettivi indici e $n$, $m$ le rispettive lunghezze.
+Detti $Z = LCS(X, Y)$ e $k$ il suo indice. Si inizializzano gli indici alle lunghezze. (si parte dal fondo!) \\
+
+Si puo' ragionevolmente pensare che:
+
+\begin{enumerate}
+
+\item A) Se $x_{i} = y_{j}$ allora $z_{k} = x_{i}$ e $Z_{k-1} = LCS(X_{i-1}, Y_{j-1})$
+
+\item B) Se $x_{i} \ne y_{j}$ e $z_{k} = x_{i}$ allora $Z_{k}= LCS(X_{i}, Y_{j-1})$
+
+\item C) Se $x_{i} \ne y_{j}$ e $z_{k} = y_{j}$ allora $Z_{k}= LCS(X_{i-1}, Y_{j})$
+
+\item D) Se $z_{k} \ne y_{j}$ e $z_{k} \ne x_{i}$ allora $Z_{k} = LCS(X_{i-1}, Y_{j-1})$
+
+\end{enumerate}
+
+Si nota che il caso D e' direttamente traducibile in codice, ma viene comunque compreso dai casi B e C, di conseguenza non avrebbe senso ripeterlo.
+In particolare si osserva che $D \Rightarrow (B \cdot C \Leftrightarrow C \cdot B)$.
+
+\paragraph{Procedura}
+
+Possiamo quindi sviluppare uno pseudo-codice basato su questi teoremi.
+Non potendo sapere nei casi B) e C) quale sia tra i due il risultato, l'unico modo per verificarlo e' esplorare entrambi i casi.
+Gli indici delle sequenze appartengono all'insieme $[1, length]$.
+
+\begin{algorithm}
+    \renewcommand\thealgorithm{}
+    \caption{Algoritmo Banale per LCS}
+    \begin{algorithmic}
+        \Procedure{LCS}{$X_{i}, Y_{j}$}
+            \If {$X_{i}$ = <> or $Y_{j}$ = <>}
+                \State \Return <>
+            \Else
+                \If {$x_{i}$ = $y_{j}$}
+                    \State \Return append(LCS($X_{i-1}$, $Y_{j-1}$), $x_{i}$)
+                \Else
+                    \State B $\gets$ LCS($X_{i}$, $Y_{j-1}$)
+                    \State C $\gets$ LCS($X_{i-1}$, $Y_{j}$)
+
+                    \If {len(B) $\geq$ len(C)}
+                        \State \Return B
+                    \Else
+                        \State \Return C
+                    \EndIf
+                \EndIf
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Complessita'}
+
+Abbiamo appurato che questo algoritmo (TOP-DOWN) puo' portare a problemi quando l'input e' troppo grande, tuttavia e' possibile porvi rimedio \\
+
+Uno dei problemi e' per esempio la ripetizione di lavoro gia' svolto in ricorsioni "parallele".
+Si potrebbe immaginare di memorizzare i risultati delle chiamate e usare quelli memorizzati all'occorrenza. \\
+Resta pero' l'alto numero di chiamate: tendenzialmente $O(2^{n + m})$.
+Per questo si usa la programmazione dinamica: si risolve iterativamente un procedimento ricorsivo.
+
+\section{Usare la Programmazione Dinamica}
+
+\paragraph{Ragionamento}
+
+L'Approccio Bottom-Up si basa sul partire dal risultato piu' piccolo, caso base, e costruire pr>essivamente i risultati delle chiamate "precedenti".
+Questo significa in pratica calcolare tutte le chiamate per tutte le combinazioni possibili d'input attiente al problema.
+Potrebbe sembrare un procedimento dispendioso ma in alcuni casi puo' essere quello piu' efficiente. \\
+
+Supponendo di avere a disposizione due matrici $b$, $c$ di dimensione $(n+1)(m+1)$, queste possono essere usate per simulare l'algoritmo ricorsivo nei vari passi.
+Attenzione, gli indici della matrice partono con 0!
+
+Caso base:
+\[
+    \begin{cases} 
+        \text{$c[0][j]$} = 0 & \quad \text{$0 \leq j \leq n$} \\
+        \text{$c[0][j]$} = 0 & \quad \text{$0 \leq i \leq m$} \\
+    \end{cases}
+\]
+
+Caso ricorsivo:
+
+\[
+    c[i][j] =
+    \begin{cases} 
+        \text{$c[i][j] = c[i-1][j-1]$} + 1 & \quad \text{$x_{i} = y_{j}$} \\
+        \text{$c[i][j] = c[i-1][j]$} \quad & \text{$c[i-1][j] \geq c[i][j-1]$} \\
+        \text{$c[i][j] = c[i][j-1]$} \quad & \text{$c[i-1][j] < c[i][j-1]$}
+    \end{cases}
+\]
+
+\[
+    b[i][j] =
+    \begin{cases} 
+        \text{$b[i][j] = "\nwarrow"$} & \quad \text{$x_{i} = y_{j}$} \\
+        \text{$b[i][j] = "\uparrow"$} & \quad \text{$c[i-1][j] \geq c[i][j-1]$} \\
+        \text{$b[i][j] = "\leftarrow"$} & \quad \text{$c[i-1][j] < c[i][j-1]$}
+    \end{cases}
+\]
+
+Questo algoritmo riempie due matrici:
+\begin{itemize}
+    \item $c$ contiene le lunghezze dei vari $LCS(X_{i}, Y{j})$
+    \item $b$ contiene il percorso da seguire per ottenere l'ottimale
+\end{itemize}
+
+Per ottenere $LCS(X, Y)$ non restera' da fare che seguire il percorso indicato da $b$ con l'accortezza di raccogliere in coda gli $x_{i}$ tali che $b[i][j] = Diagonal$.
+
+\paragraph{Procedura}
+
+Avremo bisogno di tre algoritmi:
+\begin{itemize}
+    \item una funzione che inizializza la matrice generando il caso base
+    \item una funzione che riempie la matrice con i casi ricorsivi
+    \item una funzione che legge il percorso della matrice $b$
+    \item una funzione che stampa la LCS
+\end{itemize}
+
+\begin{algorithm}
+    \renewcommand\thealgorithm{}
+    \caption{Inizializza Matrice}
+    \begin{algorithmic}
+        \Procedure{InizializzaMatrice}{$m, n$}
+            \For{$i \gets 0$ to $m$}
+                \State $c[i][0] \gets 0$
+            \EndFor
+            \For{$j \gets 0$ to $n$}
+                \State $c[0][j] \gets 0$
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \renewcommand\thealgorithm{}
+    \caption{Riempi Matrice}
+    \begin{algorithmic}
+        \Procedure{RiempiMatrice}{$X, Y$}
+        \For{$i \gets 1$ to $m$}
+            \For{$j \gets 1$ to $n$}
+                \If{$x_{i} = y_{j}$}
+                    \State $c[i][j] \gets c[i-1][j-1] + 1$
+                    \State $b[i][j] \gets "\nwarrow"$
+                \Else
+                    \If{$c[i-1][j] \ge c[i][j-1]$}
+                        \State $c[i][j] \gets c[i-1][j]$
+                        \State $b[i][j] \gets "\uparrow"$
+                    \Else
+                        \State $c[i][j] \gets c[i][j-1]$
+                        \State $b[i][j] \gets "\leftarrow"$
+                    \EndIf
+                \EndIf
+            \EndFor
+        \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \renewcommand\thealgorithm{}
+    \caption{Leggi LCS}
+    \begin{algorithmic}
+        \Procedure{LeggiLCS}{$b, X, i, j$}
+            \If{$i = 0 \lor j=0$}
+                \State \Return <>
+            \EndIf
+            \If{$b[i][j] = "\nwarrow"$}
+                \State \Return append(LeggiLCS($b, X, i-1, j-1$), $x_{i}$)
+            \Else
+                \If{$b[i][j] = "\uparrow"$}
+                    \State \Return LeggiLCS($b, X, i-1, j$)
+                \Else
+                    \State \Return LeggiLCS($b, X, i, j-1$)
+                \EndIf
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \renewcommand\thealgorithm{}
+    \caption{Stampa LCS}
+    \begin{algorithmic}
+        \Procedure{StampaLCS}{$b, X, i, j$}
+            \If{$i = 0 \lor j=0$}
+                \State \Return <>
+            \EndIf
+            \If{$b[i][j] = "\nwarrow"$}
+                \State StampaLCS($b, X, i-1, j-1$)
+                \State print($x_{i}$)
+            \Else
+                \If{$b[i][j] = "\uparrow"$}
+                    \State StampaLCS($b, X, i-1, j$)
+                \Else
+                    \State StampaLCS($b, X, i, j-1$)
+                \EndIf
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\pagebreak
+
+\paragraph{Complessita'}
+
+\begin{itemize}
+    \item La complessita' temporale di InizializzaMatrice e' $O(n+m)$.
+    \item La complessita' temporale di RiempiMatrice e' $O(n*m)$.
+    \item La complessita' temporale di LeggiLCS e' $O(n+m)$.
+\end{itemize}
+
+\subparagraph{LeggiLCS}
+La complessita' di questo algoritmo (analogo e identico a StampaLCS), e' data in termini di upper-bound rispetto al caso peggiore, ovvero quando le due sequenze hanno solo il primo simbolo in comune. In quel caso il percorso seguito dall'algoritmo seguira' una traiettoria angolata, facendo quindi tutti i "piccoli passi" (l'unico tassello obliquo e' il target $b[1][1]$), per un totale di $n+m$ iterazioni. \\
+LeggiLCS non fa parte del programma d'esame, e' riportato qua per completezza.
+
+\subparagraph{Conclusione}
+Quindi la complessita' temporale totale e' $O(n*m)$, molto migliore dell'algoritmo "banale" presentato nel paragrafo precedente. \\ *
+E' pero' da tenere in considerazione che questo richiede spazio in memoria con una complessita' di $O(n * m)$, visto che deve mantenere due matrici $n*m$. \\*
+Certamente superiore al $O(n + m)$ dell'algoritmo banale, ma resta pur sempre un costo che vale la pena pagare per usufruire della strategia Bottom-Up.
