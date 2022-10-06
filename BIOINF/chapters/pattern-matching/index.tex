@@ -1,0 +1,89 @@
+\chapter{Pattern Matching}
+
+\section{Introduzione}
+
+\paragraph{Pattern Matching}
+Per \textbf{Pattern Matching} si intende trovare tutte le occorrenze di un pattern $P$ di lunghezza $m$ all'interno del testo $T$ di lunghezza $n$.
+
+\paragraph{Notazione}
+
+Data una stringa o sequenza $S$, si identifica con $S[i : j]$ la sottostringa che contiene gli elementi da $i$ a $j$ (compreso).
+
+\section{Algoritmo Banale}
+
+\paragraph{Ragionamento}
+
+L'algoritmo piu' semplice a cui si puo' pensare consiste nello scorrere linearmente il pattern $P$ e provare per ogni posizione $i \in [1, n]$ la corrispondenza con una porzione di testo di uguale lunghezza.
+
+\paragraph{Procedura}
+
+\begin{algorithm}
+    \renewcommand\thealgorithm{}
+    \caption{Confronta Stringhe}
+    \begin{algorithmic}
+        \Procedure{ConfrontaStringhe}{$X, Y$}
+            \For{$i \gets 1$ to $n$}
+                \If{$X[i] \ne Y[i]$}
+                    \State \Return false
+                \EndIf
+            \EndFor
+            \State \Return true
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \renewcommand\thealgorithm{}
+    \caption{Pattern Matching banale}
+    \begin{algorithmic}
+        \Procedure{PMB}{$T, P$}
+            \For{$i \gets 1$ to $n$}
+                \If{ConfrontaStringhe($T[i : i + m - 1], P$)}
+                    \State print($i$)
+                \EndIF
+            \EndFor
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Complessita'}
+
+Come si puo' notare, sia $PMB$ che $ConfrontaStringhe$ sono procedure la cui complessita' e' legata principalmente al singolo ciclo che contengono.
+PMB contiene un ciclo di $n$ iterazioni fisse, quindi il suo tempo nel caso medio sara' $T_{PMB} = \Theta(n)$.
+ConfrontaStringhe al contrario contiene si un ciclo di $m$ iterazioni, ma il numero di volte in cui saranno ripetuto il confronto dipendera' dalla similitudine delle due stringhe.
+Nel caso medio sara' circa meta' dei caratteri, quindi $T_{ConfrontoStringhe} = \Theta(n / 2) = \Theta(n)$.
+Per quanto riguarda lo spazio, e' facilmente intuibile che sia $S(n) = \Theta(n + m)$.
+
+\section{Baeza-Yates-Gonnet}
+
+\paragraph{Approccio Bit-Parallel}
+
+Quando si devono effettuare piu' operazioni dello stesso tipo poco costose e ripetitive e' possibile ridurre il problema ad azioni elementari che la CPU puo' processare in parallelo per ridurre il numero di passi da fare per completare un algoritmo.
+Per esempio se si devono sommare vettori di bit e' possibile assemblare una word che li contenga in modo da poi effettuare operazioni bit-wise (ovvero bit-a-bit, ogni bit non interferisce con quello successivo) per ottimizzare il calcolo.
+Si puo' applicare in certi casi anche agli algoritmi di pattern matching.
+
+\paragraph{Ragionamento}
+
+Si supponga di disporre di una matrice $M$ di dimensione $m \cdot n$.
+Ogni cella e' riempita come segue:
+
+Per ogni $i > 0$:
+\[
+    $M[i][j]$ = 
+    \begin{cases}
+        1 && \text{sse P[:i] = T[j - i + 1 : j]} \\
+        0 && \text{altrimenti}
+    \end{cases}
+\]
+
+\paragraph{Procedura}
+
+\begin{algorithm}
+   \renewcommand\thealgorithm{}
+   \caption{}
+   \begin{algorithmic}
+        \Procedure{}{}
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
