@@ -1,0 +1,112 @@
+\chapter{Modelli nella Ricerca Operativa}
+
+\section{Introduzione}
+
+\paragraph{Problemi di Ottimizzazione}
+
+Dato un problema di ottiizzazione:
+
+\begin{align}
+$opt f(x)$
+$s.a. x in X$
+\end{align}
+
+si danno le seguenti definizioni:
+
+\subparagraph{$f(x)$}
+
+La \textbf{funzione obiettivo} e' la funzione della quale cerchiamo un argmento $x in X$ ottimale.
+L'operatore di ottimizzazione $opt$ trova argomenti ottimi o ottimali.
+Non potendo sempre disporre di ottimi assoluti, si indagano gli ottimali, i quali, come dice il nome, possono essere multipli.
+
+\subparagraph{$opt$}
+
+Questo operatore e' un placeholder che sta per:
+\[
+    $opt$ =
+    \begin{cases}
+        \text {$max$} \\
+        \text {$min$} \\
+    \end{cases}
+\]
+
+In particolare si nota che $max f(x) = - min (- f(x))$. \\*
+E' possibile ridursi a entrambe le situazioni per sfruttare i vantaggi di eventuali semplificazioni o riduzioni del problema iniziale!
+
+\subparagraph{$X$}
+
+La \textbf{regione d'ammissibilita'} e' un sottoinsieme $X subset R^n$ che delimita' le possibili soluzioni al problema di ottimizzazione.
+Le soluzioni che non soddisfano questo requisito sono dette \textbf{soluzioni inammissibili}.
+
+\subparagraph{$x$}
+
+La generica soluzione $x in X$. In caso di funzione multivariabile, questa assume la forma di una n-upla, come si nota dal dominio della \textbf{funzione obiettivo}.
+
+\paragraph{Ottimizzazione Vincolata o non Vincolata}
+
+\subparagraph{Vincoli}
+
+Se l'ottimizzazione cerca soluzioni in una regione di ammissibilita' $X$ che sia un sottoinsieme proprio di $R^n$, ovvero nel caso in cui non coincida, si parla di \textbf{Ottimizzazione Vincolata}.
+Nel caso in cui $X = R^n$ questa e' definita \textbf{Ottimizzazione non Vincolata}.
+
+\subparagraph{Esempi}
+Alcuni esempi di ottimizzazione vincolata sono:
+
+\begin{itemize}
+Se $X = Z^n$ si definisce \textbf{Ottimizzazione Intera}.
+Se $X = Z^n$ si definisce \textbf{Ottimizzazine Binaria}.
+Se le variabili appartengono a spazi differenti (es: $N x Z x R$), si parla di {Ottimizzazione Mista}.
+\end{itemize}
+
+\subparagraph(Programmazione Matematica}
+
+Se la regione di ammissibilita' $X$ e' espressa tramite vincoli aritmetici (equazioni e disequazioni), si tratta di \textbf{Programmazione Matematica}. \\
+
+Ogni vincolo e' definito come segue:
+
+\[
+    v(x) =
+    \begin{cases}
+        \text{$g(x) \geq 0$} \\
+        \text{$g(x) = 0$} \\
+        \text{$g(x) \leq 0$} \\
+    \end{cases}
+\]
+
+Di consequenza la regione $X$ e' esprimibile con:
+
+$X$ = \{ 
+    x \mid 
+    $X \in R^n$ & $\and$ \{ 
+        \begin{cases} 
+            $\geq$ \\ $=$ \\ $\leq$
+        \end{cases}
+    \} & $0$ & \text{for $i$ in $[1,m]$}
+\}
+
+\subparagraph{Esiti di Problemi}
+
+\begin{itemize}
+    Si dice \textbf{Problema Inammissibile} se $X = empty$.
+    Si dice \textbf{Problema Illimitato} se non esise un ottimale, in particolare:
+    \begin{itemize}
+        Se $opt = min \and for each c \in R, exists x in \in X so that f(x) \leq c$, e' illimitato inferiormente
+        Se $opt = max \and for each c \in R, exists x in \in X so that f(x) \geq c$, e' illimitato superiormente
+    \end{itemize}
+    Si dice \textbf{Problema con Soluzioni Ottime Multiple} (o Infinite) se tutte le soluzioni ottimali hanno lo stesso grado di ottimizzazione, ovvero se non esiste una soluzione migliore delle altre.
+    Si dice \textbf{Problema con Soluzione Ottima Unica} nel caso semplice in cui esiste una e una sola soluzione ottimale (= ottimo).
+\end{itemize}
+
+\subparagraph{Localizzazione di Ottimi}
+
+Un ottimo locale $y \in X$ si dice globale se:
+\[
+    \begin{cases}
+        $f(y) \geq f(x)$ && \text{$opt = max$} \\
+        $f(y) \leq f(x)$ && \text{$opt = min$}
+    \end{cases}
+\]
+
+E' importante notare che un problema di ottimizzazione puo' avere sia piu' di un ottimo locale, che piu' di un ottimo globale.
+Un ottimo globale e' anche locale.
+
