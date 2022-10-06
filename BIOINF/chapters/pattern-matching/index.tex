@@ -40,19 +40,21 @@ L'algoritmo piu' semplice a cui si puo' pensare consiste nello scorrere linearme
             \For{$i \gets 1$ to $n$}
                 \If{ConfrontaStringhe($T[i : i + m - 1], P$)}
                     \State print($i$)
-                \EndIF
-            \EndFor
+                \EndIf
             \EndFor
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
 
+\pagebreak
+
 \paragraph{Complessita'}
 
-Come si puo' notare, sia $PMB$ che $ConfrontaStringhe$ sono procedure la cui complessita' e' legata principalmente al singolo ciclo che contengono.
-PMB contiene un ciclo di $n$ iterazioni fisse, quindi il suo tempo nel caso medio sara' $T_{PMB} = \Theta(n)$.
-ConfrontaStringhe al contrario contiene si un ciclo di $m$ iterazioni, ma il numero di volte in cui saranno ripetuto il confronto dipendera' dalla similitudine delle due stringhe.
-Nel caso medio sara' circa meta' dei caratteri, quindi $T_{ConfrontoStringhe} = \Theta(n / 2) = \Theta(n)$.
+Come si puo' notare, sia $PMB$ che $ConfrontaStringhe$ sono procedure la cui complessita' e' legata principalmente al singolo ciclo che contengono. \\*
+PMB contiene un ciclo di $n$ iterazioni fisse, quindi il suo tempo nel caso medio sara' $T_{PMB} = \Theta(n)$. \\*
+ConfrontaStringhe al contrario contiene si un ciclo di $m$ iterazioni, ma il numero di volte in cui saranno ripetuto il confronto dipendera' dalla similitudine delle due stringhe. \\*
+Nel caso medio sara' circa meta' dei caratteri, quindi $T_{ConfrontaStringhe} = \Theta(m / 2) = \Theta(m)$. \\*
+Visto che PMB incorpora una chiamata a ConfrontaStringhe, la complessita' totale sara': $T(n, m) = \Theta(n * m)$. \\*
 Per quanto riguarda lo spazio, e' facilmente intuibile che sia $S(n) = \Theta(n + m)$.
 
 \section{Baeza-Yates-Gonnet}
@@ -70,10 +72,10 @@ Ogni cella e' riempita come segue:
 
 Per ogni $i > 0$:
 \[
-    $M[i][j]$ = 
+    M[i][j] = 
     \begin{cases}
-        1 && \text{sse P[:i] = T[j - i + 1 : j]} \\
-        0 && \text{altrimenti}
+        1 & \text{sse P[:i] = T[j - i + 1 : j]} \\
+        0 & \text{altrimenti}
     \end{cases}
 \]
 
