@@ -3,8 +3,8 @@
 | Sigla | Anno | Semestre | Corso | Versione |
 | --- | --- | --- | --- | --- |
 | APAL | 3 | 1 | Analisi e Progettazione di Algoritmi | 1.0.2 |
-| BIOINF | 3 | 1 | Elementi di Bioinformatica | N/A |
-| ROPR | 3 | 1 | Ricerca Operativa e Pianificazione delle Risorse | N/A | 
+| BIOINF | 3 | 1 | Elementi di Bioinformatica | 1.0.2 |
+| ROPR | 3 | 1 | Ricerca Operativa e Pianificazione delle Risorse | 1.0.2 | 
 |  |  |  |  |  |
 
 # Istruzioni

@@ -192,7 +192,7 @@ La funzione di hash usata in questo caso e': \\*
 $H(S) = \Sigma_{i=1}^{|S|} 2^{i-1} H(S[i])$ \\
 
 Il calcolo di $H(T[i+1:i+m])$ puo' essere ottimizzato usando $H(T[i:i+m-1])$: \\*
-$H(T[i+1:i+m]) = \frac (H(T[i:i+m-1]) - T[i]) 2 + 2^{m-1}T[i+m]$.
+$H(T[i+1:i+m]) = \frac {H(T[i:i+m-1]) - T[i]} 2 + 2^{m-1}T[i+m]$.
 
 \paragraph{Procedura}
 
@@ -208,7 +208,7 @@ $H(T[i+1:i+m]) = \frac (H(T[i:i+m-1]) - T[i]) 2 + 2^{m-1}T[i+m]$.
             \EndIf
             \For{$i=1$ to $n-m$}
                 \State $H_{W} \gets ((H_{W} - T[i]) / 2) + 2^{m-1}T[i+m]$
-                \If{$H_{P} H_{W}$}
+                \If{$H_{P} = H_{W}$}
                     \State print(i)
                 \EndIf
             \EndFor
