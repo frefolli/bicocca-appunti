@@ -70,22 +70,175 @@ Si puo' applicare in certi casi anche agli algoritmi di pattern matching.
 Si supponga di disporre di una matrice $M$ di dimensione $m \cdot n$.
 Ogni cella e' riempita come segue:
 
-Per ogni $i > 0$:
+Con $j = 0$:
 \[
     M[i][j] = 
     \begin{cases}
-        1 & \text{sse P[:i] = T[j - i + 1 : j]} \\
+        1 & \text{sse $P[i] = T[0]$} \\
         0 & \text{altrimenti}
     \end{cases}
 \]
+
+Per ogni $j > 0$:
+\[
+    M[i][j] = 
+    \begin{cases}
+        1 & \text{sse $P[:i] = T[j - i + 1 : j]$} \\
+        0 & \text{altrimenti}
+    \end{cases}
+\]
+
+Sappiamo per certo che: \\* $P[:i] = T[j - 1 + 1 : j]$ $\Longleftrightarrow$ $P[:i - 1] = T[j - i + 1 : j - 1]$ $\land$ $P[i] = T[j]$. \\*
+Quindi possiamo scrivere la cella generica $M[i][j]$ in modo ricorsivo rispetto alla matrice:
+
+Con $j = 0$:
+\[
+    M[i][j] = 
+    \begin{cases}
+        1 & \text{$P[i] \land T[0]$} \\
+        0 & \text{altrimenti}
+    \end{cases}
+\]
+
+Per ogni $j > 0$:
+\[
+    M[i][j] = 
+    \begin{cases}
+        1 & \text{$M[i-1][j-1] = 1 \land P[i] = T[j]$} \\
+        0 & \text{altrimenti}
+    \end{cases}
+\]
+
+Visto che $\land$ e' un'operazione bitwise rispetto a $(0,1)$ possiamo scrivere:
+
+Con $j = 0$:
+\[
+    M[i][j] = 
+    \begin{cases}
+        1 & \text{$P[i] \land T[0]$} \\
+        0 & \text{altrimenti}
+    \end{cases}
+\]
+
+Per ogni $j > 0$:
+\[
+    M[i][j] = 
+    \begin{cases}
+        1 & \text{$M[i-1][j-1] \land P[i] \land T[j]$} \\
+        0 & \text{altrimenti}
+    \end{cases}
+\]
+
+Definiamo un vettore $U$ con $|U| = |P|$ come:
+\[
+    U(j) = 
+    \begin{cases}
+        1 & \text{$P[i] \land T[j]$} \\
+        0 & \text{altrimenti}
+    \end{cases}
+\]
+
+Visto che ogni cella $M[i][j]$ e' il risultato di un $\land$ tra la cella $M[i-1][j-1]$ e $U(j)[i]$, possiamo sfruttare la colonna $M[\cdot][j-1]$ per generare la colonna $M[\cdot][j]$. \\
+
+Da qui in poi chiamero' $\omega$ la dimensione in bit della word della CPU. \\*
+Per poter utilizzare $M[i-1][j-1]$ per $M[i][j]$ possiamo sfruttare l'operazione bitwise rshift su $M[\cdot][j-1]$ e inserire un $1$ in posizione $0$: \\*
+$tmp_{M[\cdot][j-1]} = (M[\cdot][j-1] >> 1) \lor (1 << (\omega - 1))$. \\
+
+Quindi: \\*
+$M[\cdot][j] = tmp_{M[\cdot][j-1]} \land U(j)$ \\
+
+Per trovare quindi le occorrenze di P occorrera' quindi controllare l'ultima riga di $M$. \\*
+Se $M[|P| - 1][j] = 1$ si dice che P occorre in T in posizione $j$.
+
+Visto che queste operazioni sono bitwise possiamo usare il paradigma Bit-Parallel trattando le colonne $M[\cdot][j]$ come un numero intero processabile dalla CPU. Lo stesso vale per il vettore $U(j)$.
 
 \paragraph{Procedura}
 
 \begin{algorithm}
    \renewcommand\thealgorithm{}
-   \caption{}
+   \caption{Baeza Yates Gonnet}
    \begin{algorithmic}
-        \Procedure{}{}
+        \Procedure{BYG}{$T, P$}
+            \State $V \gets U(0)$
+            \For{$j=1$ to $n$}
+                \State $tmp \gets (V >> 1) \lor (1 << (\omega - 1))$
+                \State $V \gets (tmp \land U(j))$
+                \If{$V \mod 2 = 1$}
+                    \State print(j)
+                \EndIf
+            \EndFor
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
+
+\pagebreak
+
+\paragraph{Complessita'}
+
+Di primo acchito potrebbe sembrare che $T(n, m) = \Theta(n)$.
+Nell'algoritmo abbiamo un solo ciclo con $\Theta(n)$ iterazioni. \\*
+Tuttavia questo avviene sse $|P| \leq \omega$. In quel caso infatti $T_{U(j)} = \Theta(1)$, perche' la costruzione di $U$ richiedera' sempre $O(\omega)$ iterazioni. L'algoritmo necessita solo di una piccola modifica, ma che porta la complessita' a cambiare radicalmente. \\*
+Nel caso $|P| > w$, la transizione $M[\cdot][j-1] \leftarrow M[\cdot][j]$ sara' $T_{U(j)}(n,m) = \Theta(\frac m \omega)$, perche' il processo di transizione occupera' piu' operazioni della CPU.
+Quindi la complessita' dell'algoritmo nel caso generale e' $T(n,m) = O(n \cdot m)$.
+
+\section{Karp Rabin}
+
+\paragraph{Ragionamento}
+
+L'idea e' quella di usare una funzione di hash $H(S)$ per confrontare il pattern P con il testo T. \\*
+Si itera con una finestra scorrevole $W$ con $|W| = m$. Si calcola una sola volta $H(P)$, quindi si confronta $H(W)$ con $H(P)$ alla ricerca di occorrenze. \\
+
+La funzione di hash usata in questo caso e': \\*
+$H(S) = \Sigma_{i=1}^{|S|} 2^{i-1} H(S[i])$ \\
+
+Il calcolo di $H(T[i+1:i+m])$ puo' essere ottimizzato usando $H(T[i:i+m-1])$: \\*
+$H(T[i+1:i+m]) = \frac (H(T[i:i+m-1]) - T[i]) 2 + 2^{m-1}T[i+m]$.
+
+\paragraph{Procedura}
+
+\begin{algorithm}
+   \renewcommand\thealgorithm{}
+    \caption{Karp Rabin}
+    \begin{algorithmic}
+        \Procedure{KB}{$T, P$}
+            \State $H_{P} \gets H(P)$
+            \State $H_{W} \gets H(T[:m])$
+            \If{$H_{P} H_{W}$}
+                \State print(0)
+            \EndIf
+            \For{$i=1$ to $n-m$}
+                \State $H_{W} \gets ((H_{W} - T[i]) / 2) + 2^{m-1}T[i+m]$
+                \If{$H_{P} H_{W}$}
+                    \State print(i)
+                \EndIf
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\pagebreak
+
+\paragraph{Complessita'}
+
+Visto che l'aggiornamento di $H_{W}$ costa $\Theta(1)$, la creazione del primo $H_{W}$ costa $\Theta(m)$ ed e' presente solo un ciclo di $\Theta(n - m)$ iterazioni, la complessita' temporale e' $T(n,m) = \Theta(n + m)$. \\
+
+\paragraph{Problemi}
+
+Purtroppo i calcolatori hanno capacita' limitata, e, come nel caso dello Baeza-Yates-Gonnet, se $m > \omega$ allora la transizione di $H_{W}$ viene a costare $\Theta(\frac m \omega)$ e quindi l'algoritmo costera' $T(n,m) = O(n \cdot m)$. \\
+
+Si puo' pensare di risolvere questo problema limitando la dimensione di $H_{W}$ applicando un modulo $p$. Tuttavia questo introduce necessariamente la possibilita' di ottenere \textbf{Falsi Positivi} a causa delle collisioni che si possono creare con il modulo sbagliato. \\
+
+Se descriviamo la probabilita' che un falso positivo si verifichi possiamo scrivere: $P(FP) = \frac 1 2$. Ad ogni modo e' possibile generalizzare questa variante provando in successione $k$ moduli diversi per ottenere una probabilita' di errore di $P(FP) = \frac 1 {2 ^ k}$. Dopo ogni falso positivo si sostituisce il modulo che ha generato la collisione.
+Per questo motivo questa variante del Karp Rabin rientra nella classe degli algoritmi probabilistici.
+
+\paragraph{Algoritmi Probabilistici}
+
+Esistono due class di algoritmi probabilistici.
+
+\subparagraph{Monte Carlo}
+Puo' essere non corretto, ma e' comunque veloce ed efficiente.
+La vairiante del Karp Rabin rientra in questa categoria.
+
+\subparagraph{Las Vegas}
+E' sicuramente corretto ma potenzialmente costoso.
+Il quicksort con pivot randomico rientra in questa categoria.
