@@ -191,11 +191,47 @@ $Lcp[i] = NodeDepth(LCA(i, i+1))$, dove $LCA$ e' il Lowest Common Ancestor, trat
 
 \section{Da Suffix Array a Suffix Tree}
 
-TODO
+Innanzitutto si deve disporre del Suffix Array con le informazioni sul LCP.
+L'algoritmo si divide in due fasi: 
+
+\begin{itemize}
+\item Ricostruzione del Suffix Tree.
+\item Riempimento del Suffix Tree.
+\end{itemize}
+
+Si consideri quindi la seguente procedura:
+
+\subparagraph{Ricostruzione del Suffix Tree}
+
+Sia dato un array $LCP$.
+Se $|LCP| = 0$ allora ritorno una foglia.
+Altrimenti creo un nodo e procedo.
+
+Sia quindi $k \in LCP$ l'elemento piu' piccolo in LCP. \\*
+Quindi tratto quell'elemento come un separatore. \\
+
+Esempio:
+
+Dato $LCP = [0, 1, 3, 0, 0, 2]$. Il valore piu' piccolo e' $0$, quindi formo i sotto array $<[], [1,3], [], [2]>$ e creo un sottoalbero che come figli i nodi creati dall'applicazione ricorsiva di questa procedura ai singoli sottoarray.
+
+\subparagraph{Riempimento del Suffix Tree}
+
+Per riempire il ST e' sufficiente una visita depth-first in cui si assegnano i valori delle foglie con i valori di SA e i rispettivi archi.
 
 \section{Suffix Tree Generalizzato}
 
-TODO
+Un \textbf{Suffix Tree Generalizzato} e' un \textbf{Suffix Tree} per un insieme di stringhe.
+Ovvero e' Suffix Tree di tutti i suffissi $w$ che appartengono a una delle stringhe.
+I nodi saranno decoranti non piu' solo con la posizione nel testo ma con le posizioni nelle relative stringhe, ovvero un insieme di coppie (stringa, posizione). \\*
+
+Il modo piu' semplice per ottenerlo e' la concatenazione delle stringhe con terminali speciali distinti: \\*
+$S_{tot} = S_0 \cdot \$_0 \cdot S_1 \cdot \$_1 \cdot ... S_n \cdot \$_n$.
+
+Come esempio, siano $S_0 = MONDIALE$ e $S_1 = CAMBIALE$.
+Quindi costruisco $S_{tot} = S_0 \cdot \$_0 \cdot S_1 \cdot \$_1$, ovvero $S_{tot} = MONDIALE \cdot \$_0 \cdot CAMBIALE \cdot \$_1$.
+
+Quindi costruisco il Suffix Tree di $S_{tot}$.
+Posso usare il Suffix Tree Generalizzato per cercare la LCS di piu' stringhe al posto di usare un algoritmo banale che avrebbe complessita' temporale $T(S_0,S_1, ... S_n) = \Pi _ {i=0} ^ {n} |S_i|$.
 
 \section{Pattern Matching con Suffix Array}
 
