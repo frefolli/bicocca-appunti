@@ -1,0 +1,210 @@
+\chapter{Suffix Tree e Suffix Array}
+
+\section{Trie}
+
+Un \textbf{Trie} e' un albero ordinato in cui i nodi non mantengono una copia della loro chiave, ma essa e' rappresentata dal cammino radice-nodo.
+Infatti ogni arco tra nodi e' etichettato con una stringa.
+
+\paragraph{Esempi}
+
+\subparagraph{esempio semplice}
+
+Un esempio di Trie:
+
+\begin{forest}
+    for tree={
+      circle,
+      black,
+      draw,
+      fill=blue!30,
+      s sep=20mm
+    }
+      [{}
+        [{}, label = A
+            [{}, label = B]
+            [{}, label = C]
+        ]
+        [{}, label = B
+            [{}, label = A]
+            [{}, label = B]
+        ]
+      ]
+\end{forest}
+
+\subparagraph{con dizionario}
+
+Puo' essere generato anche a partire da un dizionario, per esempio:
+
+\begin{align}
+    \text{ABE} \\
+    \text{ABETE} \\
+    \text{ABACO}
+    \end{align}
+    
+    \begin{forest}
+        for tree={
+          circle,
+          black,
+          draw,
+          fill=blue!30,
+          s sep=20mm
+        }
+          [{}
+            [{}, label = A
+                [{}, label = B
+                    [{}, label = A
+                        [{}, label = C
+                            [{}, label = O]
+                        ]
+                    ]
+                    [{}, label = E
+                        [{}, label = T
+                            [{}, label = E]
+                        ]
+                    ]
+                ]
+            ]
+          ]
+    \end{forest}
+    
+\subparagraph{con terminatori}
+
+Facendo terminare ogni parola del dizionario con un terminatore \$ $\notin \Sigma$, e' possibile costruire un Trie basato su dizionario che indichi chiaramente quali siano le parole del dizionario.
+Infatti se il dizionario non gode della prefix-free property, ovvero se $\exists w, x \in \Sigma^*$ tali che $\exists s \in \Sigma^* \mid w \cdot s = x$, il Trie conterra' per $x$ e $w$ due foglie distinte che segnalano la fine delle due parole.
+Ovvero per ogni parola nel dizionario sara' presente la rispettiva e distinta foglia corrispondente al terminatore \$.
+\begin{align}
+\text{ABE\$} \\
+\text{ABETE\$} \\
+\text{ABACO\$}
+\end{align}
+
+\begin{forest}
+    for tree={
+      circle,
+      black,
+      draw,
+      fill=blue!30,
+      s sep=20mm
+    }
+      [{}
+        [{}, label = A
+            [{}, label = B
+                [{}, label = A
+                    [{}, label = C
+                        [{}, label = O
+                            [{}, label = \$]
+                        ]
+                    ]
+                ]
+                [{}, label = E
+                    [{}, label = T
+                        [{}, label = E
+                            [{}, label = \$]
+                        ]
+                    ]
+                    [{}, label = \$]
+                ]
+            ]
+        ]
+      ]
+\end{forest}
+
+\section{Suffix Tree}
+
+Un \textbf{Suffix Tree} e' un \textbf{Trie} che rappresenta un insieme di suffissi in cui tutti i nodi hanno archi che iniziano con simboli diversi e solo la radice puo' avere meno di due archi.
+Ogni nodo contiene come valore la posizione di inizio del suffisso rispetto al testo di partenza.
+Un Trie su una stringa $S$ e' generato a partire dall'elenco di tutti i suffissi di $S$ terminati in \$ (quindi un dizionario di lunghezza $|S|$).
+Questa struttura dati richiede spazio in memoria con una complessita' di $O(n^2)$.
+
+\paragraph{Esempi}
+
+Un esempio di Suffix Tree per la stringa BANANA\$:
+
+\begin{forest}
+    for tree={
+        circle,
+        black,
+        draw,
+        fill=blue!30,
+        s sep=20mm
+    }
+      [{}
+        [{7}, label = \$]
+        [{}, label = A
+            [{6}, label = \$]
+            [{}, label = NA
+                [{4}, label = \$]
+                [{2}, label = NA\$]
+            ]
+        ]
+        [{1}, label = BANANA\$]
+        [{}, label = NA
+            [{5}, label = \$]
+            [{3}, label = NA\$]
+        ]
+      ]
+\end{forest}
+
+L'esempio riprende quello dei lucidi del prof. Della Vedova.
+
+\section{Costruzione di Suffix Tree}
+
+\section{Suffix Array}
+
+E' un array di tutti i suffissi di $S$ in ordine lessicografico associati alle rispettive posizioni di inizio nel testo.
+
+\paragraph{Esempi}
+
+Riprendendo il Suffix Tree della sezione precedente e il rispettivo esempio:
+
+\begin{center}
+    \begin{tabular}{ ||c c c c c c c c|| }
+    \hline
+    i & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+    SA & \$ & A\$ & ANA\$ & ANANA\$ & BANANA\$ & NA\$ & NANA\$ \\
+    \hline
+    \end{tabular}
+\end{center}
+
+Possiamo quindi calcolare la Lunghezza del Prefisso Comune ai suffissi utilizzando la formula di ricorrenza: \\*
+$Lcp[i] = |CommonPrefix(SA[i], SA[i+1])|$
+
+\begin{center}
+    \begin{tabular}{ ||c c c c c c c c|| }
+    \hline
+    i & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+    SA & \$ & A\$ & ANA\$ & ANANA\$ & BANANA\$ & NA\$ & NANA\$ \\
+    LCP & 0 & 1 & 3 & 0 & 0 & 2 & $-$ \\
+    \hline
+    \end{tabular}
+\end{center}
+
+\section{Costruzione di Suffix Array}
+
+TODO
+
+\section{Da Suffix Tree a Suffix Array}
+
+Per creare il Suffix Array e' necessaria una visita depth-first del Suffix Tree in cui i nodi fratelli sono visitati secondo l'ordine lessicografico delle stringhe dei relativi archi uscenti al nodo padre.
+Questo processo puo' essere usato per calcolare anche la Lunghezza del Prefisso Comune, modificando la formula usata nella sezione precedente: \\*
+$Lcp[i] = NodeDepth(LCA(i, i+1))$, dove $LCA$ e' il Lowest Common Ancestor, trattato piu' avanti.
+
+\section{Da Suffix Array a Suffix Tree}
+
+TODO
+
+\section{Suffix Tree Generalizzato}
+
+TODO
+
+\section{Pattern Matching con Suffix Array}
+
+TODO
+
+\section{Longest Common Substring}
+
+TODO
+
+\section{Lowest Common Ancestor}
+
+TODO
