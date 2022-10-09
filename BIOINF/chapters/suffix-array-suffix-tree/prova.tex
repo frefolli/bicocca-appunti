@@ -1,0 +1,22 @@
+\documentclass{article}
+\usepackage{forest}
+\begin{document}
+\begin{forest}
+for tree={circle, black, draw, fill=blue!30, s sep=17mm}
+[ {} [ {}, label = X  ]
+[ {}, label = Y  ]
+[ {}, label = a [ {}, label = X  ]
+[ {}, label = na [ {}, label = X  ]
+[ {}, label = na [ {}, label = X  ]
+[ {}, label = sY  ] ]
+[ {}, label = sY  ] ]
+[ {}, label = sY  ] ]
+[ {}, label = bananaX  ]
+[ {}, label = na [ {}, label = X  ]
+[ {}, label = na [ {}, label = X  ]
+[ {}, label = sY  ] ]
+[ {}, label = sY  ] ]
+[ {}, label = sY  ] ]
+\end{forest}
+
+\end{document}

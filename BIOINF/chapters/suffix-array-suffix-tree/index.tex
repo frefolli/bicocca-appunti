@@ -147,8 +147,6 @@ Un esempio di Suffix Tree per la stringa BANANA\$:
 
 L'esempio riprende quello dei lucidi del prof. Della Vedova.
 
-\section{Costruzione di Suffix Tree}
-
 \section{Suffix Array}
 
 E' un array di tutti i suffissi di $S$ in ordine lessicografico associati alle rispettive posizioni di inizio nel testo.
@@ -199,7 +197,7 @@ L'algoritmo si divide in due fasi:
 \item Riempimento del Suffix Tree.
 \end{itemize}
 
-Si consideri quindi la seguente procedura:
+Si considerino le seguenti procedura:
 
 \subparagraph{Ricostruzione del Suffix Tree}
 
@@ -207,8 +205,7 @@ Sia dato un array $LCP$.
 Se $|LCP| = 0$ allora ritorno una foglia.
 Altrimenti creo un nodo e procedo.
 
-Sia quindi $k \in LCP$ l'elemento piu' piccolo in LCP. \\*
-Quindi tratto quell'elemento come un separatore. \\
+Sia quindi $k \in LCP$ l'elemento piu' piccolo in LCP, tratto quell'elemento come un separatore e applico ricorsivamente la procedura sui sotto array. \\
 
 Esempio:
 
@@ -235,11 +232,24 @@ Posso usare il Suffix Tree Generalizzato per cercare la LCS di piu' stringhe al 
 
 \section{Pattern Matching con Suffix Array}
 
-TODO
+Visto che il Suffix Array e' un array ordinato lessicograficamente di suffissi, il pattern matching si riduce ad una ricerca dicotomica dei suffissi che hanno come prefisso il pattern P.
+In particolare:
 
-\section{Longest Common Substring}
+\begin{itemize}
+    \item Visto che tutti i suffissi del range considerato nella singola chiamata ricorsiva $SA[L, R]$ condividono lo stesso prefisso, si puo' evitare di confrontare $LCP(SA[L], SA[R])$ caratteri.
 
-TODO
+\end{itemize}
+
+\section{Longest Common Substring con Suffix Tree}
+
+Come sappiamo, le foglie di un Suffix Tree contengono le informazioni su a quali stringhe appartengono i suffissi descritti dalle foglie stesse.
+
+Siano $Node_i$ l'i-esimo nodo in SuffixTree e $String_j$ la j-esima stringa da confrontare.
+Si puo' estendere la proprieta' sopra destritta $P(Node_i, String_j) \Leftrightarrow Leaf(Node_i) \land String_j \in Node_i$ a tutti i nodi, in questo modo:
+$P(Node_i, String_j) \Leftrightarrow \exists Node_k \in Node_i \mid P(Node_k, String_j)$.
+
+Ebbene l'algoritmo consiste nel cercare il nodo interno $Node_i$ piu' profondo nel Suffix Tree tale che:
+$\forall String_j \mid P(Node_i, String_j)$.
 
 \section{Lowest Common Ancestor}
 
