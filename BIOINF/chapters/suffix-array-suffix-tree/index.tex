@@ -179,7 +179,23 @@ $Lcp[i] = |CommonPrefix(SA[i], SA[i+1])|$
 
 \section{Costruzione di Suffix Array}
 
-TODO
+Un metodo naive potrebbe essere riassunto in tre fasi.
+
+\subparagraph{Creazione}
+Si crea l'array raccogliendo tutti i suffissi di $S$, con una complessita' lineare: $T(n) = \Theta(n)$
+
+\subparagraph{Ordinamento}
+Si puo' quindi riordinare i suffissi con un algoritmo a piacere, per esempio con un heap sort, il quale ha $T(n) = O(n \cdot log n)$.
+Siccome confrontare due stringhe ha $T(n) = O(n)$, il totale e':
+$T(n) = O(n^2 \cdot log n)$.
+
+\subparagraph{LCP}
+Si tratta semplicemente di calcolare LCP per ogni due entry consecutive: $T(n) = \Theta(n)$
+
+\subparagraph{Totale}
+La complessita' totale e': \\*
+$T(n) = \Theta(n) + O(n^2 \cdot log n) + \Theta(n)$ \\*
+$T(n) = O(n^2 \cdot log n)$
 
 \section{Da Suffix Tree a Suffix Array}
 
@@ -252,5 +268,19 @@ Ebbene l'algoritmo consiste nel cercare il nodo interno $Node_i$ piu' profondo n
 $\forall String_j \mid P(Node_i, String_j)$.
 
 \section{Lowest Common Ancestor}
+
+Un algoritmo semplice potrebbe essere questo.
+
+Detti $A$ e $B$ i due nodi di cui si deve calcolare LCA.
+Detti $P_{A}$ e $P_{B}$ i percorsi dalla radice $R$ ai due nodi.
+
+Si confrontano i percorsi fino a trovare dove divergono.
+
+Trovare $P_{A}$ e $P_{B}$ impiega $T(n) = O(n)$.
+Confrontare $P_{A}$ e $P_{B}$ si usa $T(n) = O(n)$.
+
+Quindi l'algoritmo ha una complessita' totale di $T(n) = O(n)$.
+
+\section{Range Minimum Query}
 
 TODO
