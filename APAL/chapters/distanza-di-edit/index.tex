@@ -66,8 +66,8 @@ Con $i > 0 \land j > 0$:
 \[
     \text{$d_{i,j}$} =
     \begin{cases}
-      \text{$d_{i-1, j-1}$} && \text{$x_i = y_j$} \\
-      \text{$min(d_{i-1, j-1}, d_{i, j-1}, d_{i-1, j}) + 1$} && altrimenti
+      \text{$d_{i-1, j-1}$} & \text{$x_i = y_j$} \\
+      \text{$min(d_{i-1, j-1}, d_{i, j-1}, d_{i-1, j}) + 1$} & altrimenti
     \end{cases}
 \]
 
@@ -89,7 +89,7 @@ La complessita' dell'algoritmo ricorsivo e' $\O(3^(n+m))$.
         \Procedure{ED-RIC}{$X, Y$}
             \If{$j = 0$}
                 \State \Return i
-            \ElseIf{$i = 0$}
+            \ElsIf{$i = 0$}
                 \State \Return j
             \Else
                 \State $A \gets ED-RIC(X_{i-1}, Y_{j}) + 1$
@@ -97,7 +97,7 @@ La complessita' dell'algoritmo ricorsivo e' $\O(3^(n+m))$.
                 \State $C \gets ED-RIC(X_{i-1}, Y_{j-1}) + 1$
                 \If{$A \leq B \land A \leq C$}
                     \State \Return $A$
-                \ElseIf{$B \leq A \land B \leq C$}
+                \ElsIf{$B \leq A \land B \leq C$}
                     \State \Return $B$
                 \Else
                     \State \Return $C$
@@ -137,17 +137,16 @@ Ogni cella $B[i][j] = <Direction, Operation>$
                     \If{$x_i = y_j$}
                         \State $M[i][j] \gets M[i-1][j-1]$
                         \State $B[i][j] \gets <"", Null>$
-                    \End
-                    \If{$M[i-1][j] \leq M[i][j-1] \land M[i-1][j] \leq M[i-1][j-1]$}
+                    \ElsIf{$M[i-1][j] \leq M[i][j-1] \land M[i-1][j] \leq M[i-1][j-1]$}
                         \State $M[i][j] \gets M[i-1][j] + 1$
                         \State $B[i][j] \gets <"\uparrow", Delete>$
-                    \ElIf{$M[i][j-1] \leq M[i-1][j] \land M[i][j-1] \leq M[i-1][j-1]$}
+                    \ElsIf{$M[i][j-1] \leq M[i-1][j] \land M[i][j-1] \leq M[i-1][j-1]$}
                         \State $M[i][j] \gets M[i][j-1] + 1$
                         \State $B[i][j] \gets <"\leftarrow", Insert>$
                     \Else
                         \State $M[i][j] \gets M[i-1][j-1] + 1$
                         \State $B[i][j] \gets <"\nwarrow", Change>$
-                    \EndIF
+                    \EndIf
                 \EndFor
             \EndFor
             \State \Return $M[m][n]$

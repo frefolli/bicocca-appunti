@@ -1,0 +1,58 @@
+\chapter{Algoritmo del Simplesso}
+
+\paragraph{Introduzione}
+
+Questo algoritmo di tipo greedy permette di risolvere problemi di Programmazione Lineare.
+Il tempo nel caso medio e' $\Theta(n)$.
+Il tempo nel caso peggiore e' $O(e^n)$.
+
+\paragraph{Definizioni}
+
+\subparagraph{Frontiera}
+La \textbf{Frontiera del Vincolo} e' un vincolo della regione ammissibile che abbia $\leq oppure =$.
+
+\subparagraph{Vertice}
+Un \textbf{Vertice} e' l'intersezione di due \textbf{Frontiere di Vincolo}.
+I \textbf{Vertici Ammissibili} sono quelli che stanno nella \textbf{Regione Ammissibile}.
+Due \textbf{Vertici} si dicono adiacenti se condividono $n-1$ \textbf{Frontiere di Vincolo}.
+
+\subparagraph{Spigolo}
+Uno \textbf{Spigolo} e' il segmento che collega due \textbf{Vertici} adiacenti.
+Gli \textbf{Spigoli Ammissibili} sono quelli che stanno nella \textbf{Regione Ammissibile}.
+
+\subparagraph{Test di Ottimalita'}
+Si consideri ogni problema PL tale da ammettere soluzioni ottimali, se una soluzione vertice non ammette soluzioni certice a lei adiacenti con valore della funzione obiettivo Z migliore, allora la soluzione in questione e' ottimale.
+
+\paragraph{Algoritmo}
+
+\subparagraph{Inizializzazione}
+Scegliere il vertice $(0,0)$ come soluzione iniziale, (vantaggiosa senza complicazione) se questa fa parte della Regione Ammissibile.
+
+\subparagraph{Passo}
+Si valuta lo spostamento nei vertici ammissibili adiacenti.
+Con il test di ottimalita' si valuta se ci si puo' fermare.
+Ci si sposta nel vertice che garantisce il valore della funzione obiettivo migliore.
+
+\paragraph{Concetti Chiave}
+
+\subparagraph{1}
+Il metodo del simplesso non esplora, ma ispeziona solo i vertici ammissibili adiacenti.
+Per ogni problema PL trovare una soluzione richiede di trovare il vertice ammissibile migliore.
+Si richiede che la Regione Ammissibile sia limitata.
+Il numero di vertici sale esponenzialmente.
+
+\subparagraph{2}
+E' un algoritmo iterativo con due passi, Inizializzazione e Test di Ottimalita'.
+
+\subparagraph{3}
+Quando possibile l'inizializzazione a $(0,0)$ e' preferibile e "ottimale".
+Si possono applicare algoritmi apposititi per garantire l'ammissibilita' della soluzione iniziale.
+
+\subparagraph{4}
+E' piu' vantaggioso ascoltare gli adiacenti che tentare di verificare vertici piu' lontani perche' in minore quantita'.
+
+\subparagraph{5}
+A partire dal vertice corrente compara i risultati ma non calcola ogni volta i valori della funzione, ma i tassi di miglioramento della funzione obiettivo.
+
+\subparagraph{6}
+E' assicurato che si ottiene ad ogni passo una soluzione migliore perche' si cerca il migliore tasso di crescita.
