@@ -4,9 +4,7 @@
 	make -C ROPR
 
 clean:
-	make -C APAL clean
-	make -C BIOINF clean
-	make -C ROPR clean
+	./clean.sh
 
 host:
 	static-server -p 8080
