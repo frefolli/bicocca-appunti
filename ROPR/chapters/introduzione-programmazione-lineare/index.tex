@@ -40,41 +40,49 @@ Determinare i tassi di produzione per massimizzare la produzione e il profitto f
 \end{center}
 
 \begin{align}
-    \text{$max Z = 3 \cdot x_1 + 5 \cdot x_2$}
-    \text{$x_1 \leq 4$}
-    \text{$2 \cdot x_2 \leq 12$}
-    \text{$3 \cdot x_1 + 2 \cdot x_2 \leq 18$}
-    \text{$x_1 \geq 0$}
+    \text{$max Z = 3 \cdot x_1 + 5 \cdot x_2$} \\
+    \text{$x_1 \leq 4$} \\
+    \text{$2 \cdot x_2 \leq 12$} \\
+    \text{$3 \cdot x_1 + 2 \cdot x_2 \leq 18$} \\
+    \text{$x_1 \geq 0$} \\
     \text{$x_2 \geq 0$}
 \end{align}
 
-\paragraph{Considerazione}
+\paragraph{Considerazioni}
 
-TODO: Piano di Isolivello!
-TODO: Curve di Isolivello!
-
-$Z = valore di misura di prestazione$
-$x_j = livello di attivita' j$
-$c_j = incremento del valore della misura di prestazione corrispondente all'incremento di attivita' x_j$
-$b_i = $
-$a_{ij} = $
-
-TODO: completa
+\begin{itemize}
+    \item $Z$ = valore di misura di prestazione.
+    \item $x_j$ = livello di attivita' $j$.
+    \item $c_j$ = incremento del valore della misura di prestazione $Z$ corrispondente all'incremento di un'unita' del valore dell'attivita' $x_j$.
+    \item $b_i$ = quantita' di risorsa $i$ allocabile alle attivita' $x_j$.
+    \item $a_{ij}$ = quantita' di risorsa $i$ consumata da ogni attivita' $x_j$.
+\end{itemize}
 
 In Programmazione Lineare la regione ammissibile e' un Poliedro Convesso in $R^n$
 Se la regione e' limitata si dice Politopo.
 
-TODO: Algoritmo del Simplesso
+\begin{equation}
+    opt Z = \Sigma _ {j=1} ^ {n} c_j \cdot x_j
+\end{equation}
 
-$opt Z = \Sigma _ {j=1} ^ {n} c_j \cdot x_j$
-$vincoli \Rightarrow \Sigma _ {j=1} ^ {n} a_{ij} \cdot x_j \leq b_i$
+\begin{equation}
+    vincoli \Rightarrow \Sigma _ {j=1} ^ {n} a_{ij} \cdot x_j \leq b_i
+\end{equation}
 
-$c_j \rightarrow coefficiente di costo$
-$a_{ij} \rightarrow termine noto sinistro$
-$b_{i} \rightarrow termine noto destro$
+\begin{equation}
+    c_{j} \rightarrow coefficiente \; di \; costo
+\end{equation}
+
+\begin{equation}
+    a_{ij} \rightarrow termine \; noto \; sinistro
+\end{equation}
+
+\begin{equation}
+    b_{i} \rightarrow termine \; noto \; destro
+\end{equation}
 
 \paragraph{Assunzioni}
-Le assunzioni di un problema PL.
+Un problema PL si poggia su quattro assunzioni implicite.
 
 \subparagraph{Proporzionalita'}
 Il contributo di ogni attivita' al valore della funzione obiettivo e del vincolo e' proporzionale al livello di attivita'.
@@ -82,14 +90,28 @@ Il contributo di ogni attivita' al valore della funzione obiettivo e del vincolo
 \subparagraph{Additivita'}
 Il valore della funzione obiettivo e dei vincoli e' dato dalla somma dei contributi individuali delle rispettive attivita'.
 
-\subparagraph{Divisibilita'}
-Le variabili decisionali possono assumere qualsiasi valore all'interno della Regione di Ammissibilita'
+\subparagraph{Continuita'}
+Qualunque valore delle variabili decisionali in $R^n$ e' accettabile.
 
 \subparagraph{Certezza'}
 I parametri di un problema di PL devono essere noti con certezza.
 
-\subparagraph{Considerazioni Pratiche}
+\subparagraph{Divisibilita'}
+Questa assunzione non e' sempre garantita, varia in base al problema.
+Le variabili decisionali possono assumere qualsiasi valore all'interno della Regione di Ammissibilita', inclusi i valori non interi che soddisfino i vincoli. Quindi le variabili decisionali sono variabili continue. \\*
+In certi problemi puo' essere necessario avere soluzioni intere perche' la logica non ci consente di spezzare unita' intrinsecamente e logicamente atomice: non si possono assumere 3.5 dipendenti!
 
+\paragraph{Considerazioni Pratiche}
+
+\subparagraph{Vincoli Prolissi}
 Alcuni vincoli possono includerne altri, in quel caso e' inutile conservarli entrambi, si puo' lasciare quello piu' "forte".
-In programmazione lineare le soluzioni possono non essere intere.
-TODO: Copia Slide
+
+\subparagraph{Soluzioni Intere}
+La soluzione del problema di PL non garantisce l’assunzione di divisibilità.
+In certi casi sono opportune o necessarie per senso logico soluzioni intere, ma non sempre le soluzione di un problema PL le possono garantire. \\
+
+Se la soluzione ottimale del problema PL e' intera allora e' anche ottimale per il problema considerato. Altrimenti si presentano due strade: \\
+
+Aggiungere vincoli che garantiscano che la variaibili di decisione siano interi, riducendo il problema PL in PLI (Programmazione Lineare Intera) \\*
+
+Arrotondare la soluzione (per eccesso o difetto, in modo opportuno), ma questo non garantisce l'ottimalita' della soluzione intera cosi' ottenuta.
