@@ -1,0 +1,95 @@
+\chapters{Introduzione alla Programmazione Lineare}
+
+\paragraph{Esempio}
+
+La Wyndor Glass CO produce vetri di elevata qualita', incluso finestre e porte.
+
+\begin{itemize}
+    \item Impianto 1: produce cornici in alluminio e le altre componenti
+    \item Impiano 2: produce cornici di legno
+    \item Impianto 3: produce i vetri e assembla i prodotti
+\end{itemize}
+
+Si vuole produrre:
+\begin{itemize}
+    \item Prodotto 1 - una porta di vetro (impianti 1, 3)
+    \item Prodotto 2 - finestra con doppia apertura (impianti 2, 3)
+\end{itemize}
+
+La domanda e' virtualmente infinita.
+I prodotti sono raggruppati in lotti da 20 unita'.
+I tassi sono $Lotti / Settimana$.
+Determinare i tassi di produzione per massimizzare la produzione e il profitto finale.
+
+\subparagraph{Dati}
+
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Impianto & Prodotto 1 & Prodotto 2 & Tempo Produttivo
+        \hline
+        \hline
+        Impianto 1 & 1 & 0 & 4 \\
+        \hline
+        Impianto 2 & 0 & 2 & 12 \\
+        \hline
+        Impianto 3 & 3 & 2 & 18
+        \hline
+        Profitto & 3000 & 5000 & \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{align}
+    \text{$max Z = 3 \cdot x_1 + 5 \cdot x_2$}
+    \text{$x_1 \leq 4$}
+    \text{$2 \cdot x_2 \leq 12$}
+    \text{$3 \cdot x_1 + 2 \cdot x_2 \leq 18$}
+    \text{$x_1 \geq 0$}
+    \text{$x_2 \geq 0$}
+\end{align}
+
+\paragraph{Considerazione}
+
+TODO: Piano di Isolivello!
+TODO: Curve di Isolivello!
+
+Z = valore di misura di prestazione
+x_j = livello di attivita' j
+c_j = incremento del valore de;;a misura di prestazione corrispondente all'incremento di attivita' x_j
+b_i = 
+a_{ij} = 
+TODO: completa
+
+In Programmazione Lineare la regione ammissibile e' un Poliedro Convesso in $R^n$
+Se la regione e' limitata si dice Politopo.
+
+TODO: Algoritmo del Simplesso
+
+$opt Z = \Sigma _ {j=1} ^ {n} c_j \cdot x_j$
+$vincoli \Rightarrow \Sigma _ {j=1} ^ {n} a_{ij} \cdot x_j \leq b_i$
+
+$c_j \rightarrow coefficiente di costo$
+$a_{ij} \rightarrow termine noto sinistro$
+$b_{i} \rightarrow termine noto destro$
+
+\paragraph{Assunzioni}
+Le assunzioni di un problema PL.
+
+\subparagraph{Proporzionalita'}
+Il contributo di ogni attivita' al valore della funzione obiettivo e del vincolo e' proporzionale al livello di attivita'.
+
+\subparagraph{Additivita'}
+Il valore della funzione obiettivo e dei vincoli e' dato dalla somma dei contributi individuali delle rispettive attivita'.
+
+\subparagraph{Divisibilita'}
+Le variabili decisionali possono assumere qualsiasi valore all'interno della Regione di Ammissibilita'
+
+\subparagraph{Certezza'}
+I parametri di un problema di PL devono essere noti con certezza.
+
+\subparagraph{Considerazioni Pratiche}
+
+Alcuni vincoli possono includerne altri, in quel caso e' inutile conservarli entrambi, si puo' lasciare quello piu' "forte".
+In programmazione lineare le soluzioni possono non essere intere.
+TODO: Copia Slide
