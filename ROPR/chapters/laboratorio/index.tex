@@ -1,0 +1,96 @@
+\part{Laboratorio}
+
+\chapter{11-10-2022}
+
+\section{}
+
+\begin{center}
+    \begin{tabular}{||c c c c c||}
+        \hline
+        Outlet & Boys & Women & Men & Cost \\
+        \hline
+        \hline
+        TV & 5 & 1 & 3 & 600 \\
+        \hline
+        Mag & 2 & 6 & 3 & 500 \\
+        \hline
+        Target & 24 & 18 & 24 & \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{align}
+    \text{$5x + 2y \geq 24$} \\
+    \text{$x + 6y \geq 18$} \\
+    \text{$3x + 3y \geq 24$} \\
+    \text{$C(x,y) = 600x + 500y$}
+\end{align}
+
+\section{}
+
+\begin{center}
+    \begin{tabular}{||c c c c||}
+        \hline
+        Gasoline & Vapor & Octane & Price \\
+        \hline
+        \hline
+        Regular & $\leq 7$ & $\geq 80$ & 9.80 \\
+        \hline
+        Premium & $\leq 6$ & $\geq 100$ & 12 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \begin{tabular}{||c c c c||}
+        \hline
+        Stock & Vapor & Octane & Barrels \\
+        \hline
+        \hline
+        A & 8 & 83 & 2700 \\
+        \hline
+        B & 20 & 109 & 1350 \\
+        \hline
+        C & 4 & 74 & 4100 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{align}
+    \text{$\frac {A_i * V_{A} + B_i * V_{B} + C_i * V_{C}} {A_i+B_i+C_i} \leq V_i$} \\
+    \text{$\frac {A_i * O_{A} + B_i * O_{B} + C_i * O_{C}} {A_i+B_i+C_i} \geq O_i$} \\
+    \text{$\Sigma _ {i=0} ^ n A_i \leq Q_A$} \\
+    \text{$\Sigma _ {i=0} ^ n B_i \leq Q_B$} \\
+    \text{$\Sigma _ {i=0} ^ n C_i \leq Q_C$} \\
+    \text{$C_{scarto} = P_{scarto} * (Q_A - \Sigma _ {i=0} ^ n A_i + Q_B - \Sigma _ {i=0} ^ n B_i + Q_C - \Sigma _ {i=0} ^ n C_i)$} \\
+    \text{$C_{i} = P_i * (A_i + B_i + C_i)$} \\
+    \text{$max \; C = C_{scarto} + \Sigma _ {i = 0} ^ n C_i$}
+\end{align}
+
+\section{}
+
+Zone
+
+\begin{center}
+    \begin{tabular}{||c c c c c c||}
+        \hline
+        1 & 2 & 3 & 4 & 5 & 6 \\
+        \hline
+        12 & 11 & 10 & 9 & 8 & 7 \\
+        \hline
+        13 & 14 & 15 & 16 & 17 & 18 \\
+        \hline
+        24 & 23 & 22 & 21 & 20 & 19 \\
+        \hline
+        25 & 26 & 27 & 28 & 29 & 30 \\
+        \hline
+        36 & 35 & 34 & 33 & 32 & 31 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+
+Ogni ripetitore copre anche le zone adiacenti.
+
+
