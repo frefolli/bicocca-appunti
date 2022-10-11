@@ -179,3 +179,30 @@ Quindi l'algoritmo e' $T(n) = \O(n^2)$ nel caso medio.
 \paragraph{Osservazioni}
 
 E' possibile scrivere una procedura che esplori linearmente l'array $OPT$ per verificare i passi che sono stati effettuati per costruire OPT. Quindi si puo' risparmiare lo spazio occupato da $WIS$.
+
+\paragraph{Dimostrazione}
+
+\subparagraph{$i \in S_i$}
+Assumo che $i \in S_i$, devo mostrare che $S_i = S_{p(i)} \cup {i}$. \\*
+Se per assurdo $S_{p(i)} \cup {i} \ne sol(X_i)$. \\*
+$S^I$ e' la soluzione e quindi $V(S^I) > V(S_{p(i)})$ e $S^I = S^{II} \cup {i}$. \\*
+Allora $S^{II}$ contiene attivita' compatibili insieme a $i$. \\*
+$S^{II} \subseteq {1,..,p(i)}$ ma allora $V(S^{II}) > V(S_{p(i)})$. \\*
+Il che e' impossibile, perche' sappiamo che $S_{p(i)} = sol(X_{p(i)})$. \\*
+Quindi $S_i = S_{p(i)} \cup {i}$.
+
+\subparagraph{$i \notin S_i$}
+
+Assumo che $i \notin S_i$, devo mostrare che $S_i = S_{i-1}$. \\*
+Supponiamo per assurdo che $S_i != S_{i-1}$, allora $\exists S^I \ne S_{i-1}$ take che $V(S^I) > V(S_{i-1}$. \\*
+Quindi $i \notin S^I$ e $S^I$ e' fatto da attivita' compatibili ($COMP(S^I) = true$). \\*
+$S^I \subseteq {1,..,i-1} \mid V(S^I) > V(S_{i-1}$, quindi $S_{i-1}$ non puo' essere $sol(X_{i-1})$. \\*
+Ma sappiamo che $S_{i-1} = sol(X_{i-1})$, quindi $S_i = S_{i-1}$.
+
+\paragraph{Esercizio}
+Da risolvere per 18-10-2022.
+
+L'istanza e' simile ma con le case al posto delle attivita'.
+Ci sono n case adiacenti in linea retta.
+Ad ogni casa e' associato un valore $d$, la donazione che l'abitante e' disposto a fare.
+Trovare un sottoinsieme di abitanti massimo tale che le case non siano adiacenti.
