@@ -1,0 +1,105 @@
+static-server -p 8080
+options.index is now deprecated please use options.templates.index instead.
+* Static server successfully started.
+* Serving files at: http://localhost:8080
+* Press Ctrl+C to shutdown.
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.13 KiB (8.084ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.13 KiB (3.628ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (2.685ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.22 KiB (3.882ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (1.229ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.19 KiB (3.378ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (0.916ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.22 KiB (3.130ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (2.371ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.21 KiB (3.084ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.24 KiB (3.053ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (1.088ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.35 KiB (3.667ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (0.938ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.61 KiB (3.713ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (1.379ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.59 KiB (3.645ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (1.539ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.63 KiB (3.902ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (1.879ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.62 KiB (4.263ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.78 KiB (6.011ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (1.011ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.77 KiB (4.907ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (0.684ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.71 KiB (2.020ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (0.941ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.46 KiB (1.881ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (1.037ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.51 KiB (2.714ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (2.022ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.52 KiB (4.294ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (0.832ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.56 KiB (2.410ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (4.037ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.68 KiB (3.360ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (0.838ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.47 KiB (2.078ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (0.861ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 255.91 KiB (4.928ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (1.988ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 256.4 KiB (8.204ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (0.887ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 257.01 KiB (4.220ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (0.925ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 257.01 KiB (2.486ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (0.943ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 257.01 KiB (4.990ms)
+<-- [GET] /APAL/appunti.pdf
+--> 200 OK /APAL/appunti.pdf 257.04 KiB (5.001ms)
+<-- [GET] /favicon.ico
+--> 404 /favicon.ico (1.182ms)

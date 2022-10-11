@@ -43,8 +43,8 @@ L'algoritmo naive e' quello combinatorio, ma e' estremamente inefficiente. Il te
 \end{itemize}
 
 Definisco la funzione: \\*
-$COMP : \P({1,..,n}) \rightarrow {true, false}$ \\*
-$\forall i,j \in A \mid i \ne j \lor attivitaCompatibili(A_i,A_j) \Rightarrow COMP(A) = true$ \\*
+$COMP : \mathbb{P}(\{1,..,n\}) \rightarrow \{true, false\}$ \\*
+$\forall i,j \in A \mid i = j \lor attivitaCompatibili(A_i,A_j) \Rightarrow COMP(A) = true$ \\*
 
 Dette poi $i,j$ due attivita' si dice:
 \[
@@ -56,7 +56,7 @@ Dette poi $i,j$ due attivita' si dice:
 \]
 
 Quindi si definisce: \\*
-$V : \mathbb{P}({1,..,n}) \rightarrow \R$
+$V : \mathbb{P}(\{1,..,n\}) \rightarrow \R$
 \[
     V(i,j) =
     \begin{cases}
@@ -65,7 +65,7 @@ $V : \mathbb{P}({1,..,n}) \rightarrow \R$
     \end{cases}
 \]
 
-La Soluzione e' $S \subseteq X \mid COMP(S) = true \land \forall A \subset X V(S) \leq V(A)$
+La Soluzione e' $(S \subseteq X \mid COMP(S) = true) \land (\forall A \subseteq X \mid V(S) \geq V(A))$
 
 \paragraph{Processo}
 
@@ -73,8 +73,8 @@ Detto $S_n \Leftrightarrow sol(X_n)$, e quindi $S_{n-k} \Leftrightarrow sol(X_{n
 Nella soluzione di $S_n$ si assume di conoscere:
 
 \begin{itemize}
-    \item $\forall k \in {1,..,n} S_{n-k}$
-    \item $\forall k \in {1,..,n} sol(X_{n-k})$
+    \item $\forall k \in {1,..,n} \; S_{n-k}$
+    \item $\forall k \in {1,..,n} \; sol(X_{n-k})$
 \end{itemize}
 
 Detto $OPT(i) = V(S_i)$.
@@ -85,19 +85,31 @@ E' immediato sapere $sol(\emptyset)$ e $sol({1})$, quindi questi possono essere 
 
 \subparagraph{Caso Base}
 
-$S_0  \Leftrightarrow X_0 = \emptyset \land V(X_0) = 0$ \\*
-$S_1  \Leftrightarrow X_1 = {1} \land V(X_1) = 1$ \\*
+\begin{align}
+    \text{$S_0  \Leftrightarrow X_0 = \emptyset \land V(X_0) = 0$} \\
+    \text{$S_1  \Leftrightarrow X_1 = {1} \land V(X_1) = 1$}
+\end{align}
 
 \subparagraph{Caso Ricorsivo}
 
-Voglio risolvere $S_i$ e $OPT(i)$, assumo di avere gia' risolto $\forall j \in X \mid j < i S_j$. \\*
+Voglio risolvere $S_i$ e $OPT(i)$. \\*
+Assumo di avere gia' risolto $\forall j \in X \mid j < i S_j$. \\*
 
-Se sapessi che $i \in S_i$ il sotto problema da considerare sarebbe $sol({\forall j \in X_{i-1} \mid attivitaCompatibile(i, j)})$.
-Questo si traduce nel risolvere $S_j$, dove $j$ e' il massimo indice di una attivita' compatibile con $i$.
+Se sapessi che $i \in S_i$ il sotto problema da considerare sarebbe: \\*
+$sol(\{j \mid \forall j \in X_{i-1} \mid attivitaCompatibile(i, j)\})$. \\
+Questo si traduce nel risolvere $S_j$, dove $j$ e' il massimo indice di una attivita' compatibile con $i$. \\*
 Se sapessi al contrario che $i \in S_i$ allora dovrei risolvere $S_{i-1}$.
 
-Detto $p(i) : \R \rightarrow \R$, la funzione che associa ad ogni attivita' l'attivita' compatibile precedente piu' vicina.
-Quindi mi riduco a:
+Detto $p(i) : X \rightarrow X$, la funzione che associa ad ogni attivita', l'indice dell'attivita' compatibile precedente piu' vicina.
+Potendo approssimare, per questioni di prestazione dei confronti, il problema $S_j$ ad al problema leggermente piu' grande $S_{p(i)}$, mi riduco a:
+
+\begin{align}
+    \text{$S_{p(i)} \cup {i}$} & \text{$V(p(i)) + v_i \geq V(i-1)$} \\
+    \text{$S_{i-1}$} & \text{$V(p(i)) + v_i < V(i-1)$} \\
+\end{align}
+
+Che verranno dimostrati successivamente.
+Il tutto si traduce in:
 
 \[
     S_i =
@@ -108,6 +120,8 @@ Quindi mi riduco a:
         \text{$S_{i-1}$} & \text{$V(p(i)) + v_i < V(i-1)$} \\
     \end{cases}
 \]
+
+Ovvero, riprendo i casi base esattamente come scritti sopra, e in piu' vincolo la scelta della soluzione (e di fatto del sottoproblema $S_{i-1}$ o $S_{p(i)}$) all'unico criterio che e' in grado di stabilire la buona riuscita dell'ottimizzazione.
 
 \pagebreak
 
@@ -182,22 +196,35 @@ E' possibile scrivere una procedura che esplori linearmente l'array $OPT$ per ve
 
 \paragraph{Dimostrazione}
 
-\subparagraph{$i \in S_i$}
-Assumo che $i \in S_i$, devo mostrare che $S_i = S_{p(i)} \cup {i}$. \\*
-Se per assurdo $S_{p(i)} \cup {i} \ne sol(X_i)$. \\*
-$S^I$ e' la soluzione e quindi $V(S^I) > V(S_{p(i)})$ e $S^I = S^{II} \cup {i}$. \\*
-Allora $S^{II}$ contiene attivita' compatibili insieme a $i$. \\*
-$S^{II} \subseteq {1,..,p(i)}$ ma allora $V(S^{II}) > V(S_{p(i)})$. \\*
-Il che e' impossibile, perche' sappiamo che $S_{p(i)} = sol(X_{p(i)})$. \\*
-Quindi $S_i = S_{p(i)} \cup {i}$.
+\subparagraph{}
+\textbf{$S_i = S_{p(i)} \cup {i}$} \\
+\begin{enumerate}
+    \item Assumo che $i \in S_i$, devo mostrare che $S_i = S_{p(i)} \cup {i}$. \\
+    \item Si supponga per assurdo che $S_{p(i)} \cup {i} \ne sol(X_i)$. \\
+    \item Chiamo $S^I$ la soluzione ${S_i}$. \\
+    \item Posso affermare con certezza che $V(S^I) > V(S_{p(i)}) + v_i$. \\
+    \item Visto che $i \in S_i$, deduco che allora $S^I = S^{II} \cup {i}$. \\
+    \item Ragionevolmente $S^{II}$ contiene attivita' compatibili insieme a $i$. \\
+    \item Per la riduzione di qualche paragrafo precedente posso affermare che $S^{II} \subseteq \{1,..,p(i)\}$.
+    \item Ma allora $V(S^{II}) > V(S_{p(i)})$. \\
+    \item Il che e' impossibile, perche' sappiamo che $S_{p(i)} = sol(X_{p(i)})$. \\
+    \item Dovendo essere necessariamente $S_{p(i)} = sol(X_{p(i)})$, ne ricaviamo che $S^{II} = S_{p(i)}$.
+    \item Quindi $S_i = S_{p(i)} \cup {i}$.
+\end{enumerate}
 
-\subparagraph{$i \notin S_i$}
+\subparagraph{}
+\textbf{$S_i = S_{i-1}$} \\
 
-Assumo che $i \notin S_i$, devo mostrare che $S_i = S_{i-1}$. \\*
-Supponiamo per assurdo che $S_i != S_{i-1}$, allora $\exists S^I \ne S_{i-1}$ take che $V(S^I) > V(S_{i-1}$. \\*
-Quindi $i \notin S^I$ e $S^I$ e' fatto da attivita' compatibili ($COMP(S^I) = true$). \\*
-$S^I \subseteq {1,..,i-1} \mid V(S^I) > V(S_{i-1}$, quindi $S_{i-1}$ non puo' essere $sol(X_{i-1})$. \\*
-Ma sappiamo che $S_{i-1} = sol(X_{i-1})$, quindi $S_i = S_{i-1}$.
+\begin{enumerate}
+    \item Assumo che $i \notin S_i$, devo mostrare che $S_i = S_{i-1}$. \\
+    \item Supponiamo per assurdo che $S_i \ne S_{i-1}$ \\
+    \item Allora necessariamente $\exists S^I \ne S_{i-1} \mid V(S^I) > V(S_{i-1})$. \\
+    \item Visto che $S^I = S_i$ allora $i \notin S^I$, dato che $i \notin S_i$. \\
+    \item Ma quindi allora $S^I \subseteq {1,..,i-1} \mid V(S^I) > V(S_{i-1})$.
+    \item Il che e' impossibile, perche' sappiamo che $S_{i-1} = sol(X_{i-1})$. \\
+    \item Dovendo essere necessariamente $S_{i-1} = sol(X_{i-1})$, ne ricaviamo che $S^{I} = S_{i-1}$. \\
+    \item Quindi $S_i = S_{i-1}$.
+\end{enumerate}
 
 \paragraph{Consegna Esercizio}
 Da risolvere per 18-10-2022.
