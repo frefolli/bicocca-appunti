@@ -168,3 +168,14 @@ Quindi mi riduco a:
     \end{algorithmic}
 \end{algorithm}
 
+Il vettore $WIS$ e' implementabile ragionevolmente con una matrice di booleani che caratterizzano la presenza di un elemento nell'insieme. Visto che questo richiederebbe una quantita' di spazio non indifferente, una cosa comoda potrebbe essere codificare le righe o le colonne in un numero intero decimale.
+
+\paragraph{Complessita'}
+
+La procedura $WIS-OPT-ITER$ comprende un solo ciclo di $\Theta(n)$ iterazioni.
+Il calcolo di $p(i)$ richiede $O(n)$, perche' e' un ciclo inverso semplice che dipende dalla disposizione degli elementi in $X$.
+Quindi l'algoritmo e' $T(n) = \O(n^2)$ nel caso medio.
+
+\paragraph{Osservazioni}
+
+E' possibile scrivere una procedura che esplori linearmente l'array $OPT$ per verificare i passi che sono stati effettuati per costruire OPT. Quindi si puo' risparmiare lo spazio occupato da $WIS$.
