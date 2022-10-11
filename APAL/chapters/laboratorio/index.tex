@@ -9,22 +9,22 @@ Siano date $n$ attivita' da svolgersi nello stesso spazio fisico.
 Determinare un sottoinsieme di attivita' che non si sovrappongono e che sia il massimo possibile.
 
 \begin{center}
-    \begin{tabular}{||c c||}
+    \begin{tabular}{||c c c||}
         \hline
-        i & v \\
+        i & p(i) & v \\
         \hline
         \hline
-        1 & 10 \\
+        1 & 0 & 10 \\
         \hline
-        2 & 2 \\
+        2 & 1 & 2 \\
         \hline
-        3 & 8 \\
+        3 & 2 & 8 \\
         \hline
-        4 & 1 \\
+        4 & 2 & 1 \\
         \hline
-        5 & 1 \\
+        5 & 1 & 1 \\
         \hline
-        6 & 3 \\
+        6 & 4 & 3 \\
         \hline
     \end{tabular}
 \end{center}
@@ -50,7 +50,7 @@ Dette poi $i,j$ due attivita' si dice:
 \[
     attivitaCompatibili(i,j) =
     \begin{cases}
-        \text{$true$} & \text{$[s_i, f_i) \land [s_j, f_j) = \emptyset$} \\
+        \text{$true$} & \text{$[s_i, f_i) \cap [s_j, f_j) = \emptyset$} \\
         \text{$false$} & altrimenti
     \end{cases}
 \]
@@ -77,5 +77,94 @@ Nella soluzione di $S_n$ si assume di conoscere:
     \item $\forall k \in {1,..,n} sol(X_{n-k})$
 \end{itemize}
 
+Detto $OPT(i) = V(S_i)$.
 Dividendo in sottoproblemi e potendo disponere a piacimento di ognuno di questi, riesco facilmente a individuare il caso base.
 E' immediato sapere $sol(\emptyset)$ e $sol({1})$, quindi questi possono essere i casi base.
+
+\paragraph{Ragionamento}
+
+\subparagraph{Caso Base}
+
+$S_0  \Leftrightarrow X_0 = \emptyset \land V(X_0) = 0$ \\*
+$S_1  \Leftrightarrow X_1 = {1} \land V(X_1) = 1$ \\*
+
+\subparagraph{Caso Ricorsivo}
+
+Voglio risolvere $S_i$ e $OPT(i)$, assumo di avere gia' risolto $\forall j \in X \mid j < i S_j$. \\*
+
+Se sapessi che $i \in S_i$ il sotto problema da considerare sarebbe $sol({\forall j \in X_{i-1} \mid attivitaCompatibile(i, j)})$.
+Questo si traduce nel risolvere $S_j$, dove $j$ e' il massimo indice di una attivita' compatibile con $i$.
+Se sapessi al contrario che $i \in S_i$ allora dovrei risolvere $S_{i-1}$.
+
+Detto $p(i) : \R \rightarrow \R$, la funzione che associa ad ogni attivita' l'attivita' compatibile precedente piu' vicina.
+Quindi mi riduco a:
+
+\[
+    S_i =
+    \begin{cases}
+        \text{$0$} & \text{$i = 0$} \\
+        \text{$1$} & \text{$i = 1$} \\
+        \text{$S_{p(i)} \cup {i}$} & \text{$V(p(i)) + v_i \geq V(i-1)$} \\
+        \text{$S_{i-1}$} & \text{$V(p(i)) + v_i < V(i-1)$} \\
+    \end{cases}
+\]
+
+\pagebreak
+
+\paragraph{Procedura TOP-DOWN}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{WIS-OPT}{$i$}
+            \If{$i = 0$}
+                \State \Return 0
+            \ElsIf{i = 1}
+                \State \Return 1
+            \Else
+                \State $Z1 \gets append(WIS-OPT(p(i)), x_i)$
+                \State $Z2 \gets WIS-OPT(i - 1)$
+                \If {$OPT(Z1) \geq Z2$}
+                    \State \Return Z1
+                \Else
+                    \State \Return Z2
+                \EndIf
+            \EndIf
+       \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\pagebreak
+
+\paragraph{Procedura BOTTOM-UP}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{INIZIALIZZA-VETTORI}{}
+            \State $OPT[0] \gets 0$
+            \State $OPT[1] \gets 1$
+            \State $WIS[0] \gets X_0$
+            \State $WIS[1] \gets X_1$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{WIS-OPT-ITER}{$i$}
+            \State $INIZIALIZZA-VETTORI()$
+            \For{$i = 2$ to $n$}
+                \State $Z1 \gets append(WIS[p(i)], x_i)$
+                \State $Z2 \gets WIS[i-1]$
+                \If{$OPT[p(i)] < OPT[i-1]$}
+                    \State $OPT[i] \gets OPT[p(i)] + v_i$
+                    \State $WIS[i] \gets Z1$
+                \Else
+                    \State $OPT[i] \gets OPT[i-1]$
+                    \State $WIS[i] \gets Z2$
+                \EndIf
+            \EndFor
+            \State \Return WIS[n]
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
