@@ -108,6 +108,8 @@ Possiamo quindi sviluppare uno pseudo-codice basato su questi teoremi.
 Non potendo sapere nei casi B) e C) quale sia tra i due il risultato, l'unico modo per verificarlo e' esplorare entrambi i casi.
 Gli indici delle sequenze appartengono all'insieme $[1, length]$.
 
+\newpage
+
 \section{Procedura TOP-DOWN}
 
 \begin{algorithm}
@@ -123,7 +125,6 @@ Gli indici delle sequenze appartengono all'insieme $[1, length]$.
                 \Else
                     \State B $\gets$ LCS($X_{i}$, $Y_{j-1}$)
                     \State C $\gets$ LCS($X_{i-1}$, $Y_{j}$)
-
                     \If {len(B) $\geq$ len(C)}
                         \State \Return B
                     \Else
@@ -198,6 +199,8 @@ Avremo bisogno di tre algoritmi:
     \item una funzione che legge il percorso della matrice $b$
     \item una funzione che stampa la LCS
 \end{itemize}
+
+\newpage
 
 \section{Procedura BOTTOM-UP}
 
@@ -284,8 +287,6 @@ Avremo bisogno di tre algoritmi:
     \end{algorithmic}
 \end{algorithm}
 
-\pagebreak
-
 \paragraph{Complessita'}
 
 \begin{itemize}
@@ -299,6 +300,6 @@ La complessita' di questo algoritmo (analogo e identico a StampaLCS), e' data in
 LeggiLCS non fa parte del programma d'esame, e' riportato qua per completezza.
 
 \subparagraph{Conclusione}
-Quindi la complessita' temporale totale e' $O(n*m)$, molto migliore dell'algoritmo TOP-DOWN presentato nel paragrafo precedente. \\ *
+Quindi la complessita' temporale totale e' $O(n*m)$, molto migliore dell'algoritmo TOP-DOWN presentato nel paragrafo precedente. \\*
 E' pero' da tenere in considerazione che questo richiede spazio in memoria con una complessita' di $O(n * m)$, visto che deve mantenere due matrici $n*m$. \\*
 Certamente superiore al $O(n + m)$ dell'algoritmo TOP-DOWN, ma resta pur sempre un costo che vale la pena pagare per usufruire della strategia Bottom-Up.
