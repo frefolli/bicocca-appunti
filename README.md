@@ -35,7 +35,7 @@ Lancia `make` (con pdflatex e dipendenze installate) per generare i file pdf `ap
 
 # Discussioni in corso
 
-## Sigla per Ingegneria del Corso
+## Sigla per Ingegneria del Software
 
 E' necessario trovare una sigla accettabile per quel corso. Io ricorrerei ad APS fino a che non sara' individuata una migliore.
 
