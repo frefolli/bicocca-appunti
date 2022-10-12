@@ -1,0 +1,86 @@
+\chapter{Problema LIS}
+
+\section{Introduzione}
+
+\paragraph{LIS}
+
+\subparagraph{Introduzione}
+
+Il problema LIS (Longest Increasing Subsequence) consiste nel cercare in tempo ragionevole la sottosequenza piu' lunga crescente all'interno di una stringa o sequenza.
+
+\subparagraph{Esempi}
+
+\begin{itemize}
+
+\item
+
+$X$ = <0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15> \\
+$Z$ = <0, 2, 6, 9, 11, 15> \\
+
+Ma non esiste solo quella soluzione, altri candidati sono
+
+$Z$ = <0, 4, 6, 9, 11, 15> \\
+$Z$ = <0, 2, 6, 9, 13, 15> \\
+$Z$ = <0, 4, 6, 9, 13, 15> \\
+
+\end{itemize}
+
+\section{Algoritmo Ricorsivo}
+
+\paragraph{Ragionamento}
+
+Sia $X = <1,..,n>$ la sequenza di input. \\*
+Sia $Z = <i,..,k>$ la soluzione $LIS(X)$. \\*
+Chiamo $Z_i - LIS(Z_i)$. \\
+
+Detta $P : X \rightarrow X$ la funzione che associa ad ogni $x_i$ un $x_j$ \\*
+$x_j = max(\{\forall x_j \in X_i \mid j < i \land x_j < x_j\})$. \\
+
+Ragiono quindi per prefissi, e imposto la ricorrenza secondo un teorema strutturale. \\
+
+\begin{enumerate}
+    \item $x_i \in Z_i \Leftrightarrow Z_i = Z_{P(i)} \cup x_i$
+    \item $x_i \notin Z_i \Leftrightarrow Z_i = Z_{i-1}$
+\end{enumerate}
+
+Non sapendo se $x_i$ appartiene o meno a $Z_i$, l'algoritmo dovra' testare entrambe le possibilita'.
+Sono invece immediati i casi base:
+
+\begin{enumerate}
+    \item $X_i = \emptyset \Leftrightarrow Z_i = \emptyset$
+    \item $X_i = \{x_i\} \Leftrightarrow Z_i = \{x_i\}$
+\end{enumerate}
+
+\paragraph{Dimostrazione}
+
+Per dimostrare il teorema mi avvalgo dei sottoproblemi di LIS. \\*
+Assumo quindi che $\forall j \in \{0,..,i-1\} \mid Z_j = LIS(X_j)$. \\*
+Inoltre assumo che il problema $X_i$ abbia almeno una soluzione.
+
+\subparagraph{1}
+
+Sia $x_i \in Z_i$. \\
+Supponiamo per assurdo che $Z_i \ne Z_{P(i)} \cup x_i$. \\
+Poiche' il problema ammette soluzione, $\exists Z^I \mid Z^I = LIS(X_i)$. \\
+Visto che $Z_i \ne Z_{P(i)} \cup x_i$ allora $|Z^I| > |Z^{P(i)} \cup x_i|$.\\
+Siccome $x_i \in Z_i$ allora $Z^I = Z^{II} \cup x_i$. \\
+Data la definizione di $P(i)$, necessariamente $Z^{II} \subseteq X_{P(i)}$ \\
+Inoltre $|Z^{II}| > |Z^{P(i)} \cup x_i| \Rightarrow |Z^{II}| > |Z^{P(i)}|$. \\
+Sapendo $(|Z^{II}| > |Z^{P(i)}|) \land (Z^{II} \subseteq X_{P(i)})$ posso affermare che $Z^{II} = LIS(X_{P(i)})$. \\
+Il che e' impossibile, perche' so che $Z_{P(i)} = LIS(X_{P(i)})$. \\
+Quindi $Z_i = Z_{P(i)} \cup x_i$.
+
+\subparagraph{2}
+
+Sia $x_i \notin Z_i$. \\
+Sia per assurdo che $Z_i \ne Z_{i-1}$. \\
+Poiche' il problema ammette soluzione, $\exists Z^I \mid Z^I = LIS(X_i)$. \\
+Visto che $Z_i \ne Z_{i-1}$ allora $|Z^I| > |Z^{i-1}|$. \\
+Ma se $x_i \notin Z_i$ allora $Z^{I} \subseteq X_{i-1}$. \\
+Sapendo $(|Z^I| > |Z^{i-1}|) \land (Z^{I} \subseteq X_{i-1})$ posso affermare che $Z^{I} = LIS(X_{i-1})$. \\
+Il che e' impossibile, perche' so che $Z_{i-1} = LIS(X_{i-1})$. \\
+Quindi $Z_i = Z_{i-1}$.
+
+\paragraph{Procedura}
+
+\paragraph{Complessita'}
