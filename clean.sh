@@ -1,15 +1,36 @@
 #!/bin/bash
 
-function cleanFolder() {
-    find $1 -name "*.aux" -type f -delete
-    find $1 -name "*.dvi" -type f -delete
-    find $1 -name "*.idx" -type f -delete
-    find $1 -name "*.out" -type f -delete
-    find $1 -name "*.log" -type f -delete
-    find $1 -name "*.ind" -type f -delete
-    find $1 -name "*.ilg" -type f -delete
+function cleanTypeFolder() {
+    DIRPATH=$1
+    TYPE=$2
+    echo -e "deleting $TYPE from $DIRPATH"
+    find $DIRPATH -name $TYPE -type f -delete
 }
 
-cleanFolder APAL
-cleanFolder BIOINF
-cleanFolder ROPR
+function cleanFolder() {
+    DIRPATH=$1
+    echo -e "deleting $BLACKLIST from $DIRPATH"
+    for TYPE in $BLACKLIST; do
+        cleanTypeFolder $DIRPATH "$TYPE"
+    done
+}
+
+BLACKLIST=$BLACKLIST" *.aux *.dvi *.idx *.out *.log *.ind *.ilg"
+export BLACKLIST
+
+function job() {
+    cleanFolder APAL
+    cleanFolder BIOINF
+    cleanFolder ROPR
+}
+
+function handler() {
+    COMMAND=$1
+    if [ -z "$COMMAND" ]; then
+        job
+    else
+        echo -e "imported $0 as bash library"
+    fi
+}
+
+handler $1

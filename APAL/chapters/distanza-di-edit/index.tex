@@ -82,7 +82,7 @@ Il caso "altrimenti" si spiega in questo modo:
 
 La complessita' dell'algoritmo ricorsivo e' $\O(3^(n+m))$.
 
-\paragraph{Algoritmo Ricorsivo}
+\section{Algoritmo TOP-DOWN}
 
 \begin{algorithm}
     \begin{algorithmic}
@@ -107,7 +107,7 @@ La complessita' dell'algoritmo ricorsivo e' $\O(3^(n+m))$.
     \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Algoritmo Iterativo PD}
+\section{Algoritmo BOTTOM-UP}
 
 Preparo una Matrice $B[m][n]$ che contiene la ricostruzione del percorso iterativo.
 Ogni cella $B[i][j] = <Direction, Operation>$
@@ -126,7 +126,6 @@ Ogni cella $B[i][j] = <Direction, Operation>$
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
-
 
 \begin{algorithm}
     \begin{algorithmic}
@@ -156,4 +155,4 @@ Ogni cella $B[i][j] = <Direction, Operation>$
 
 \paragraph{Complessita' di $ED-ITER(X, Y)$}
 
-L'algoritmo e' formato da due cicli innestati, quindi $T(n) = \Theta(n \cdot m)$
+L'algoritmo e' formato da due cicli innestati, quindi $T(n) = \Theta(n \cdot m)$.

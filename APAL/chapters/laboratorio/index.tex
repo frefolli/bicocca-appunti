@@ -30,7 +30,7 @@ Ad occhio si ricava $<1, 3, 6>$. \\
 
 L'algoritmo naive e' quello combinatorio, ma e' estremamente inefficiente. Il tempo e' $T(n) = \Omega(2^n)$.
 
-\paragraph{Soluzione PD}
+\section{Soluzione PD}
 
 \begin{itemize}
     \item $n \leftrightarrow X = {1,..,n}$
@@ -84,25 +84,26 @@ E' immediato sapere $sol(\emptyset)$ e $sol({1})$, quindi questi possono essere 
 
 \begin{align}
     \text{$S_0  \Leftrightarrow X_0 = \emptyset \land V(X_0) = 0$} \\
-    \text{$S_1  \Leftrightarrow X_1 = {1} \land V(X_1) = 1$}
+    \text{$S_1  \Leftrightarrow X_1 = {x_1} \land V(X_1) = 1$}
 \end{align}
 
 \subparagraph{Caso Ricorsivo}
 
 Voglio risolvere $S_i$ e $OPT(i)$. \\*
-Assumo di avere gia' risolto $\forall j \in X \mid j < i S_j$. \\*
+Assumo di avere gia' risolto $\forall j \in \{0,..,i-1\} \mid S_j$. \\*
 
-Se sapessi che $i \in S_i$ il sotto problema da considerare sarebbe: \\*
+Se sapessi che $i \notin S_i$ allora dovrei risolvere $S_{i-1}$.
+
+Se sapessi al contrario che $i \in S_i$ il sotto problema da considerare sarebbe: \\*
 $sol(\{j \mid \forall j \in X_{i-1} \mid attivitaCompatibile(i, j)\})$. \\
 Questo si traduce nel risolvere $S_j$, dove $j$ e' il massimo indice di una attivita' compatibile con $i$. \\*
-Se sapessi al contrario che $i \in S_i$ allora dovrei risolvere $S_{i-1}$.
 
 Detto $p(i) : X \rightarrow X$, la funzione che associa ad ogni attivita', l'indice dell'attivita' compatibile precedente piu' vicina.
 Potendo approssimare, per questioni di prestazione dei confronti, il problema $S_j$ ad al problema leggermente piu' grande $S_{p(i)}$, mi riduco a:
 
 \begin{align}
-    \text{$S_{p(i)} \cup {i}$} & \text{$V(p(i)) + v_i \geq V(i-1)$} \\
-    \text{$S_{i-1}$} & \text{$V(p(i)) + v_i < V(i-1)$} \\
+    \text{$V(p(i)) + v_i \geq V(i-1) \Rightarrow S_{p(i)} \cup \{x_i\}$} \\
+    \text{$V(p(i)) + v_i < V(i-1) \Rightarrow S_{i-1}$} \\
 \end{align}
 
 Che verranno dimostrati successivamente.
@@ -111,18 +112,47 @@ Il tutto si traduce in:
 \[
     S_i =
     \begin{cases}
-        \text{$0$} & \text{$i = 0$} \\
-        \text{$1$} & \text{$i = 1$} \\
-        \text{$S_{p(i)} \cup {i}$} & \text{$V(p(i)) + v_i \geq V(i-1)$} \\
+        \text{$\emptyset$} & \text{$i = 0$} \\
+        \text{$\{x_1\}$} & \text{$i = 1$} \\
+        \text{$S_{p(i)} \cup \{x_i\}$} & \text{$V(p(i)) + v_i \geq V(i-1)$} \\
         \text{$S_{i-1}$} & \text{$V(p(i)) + v_i < V(i-1)$} \\
     \end{cases}
 \]
 
 Ovvero, riprendo i casi base esattamente come scritti sopra, e in piu' vincolo la scelta della soluzione (e di fatto del sottoproblema $S_{i-1}$ o $S_{p(i)}$) all'unico criterio che e' in grado di stabilire la buona riuscita dell'ottimizzazione.
 
-\pagebreak
+\paragraph{Dimostrazione}
 
-\paragraph{Procedura TOP-DOWN}
+Per dimostrare il teorema mi avvalgo dei sottoproblemi di S. \\*
+Assumo quindi che $\forall j \in \{0,..,i-1\} \mid S_j$. \\*
+Inoltre assumo che il problema per $X_i$ abbia almeno una soluzione.
+
+\subparagraph{1}
+
+Assumo che $i \in S_i$, devo mostrare che $S_i = S_{p(i)} \cup {i}$. \\
+Si supponga per assurdo che $S_{p(i)} \cup {i} \ne sol(X_i)$. \\
+Chiamo $S^I$ la soluzione ${S_i}$. \\
+Posso affermare con certezza che $V(S^I) > V(S_{p(i)}) + v_i$. \\
+Visto che $i \in S_i$, deduco che allora $S^I = S^{II} \cup {i}$. \\
+Ragionevolmente $S^{II}$ contiene attivita' compatibili insieme a $i$. \\
+Per la riduzione di qualche paragrafo precedente posso affermare che $S^{II} \subseteq \{1,..,p(i)\}$.
+Ma allora $V(S^{II}) > V(S_{p(i)})$. \\
+Il che e' impossibile, perche' sappiamo che $S_{p(i)} = sol(X_{p(i)})$. \\
+Dovendo essere necessariamente $S_{p(i)} = sol(X_{p(i)})$, ne ricaviamo che $S^{II} = S_{p(i)}$.
+Quindi $S_i = S_{p(i)} \cup {i}$.
+
+\subparagraph{2}
+
+Assumo che $i \notin S_i$, devo mostrare che $S_i = S_{i-1}$. \\
+Supponiamo per assurdo che $S_i \ne S_{i-1}$ \\
+Allora necessariamente $\exists S^I \ne S_{i-1} \mid V(S^I) > V(S_{i-1})$. \\
+Visto che $S^I = S_i$ allora $i \notin S^I$, dato che $i \notin S_i$. \\
+Ma quindi allora $S^I \subseteq {1,..,i-1} \mid V(S^I) > V(S_{i-1})$.
+Il che e' impossibile, perche' sappiamo che $S_{i-1} = sol(X_{i-1})$. \\
+Dovendo essere necessariamente $S_{i-1} = sol(X_{i-1})$, ne ricaviamo che $S^{I} = S_{i-1}$. \\
+Quindi $S_i = S_{i-1}$.
+
+\section{Procedura TOP-DOWN}
 
 \begin{algorithm}
     \begin{algorithmic}
@@ -144,9 +174,10 @@ Ovvero, riprendo i casi base esattamente come scritti sopra, e in piu' vincolo l
     \end{algorithmic}
 \end{algorithm}
 
-\pagebreak
+\paragraph{Complessita'}
+E' immediato intuire che l'esplorazione prolissa dei due casi paralleli porta $T(n) = O(2^n)$.
 
-\paragraph{Procedura BOTTOM-UP}
+\section{Procedura BOTTOM-UP}
 
 \begin{algorithm}
     \begin{algorithmic}
@@ -191,40 +222,8 @@ Quindi l'algoritmo e' $T(n) = \O(n^2)$ nel caso medio.
 
 E' possibile scrivere una procedura che esplori linearmente l'array $OPT$ per verificare i passi che sono stati effettuati per costruire OPT. Quindi si puo' risparmiare lo spazio occupato da $WIS$.
 
-\paragraph{Dimostrazione}
-
-\subparagraph{}
-\textbf{$S_i = S_{p(i)} \cup {i}$} \\
-\begin{enumerate}
-    \item Assumo che $i \in S_i$, devo mostrare che $S_i = S_{p(i)} \cup {i}$. \\
-    \item Si supponga per assurdo che $S_{p(i)} \cup {i} \ne sol(X_i)$. \\
-    \item Chiamo $S^I$ la soluzione ${S_i}$. \\
-    \item Posso affermare con certezza che $V(S^I) > V(S_{p(i)}) + v_i$. \\
-    \item Visto che $i \in S_i$, deduco che allora $S^I = S^{II} \cup {i}$. \\
-    \item Ragionevolmente $S^{II}$ contiene attivita' compatibili insieme a $i$. \\
-    \item Per la riduzione di qualche paragrafo precedente posso affermare che $S^{II} \subseteq \{1,..,p(i)\}$.
-    \item Ma allora $V(S^{II}) > V(S_{p(i)})$. \\
-    \item Il che e' impossibile, perche' sappiamo che $S_{p(i)} = sol(X_{p(i)})$. \\
-    \item Dovendo essere necessariamente $S_{p(i)} = sol(X_{p(i)})$, ne ricaviamo che $S^{II} = S_{p(i)}$.
-    \item Quindi $S_i = S_{p(i)} \cup {i}$.
-\end{enumerate}
-
-\subparagraph{}
-\textbf{$S_i = S_{i-1}$} \\
-
-\begin{enumerate}
-    \item Assumo che $i \notin S_i$, devo mostrare che $S_i = S_{i-1}$. \\
-    \item Supponiamo per assurdo che $S_i \ne S_{i-1}$ \\
-    \item Allora necessariamente $\exists S^I \ne S_{i-1} \mid V(S^I) > V(S_{i-1})$. \\
-    \item Visto che $S^I = S_i$ allora $i \notin S^I$, dato che $i \notin S_i$. \\
-    \item Ma quindi allora $S^I \subseteq {1,..,i-1} \mid V(S^I) > V(S_{i-1})$.
-    \item Il che e' impossibile, perche' sappiamo che $S_{i-1} = sol(X_{i-1})$. \\
-    \item Dovendo essere necessariamente $S_{i-1} = sol(X_{i-1})$, ne ricaviamo che $S^{I} = S_{i-1}$. \\
-    \item Quindi $S_i = S_{i-1}$.
-\end{enumerate}
-
-\paragraph{Consegna Esercizio}
-Da risolvere per 18-10-2022.
+\section{Consegna Esercizio}
+Da risolvere per 18-10-2022. \\
 
 L'istanza e' simile ma con le case al posto delle attivita'.
 Ci sono n case adiacenti in linea retta.
@@ -234,9 +233,9 @@ Trovare un sottoinsieme di abitanti massimo tale che le case non siano adiacenti
 \[
     S_i =
     \begin{cases}
-        \text{$0$} & \text{$i = 0$} \\
-        \text{$1$} & \text{$i = 1$} \\
-        \text{$S_{p(i)} \cup {i}$} & \text{$V(p(i)) + v_i \geq V(i-1)$} \\
+        \text{$\emptyset$} & \text{$i = 0$} \\
+        \text{$\{x_1\}$} & \text{$i = 1$} \\
+        \text{$S_{p(i)} \cup \{x_i\}$} & \text{$V(p(i)) + v_i \geq V(i-1)$} \\
         \text{$S_{i-1}$} & \text{$V(p(i)) + v_i < V(i-1)$} \\
     \end{cases}
 \]
@@ -244,9 +243,7 @@ Trovare un sottoinsieme di abitanti massimo tale che le case non siano adiacenti
 In questo caso $p(i)$ scorre l'array di case fino a individuare la prima non adiacente.
 Questa operazione e' logicamente a tempo $T(n) = \Theta(1)$, perche' si parla di spostarsi a sinistra di due case.
 
-\pagebreak
-
-\paragraph{Procedura Esercizio}
+\section{Procedura Esercizio}
 
 \begin{algorithm}
     \begin{algorithmic}
@@ -279,8 +276,9 @@ Questa operazione e' logicamente a tempo $T(n) = \Theta(1)$, perche' si parla di
     \end{algorithmic}
 \end{algorithm}
 
-\pagebreak
-
 \paragraph{Esercizio Considerazioni}
 
 Valgono le considerazioni di WIS-OPT-ITER, ma questa volta $T(n) = \Theta(n)$, perche' la complessita' di $p(i)$ e' mutata.
+Inoltre si ricorda che entrambi gli esercizi godono di una proprieta' non scontata, ovvero la positivita' dei valori $v_i$.
+Se questa proprieta' non fosse stata garantita avremmo dovuto introdurre un'ulteriore caso di confronto.
+Quindi avremmo avuto $max(V(p(i)) + v_i, V(i-1), v_i)$.

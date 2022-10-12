@@ -80,7 +80,7 @@ La LCS e' $Z$ = < A, A, L, E >
 
 \end{enumerate}
 
-\section{Algoritmo Banale}
+\section{Algoritmo TOP-DOWN}
 
 \paragraph{Ragionamento}
 
@@ -102,13 +102,13 @@ Si puo' ragionevolmente pensare che:
 \end{enumerate}
 
 Si nota che il caso D e' direttamente traducibile in codice, ma viene comunque compreso dai casi B e C, di conseguenza non avrebbe senso ripeterlo.
-In particolare si osserva che $D \Rightarrow (B \cdot C \Leftrightarrow C \cdot B)$.
-
-\paragraph{Procedura}
+In particolare si osserva che $D \Rightarrow (B \cdot C \Leftrightarrow C \cdot B)$. \\
 
 Possiamo quindi sviluppare uno pseudo-codice basato su questi teoremi.
 Non potendo sapere nei casi B) e C) quale sia tra i due il risultato, l'unico modo per verificarlo e' esplorare entrambi i casi.
 Gli indici delle sequenze appartengono all'insieme $[1, length]$.
+
+\section{Procedura TOP-DOWN}
 
 \begin{algorithm}
     \renewcommand\thealgorithm{}
@@ -191,8 +191,6 @@ Questo algoritmo riempie due matrici:
 
 Per ottenere $LCS(X, Y)$ non restera' da fare che seguire il percorso indicato da $b$ con l'accortezza di raccogliere in coda gli $x_{i}$ tali che $b[i][j] = Diagonal$.
 
-\paragraph{Procedura}
-
 Avremo bisogno di tre algoritmi:
 \begin{itemize}
     \item una funzione che inizializza la matrice generando il caso base
@@ -200,6 +198,8 @@ Avremo bisogno di tre algoritmi:
     \item una funzione che legge il percorso della matrice $b$
     \item una funzione che stampa la LCS
 \end{itemize}
+
+\section{Procedura BOTTOM-UP}
 
 \begin{algorithm}
     \renewcommand\thealgorithm{}
@@ -299,6 +299,6 @@ La complessita' di questo algoritmo (analogo e identico a StampaLCS), e' data in
 LeggiLCS non fa parte del programma d'esame, e' riportato qua per completezza.
 
 \subparagraph{Conclusione}
-Quindi la complessita' temporale totale e' $O(n*m)$, molto migliore dell'algoritmo "banale" presentato nel paragrafo precedente. \\ *
+Quindi la complessita' temporale totale e' $O(n*m)$, molto migliore dell'algoritmo TOP-DOWN presentato nel paragrafo precedente. \\ *
 E' pero' da tenere in considerazione che questo richiede spazio in memoria con una complessita' di $O(n * m)$, visto che deve mantenere due matrici $n*m$. \\*
-Certamente superiore al $O(n + m)$ dell'algoritmo banale, ma resta pur sempre un costo che vale la pena pagare per usufruire della strategia Bottom-Up.
+Certamente superiore al $O(n + m)$ dell'algoritmo TOP-DOWN, ma resta pur sempre un costo che vale la pena pagare per usufruire della strategia Bottom-Up.
