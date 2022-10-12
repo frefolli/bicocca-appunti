@@ -153,6 +153,8 @@ Il che e' impossibile, perche' sappiamo che $S_{i-1} = sol(X_{i-1})$. \\
 Dovendo essere necessariamente $S_{i-1} = sol(X_{i-1})$, ne ricaviamo che $S^{I} = S_{i-1}$. \\
 Quindi $S_i = S_{i-1}$.
 
+\newpage
+
 \section{Procedura TOP-DOWN}
 
 \begin{algorithm}
@@ -177,6 +179,8 @@ Quindi $S_i = S_{i-1}$.
 
 \paragraph{Complessita'}
 E' immediato intuire che l'esplorazione prolissa dei due casi paralleli porta $T(n) = O(2^n)$.
+
+\newpage
 
 \section{Procedura BOTTOM-UP}
 
@@ -229,7 +233,7 @@ Da risolvere per 18-10-2022. \\
 L'istanza e' simile ma con le case al posto delle attivita'.
 Ci sono n case adiacenti in linea retta.
 Ad ogni casa e' associato un valore $d$, la donazione che l'abitante e' disposto a fare.
-Trovare un sottoinsieme di abitanti massimo tale che le case non siano adiacenti.
+Trovare un sottoinsieme di case il cui valore totale sia massimo e in cui le case non siano adiacenti.
 
 \[
     S_i =
@@ -243,6 +247,8 @@ Trovare un sottoinsieme di abitanti massimo tale che le case non siano adiacenti
 
 In questo caso $p(i)$ scorre l'array di case fino a individuare la prima non adiacente.
 Questa operazione e' logicamente a tempo $T(n) = \Theta(1)$, perche' si parla di spostarsi a sinistra di due case.
+
+\newpage
 
 \section{Procedura Esercizio}
 
