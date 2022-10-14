@@ -20,3 +20,6 @@ depclean:
 
 host:
 	static-server -p 8080
+
+async-host:
+	static-server -p 8080 > /dev/null &
