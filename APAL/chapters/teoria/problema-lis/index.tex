@@ -7,6 +7,10 @@
 \subparagraph{Introduzione}
 
 Il problema LIS (Longest Increasing Subsequence) consiste nel cercare in tempo ragionevole la sottosequenza piu' lunga crescente all'interno di una stringa o sequenza.
+Si mette in evidenza che $LIS(X) = LCS(X, SORTED(X))$. \\*
+Inoltre il teorema di Erdos-Szekeres afferma: \\*
+$\forall X \mid interiDistinti(X) \land |X| = n^2 + 1 \Rightarrow |LIS(X)| = |LDS(X)| = n+1$. \\*
+Dove LDS e' il problema opposto a LIS, la Longest Decreasing Subsequence.
 
 \subparagraph{Esempi}
 
@@ -34,8 +38,7 @@ $Z$ = <0, 4, 6, 9, 13, 15> \\
 \begin{align}
     \text{$X_i = <x_1, x_2, x_3, x_4, x_5, x_6, .., x_i>$} \\
     \text{$Z_k = <z_1, z_2, z_3, .., z_k>$} \\
-    \text{$Z = LIS(X)$} \\
-    \text{$Z_k = LIS(X_i)$} \\
+    \text{$Z = LIS(X)$}
 \end{align}
 
 \subparagraph{Caso 1}
@@ -43,13 +46,13 @@ $Z$ = <0, 4, 6, 9, 13, 15> \\
 Sia $x_i = z_k$. \\*
 $Z_k = Z_{k-1} \cup \{x_i\}$. \\*
 Dove $Z_{k-1} = LIS(X_p)$, con $p \in [1, i)$. \\*
-Data la definizione di LIS: $\forall j \in [1, k) \;\; z_{j} < x_i$. \\
+Data la definizione di LIS: $\forall j \in [1, k) \;\; z_{j} < x_i$. \\*
 Ricorsivamente e' sufficiente tenere a mente che $z_{k-1} < x_i$. \\
 
 Definisco una funzione $V : R \rightarrow R$ tale che: $V(j) = |LIS(X_j)|$ \\
 
 Definisco una funzione $P : R \rightarrow R$ tale che: \\*
-$P(i) = max_{V(j)}(\{ \forall j \in [1, k) \;\; z_{j} < x_i \})$.
+$P(i) = max_{V(j)}(\{ \forall j \in [1, i) \;\; z_{k} < x_i \})$.
 
 \subparagraph{Caso 2}
 
@@ -57,6 +60,8 @@ Sia $x_i \ne z_k$. \\*
 Allora $Z_k = LIS(X_{i-1})$. \\
 
 \paragraph{Ricorsione}
+
+Da qui, $Z_i = LIS(X_i)$
 
 \subparagraph{Caso Base}
 
@@ -92,12 +97,12 @@ Allora $Z_k = LIS(X_{i-1})$. \\
 \section{Procedura BOTTOM-UP}
 
 Il vettore $C$: $C[i] = |LIS(X_i)|$. \\*
-Il vettore $L$: $L[i] = $LAST-ELEMENT($LIS(X_{i})$). \\*
+Il vettore $L$: $L[i] = $LAST-ELEMENT($LIS(X_i)$). \\*
 Il vettore $H$: $H[i] = P(i)$. \\
 
 \begin{algorithm}
     \begin{algorithmic}
-        \Procedure{LIS}{X}
+        \Procedure{LIS}{$X$}
             \State $C[0] \gets 0$
             \State $C[1] \gets 1$
             \State $H[1] \gets 0$
@@ -124,8 +129,8 @@ Il vettore $H$: $H[i] = P(i)$. \\
 
 \begin{algorithm}
     \begin{algorithmic}
-        \Procedure{LEGGI-LIS}{X}
-            \State $i \gets |X|$
+        \Procedure{LEGGI-LIS}{$X, n$}
+            \State $i \gets n$
             \State $Z \gets <>$
             \While{$i \ne 0$}
                 \If{$i = L[i]$}
@@ -141,7 +146,7 @@ Il vettore $H$: $H[i] = P(i)$. \\
 \end{algorithm}
 
 \paragraph{Complessita'}
-$T(n) = \Theta(n^2) + \O(n) = \Theta(n^2)$
+$T(n) = O(n^2) + O(n) = O(n^2)$
 
 \newpage
 
@@ -188,4 +193,4 @@ Il vettore $H$: $H[i] = P(i)$. \\
 \end{algorithm}
 
 \paragraph{Complessita'}
-$T(n) = \Theta(n^2) + \O(n) = \Theta(n^2)$
+$T(n) = O(n^2) + O(n) = O(n^2)$

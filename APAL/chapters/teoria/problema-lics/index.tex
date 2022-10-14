@@ -15,14 +15,257 @@ Il problema LICS (Longest Increasing Common Subsequence) consiste nel cercare in
 \item
 
 $X$ = <3,4,9,1> \\
-$X$ = <5, 3, 8, 9, 10, 2, 1> \\
+$Y$ = <5, 3, 8, 9, 10, 2, 1> \\
 
 La soluzione sarebbe $Z$ = <3,9>
 
 \end{itemize}
 
-\section{Algoritmo TOP-DOWN}
+\section{Algoritmo}
 
 \paragraph{Ragionamento}
 
-TODO
+\subparagraph{Notazione}
+
+\begin{align}
+    \text{$X_i = <x_1, x_2, x_3, x_4, x_5, x_6, .., x_i>$} \\
+    \text{$Y_i = <y_1, y_2, y_3, y_4, y_5, y_6, .., y_j>$} \\
+    \text{$Z_k = <z_1, z_2, z_3, .., z_k>$} \\
+    \text{$Z = LIS(X, Y)$}
+\end{align}
+
+Definisco una funzione $V : R \times R \rightarrow R$ tale che: $V(i, j) = |LICS(X_i, Y_j)|$ \\
+
+E una funzione analoga alla $P(i)$ di $LIS$: \\
+
+Definisco una funzione $P : R \times R \rightarrow R \times R$ tale che: \\*
+$P(i, j) = max_{V(p, q)}(\{ \forall p,q \mid p \in [1, i) \land q \in [1, j) \mid z_{k} < x_i \land z_{k} < y_i\})$. \\
+
+\subparagraph{Caso 1}
+
+$x_i = y_i \land x_i = z_k$ \\
+
+$Z_k = Z_{k-1} \cup \{x_i\}$ \\*
+$Z_{k-1} = LICS(X_p, Y_q)$ con $p \in [1, i) \land q \in [1, j)$ \\
+
+Data la definizione di LICS: \\*
+$\forall w \in [1, k) \;\; z_{w} < x_i$. \\*
+$\forall w \in [1, k) \;\; z_{w} < y_j$. \\
+
+In particolare: \\*
+$z_{k-1} < x_i$ \\*
+$z_{k-1} < y_j$ \\
+
+Ora, visto che $x_i = y_i$, la $P(i, j)$ si semplifica: \\*
+$P(i, j) = max_{V(p, q)}(\{ \forall p,q \mid p \in [1, i) \land q \in [1, j) \mid z_{k} < x_i\})$. \\
+
+Quindi scrivo: \\*
+$\exists p,q \mid P(i, j) = (p, q) \Rightarrow Z_{k-1} = LICS(X_p, Y_q)$ \\
+
+\subparagraph{Caso 2}
+
+$x_i = y_i \land x_i \ne z_k$ \\
+
+Logicamente, devo escludere questi valori: \\*
+$Z_k = LICS(X_{i-1}, Y_{j-1})$ \\
+
+\subparagraph{Caso 3}
+
+$x_i \ne y_i \land x_i = z_k \Rightarrow y_j \ne z_k$ \\
+$Z_k = LICS(X_{i}, Y_{j-1})$ \\
+
+\subparagraph{Caso 4}
+
+$x_i \ne y_i \land y_i = z_k \Rightarrow x_i \ne z_k$ \\
+$Z_k = LICS(X_{i-1}, Y_{j})$ \\
+
+\subparagraph{Caso 5}
+
+$x_i \ne y_i \land x_i \ne z_k \land x_i \ne z_k$ \\
+$Z_k = LICS(X_{i-1}, Y_{j-1})$ \\
+
+\paragraph{Ricorrenza}
+
+Non conoscendo a priori il valore di Z, l'esplorazione binaria fara' si che si esplori il Caso 5 come sottocaso dei casi 3 e 4.
+Da qui, $Z_{i,j} = LIS(X_i, Y_j)$
+
+\subparagraph{Caso Base}
+
+\begin{align}
+    \text{$i = 0 \Rightarrow Z_{i,j} = <>$} \\
+    \text{$j = 0 \Rightarrow Z_{i,j} = <>$}
+\end{align}
+
+\subparagraph{Caso Ricorsivo}
+
+\[
+    Z_i =
+    \begin{cases}
+        \text{$Z_{P(i,j)}$} & \text{$(x_i = y_j) \land (|Z_{P(i,j)}| + 1 \geq |Z|)$} \\
+        \text{$Z_{i-1, j-1}$} & \text{$(x_i = y_j) \land (|Z_{P(i,j)}| + 1 < |Z|)$} \\
+        \text{$Z_{i, j-1}$} & \text{$(x_i \ne y_j) \land (|Z_{i, j-1}| \geq |Z_{i-1, j}|)$} \\
+        \text{$Z_{i-1, j}$} & \text{$(x_i \ne y_j) \land (|Z_{i, j-1}| < |Z_{i-1, j}|)$} \\
+    \end{cases}
+\]
+
+\subparagraph{Caso Generale}
+
+\[
+    Z_i =
+    \begin{cases}
+        \text{$<>$} & \text{$i = 0 \lor j = 0$} \\
+        \text{$Z_{P(i,j)}$} & \text{$(x_i = y_j) \land (|Z_{P(i,j)}| + 1 \geq |Z_{i-1, j-1}|)$} \\
+        \text{$Z_{i-1, j-1}$} & \text{$(x_i = y_j) \land (|Z_{P(i,j)}| + 1 < |Z_{i-1, j-1}|)$} \\
+        \text{$Z_{i, j-1}$} & \text{$(x_i \ne y_j) \land (|Z_{i, j-1}| \geq |Z_{i-1, j}|)$} \\
+        \text{$Z_{i-1, j}$} & \text{$(x_i \ne y_j) \land (|Z_{i, j-1}| < |Z_{i-1, j}|)$} \\
+    \end{cases}
+\]
+
+\newpage
+
+\section{Procedura BOTTOM-UP}
+
+La matrice $C$: $C[i][j] = |LICS(X_i, Y_j)|$. \\*
+La matrice $L$: $L[i][j] = $LAST-ELEMENT($LICS(X_i, Y_j)$). \\*
+La matrice $H$: $H[i][j] = P(i,j)$. \\
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{LICS}{$X, Y$}
+            \State $INIZIALIZZA(|X|, |Y|)$
+            \For{$i = 1$ to $n$}
+                \For{$j = 1$ to $m$}
+                    \If{$x_i = y_i$}
+                        \State $(p, q) \gets P(i, j)$
+                        \State $H[i][j] \gets (p, q)$
+                        \If{$C[p][q] + 1 \geq C[i-1][j-1]$}
+                            \State $C[i][j] \gets C[p][q] + 1$
+                            \State $L[i][j] \gets i$
+                        \Else
+                            \State $C[i][j] \gets C[i-1][j-1]$
+                            \State $L[i][j] \gets L[i-1][j-1]$
+                        \EndIf
+                    \Else
+                        \If{$C[i][j-1] \geq C[i-1][j]$}
+                            \State $C[i][j] \gets C[i][j-1]$
+                            \State $L[i][j] \gets L[i][j-1]$
+                        \Else
+                            \State $C[i][j] \gets C[i-1][j]$
+                            \State $L[i][j] \gets L[i-1][j]$
+                        \EndIf
+                    \EndIf
+                \EndFor
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{INIZIALIZZA}{$n, m$}
+            \For{$i = 0$ to $n$}
+                \State $C[i][0] \gets 0$
+                \State $H[i][0] \gets (0,0)$
+            \EndFor
+            \For{$j = 0$ to $m$}
+                \State $C[0][j] \gets 0$
+                \State $H[0][j] \gets (0,0)$
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{P}{$i, j$}
+            \State $p \gets 0$
+            \State $q \gets 0$
+            \For{$w = 1$ to $i-1$}
+                \For{$z = 1$ to $j-1$}
+                    \If{$x_{L[i][j]} < x_i \land C[i][j] > C[p][q]$}
+                        \State $p \gets w$
+                        \State $q \gets z$
+                    \EndIf
+                \EndFor
+            \EndFor
+            \State \Return $(p,q)$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{LEGGI-LICS}{$X, n, m$}
+            \State $i \gets n$
+            \State $j \gets m$
+            \State $Z \gets <>$
+            \While{$(i,j) \ne (0,0)$}
+                \If{$(i,j) = L[i][j]$}
+                    \State $Z \gets prepend(Z, x_i)$
+                    \State $(i,j) \gets H[i][j]$
+                \Else
+                    \State $(i,j) \gets L[i][j]$
+                \EndIf
+            \EndWhile
+            \State \Return Z
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Complessita'}
+$T(n) = \Theta(n \cdot m) * O(n \cdot m) + O(n)$ \\*
+$T(n) = O(n^2 \cdot m^2) + O(n) = O(n^2 \cdot m^2)$
+
+\newpage
+
+\section{Variante Rizzi}
+
+$LICS_V$ e' un sottoproblema di LICS, ovvero la LICS che termina con l'elemento i-esimo di $X_i$. \\*
+La matrice $C$: $C[i][j] = |LICS_V(X_i, Y_j)|$. \\*
+La matrice $H$: $H[i][j] = P(i, j)$. \\
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{LICS}{$X, Y$}
+            \State $Z \gets 0$
+            \For{$i = 1$ to $m$}
+                \For{$j = 1$ to $n$}
+                    \State $H[i,j] \gets (0,0)$
+                    \If{$x_i \ne y_j$}
+                        \State $C[i,j] \gets 0$
+                    \Else
+                        \State $max \gets 0$
+                        \For{$h = 1$ to $i-1$}
+                            \For{$k = 1$ to $j-1$}
+                                \If{$C[h,k] > max \land x_h < x_i$}
+                                    \State $max \gets C[h,k]$
+                                    \State $H[i,j] \gets (h,k)$
+                                \EndIf
+                            \EndFor
+                        \EndFor
+                        \State $C[i,j] \gets 1 + max$
+                        \If{$C[i,j] > Z$}
+                            \State $Z \gets C[i,j]$
+                        \EndIf
+                    \EndIf
+                \EndFor
+            \EndFor
+            \State \Return Z
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{BUILD-LICS}{X}
+            \If{$H[i,j] \ne (0,0)$}
+                \State BUILD-LICS($H[i,j]$)
+            \EndIf
+            \State $print(x_i)$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Complessita'}
+$T(n) = \Theta(n \cdot m) * O(n \cdot m) + O(n)$ \\*
+$T(n) = O(n^2 \cdot m^2) + O(n) = O(n^2 \cdot m^2)$
