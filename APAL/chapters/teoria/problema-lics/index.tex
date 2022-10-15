@@ -140,7 +140,7 @@ La matrice $H$: $H[i][j] = P(i,j)$. \\
                         \State $H[i][j] \gets (p, q)$
                         \If{$C[p][q] + 1 \geq C[i-1][j-1]$}
                             \State $C[i][j] \gets C[p][q] + 1$
-                            \State $L[i][j] \gets i$
+                            \State $L[i][j] \gets (i,j)$
                         \Else
                             \State $C[i][j] \gets C[i-1][j-1]$
                             \State $L[i][j] \gets L[i-1][j-1]$
@@ -182,7 +182,7 @@ La matrice $H$: $H[i][j] = P(i,j)$. \\
             \State $q \gets 0$
             \For{$w = 1$ to $i-1$}
                 \For{$z = 1$ to $j-1$}
-                    \If{$x_{L[i][j]} < x_i \land C[i][j] > C[p][q]$}
+                    \If{$x_{L[w][z][0]} < x_i \land C[w][z] > C[p][q]$}
                         \State $p \gets w$
                         \State $q \gets z$
                     \EndIf
@@ -230,22 +230,22 @@ La matrice $H$: $H[i][j] = P(i, j)$. \\
             \State $Z \gets 0$
             \For{$i = 1$ to $m$}
                 \For{$j = 1$ to $n$}
-                    \State $H[i,j] \gets (0,0)$
+                    \State $H[i][j] \gets (0,0)$
                     \If{$x_i \ne y_j$}
-                        \State $C[i,j] \gets 0$
+                        \State $C[i][j] \gets 0$
                     \Else
                         \State $max \gets 0$
                         \For{$h = 1$ to $i-1$}
                             \For{$k = 1$ to $j-1$}
-                                \If{$C[h,k] > max \land x_h < x_i$}
-                                    \State $max \gets C[h,k]$
-                                    \State $H[i,j] \gets (h,k)$
+                                \If{$C[h][k] > max \land x_h < x_i$}
+                                    \State $max \gets C[h][k]$
+                                    \State $H[i][j] \gets (h,k)$
                                 \EndIf
                             \EndFor
                         \EndFor
-                        \State $C[i,j] \gets 1 + max$
-                        \If{$C[i,j] > Z$}
-                            \State $Z \gets C[i,j]$
+                        \State $C[i][j] \gets 1 + max$
+                        \If{$C[i][j] > Z$}
+                            \State $Z \gets C[i][j]$
                         \EndIf
                     \EndIf
                 \EndFor
@@ -258,8 +258,8 @@ La matrice $H$: $H[i][j] = P(i, j)$. \\
 \begin{algorithm}
     \begin{algorithmic}
         \Procedure{BUILD-LICS}{X}
-            \If{$H[i,j] \ne (0,0)$}
-                \State BUILD-LICS($H[i,j]$)
+            \If{$H[i][j] \ne (0,0)$}
+                \State BUILD-LICS($H[i][j]$)
             \EndIf
             \State $print(x_i)$
         \EndProcedure
