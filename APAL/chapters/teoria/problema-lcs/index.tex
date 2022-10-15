@@ -80,6 +80,15 @@ La LCS e' $Z$ = < A, A, L, E >
 
 \end{enumerate}
 
+Si mette in evidenza che l'operazione di estrazione della LCS gode delle seguenti proprieta':
+\begin{align}
+    \text{$\cdot : \Sigma^* \times \Sigma^* \rightarrow \Sigma^* \mid A \cdot B = LCS(A, B)$} \\
+    \text{$A \cdot B = B \cdot A$} \\
+    \text{$A \cdot A = A$} \\
+    \text{$A \cdot B = A \cdot (A \cdot B) = B \cdot (A \cdot B)$} \\
+    \text{$(A \cdot B) \cdot C = A \cdot (B \cdot C) = B \cdot (A \cdot C)$}
+\end{align}
+
 \section{Algoritmo TOP-DOWN}
 
 \paragraph{Ragionamento}
