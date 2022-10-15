@@ -33,19 +33,4 @@ Al 10/10/2022 Debian sembra essere ottimale.
 
 Lancia `make` (con pdflatex e dipendenze installate) per generare i file pdf `appunti.pdf` per ogni sotto cartella.
 
-# Discussioni in corso
 
-## Sigla per Ingegneria del Software
-
-E' necessario trovare una sigla accettabile per quel corso. Io ricorrerei ad APS fino a che non sara' individuata una migliore.
-
-proposte attuali:
-
- - IS
- - INOS
- - INGSOF
- - APS (provvisoria)
-
-## Presenza dei PDF nel repository github
-
-E' opportuno non caricare i pdf sul repo e permettere a ciascuno di generarli, pena il fatto di dover usare un PC con texlive per sincronizzare i progressi.
