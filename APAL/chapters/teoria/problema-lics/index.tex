@@ -101,8 +101,8 @@ Da qui, $Z_{i,j} = LIS(X_i, Y_j)$
 \[
     Z_i =
     \begin{cases}
-        \text{$Z_{P(i,j)}$} & \text{$(x_i = y_j) \land (|Z_{P(i,j)}| + 1 \geq |Z|)$} \\
-        \text{$Z_{i-1, j-1}$} & \text{$(x_i = y_j) \land (|Z_{P(i,j)}| + 1 < |Z|)$} \\
+        \text{$Z_{P(i,j)}$} & \text{$(x_i = y_j) \land (|Z_{P(i,j)}| + 1 \geq |Z_{i-1, j-1}|)$} \\
+        \text{$Z_{i-1, j-1}$} & \text{$(x_i = y_j) \land (|Z_{P(i,j)}| + 1 < |Z_{i-1, j-1}|)$} \\
         \text{$Z_{i, j-1}$} & \text{$(x_i \ne y_j) \land (|Z_{i, j-1}| \geq |Z_{i-1, j}|)$} \\
         \text{$Z_{i-1, j}$} & \text{$(x_i \ne y_j) \land (|Z_{i, j-1}| < |Z_{i-1, j}|)$} \\
     \end{cases}
