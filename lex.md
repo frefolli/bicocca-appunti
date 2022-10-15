@@ -10,7 +10,7 @@ I PDF verranno mantenuti nel repo github, chi carica gli aggiornamenti si impegn
 
 # 3 del 15/10/2022
 
-Risoluzioni e discussioni vengono spostare in un file a parte rispetto a README.md.
-Si istituisce inolte un file TODO.md nella root folder.
+Risoluzioni e discussioni vengono spostate in un file a parte rispetto a README.md.
+Si istituisce inoltre un file TODO.md nella root folder.
 
 # Discussioni in corso
