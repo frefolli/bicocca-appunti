@@ -61,3 +61,85 @@ A partire dal vertice corrente compara i risultati ma non calcola ogni volta i v
 E' assicurato che si ottiene ad ogni passo una soluzione migliore perche' si cerca il migliore tasso di crescita.
 
 \section{Procedura Algebrica}
+
+La forma standard di un problema PL comprende: opt = max, vincoli in $\geq$ e vincoli di non negativita'. \\
+La forma aumentata consiste in: opt = max, vincoli in $=$ e vincoli di non negativita', introducendo nuove variabili. \\
+
+La soluzione del problema PL in forma aumentanta (chiamata \textbf{soluzione aumentata}) giace sulla frontiera di vincolo.
+Questo e' utile per utilizzare l'algoritmo del simplesso.
+
+\paragraph{Forma Aumentata}
+
+Si introduce una \textbf{variabile slack} per convertire un vincolo di disuguaglianza in uguaglianza.
+
+\begin{align}
+    \text{$x_1 \leq 4$} \\
+    \text{$x_1 \geq 0$}
+\end{align}
+
+Si trasforma introducendo la variabile $x_s$.
+
+\begin{align}
+    \text{$x_1 + x_s = 4$} \\
+    \text{$x_s \geq 0$} \\
+    \text{$x_1 \geq 0$}
+\end{align}
+
+E' possibile riscrivere anche la funzione obiettivo in questo modo:
+
+\begin{align}
+    \text{$max \; Z = 3 \cdot x_1 + 5 \cdot x_2$}
+\end{align}
+
+Diventa:
+
+\begin{align}
+    \text{$max \; Z$} \\
+    \text{$Z - 3 \cdot x_1 - 5 \cdot x_2 = 0$} \\
+    \text{$x_s1, x_2, Z \geq 0$}
+\end{align}
+
+
+\paragraph{Variabili di Base}
+
+Detto un modello con $z$ variabili ($x$ decisionali, $y$ slack) e $w$ equazioni. \\
+Ho $g = z - grado(matrice \; vincoli)$ gradi di liberta' \\
+Quindi fisso $g$ variabili uguali a zero per calcolare le altre. Queste $g$ variabili vengono dette \textbf{non di base}. Il resto vengono dette \textbf{di base}. \\
+L'insieme delle variabili di base costituiscono una \textbf{base}. \\
+Se le variabili di base soddisfano i requisiti di non negativita', la soluzione viene detta \textbf{soluzione di base ammissibile}.
+
+Una soluzione di base e' una soluzione della forma aumentata dove le variabili possono essere di base o non di base. \\
+
+Due soluzioni di base ammissibili sono adiacenti se condividono le stesse variaili non di base tranne una (non i valori, le variabili!). \\
+Questo implica che una variabile non di base e una variabile di base si scambiano di posto.
+
+\paragraph{Algoritmo}
+
+\subparagraph{Inizializzazione}
+
+Inizializzo le $g$ variabili decisionali (e eventualmente slack) a 0. \\
+Secondo il \textbf{concetto chiave 3}. \\
+Quindi calcolo la soluzione di base ottimale.
+
+\subparagraph{Test di ottimalita'}
+
+Uso il test di ottimalita' per verificare se la soluzione di base e' ottimale.
+Si individuano i tassi di crescita della funzione obiettivo. Se i coefficienti del vincolo con Z sono negativi, la soluzione non e' ottimale. Quindi calcolo lo spostamento. \\
+
+Ci si muove qunidi lungo uno degli spigoli, ovvero si scambia una variabile non di base con una di base.
+Si usano i tassi di crescita per individuare qual'e' lo spostamento piu' vantaggioso. Secondo i \textbf{concetti chiave 5 e 6}.
+
+Poi bisogna determinare la quantita' di spostamento. Si usa il test del rapporto minimo. \\
+In pratica si calcola la dipendenza delle variabili di base rispetto alla variabile non di base entrante.
+Si sceglie il minimo valore che manda a zero una variabile di base, quindi della variabile di base e' uscente.
+Quindi si ricalcolano i valori delle altre variabili di base risolvendo i vincoli con i nuovi valori delle variabili non di base, della variabile entrante e di quella uscente. \\*
+Questo si fa con la procedura di \textbf{eliminazione di Gauss-Jordan}. \\
+
+Essendo la funzione obiettivo espressa tramite un vincolo, anch'essa viene modificata nella riassegnazione della soluzione di base. La variabile slack Z pero' rimane immutata. Z non e' una variabile di base. \\
+
+\paragraph{Forma Tabellare}
+
+La forma migliore per rappresentare i vincoli della forma aumentata e' usare una matrice. \\*
+Questa permette di rappresentare tutte le caratterische del problema.
+
+
