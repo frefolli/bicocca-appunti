@@ -182,7 +182,10 @@ La matrice $H$: $H[i][j] = P(i,j)$. \\
             \State $q \gets 0$
             \For{$w = 1$ to $i-1$}
                 \For{$z = 1$ to $j-1$}
-                    \If{$x_{L[w][z][0]} < x_i \land C[w][z] > C[p][q]$}
+                    \If{$L[w][z][0] = 0 \land C[w][z] = 0$}
+                        \State $p \gets w$
+                        \State $q \gets z$
+                    \ElsIf{$x_{L[w][z][0]} < x_i \land C[w][z] > C[p][q]$}
                         \State $p \gets w$
                         \State $q \gets z$
                     \EndIf
