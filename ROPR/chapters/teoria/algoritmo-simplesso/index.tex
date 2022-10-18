@@ -124,7 +124,7 @@ Quindi calcolo la soluzione di base ottimale.
 \subparagraph{Test di ottimalita'}
 
 Uso il test di ottimalita' per verificare se la soluzione di base e' ottimale.
-Si individuano i tassi di crescita della funzione obiettivo. Se i coefficienti del vincolo con Z sono negativi, la soluzione non e' ottimale. Quindi calcolo lo spostamento. \\
+Se la funzione obiettivo ha coefficienti positivi l'ottimizzazione non e' finita.
 
 Ci si muove qunidi lungo uno degli spigoli, ovvero si scambia una variabile non di base con una di base.
 Si usano i tassi di crescita per individuare qual'e' lo spostamento piu' vantaggioso. Secondo i \textbf{concetti chiave 5 e 6}.
@@ -142,4 +142,31 @@ Essendo la funzione obiettivo espressa tramite un vincolo, anch'essa viene modif
 La forma migliore per rappresentare i vincoli della forma aumentata e' usare una matrice. \\*
 Questa permette di rappresentare tutte le caratterische del problema.
 
+Ho una tabella in cui ogni riga rappresenta un vincolo (esclusi quelli di non negativita') della forma aumentata. La prima riga e' Z  - f(x) =0 .
 
+\paragraph{Passo 1}
+
+Se la prima riga ha almeno un coefficiente negativo, posso ottimizzare ulteriorimente.
+Quindi selezione la colonna con il coefficiente strettamente negativo piu' piccolo. \\*
+Dico che e' la \textbf{colonna pivot}.
+
+\paragraph{Passo 2}
+
+Cerco le righe che hanno nella \textbf{colonna pivot} un coefficiente strettamente positivo.
+Quindi, detti $n_i$ e $c_i$ il termine noto e il coefficiente di quella riga, cerco la riga tale per cui il rapporto $\frac {n_i} {c_i}$ piu' piccolo. \\*
+Chiamo quella riga \textbf{riga pivot}. \\
+Il valore nella cella che e' incrocio tra \textbf{riga pivot} e \textbf{colonna pivot} viene detto \textbf{valore pivot}.
+
+\paragraph{Passo 3}
+
+Moltiplico la \textbf{riga pivot} per $\frac {1} {valore \; pivot}$.
+
+Quindi per ogni riga non pivot:
+\begin{itemize}
+    \item se il $c_i$ > 0, sottraggo alla riga: $|c_i| * (riga pivot)$.
+    \item se il $c_i$ < 0, sommo alla riga: $|c_i| * (riga pivot)$.
+\end{itemize}
+
+\paragraph{4}
+
+Torno a 1).
