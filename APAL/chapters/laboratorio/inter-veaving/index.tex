@@ -1,0 +1,63 @@
+\chapter{Inter Veaving}
+Data: 18-10-2022
+
+\section{Inter Veaving}
+
+\paragraph{Introduzione}
+
+\paragraph{Esempio}
+
+X = <$C, I, A, O$>
+Y = <$M, A, M, M, A$>
+W = <$C, I, M, A, A, M, M, A, O$>
+
+W e' un inter veaving. L'algoritmo deve decidere se W e' un inter veaving.
+
+\paragraph{Ragionamento}
+
+Definisco i prefissi $X_i$, $Y_j$, $W_{i+j}$.
+Vero sse $W_{i+j} e' un inter veaving$.
+
+\paragraph{Caso Base}
+
+\[
+    \begin{cases}
+        \text{$true$} & \text{$i = 0 \land j = 0$}
+    \end{cases}
+\]
+
+\paragraph{Caso Ricorsivo}
+
+\[
+    \begin{cases}
+        \text{$IV(X_i, Y_{j - 1}, W_{j-1})$} & \text{$i = 0 \land j > 0 \land y_j = w_j$} \\
+        \text{$IV(X_i, Y_{j - 1}, W_{j-1})$} & \text{$j = 0 \land i > 0 \land x_i = w_i$} \\
+        \text{$false$} & \text{$i = 0 \land j > 0 \land y_j \ne w_j$} \\
+        \text{$false$} & \text{$j = 0 \land i > 0 \land x_i \ne w_i$} \\
+        \text{$IV(X_{i-1}, Y_j, W_{i+j-1})\lor IV(X_i, Y_{j-1}, W_{i+j-1})$} & \text{$i,j > 0$} \\
+    \end{cases}
+\]
+
+\paragraph{Caso Generale}
+
+\[
+    \begin{cases}
+        \text{$true$} & \text{$i = 0 \land j = 0$} \\
+        \text{$IV(X_i, Y_{j - 1}, W_{j-1})$} & \text{$i = 0 \land j > 0 \land y_j = w_j$} \\
+        \text{$IV(X_i, Y_{j - 1}, W_{j-1})$} & \text{$j = 0 \land i > 0 \land x_i = w_i$} \\
+        \text{$false$} & \text{$i = 0 \land j > 0 \land y_j \ne w_j$} \\
+        \text{$false$} & \text{$j = 0 \land i > 0 \land x_i \ne w_i$} \\
+        \text{$IV(X_{i-1}, Y_j, W_{i+j-1})\lor IV(X_i, Y_{j-1}, W_{i+j-1})$} & \text{$i,j > 0$} \\
+    \end{cases}
+\]
+
+\newpage
+
+\section{Procedura Bottom-Up}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{IV}{$X_i, Y_j, W_j$}
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}

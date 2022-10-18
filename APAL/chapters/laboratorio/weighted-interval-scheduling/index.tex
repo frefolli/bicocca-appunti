@@ -227,6 +227,8 @@ Quindi l'algoritmo e' $T(n) = \O(n^2)$ nel caso medio.
 
 E' possibile scrivere una procedura che esplori linearmente l'array $OPT$ per verificare i passi che sono stati effettuati per costruire OPT. Quindi si puo' risparmiare lo spazio occupato da $WIS$.
 
+\newpage
+
 \section{Consegna Esercizio}
 Da risolvere per 18-10-2022. \\
 
@@ -234,6 +236,69 @@ L'istanza e' simile ma con le case al posto delle attivita'.
 Ci sono n case adiacenti in linea retta.
 Ad ogni casa e' associato un valore $d$, la donazione che l'abitante e' disposto a fare.
 Trovare un sottoinsieme di case il cui valore totale sia massimo e in cui le case non siano adiacenti.
+
+\paragraph{Ragionamento}
+
+Definisco la funzione: \\*
+$COMP : \mathbb{P}(\{1,..,n\}) \rightarrow \{true, false\}$ \\*
+$\forall i,j \in A \mid i = j \lor caseCompatibili(A_i,A_j) \Rightarrow COMP(A) = true$ \\*
+
+Dette poi $i,j$ due attivita' si dice:
+\[
+    caseCompatibili(i,j) =
+    \begin{cases}
+        \text{$true$} & \text{$|i - j| > 1$} \\
+        \text{$false$} & altrimenti
+    \end{cases}
+\]
+
+Quindi si definisce: \\*
+$V : \mathbb{P}(\{1,..,n\}) \rightarrow \mathbb{R}$
+\[
+    V(i,j) =
+    \begin{cases}
+        \text{$\Sigma _ {i \in A} v_i$} & \text{$A \ne \emptyset$} \\
+        \text{$0$} & \text{$A = \emptyset$}
+    \end{cases}
+\]
+
+La Soluzione e' $(S \subseteq X \mid COMP(S) = true) \land (\forall A \subseteq X \mid V(S) \geq V(A))$
+
+In questo caso $p(i)$ scorre l'array di case fino a individuare la prima non adiacente.
+Questa operazione e' logicamente a tempo $T(n) = \Theta(1)$, perche' si parla di spostarsi a sinistra di due case.
+
+\paragraph{Dimostrazione}
+
+Per dimostrare il teorema mi avvalgo dei sottoproblemi di S. \\*
+Assumo quindi che $\forall j \in \{0,..,i-1\} \mid S_j$. \\*
+Inoltre assumo che il problema per $X_i$ abbia almeno una soluzione.
+
+\subparagraph{1}
+
+Assumo che $i \in S_i$, devo mostrare che $S_i = S_{p(i)} \cup {i}$. \\
+Si supponga per assurdo che $S_{p(i)} \cup {i} \ne sol(X_i)$. \\
+Chiamo $S^I$ la soluzione ${S_i}$. \\
+Posso affermare con certezza che $V(S^I) > V(S_{p(i)}) + v_i$. \\
+Visto che $i \in S_i$, deduco che allora $S^I = S^{II} \cup {i}$. \\
+Ragionevolmente $S^{II}$ contiene attivita' compatibili insieme a $i$. \\
+Per la riduzione di qualche paragrafo precedente posso affermare che $S^{II} \subseteq \{1,..,p(i)\}$.
+Ma allora $V(S^{II}) > V(S_{p(i)})$. \\
+Il che e' impossibile, perche' sappiamo che $S_{p(i)} = sol(X_{p(i)})$. \\
+Dovendo essere necessariamente $S_{p(i)} = sol(X_{p(i)})$, ne ricaviamo che $S^{II} = S_{p(i)}$.
+Quindi $S_i = S_{p(i)} \cup {i}$.
+
+\subparagraph{2}
+
+Assumo che $i \notin S_i$, devo mostrare che $S_i = S_{i-1}$. \\
+Supponiamo per assurdo che $S_i \ne S_{i-1}$ \\
+Allora necessariamente $\exists S^I \ne S_{i-1} \mid V(S^I) > V(S_{i-1})$. \\
+Visto che $S^I = S_i$ allora $i \notin S^I$, dato che $i \notin S_i$. \\
+Ma quindi allora $S^I \subseteq {1,..,i-1} \mid V(S^I) > V(S_{i-1})$.
+Il che e' impossibile, perche' sappiamo che $S_{i-1} = sol(X_{i-1})$. \\
+Dovendo essere necessariamente $S_{i-1} = sol(X_{i-1})$, ne ricaviamo che $S^{I} = S_{i-1}$. \\
+Quindi $S_i = S_{i-1}$.
+
+\paragraph{Equazione di Ricorrenza}
 
 \[
     S_i =
@@ -244,9 +309,6 @@ Trovare un sottoinsieme di case il cui valore totale sia massimo e in cui le cas
         \text{$S_{i-1}$} & \text{$V(p(i)) + v_i < V(i-1)$} \\
     \end{cases}
 \]
-
-In questo caso $p(i)$ scorre l'array di case fino a individuare la prima non adiacente.
-Questa operazione e' logicamente a tempo $T(n) = \Theta(1)$, perche' si parla di spostarsi a sinistra di due case.
 
 \newpage
 

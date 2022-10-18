@@ -1,6 +1,10 @@
-@all:
-	pdflatex appunti.tex
-	pdflatex appunti.tex
+@all: double
+
+double:
+	pdflatex appunti.tex && pdflatex appunti.tex
+
+single:
+	pdflatex appunti.tex && pdflatex appunti.tex
 
 clean:
-	source ../clean.sh "aslib" && cleanFolder .
+	export THING="$$(pwd)" && cd ../ && ./cleanlocal.sh "$$THING"
