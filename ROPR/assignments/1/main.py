@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 
 class Stato:
-    def __init__(self, matrix, target, base):
+    def __init__(self, matrix, target):
         self.matrix = matrix
         self.target = target
-        self.base = base
+        self.base = [ 1+_ for _ in range(len(self.matrix[0]) - 1 - len(self.matrix)) ]
 
     def findEnter(self):
         min = None
@@ -52,10 +52,22 @@ class Stato:
         return "\n".join([ " ".join([str(self.matrix[j][i]) for i in range(len(self.matrix[j]))]) for j in range(len(self.matrix))])
 
 if __name__ == "__main__":
-    stato = Stato(matrix = [
-            [1, -1, -1, 0, 0, 0, 0, 0],
-            [0, 1, 1, 1, 1, 0, 0, 2],
-            [0, -1, -1, -1, 0, 1, 0, -2],
-            [0, 2, -1, 0, 0, 0, 1, 0]
-        ], target = [1, 2], base = [1,2,3])
+    MEINER = [
+            [1, -1, -1,  0,  0,  0,  0,  0],
+            [0,  1,  1,  1,  1,  0,  0,  2],
+            [0, -1, -1, -1,  0,  1,  0, -2],
+            [0,  2, -1,  0,  0,  0,  1,  0]
+        ]
+    
+    DEINER = [
+            [1, -1, -1,  0,  0,  0],
+            [0,  1,  1,  1,  0,  2],
+            [0,  2, -1,  0,  1,  0]
+        ]
+    
+    
+    stato = Stato(matrix = MEINER, target = [1, 2])
+    stato.solve()
+
+    stato = Stato(matrix = DEINER, target = [1, 2])
     stato.solve()
