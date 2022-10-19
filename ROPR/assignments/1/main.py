@@ -38,18 +38,21 @@ class Stato:
             raise ValueError("no variable can be pulled off of base")
         self.recompute(enter, exit)
         print(self.__str__())
-        print("#########################")
         return True
 
     def solve(self):
-        print("#########################")
         print(self.__str__())
-        print("#########################")
         while(self.iteration()):
             pass
 
     def __str__(self):
-        return "\n".join([ " ".join([str(self.matrix[j][i]) for i in range(len(self.matrix[j]))]) for j in range(len(self.matrix))])
+        swrap = "\\begin{center}\n\t\\begin{tabular}{|" + "|".join([ "c" for i in range(len(self.matrix[0])) ]) + "|}"
+        header = "\t\t" + " & ".join(["Z"] + [ f"$x_{i}$" for i in range(1, len(self.matrix[0]) - 1) ] + ["b"]) + "\\\\"
+        rows = [ "\t\t" + " & ".join([ str(self.matrix[i][j]) for j in range(len(self.matrix[0])) ]) + "\\\\" for i in range(len(self.matrix)) ]
+        hline = "\t\t\\hline"
+        ewrap = "\t\\end{tabular}\n\\end{center}"
+        return "\n".join([swrap, hline, header, hline] + rows + [hline, ewrap])
+
 
 if __name__ == "__main__":
     MEINER = [
