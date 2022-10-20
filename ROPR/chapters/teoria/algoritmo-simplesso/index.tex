@@ -170,6 +170,10 @@ Le variabili artificiali vengono quindi sommate dentro i vincoli. Quindi si riem
 
 Quindi alla prima riga della tabella si sottrae la somma delle righe contenenti variabili artificiali. \\
 
+A questo punto si applica il normale algoritmo del simplesso. Nel momento in cui tutte le variabili artificiali saranno fuori dalla base, si procede a troncare la tabella, eliminando le colonne di tali variabili. Quindi si sostituisce la prima riga con una tradizionale $Z - f(x)$. Dopo la trasformazione, alla prima riga viene sottratta una combinazione lineare delle righe, quelle che avevano una variabile artificiale, che azzeri i coefficienti nella prima riga di tutte le variabili in base. \\
+
+L'algoritmo del simplesso puo' riprendere normalmente. Questa operazione va effettuata nonappena si presenta l'occasione. \\
+
 \paragraph{Passo 1}
 
 Se la prima riga ha almeno un coefficiente negativo, posso ottimizzare ulteriorimente.
