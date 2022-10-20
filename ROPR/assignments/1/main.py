@@ -45,21 +45,21 @@ class Stato:
 
     def iteration(self):
         self.it += 1
-        print("\\paragraph{iteration " + str(self.it) + "}")
+        print("\n\\paragraph{iterazione " + str(self.it) + "}")
         enter = self.findEnter()
         if enter == None:
-            print("La prima riga non contiene piu' valori negativi, l'algoritmo del simplesso si arresta. \\\\")
-            print("La soluzione di base corrente e' " + str(self.basica()) + "\\*")
-            print("Quindi una soluzione al problema PL e' " + self.normale() + "\\*")
+            print("\nLa prima riga non contiene piu' valori negativi, l'algoritmo del simplesso si arresta. \\\\")
+            print("\nLa soluzione di base corrente e' " + str(self.basica()) + "\\*")
+            print("\nQuindi una soluzione al problema PL e' " + self.normale() + "\\*")
             return False
-        print(f"Scelgo la colonna {enter} perche' non esiste un coefficiente in prima riga negativo piu' basso. \\\\")
+        print(f"\nScelgo la colonna {enter} perche' non esiste un coefficiente in prima riga negativo piu' basso. \\\\")
         exit = self.findExit(enter)
         if exit == None:
-            print("Nessuna variabile puo' essere fatta uscire dalla base, il problema non ha soluzione ottimale.")
+            print("\nNessuna variabile puo' essere fatta uscire dalla base, il problema non ha soluzione ottimale.")
             raise ValueError("no variable can be pulled off of base")
-        print(f"Scelgo la riga {exit} che ha il rapporto minimo. \\\\")
-        print(f"Ricalcolo la tabella.")
-        print(f"Questo ha l'effetto di scambiare $x_{exit}$ della base con $x_{enter}$. \\")
+        print(f"\nScelgo la riga {exit} che ha il rapporto minimo. \\\\")
+        print(f"\nRicalcolo la tabella.")
+        print(f"\nQuesto ha l'effetto di scambiare $x_{self.base[exit-1]}$ della base con $x_{self.notbase[enter-1]}$. \\")
         self.recompute(enter, exit)
         print(self.__str__())
         return True
@@ -96,9 +96,9 @@ class Stato:
         return "<" + ",".join(vars) + "> = <" + ",".join(vals) + ">"
 
     def __str__(self):
-        swrap = "\\begin{center}\n\t\\begin{tabular}{|" + "|".join([ "c" for i in range(len(self.matrix[0])) ]) + "|}"
-        header = "\t\t" + " & ".join(["Z"] + [ f"$x_{i}$" for i in range(1, len(self.matrix[0]) - 1) ] + ["b"]) + "\\\\"
-        rows = [ "\t\t" + " & ".join([ decomposeFloat(self.matrix[i][j]) for j in range(len(self.matrix[0])) ]) + "\\\\" for i in range(len(self.matrix)) ]
+        swrap = "\n\\begin{center}\n\t\\begin{tabular}{|" + "|".join([ "c" for i in range(len(self.matrix[0])+1) ]) + "|}"
+        header = "\t\t" + " & ".join(["base", "Z"] + [ f"$x_{i}$" for i in range(1, len(self.matrix[0]) - 1) ] + ["b"]) + "\\\\"
+        rows = [ "\t\t" + " & ".join([str((["Z"] + self.base)[i])] + [ decomposeFloat(self.matrix[i][j]) for j in range(len(self.matrix[0])) ]) + "\\\\" for i in range(len(self.matrix)) ]
         hline = "\t\t\\hline"
         ewrap = "\t\\end{tabular}\n\\end{center}"
         return "\n".join([

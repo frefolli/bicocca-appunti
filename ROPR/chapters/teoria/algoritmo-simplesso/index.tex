@@ -127,15 +127,15 @@ Una soluzione di base e' una soluzione della forma aumentata dove le variabili p
 Due soluzioni di base ammissibili sono adiacenti se condividono le stesse variaili non di base tranne una (non i valori, le variabili!). \\
 Questo implica che una variabile non di base e una variabile di base si scambiano di posto.
 
-\paragraph{Algoritmo}
+\section{Algoritmo}
 
-\subparagraph{Inizializzazione}
+\paragraph{Inizializzazione}
 
 Inizializzo le $g$ variabili decisionali (e eventualmente slack) a 0. \\
 Secondo il \textbf{concetto chiave 3}. \\
 Quindi calcolo la soluzione di base ottimale.
 
-\subparagraph{Test di ottimalita'}
+\paragraph{Test di ottimalita'}
 
 Uso il test di ottimalita' per verificare se la soluzione di base e' ottimale.
 Se la funzione obiettivo ha coefficienti positivi l'ottimizzazione non e' finita.
@@ -151,12 +151,24 @@ Questo si fa con la procedura di \textbf{eliminazione di Gauss-Jordan}. \\
 
 Essendo la funzione obiettivo espressa tramite un vincolo, anch'essa viene modificata nella riassegnazione della soluzione di base. La variabile slack Z pero' rimane immutata. Z non e' una variabile di base. \\
 
-\paragraph{Forma Tabellare}
+\section{Forma Tabellare}
 
 La forma migliore per rappresentare i vincoli della forma aumentata e' usare una matrice. \\*
 Questa permette di rappresentare tutte le caratterische del problema.
 
 Ho una tabella in cui ogni riga rappresenta un vincolo (esclusi quelli di non negativita') della forma aumentata. La prima riga e' Z  - f(x) =0 .
+
+\paragraph{Risoluzione con Deficit di Base}
+
+La base e' formato da $n$ variabili, dove $n$ e' il numero di equazioni nei vincoli del modello. \\*
+Dette $k$ il numero di variabili di slack, un modello necessita' di $m = n - k$ variabili "artificiali" per creare la soluzione di base ammissibile, ovvero creare il tableau iniziale. \\
+
+Se $m > 0$ bisogna creare $m$ variabili artificiali: $A_1, A_2 ... A_m$. \\*
+Una per ogni vincolo che non contiene variabili di slack. \\
+
+Le variabili artificiali vengono quindi sommate dentro i vincoli. Quindi si riempiono le righe della tabella. La prima riga e' particolare, viene  riempita con soli zero eccetto gli uni nelle colonne delle variabili artificiali. \\
+
+Quindi alla prima riga della tabella si sottrae la somma delle righe contenenti variabili artificiali. \\
 
 \paragraph{Passo 1}
 
