@@ -49,8 +49,8 @@ class Stato:
         enter = self.findEnter()
         if enter == None:
             print("La prima riga non contiene piu' valori negativi, l'algoritmo del simplesso si arresta. \\\\")
-            print("La soluzione di base e' " + str(self.basica()) + "\\*")
-            print("La soluzione al problema PL e' " + self.normale() + "\\*")
+            print("La soluzione di base corrente e' " + str(self.basica()) + "\\*")
+            print("Quindi una soluzione al problema PL e' " + self.normale() + "\\*")
             return False
         print(f"Scelgo la colonna {enter} perche' non esiste un coefficiente in prima riga negativo piu' basso. \\\\")
         exit = self.findExit(enter)
@@ -106,23 +106,10 @@ class Stato:
 
 
 if __name__ == "__main__":
-    MEINER = [
-            [1, -1, -1,  0,  0,  0,  0,  0],
-            [0,  1,  1,  1,  1,  0,  0,  2],
-            [0, -1, -1, -1,  0,  1,  0, -2],
-            [0,  2, -1,  0,  0,  0,  1,  0]
-        ]
-    
     DEINER = [
             [1, -1, -1,  0,  0,  0],
             [0,  1,  1,  1,  0,  2],
             [0,  2, -1,  0,  1,  0]
         ]
-    
-    print("\\section{Grosser Autobahn}")
-    stato = Stato(matrix = MEINER, target = [1, 2])
-    stato.solve()
-
-    print("\\section{Kleiner Autobahn}")
     stato = Stato(matrix = DEINER, target = [1, 2])
     stato.solve()

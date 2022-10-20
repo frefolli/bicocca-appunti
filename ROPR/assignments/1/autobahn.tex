@@ -1,55 +1,3 @@
-\section{Grosser Autobahn}
-\begin{center}
-	\begin{tabular}{|c|c|c|c|c|c|c|c|}
-		\hline
-		Z & $x_1$ & $x_2$ & $x_3$ & $x_4$ & $x_5$ & $x_6$ & b\\
-		\hline
-		1 & -1 & -1 & 0 & 0 & 0 & 0 & 0\\
-		0 & 1 & 1 & 1 & 1 & 0 & 0 & 2\\
-		0 & -1 & -1 & -1 & 0 & 1 & 0 & -2\\
-		0 & 2 & -1 & 0 & 0 & 0 & 1 & 0\\
-		\hline
-	\end{tabular}
-\end{center}
-\paragraph{iteration 1}
-Scelgo la colonna 1 perche' non esiste un coefficiente in prima riga negativo piu' basso. \\
-Scelgo la riga 3 che ha il rapporto minimo. \\
-Ricalcolo la tabella.
-Questo ha l'effetto di scambiare $x_3$ della base con $x_1$. \
-\begin{center}
-	\begin{tabular}{|c|c|c|c|c|c|c|c|}
-		\hline
-		Z & $x_1$ & $x_2$ & $x_3$ & $x_4$ & $x_5$ & $x_6$ & b\\
-		\hline
-		1.0 & 0.0 & -$\frac 3 2$ & 0.0 & 0.0 & 0.0 & $\frac 1 2$ & 0.0\\
-		0.0 & 0.0 & $\frac 3 2$ & 1.0 & 1.0 & 0.0 & -$\frac 1 2$ & 2.0\\
-		0.0 & 0.0 & -$\frac 3 2$ & -1.0 & 0.0 & 1.0 & $\frac 1 2$ & -2.0\\
-		0.0 & 1.0 & -$\frac 1 2$ & 0.0 & 0.0 & 0.0 & $\frac 1 2$ & 0.0\\
-		\hline
-	\end{tabular}
-\end{center}
-\paragraph{iteration 2}
-Scelgo la colonna 2 perche' non esiste un coefficiente in prima riga negativo piu' basso. \\
-Scelgo la riga 1 che ha il rapporto minimo. \\
-Ricalcolo la tabella.
-Questo ha l'effetto di scambiare $x_1$ della base con $x_2$. \
-\begin{center}
-	\begin{tabular}{|c|c|c|c|c|c|c|c|}
-		\hline
-		Z & $x_1$ & $x_2$ & $x_3$ & $x_4$ & $x_5$ & $x_6$ & b\\
-		\hline
-		1.0 & 0.0 & 0.0 & 1.0 & 1.0 & 0.0 & 0.0 & 2.0\\
-		0.0 & 0.0 & 1.0 & $\frac 2 3$ & $\frac 2 3$ & 0.0 & -$\frac 1 3$ & $\frac 4 3$\\
-		0.0 & 0.0 & 0.0 & 0.0 & 1.0 & 1.0 & 0.0 & 0.0\\
-		0.0 & 1.0 & 0.0 & $\frac 1 3$ & $\frac 1 3$ & 0.0 & $\frac 1 3$ & $\frac 2 3$\\
-		\hline
-	\end{tabular}
-\end{center}
-\paragraph{iteration 3}
-La prima riga non contiene piu' valori negativi, l'algoritmo del simplesso si arresta. \\
-La soluzione di base e' <$x_1$,$x_2$,$x_3$,$x_4$,$x_5$,$x_6$> = <$\frac 2 3$,$\frac 4 3$,0,0,0.0,0>\*
-La soluzione al problema PL e' <$x_1$,$x_2$> = <$\frac 2 3$,$\frac 4 3$>\*
-\section{Kleiner Autobahn}
 \begin{center}
 	\begin{tabular}{|c|c|c|c|c|c|}
 		\hline
@@ -95,5 +43,5 @@ Questo ha l'effetto di scambiare $x_1$ della base con $x_2$. \
 \end{center}
 \paragraph{iteration 3}
 La prima riga non contiene piu' valori negativi, l'algoritmo del simplesso si arresta. \\
-La soluzione di base e' <$x_1$,$x_2$,$x_3$,$x_4$> = <$\frac 2 3$,$\frac 4 3$,0,0>\*
-La soluzione al problema PL e' <$x_1$,$x_2$> = <$\frac 2 3$,$\frac 4 3$>\*
+La soluzione di base corrente e' <$x_1$,$x_2$,$x_3$,$x_4$> = <$\frac 2 3$,$\frac 4 3$,0,0>\*
+Quindi una soluzione al problema PL e' <$x_1$,$x_2$> = <$\frac 2 3$,$\frac 4 3$>\*

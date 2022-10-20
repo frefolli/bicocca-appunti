@@ -70,6 +70,20 @@ Questo e' utile per utilizzare l'algoritmo del simplesso.
 
 \paragraph{Forma Aumentata}
 
+Si definisce modello in forma aumentata un modello di programmazione lineare formato da:
+
+\begin{itemize}
+	\item operazione $max \; Z$
+	\item vincoli in forma $\Sigma _ {i = 1} ^ {m} a_{i,j} \cdot x_{i,j} = b_j$
+	\item $\forall i \in [1,m] \mid x_i >= 0$
+	\item $\forall j \in [1,n] \mid b_j >= 0$
+\end{itemize}
+
+E' possibile ricondursi alla forma aumentata a partire da quella standard, ma non e' strettamente necessario. \\
+E' preferibile ricondursi alla forma aumentata direttamente se il modello e' in forma non standard e non e' vitale.
+
+\paragraph{Ottenimento Forma Aumentata}
+
 Si introduce una \textbf{variabile slack} per convertire un vincolo di disuguaglianza in uguaglianza.
 
 \begin{align}
