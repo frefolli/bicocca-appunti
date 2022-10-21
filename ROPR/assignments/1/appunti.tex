@@ -16,7 +16,7 @@
             
         \vspace{0.2cm}
         \normalsize
-        19/10/2022
+        21/10/2022
             
         \vspace{0.2cm}
         \textbf{Francesco Refolli 865955}
@@ -40,11 +40,22 @@
     \end{align}
 
     \begin{center}
-        \includegraphics[width=12cm]{grafico.jpg}
+        \includegraphics[width=12cm]{prima-fase.png}
     \end{center}
 
-    Il vetto del gradiente della funzione obiettivo $g$ = <$1, 1$> , composto dalle derivate parziali delle componenti della funzione obiettivo, e' perpedincolare al vincolo $x_1 \leq 2 - x_2$, quindi il problema ha \textbf{Infinite Soluzioni Ottime}. \\*
-    Le soluzioni sono tutte le coppie <$x_1, x_2$> che risiedono nello spigolo della regione obiettivo su cui si poggia il vincolo $x_1 \leq 2 - x_2$. Ovvero tutti i punti sul segmento delimitato dai punti: ($0, 2$),  ($\frac 2 3, \frac 4 3$).
+    Quindi disegno il gradiente della funzione obiettivo $g$ e la funzione obiettivo.
+
+    \begin{center}
+        \includegraphics[width=12cm]{seconda-fase.png}
+    \end{center}
+
+    Il vettore del gradiente della funzione obiettivo $g$ = <$1, 1$> , composto dalle derivate parziali delle componenti della funzione obiettivo, e' perpedincolare al vincolo $x_1 \leq 2 - x_2$.
+    Il problema ha \textbf{Infinite Soluzioni Ottime}.
+    Le soluzioni sono tutte le coppie <$x_1, x_2$> che risiedono nello spigolo della regione obiettivo su cui si poggia il vincolo $x_1 \leq 2 - x_2$.
+    Per calcolare il segmento e' sufficiente calcolare l'intersezione dei vincoli $x_1 \leq 2 - x_2$ e $x_2 \geq 0$.
+    Il risultato sono i punti: ($0, 2$),  ($\frac 2 3, \frac 4 3$). Le soluzioni sono tutti i punti compresi nel segmento delimitato da essi.
+
+    \newpage
 
     \section{Esercizio 2}
 
@@ -94,67 +105,69 @@
 
     \paragraph{Risoluzione con tableau}
 
-\begin{center}
-	\begin{tabular}{|c|c|c|c|c|c|c|}
-		\hline
-		base & Z & $x_1$ & $x_2$ & $x_3$ & $x_4$ & b\\
-		\hline
-		Z & 1 & -1 & -1 & 0 & 0 & 0\\
-		3 & 0 & 1 & 1 & 1 & 0 & 2\\
-		4 & 0 & 2 & -1 & 0 & 1 & 0\\
-		\hline
-	\end{tabular}
-\end{center}
+    Riempio la forma tabellare con i coefficienti delle variabili nei vincoli e nella funzione obiettivo.
+    La tabella risulta: \\
 
-\paragraph{iterazione 1}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
+            \hline
+            base & Z & $x_1$ & $x_2$ & $x_3$ & $x_4$ & b\\
+            \hline
+            Z & 1 & -1 & -1 & 0 & 0 & 0\\
+            3 & 0 & 1 & 1 & 1 & 0 & 2\\
+            4 & 0 & 2 & -1 & 0 & 1 & 0\\
+            \hline
+        \end{tabular}
+    \end{center}
 
-Scelgo la colonna 1 perche' non esiste un coefficiente in prima riga negativo piu' basso. \\
+    La base e' formata da 2 variabili, perche' il numero di vincoli e' proprio 2.
+    Inserisco nella base le variabili $x_3$, $x_4$. Fuori base rimangono $x_1$, $x_2$.
+    La soluzione di base corrente <$x_1$,$x_2$,$x_3$,$x_4$> = <0,0,2,0> e' ammissibile. Quindi procedo con l'algoritmo del simplesso.
 
-Scelgo la riga 2 che ha il rapporto minimo. \\
+    \paragraph{iterazione 1}
 
-Ricalcolo la tabella.
+    Non esiste un coefficiente in prima riga negativo piu' basso di tutti gli altri. Scelgo la colonna 1 con coefficiente $-1$.
+    La riga 2 ha il rapporto minimo, diventa la riga pivot.
+    Il valore pivot e' $2$, moltiplico tutta la riga 2 per $\frac 1 2$ per ridurre il valore pivot a $1$.
+    Quindi applico l'algoritmo per ricalcolare la tabella.
+    Questa iterazione ha l'effetto di scambiare $x_4$ della base con $x_1$.
 
-Questo ha l'effetto di scambiare $x_4$ della base con $x_1$. \
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
+            \hline
+            base & Z & $x_1$ & $x_2$ & $x_3$ & $x_4$ & b\\
+            \hline
+            Z & 1 & 0 & -$\frac 3 2$ & 0 & $\frac 1 2$ & 0\\
+            3 & 0 & 0 & $\frac 3 2$ & 1 & -$\frac 1 2$ & 2\\
+            1 & 0 & 1 & -$\frac 1 2$ & 0 & $\frac 1 2$ & 0\\
+            \hline
+        \end{tabular}
+    \end{center}
 
-\begin{center}
-	\begin{tabular}{|c|c|c|c|c|c|c|}
-		\hline
-		base & Z & $x_1$ & $x_2$ & $x_3$ & $x_4$ & b\\
-		\hline
-		Z & 1.0 & 0.0 & -$\frac 3 2$ & 0.0 & $\frac 1 2$ & 0.0\\
-		3 & 0.0 & 0.0 & $\frac 3 2$ & 1.0 & -$\frac 1 2$ & 2.0\\
-		1 & 0.0 & 1.0 & -$\frac 1 2$ & 0.0 & $\frac 1 2$ & 0.0\\
-		\hline
-	\end{tabular}
-\end{center}
+    \paragraph{iterazione 2}
 
-\paragraph{iterazione 2}
+    Scelgo la colonna 2 perche' possiede il coefficiente in prima riga negativo piu' basso, ovvero -$\frac 3 2$.
+    La riga 1 ha il rapporto minimo, diventa la riga pivot.
+    Il valore pivot e' $\frac 3 2$, moltiplico tutta la riga 2 per $\frac 2 3$ per ridurre il valore pivot a $1$.
+    Applico l'algoritmo per ricalcolare la tabella.
+    Questo ha l'effetto di scambiare $x_3$ della base con $x_2$.
 
-Scelgo la colonna 2 perche' non esiste un coefficiente in prima riga negativo piu' basso. \\
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
+            \hline
+            base & Z & $x_1$ & $x_2$ & $x_3$ & $x_4$ & b\\
+            \hline
+            Z & 1 & 0 & 0 & 1 & 0 & 2\\
+            2 & 0 & 0 & 1 & $\frac 2 3$ & -$\frac 1 3$ & $\frac 4 3$\\
+            1 & 0 & 1 & 0 & $\frac 1 3$ & $\frac 1 3$ & $\frac 2 3$\\
+            \hline
+        \end{tabular}
+    \end{center}
 
-Scelgo la riga 1 che ha il rapporto minimo. \\
+    \paragraph{iterazione 3}
 
-Ricalcolo la tabella.
+    La prima riga non contiene piu' valori negativi, l'algoritmo del simplesso si arresta. \\
+    La soluzione di base corrente e' <$x_1$,$x_2$,$x_3$,$x_4$> = <$\frac 2 3$,$\frac 4 3$,0,0> \\
+    Quindi una soluzione al problema PL e' <$x_1$,$x_2$> = <$\frac 2 3$,$\frac 4 3$>\*
 
-Questo ha l'effetto di scambiare $x_3$ della base con $x_2$. \
-
-\begin{center}
-	\begin{tabular}{|c|c|c|c|c|c|c|}
-		\hline
-		base & Z & $x_1$ & $x_2$ & $x_3$ & $x_4$ & b\\
-		\hline
-		Z & 1.0 & 0.0 & 0.0 & 1.0 & 0.0 & 2.0\\
-		2 & 0.0 & 0.0 & 1.0 & $\frac 2 3$ & -$\frac 1 3$ & $\frac 4 3$\\
-		1 & 0.0 & 1.0 & 0.0 & $\frac 1 3$ & $\frac 1 3$ & $\frac 2 3$\\
-		\hline
-	\end{tabular}
-\end{center}
-
-\paragraph{iterazione 3}
-
-La prima riga non contiene piu' valori negativi, l'algoritmo del simplesso si arresta. \\
-
-La soluzione di base corrente e' <$x_1$,$x_2$,$x_3$,$x_4$> = <$\frac 2 3$,$\frac 4 3$,0,0>\*
-
-Quindi una soluzione al problema PL e' <$x_1$,$x_2$> = <$\frac 2 3$,$\frac 4 3$>\*
 \end{document}

@@ -113,3 +113,4 @@ if __name__ == "__main__":
         ]
     stato = Stato(matrix = DEINER, target = [1, 2])
     stato.solve()
+
