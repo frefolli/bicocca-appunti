@@ -197,6 +197,23 @@ Quindi per ogni riga non pivot:
     \item se il $c_i$ < 0, sommo alla riga: $|c_i| * (riga \; pivot)$.
 \end{itemize}
 
-\paragraph{4}
+\paragraph{Passo 4}
 
 Torno a 1).
+
+\paragraph{Multiple Variabili Entrante}
+Puo' capitare che non ci siano variabili con coefficiente in prima riga piu' piccolo di tutte le altre. In caso di pareggio e' possibile selezionarne una in modo arbitrario. La soluzione ottimare sara' comunque ottenuta tramite l'algoritmo. Non e' possibile sapere in anticipo quale sia la scelta migliore per minimizzare il tempo di soluzione.
+
+\paragraph{Multiple Variabili Uscenti}
+
+Nel momento in cui nel calcolare il rapporto minimo non esiste una riga sola migliore delle altre, si apre un bivio. Il problema qui e' che fa differenza quale si sceglie. A differenza del caso MVE, qui la soluzione non e' garantita a prescindere dalla scelta della variabile uscente.
+E' possibile che il metodo del simplesso, a causa di una scelta "errata" in questa situazione, si riconduca ad un loop perpetuo in cui la funzione obiettivo resta costante.
+
+\paragraph{Nessuna Variabile Uscente}
+
+Se non esistono coefficienti strettamente positivi in una colonna eletta a variabile entrante, il problema PL e' illimitato e non ha soluzioni ottimali.
+
+\paragraph{Molteplici Soluzioni Ottimali}
+
+Puo' capitare che dopo l'arresto dell'algoritmo dovuto al ritrovo di una soluzione ottimale, sia possibile procedere oltre con il metodo del simplesso trovando una ulteriore soluzione ottimale diversa dalla precedente.
+Visto che la regione obiettivo e' un poliedro convesso, se esistono almeno due soluzioni ottimali, le soluzioni ottimali esistono e sono infinite. Sono Tutte quelle comprese nel segmento delimitato dalle due trovate in precedenza.
