@@ -170,4 +170,28 @@
     La soluzione di base corrente e' <$x_1$,$x_2$,$x_3$,$x_4$> = <$\frac 2 3$,$\frac 4 3$,0,0> \\
     Quindi una soluzione al problema PL e' <$x_1$,$x_2$> = <$\frac 2 3$,$\frac 4 3$>\*
 
+    Ad ogni modo, siccome una delle variabili non di base ha coefficiente 0 in prima posizione e' possibile continuare con le iterazioni per individuare una ulteriore soluzione ottimale al problema PL. \\
+
+    Selezionando la colonna $x_4$, l'unica riga con coefficiente positivo e' la riga 2. Quindi moltiplico la stessa per l'inverso del numero pivot: $(\frac 1 3)^{-1} = 3$.
+    Successivamente ricalcolo le altre righe di conseguenza.
+
+    Risulta:
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
+            \hline
+            base & Z & $x_1$ & $x_2$ & $x_3$ & $x_4$ & b\\
+            \hline
+            Z & 1 & 0 & 0 & 1 & 0 & 2\\
+            2 & 0 & 1 & 1 & 1 & 0 & 2\\
+            4 & 0 & 3 & 0 & 1 & 1 & 2\\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    \paragraph{iterazione 3}
+
+    La prima riga non contiene piu' valori negativi, l'algoritmo del simplesso si arresta. \\
+    La soluzione di base corrente e' <$x_1$,$x_2$,$x_3$,$x_4$> = <0,2,0,2> \\
+    Quindi un'altra soluzione al problema PL e' <$x_1$,$x_2$> = <0,2>\*
 \end{document}
