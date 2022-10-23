@@ -1,0 +1,199 @@
+\chapter{Problema Knapsack}
+\section{Introduzione}
+
+Il problema dello zaino o Knapsack, e' un problema di ottimizzazione combinatoria che prevede di trovare un'opportuna composizione di multiinsieme con peso inferiore o uguale alla capacita' fissata affinche' il valore (o premio) totale sia ottimale (il massimo possibile).
+Si hanno: \\
+
+\begin{itemize}
+    \item $N$ oggetti con un peso $w_{i}$ e un valore $c_{i}$.
+    \item il peso massimo $W$ sopportabile dallo zaino.
+    \item la quantita' di oggetto i-esimo $x_i$ inserito nello zaino.
+\end{itemize}
+
+Di questo problema esistono varianti che fissano ulteriori vincoli sul multiinsieme.
+
+\paragraph{Knapsack Senza Limiti}
+
+In questa versione lo zaino puo' contenere un oggetto in una quantita' $x_i \geq 0$ a piacere e illimitata superiormente.
+
+\paragraph{Knapsack Con Limiti}
+
+Ad ogni elemento i-esimo e' associata una disponibilita' massima $d_i \geq 0$ tale che $x_i \leq d_i$.
+
+\paragraph{Knapsack 0-1}
+
+I limiti di disponibilita' degli oggetti sono binari, ovvero $d_i = 1$.
+
+\chapter{Knapsack Senza Limiti}
+
+\section{Ragionamento}
+
+\paragraph{Intuizione}
+
+Si riduce il problema al cercare il massimo valore della soluzione. \\
+Quindi ragiono in termini di capacita' $k \leq W$ dello zaino con $A(k)$ la soluzione del problema ridotto con massimo peso $k$. \\
+Si puo' quindi ragionevolmente pensare che se k = 0 allora A(k) = 0. \\
+E' naturale pensare che $\forall j \leq k \mid A(k) \geq A(j)$. \\
+D'altra parte se $A(k) > 0$ allora $\exists j \in [1,N]$ tale che $w_j \leq k \land A(k) = A(k-w_j) + c_j$. \\
+Questo implica ovviamente anche che se $A(k) = A(k-w_j) + c_j$ allora $\forall i \in [1,N] \mid w_i \leq k \Rightarrow A(k-w_j) + c_j \geq A(k-w_i) + c_i$. \\
+Di conseguenza posso impostare la soluzione $A(k)$ ricorsivamente rispetto a tutti i pesi $w_j \leq k$ e adoperare la sottosoluzione migliore.
+
+\paragraph{Caso Base}
+
+\[
+    \begin{cases}
+        \text{$0$} & \text{$k = 0$}
+    \end{cases}
+\]
+
+\paragraph{Caso Ricorsivo}
+
+\[
+    \begin{cases}
+        \text{$max(\{\forall j \in [1,N] \land w_j \leq k \mid A(k - w_j) + c_j\})$} & \text{$k > 0$}
+    \end{cases}
+\]
+
+\paragraph{Caso Generale}
+
+\[
+    \begin{cases}
+        \text{$0$} & \text{$k = 0$} \\
+        \text{$max(\{\forall j \in [1,N] \land w_j \leq k \mid A(k - w_j) + c_j\})$} & \text{$k > 0$}
+    \end{cases}
+\]
+
+\newpage
+
+\section{Procedura PD}
+
+Detti $X$ i pesi, $Y$ i valori, $W$ la capacita' massima.
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{KS}{$X, Y, W$}
+            \State $A[0] \gets 0$
+            \For{$k = 1$ to $W$}
+                \State $max \gets 0$
+                \For{$j = 0$ to $N$}
+                    \If{$x_j \leq k \land A[k - x_j] + y_j > max$}
+                        \State $max \gets A[k - x_j] + y_j$
+                    \EndIf
+                \EndFor
+                \State $A[k] \gets max$
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Ricostruzione}
+
+Per ricostruire il Knapsack e' sufficiente mantenere uno storico dei passi e seguire il percorso a partire da $A[W]$.
+In alternativa si puo' simulare la ricorsione top-down con $A[i]$ al posto della chiamata ricorsiva.
+
+\paragraph{Complessita'}
+
+La complessita' temporale e' $O(N \cdot W)$.
+Questa complessita' temporale e' pseudo-polinomiale perche' $W$ e' proporzionale alla sua lunghezza in bit.
+
+\chapter{Knapsack 0-1}
+
+\section{Ragionamento}
+
+Oltre a iterare sul peso a disposizione e' utile iterare sulla varieta' degli oggetti a disposizione. \\
+
+Detti quindi $i \in [0, N]$, $j \in [0, k]$, $A(i, j)$ e' la soluzione con $i$ oggetti e capacita' massima $j$. \\
+Ovviamente $j = 0 \lor i = 0 \Rightarrow A(i, j) = 0$. \\
+Naturalmente se $w_i > j$ allora $A(i, j) = A(i - 1, j)$. \\
+Se invece $w_i \leq j$ le uniche opzioni possibili sono di prendere o non prendere l'oggetto. \\
+Se $i \in Knapsack$ allora $A(i, j) = A(i - 1, j - w_i) + c_i$, altrimenti $A(i, j) = A(i - 1, j)$. \\
+Per stabilirlo e' sufficiente prelevare la sottosoluzione migliore, ovvero il valore totale piu' grande.
+
+\paragraph{Caso Base}
+
+\[
+    \begin{cases}
+        \text{$0$} & \text{$i = 0 \lor j = 0$}
+    \end{cases}
+\]
+
+\paragraph{Caso Ricorsivo}
+
+\[
+    \begin{cases}
+        \text{$A(i - 1, j)$} & \text{$w_i > j$} \\
+        \text{$A(i - 1, j - w_i) + c_i$} & \text{$w_i \leq j \land A(i - 1, j - w_i) + c_i \geq A(i - 1, j)$} \\
+        \text{$A(i - 1, j)$} & \text{$w_i \leq j \land A(i - 1, j - w_i) + c_i < A(i - 1, j)$}
+    \end{cases}
+\]
+
+\paragraph{Caso Generale}
+
+\[
+    \begin{cases}
+        \text{$0$} & \text{$i = 0 \lor j = 0$} \\
+        \text{$A(i - 1, j)$} & \text{$w_i > j$} \\
+        \text{$A(i - 1, j - w_i) + c_i$} & \text{$w_i \leq j \land A(i - 1, j - w_i) + c_i \geq A(i - 1, j)$} \\
+        \text{$A(i - 1, j)$} & \text{$w_i \leq j \land A(i - 1, j - w_i) + c_i < A(i - 1, j)$}
+    \end{cases}
+\]
+
+\newpage
+
+\section{Procedura PD}
+
+Detti $X$ i pesi, $Y$ i valori, $W$ la capacita' massima.
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{INIZIALIZZA}{$N, W$}
+            \For{$i = 0$ to $N$}
+                \State $M[i][0] \gets 0$
+            \EndFor
+            \For{$j = 0$ to $W$}
+                \State $M[0][j] \gets 0$
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{KS}{$X, Y, W$}
+            \State INIZIALIZZA($N, W$)
+            \For{$i = 0$ to $N$}
+                \For{$j = 0$ to $W$}
+                    \If{$x_i \leq j$}
+                        \If{$M[i - 1][j - x_i] + y_i \geq M[i - 1][j]$}
+                            \State $M[i][j] \gets M[i - 1][j - x_i] + y_i$
+                        \Else
+                            \State $M[i][j] \gets M[i - 1][j]$
+                        \EndIf
+                    \Else
+                        \State $M[i][j] \gets M[i - 1][j]$
+                    \EndIf
+                \EndFor
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Ricostruzione}
+
+Per ricostruire il Knapsack e' sufficiente mantenere uno storico degli svincoli e seguire il percorso a partire da $M[N][W]$.
+In alternativa si puo' simulare la ricorsione top-down con $M[i][j]$ al posto della chiamata ricorsiva.
+
+\paragraph{Complessita'}
+
+La complessita' temporale e' $O(N \cdot W)$.
+Questa complessita' temporale e' pseudo-polinomiale perche' $W$ e' proporzionale alla sua lunghezza in bit.
+
+\chapter{Knapsack Con Limiti}
+
+\section{Ragionamento}
+
+TODO
+
+\section{Procedura PD}
+
+TODO

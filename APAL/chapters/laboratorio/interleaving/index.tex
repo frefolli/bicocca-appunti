@@ -1,0 +1,100 @@
+\chapter{Interleaving}
+Data: 18-10-2022
+
+\section{Interleaving}
+
+\paragraph{Introduzione}
+
+\paragraph{Esempio}
+
+X = <$C, I, A, O$>\\
+Y = <$M, A, M, M, A$>\\
+W = <$C, I, M, A, A, M, M, A, O$>\\
+
+W e' un interleaving. L'algoritmo deve decidere se W e' un interleaving.
+Nel problema si assume che $|W| = i+j$, perche' altrimenti la soluzione nel caso specifico $|W| \ne i+j$ sarebbe triviale.
+
+\paragraph{Ragionamento}
+
+Definisco i prefissi $X_i$, $Y_j$, $W_{i+j}$.
+Vero sse $W_{i+j}$ e' un interleaving.
+
+\paragraph{Caso Base}
+
+\[
+    \begin{cases}
+        \text{$true$} & \text{$i = 0 \land j = 0$} \\
+        \text{$false$} & \text{$i = 0 \land j > 0 \land y_j \ne w_{i+j}$} \\
+        \text{$false$} & \text{$j = 0 \land i > 0 \land x_i \ne w_{i+j}$} \\
+        \text{$false$} & \text{$i, j > 0 \land y_j \ne w_{i+j} \land x_i \ne w_{i+j}$}
+    \end{cases}
+\]
+
+\paragraph{Caso Ricorsivo}
+
+\[
+    \begin{cases}
+        \text{$IL(X_{i-1}, Y_j, W_{i+j-1})$} & \text{$i > 0 \land (j = 0 \lor y_j \ne w_{i+j}) \land x_i = w_{i+j}$} \\
+        \text{$IL(X_i, Y_{j-1}, W_{i+j-1})$} & \text{$j > 0 \land (i = 0 \lor x_i \ne w_{i+j}) \land y_j = w_{i+j}$} \\
+        \text{$IL(X_{i-1}, Y_j, W_{i+j-1})\lor IL(X_i, Y_{j-1}, W_{i+j-1})$} & \text{$i,j > 0 \land x_i = w_{i+j} \land y_j = w_{i+j}$}
+    \end{cases}
+\]
+
+\paragraph{Caso Generale}
+
+\[
+    \begin{cases}
+        \text{$true$} & \text{$i = 0 \land j = 0$} \\
+        \text{$false$} & \text{$i = 0 \land j > 0 \land y_j \ne w_{i+j}$} \\
+        \text{$false$} & \text{$j = 0 \land i > 0 \land x_i \ne w_{i+j}$} \\
+        \text{$false$} & \text{$i, j > 0 \land y_j \ne w_{i+j} \land x_i \ne w_{i+j}$} \\
+        \text{$IL(X_{i-1}, Y_j, W_{i+j-1})$} & \text{$i > 0 \land (j = 0 \lor y_j \ne w_{i+j}) \land x_i = w_{i+j}$} \\
+        \text{$IL(X_i, Y_{j-1}, W_{i+j-1})$} & \text{$j > 0 \land (i = 0 \lor x_i \ne w_{i+j}) \land y_j = w_{i+j}$} \\
+        \text{$IL(X_{i-1}, Y_j, W_{i+j-1})\lor IL(X_i, Y_{j-1}, W_{i+j-1})$} & \text{$i,j > 0 \land x_i = w_{i+j} \land y_j = w_{i+j}$}
+    \end{cases}
+\]
+
+\section{Procedura Bottom-Up}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{INIZIALIZZA}{$n, m$}
+            \State $M[0][0] \gets true$
+            \For{$i = 1$ to $n$}
+                \State $M[i][0] \gets x_i = w_i$
+            \EndFor
+            \For{$j = 1$ to $m$}
+                \State $M[0][j] \gets y_j = w_j$
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{IL}{$X, Y, W$}
+            \State INIZIALIZZA($n, m$)
+            \For{$i = 1$ to $n$}
+                \For{$j = 1$ to $m$}
+                    \If{$x_i = w_{i+j}$}
+                        \If{$y_j = w_{i+j}$}
+                            \State $M[i][j] \gets M[i-1][j] \lor M[i][j-1]$
+                        \Else
+                            \State $M[i][j] \gets M[i-1][j]$
+                        \EndIf
+                    \Else
+                        \If{$y_j = w_{i+j}$}
+                            \State $M[i][j] \gets M[i][j-1]$
+                        \Else
+                            \State $M[i][j] \gets false$
+                        \EndIf
+                    \EndIf
+                \EndFor
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Complessita'}
+
+La complessita' computazionale e' banalmente $\Theta(n \cdot m)$.
