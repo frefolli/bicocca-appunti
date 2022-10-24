@@ -233,11 +233,11 @@ La matrice $H$: $H[i][j] = P(i, j)$. \\
             \State $Z \gets 0$
             \For{$i = 1$ to $m$}
                 \For{$j = 1$ to $n$}
-                    \State $H[i][j] \gets (0,0)$
                     \If{$x_i \ne y_j$}
                         \State $C[i][j] \gets 0$
                     \Else
                         \State $max \gets 0$
+                        \State $H[i][j] \gets (0,0)$
                         \For{$h = 1$ to $i-1$}
                             \For{$k = 1$ to $j-1$}
                                 \If{$C[h][k] > max \land x_h < x_i$}
