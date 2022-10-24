@@ -31,6 +31,7 @@ class Variable {
 };
 
 class Equation;
+class Constraint;
 class Term {
     private:
         std::string var;
@@ -55,8 +56,17 @@ class Term {
 
         Equation operator+(Term term);
         Equation operator-(Term term);
+        Equation operator+(double known);
+        Equation operator+(double known);
+        Equation operator==(double known);
+        Equation operator>=(double known);
+        Equation operator<=(double known);
+        Constraint operator==(Term term);
+        Constraint operator>=(Term term);
+        Constraint operator<=(Term term);
 };
 
+class Constraint;
 class Equation {
     private:
         std::map<std::string, double>* vars = NULL;
@@ -154,9 +164,88 @@ class Equation {
                     result += "+ " + pair.first + " \\cdot " + std::to_string(pair.second) + " ";
             }
             if (known < 0)
-                return result + "- " + std::to_string(-known) + " = 0";
+                return result + "- " + std::to_string(-known);
             else
-                return result + "+ " + std::to_string(known) + " = 0";
+                return result + "+ " + std::to_string(known);
+        }
+
+        Constraint operator==(Equation other);
+        Constraint operator>=(Equation other);
+        Constraint operator<=(Equation other);
+};
+
+class ConstraintType {
+    private:
+        std::string type;
+        std::string repr;
+        void init(std::string type = "==") {
+            if (type == ">=") {
+                this->repr = "\\geq";
+            } else if (type == "<=") {
+                this->repr = "\\leq";
+            } else if (type == "==") {
+                this->repr = "=";
+            } else {
+                throw std::runtime_error("invalidConstraintTypeException: " + type + " is invalid");
+            }
+            this->type = type;
+        }
+    public:
+        ConstraintType(const char* type) {
+            this->init(std::string(type));
+        }
+
+        ConstraintType(std::string type = "==") {
+            this->init(type);
+        }
+        
+        std::string toString() {
+            return this->repr;
+        }
+
+        bool isEqual() {
+            return this->type == "==";
+        }
+
+        bool isGreater() {
+            return this->type == ">=";
+        }
+
+        bool isLower() {
+            return this->type == "<=";
+        }
+
+        std::string getType() {
+            return this->type;
+        }
+};
+
+class Constraint {
+    private:
+        Equation equation;
+        ConstraintType type;
+    public:
+        Constraint(Equation equation, ConstraintType) {
+            this->equation = equation;
+            this->type = type;
+        }
+
+        std::string toString() {
+            return this->equation.toString() + " " + this->type.toString() + "  0";
+        }
+
+        Constraint operator+(Constraint other) {
+            if (this->type.getType() != other.type.getType()) {
+                throw new std::runtime_error("constraintTypeMismatchException");
+            }
+            return Constraint(this->equation + other.equation, this->type);
+        }
+
+        Constraint operator-(Constraint other) {
+            if (this->type.getType() != other.type.getType()) {
+                throw new std::runtime_error("constraintTypeMismatchException");
+            }
+            return Constraint(this->equation - other.equation, this->type);
         }
 };
 
@@ -177,11 +266,51 @@ Equation Term::operator-(Term term) {
     return Equation(*(this)) - term;
 }
 
+Equation Term::operator+(double known) {
+    return Equation(*(this)) + known;
+}
+
+Equation Term::operator-(double known) {
+    return Equation(*(this)) - known;
+}
+
+Constraint Term::operator==(double known) {
+
+}
+
+Constraint Term::operator==(Term term) {
+}
+
+Constraint Equation::operator==(Equation other) {
+    Equation result = this->operator-(other);
+    return Constraint(result, "==");
+}
+
+Constraint Equation::operator>=(Equation other) {
+    Equation result = this->operator-(other);
+    return Constraint(result, ">=");
+}
+
+Constraint Equation::operator<=(Equation other) {
+    Equation result = this->operator-(other);
+    return Constraint(result, "<=");
+}
+
 int main () {
     try {
         Variable x = "x", y = "y", z = "z";
-        Equation f = x * 2 + y * 3 - z * 4 - 7;
-        std::cout << f.toString() << std::endl;
+        Constraint fA = x * 3 + 0 <= 0;
+        Constraint fB = x * 2 + y * 3 - z * 4 - 7 <= 0;
+        Constraint gA = z * 4 + 0 <= 0;
+        Constraint gB = x * 3 + y * 2 - z * 1 - 1 <= 0;
+        Constraint fx = fA - fB;
+        Constraint gx = gA - gB;
+        std::cout << "fA: " << fA.toString() << std::endl;
+        std::cout << "fB: " << fB.toString() << std::endl;
+        std::cout << "fx: " << fx.toString() << std::endl;
+        std::cout << "gA: " << gA.toString() << std::endl;
+        std::cout << "gB: " << gB.toString() << std::endl;
+        std::cout << "gx: " << gx.toString() << std::endl;
     } catch(std::runtime_error* error) {
         std::cout << error->what() << std::endl;
     }
