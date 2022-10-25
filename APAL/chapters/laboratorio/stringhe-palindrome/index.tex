@@ -73,3 +73,33 @@ In questo problema quindi non bastera' mantenere un indice per il prefisso, ma t
      \end{cases}
 \]
 
+\newpage
+
+\section{Procedura}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{PAL}{$S$}
+            \For{$i = n$ to $1$}
+                \For{$j = 1$ to $n$}
+                    \If{$i >= j$}
+                        \State $M[i][j] \gets 0$
+                    \ElsIf{$s_i = s_j$}
+                        \State $M[i][j] \gets M[i+1][j-1]$
+                    \ElsIf{$s_i \ne s_j$}
+                        \If{$M[i+1][j] \leq M[i][j-1]$}
+                            \State $M[i][j] \gets M[i+1][j] + 1$
+                        \Else
+                            \State $M[i][j] \gets M[i][j-1] + 1$
+                        \EndIf
+                    \EndIf
+                \EndFor
+            \EndFor
+            \State \Return $M[|S|][|S|]$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Complessita'}
+
+$T(n) = \Theta(n^2)$
