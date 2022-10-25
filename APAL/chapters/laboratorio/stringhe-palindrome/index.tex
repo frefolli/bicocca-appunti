@@ -103,3 +103,47 @@ In questo problema quindi non bastera' mantenere un indice per il prefisso, ma t
 \paragraph{Complessita'}
 
 $T(n) = \Theta(n^2)$
+
+\chapter{Esercizio Genoa}
+
+Determinare la lunghezza di una piu' lunga sottosequenza comune di $X$ e $Y$ con al massimo $R$ simboli colorati di rosso. $COL : \Sigma \rightarrow \{ rosso, blu \}$.
+Chiamo la sottosequenza in questione $SEQ(X, Y)$.
+
+\section{Ragionamento}
+
+\paragraph{Caso Base}
+
+\[
+    \begin{cases}
+        \text{$0$} & \text{$i = 0 \lor j = 0$} \\
+    \end{cases}
+\]
+
+\paragraph{Caso Ricorsivo}
+Uso una funzione $ROS : \Sigma^* \cdot \Sigma^* \rightarrow \mathbb{N}$, con \\*
+$ROS(X, Y) = |\{ \alpha \mid \forall \alpha \in SEQ(X, Y) \mid COL(\alpha) = rosso\}|$
+
+\[
+    \begin{cases}
+        \text{$GEN(X_{i-1}, Y_{j-1}) + 1$} & \text{$x_i = y_j \land (ROS(X_{i-1}, Y_{j-1}) < R \lor COL(x_i) \ne rosso)$} \\
+        \text{$GEN(X_{i-1}, Y_{j-1})$} & \text{$x_i = y_j \land ROS(X_{i-1}, Y_{j-1}) = R \land COL(x_i) = rosso$} \\
+        \text{$GEN(X_{i-1}, Y_j)$} & \text{$x_i \ne y_j \land GEN(X_{i-1}, Y_j) \geq GEN(X_i, Y_{j-1})$} \\
+        \text{$GEN(X_i, Y_{j-1})$} & \text{$x_i \ne y_j \land GEN(X_{i-1}, Y_j) < GEN(X_i, Y_{j-1})$} \\
+    \end{cases}
+\]
+
+\paragraph{Caso Generale}
+
+\[
+    \begin{cases}
+        \text{$0$} & \text{$i = 0 \lor j = 0$} \\
+        \text{$GEN(X_{i-1}, Y_{j-1}) + 1$} & \text{$x_i = y_j \land (ROS(X_{i-1}, Y_{j-1}) < R \lor COL(x_i) \ne rosso)$} \\
+        \text{$GEN(X_{i-1}, Y_{j-1})$} & \text{$x_i = y_j \land ROS(X_{i-1}, Y_{j-1}) = R \land COL(x_i) = rosso$} \\
+        \text{$GEN(X_{i-1}, Y_j)$} & \text{$x_i \ne y_j \land GEN(X_{i-1}, Y_j) \geq GEN(X_i, Y_{j-1})$} \\
+        \text{$GEN(X_i, Y_{j-1})$} & \text{$x_i \ne y_j \land GEN(X_{i-1}, Y_j) < GEN(X_i, Y_{j-1})$} \\
+    \end{cases}
+\]
+
+\chapter{Esercizio a Casa}
+
+
