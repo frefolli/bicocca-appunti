@@ -1,0 +1,75 @@
+\chapter{Stringhe Palindrome}
+Data 25-10-22
+
+\section{Introduzione}
+
+Data una stringa $S$ voglio il numero minimo di caratteri da aggiungere per renderla palindroma.
+I caratteri possono essere aggiunti in qualsiasi posizione.
+
+\paragraph{Esempio 1}
+
+$S$ = "" \\
+$PAL(S)$ = $0$. \\
+caso base
+
+\paragraph{Esempio 2}
+
+$S$ = "ADDA" \\
+$PAL(S)$ = $0$. \\
+E' gia' palindroma
+
+\paragraph{Esempio 3}
+
+$S$ = "ARDA" \\
+$PAL(S)$ = $1$. \\
+Non e' palindroma
+
+\section{Ragionamento}
+
+Un approccio banale e' accodare alla stringa di partenza l'inverso di se stessa.
+Ma cosi' si aggiungono $n$ caratteri. Io voglio il minimo numero possibile. \\
+
+Definisco una funzione $f : \Sigma^* \rightarrow \mathbb{N}$ \\*
+$\forall S \in \Sigma^*, f(S) = $ minimo numero di caratteri da aggiungere per rendere la stringa palindroma. \\
+
+$S = "" \Rightarrow f(S) = 0$ \\
+$\forall \alpha \in Sigma \mid S = \alpha \Rightarrow f(S) = 1$ \\
+
+Se $|S| > 1$ allora $S = \alpha \cdot S^{I} \cdot \beta$.
+Se $\alpha = \beta$ allora $f(S) = f(S^{I})$.
+Se invece $\alpha \ne \beta$,
+$f(S) = min(f(S^{I} \cdot \beta), f(\alpha \cdot S^{I})) + 1$. \\
+
+In questo problema quindi non bastera' mantenere un indice per il prefisso, ma trattandosi di sottostringhe avremo bisogno di due indici $i, j$.
+
+\section{Algoritmo}
+
+\paragraph{Caso Base}
+
+\[
+    \begin{cases}
+        \text{$0$} & \text{$i \geq j$}
+    \end{cases}
+\]
+
+\paragraph{Caso Ricorsivo}
+
+\[
+    \begin{cases}
+        \text{$f(S, i+1, j-1)$} & \text{$i < j \land s_i = s_j$} \\
+        \text{$f(S, i+1, j) + 1$} & \text{$i < j \land s_i \ne s_j \land f(S, i+1, j) \leq f(S, i, j-1)$} \\
+        \text{$f(S, i, j-1) + 1$} & \text{$i < j \land s_i \ne s_j \land f(S, i+1, j) > f(S, i, j-1)$}
+    \end{cases}
+\]
+
+\paragraph{Caso Generale}
+
+\[
+    \begin{cases}
+        \text{$0$} & \text{$i \geq j$} \\
+        \text{$f(S, i+1, j-1)$} & \text{$i < j \land s_i = s_j$} \\
+        \text{$f(S, i+1, j) + 1$} & \text{$i < j \land s_i \ne s_j \land f(S, i+1, j) \leq f(S, i, j-1)$} \\
+        \text{$f(S, i, j-1) + 1$} & \text{$i < j \land s_i \ne s_j \land f(S, i+1, j) > f(S, i, j-1)$}
+     \end{cases}
+\]
+
