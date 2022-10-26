@@ -2,9 +2,10 @@
 
 \section{Introduzione}
 
-Il problema Longest Zig-Zag Subsequence consiste nel trovare una sottosequenza piu' lunga tale che:
+Il problema Longest Zig-Zag Subsequence consiste nel trovare una sottosequenza piu' lunga tale che
 
 \[
+    \forall i \in [0, |LZS(X)|) \mid P :
     \begin{cases}
         \text{$z_i < z_{i+1}$} & \text{$dispari(i)$} \\
         \text{$z_i > z_{i+1}$} & \text{$pari(i)$}
@@ -13,4 +14,85 @@ Il problema Longest Zig-Zag Subsequence consiste nel trovare una sottosequenza p
 
 \section{Ragionamento}
 
+Ragiono per prefissi.
+Sia $X_{i}$ il prefisso i-esimo della sequenza di input.
+Sia $Z_k = LZS(X)$ e quindi $S_i = LZS(X_{i})$. \\
+
+Se $ 0\leq i < 2$ allora $Z_k = X_{i}$ e $S_i = X_i = Z_k$. \\
+Questo perche' banalmente LZS(<>) = <> e LZS(<$\alpha$>) = <$\alpha$>. \\
+
+Ora, sia dato $i \geq 2$. Mi rifaccio ai due sotto problemi $LZS_{p:i}$, $LZS_{d:i}$ che risolvono rispettivamente la LZS pari vincolata a terminare con $x_i$ e aLZS dispari vincolata a terminare con $x_i$. \\
+Assegno $S_{i} = max \{ LZS_{p:i}, LZS_{d:i} \}$.
+Trovare $LZS_{p:i}$ e $LZS_{d:i}$ a questo punto coincide con il cercare il $S_{i}$ compatibile piu' lungo. \\
+Quindi, $Z_k = max_{length} \{ S_{i} \mid \forall i \in [1,n] \}$.
+
+\paragraph{Caso Base}
+
+\[
+    \begin{cases}
+        \text{$<>$} & \text{$i = 0$} \\
+        \text{$<x_1>$} & \text{$i = 1$} \\
+    \end{cases}
+\]
+
+\paragraph{Caso Ricorsivo}
+
+\[
+    \begin{cases}
+        \text{$LZS_{p:i}$} & \text{$i > 1 \land z_{k} < x_i \land |LZS_{p:i}| > |LZS_{d:i}|$} \\
+        \text{$LZS_{d:i}$} & \text{$i > 1 \land z_{k} > x_i \land |LZS_{p:i}| \leq |LZS_{d:i}|$} \\
+    \end{cases}
+\]
+
+\newpage
+
 \section{Procedura}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{LZS}{$X$}
+            \State $C[1] \gets 1$
+            \State $H[1] \gets 0$
+            \State $lenLZS \gets 1$
+            \For{$i = 2$ to $n$}
+                \State $max_p, max_d, h_p, h_d \gets 0$
+                \For{$h = 1$ to $i-1$}
+                    \If{$pari(X[h]) \land C[h] > max_p \land x_h > x_i$}
+                        \State $max_p \gets C[h]$
+                        \State $h_p \gets h$
+                    \ElsIf{$dispari(X[h]) \land C[h] > max_d \land x_h < x_i$}
+                        \State $max_d \gets C[h]$
+                        \State $h_d \gets h$
+                    \EndIf
+                \EndFor
+                \If{$max_p > max_d$}
+                    \State $C[i] \gets max_p + 1$
+                    \State $H[i] \gets h_p$
+                \Else
+                    \State $C[i] \gets max_d + 1$
+                    \State $H[i] \gets h_d$
+                \EndIf
+                \If{$C[i] > lenLZS$}
+                    \State $lenLZS \gets C[i]$
+                \EndIf
+            \EndFor
+            \State \Return $lenLZS$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{RICOSTRUISCI}{$X$, $C$, $H$}
+            \State $i \gets $trova-indice$(C, lenLZS)$
+            \While{$i > 0$}
+                \State $print(x_{i})$
+                \State $i \gets H[i]$
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Complessita'}
+La ricerca del massimo sottoproblema richiede $T_s(n) = \O(n)$.
+Quindi l'algoritmo ha complessita' totale $T(n) = \O(n^2)$.
