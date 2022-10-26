@@ -13,8 +13,116 @@ Il problema Longest Common Zig-Zag Subsequence consiste nel trovare una sottoseq
 
 \section{Ragionamento}
 
-TODO
+E' una sovrastruttura del concetto base di LCS e al tempo stesso di LZS.
+Di conseguenza si replica la sue basi per il ragionamento di LZCS. \\
+
+Ragiono per prefissi.
+Siano $X_{i}$, $Y_{j}$ i prefissi i,j-esimi della sequenze di input.
+Sia $Z_k = LCZS(X, Y)$ e quindi $S_{i,j} = LCZS(X_{i}, Y_{j})$. \\
+
+Se $i = 0 \lor j = 0$ allora $Z_k = X_{i}$ e $S_i = X_i = Z_k$. \\
+Questo perche' banalmente: \\
+LCZS(<$\alpha$>, <>) = <> \\
+LCZS(<>, <$\alpha$>) = <> \\
+LCZS(<>, <>) = <>. \\
+
+Seguendo il ragionamento LCS e' vero che:
+
+\[
+    x_i \ne y_j \Rightarrow LCZS(X_i, Y_j) = max \{ LCZS(X_{i-1}, Y_{j}), LCZS(X_{i}, Y_{j-1}) \}
+\]
+
+Tuttavia sara' necessario sapere solo il suo opposto, ovvero quanto segue.
+
+Allo stesso modo di prima si asserisce che $x_i = y_j$ implica che $x_i$ sia un candidato per LCZS. \\
+
+Mi rifaccio ai due sotto problemi $LCZS_{p:i,j}$, $LCZS_{d:i,j}$ che risolvono rispettivamente
+la LCZS pari vincolata a terminare con $x_i = y_j$ e
+la LCZS dispari vincolata a terminare con $x_i = y_j$. \\
+
+Questo implica necessariamente che:
+\[
+    x_i \ne y_j \Rightarrow LCZS_{p:i,j} = LCZS_{d:i,j} = <>
+\]
+
+Quindi assegno $S_{i,j} = max \{ LCZS_{p:i,j}, LCZS_{d:i,j} \}$.
+Trovare $LCZS_{p:i,j}$ e $LCZS_{d:i,j}$ a questo punto coincide con il cercare il $S_{i,j}$ compatibile piu' lungo. \\
+Quindi, $Z_k = max_{length} \{ S_{i,j} \mid \forall i \in [1,n], j \in [1,m] \}$.
+
+\paragraph{Caso Base}
+
+\[
+    \begin{cases}
+        \text{$<>$} & \text{$i = 0 \lor j = 0$} \\
+    \end{cases}
+\]
+
+\paragraph{Caso Ricorsivo}
+
+\[
+    \begin{cases}
+        \text{$LCZS_{p:i}$} & \text{$i,j \geq 1 \land x_i = y_j \land z_{k} < x_i \land |LCZS_{p:i}| > |LCZS_{d:i}|$} \\
+        \text{$LCZS_{d:i}$} & \text{$i,j \geq 1 \land x_i = y_j \land z_{k} > x_i \land |LCZS_{p:i}| \leq |LCZS_{d:i}|$} \\
+    \end{cases}
+\]
+
+\newpage
 
 \section{Procedura}
 
-TODO
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{LCZS}{$X, Y$}
+            \State $lenLCZS \gets 0$
+            \For{$i = 1$ to $n$}
+                \For{$j = 1$ to $m$}
+                    \State $H[i][j] \gets (-1, -1)$
+                    \If{$x_i \ne y_j$}
+                        \State $C[i][j] \gets 0$
+                    \Else
+                        \State $max_p, max_d \gets 0$
+                        \State $head_p, head_d \gets (0, 0)$
+                        \For{$h = 1$ to $i-1$}
+                            \For{$k = 1$ to $i-1$}
+                                \If{$pari(C[h][k]) \land C[h][k] > max_p \land x_h > x_i$}
+                                    \State $max_p \gets C[h][k]$
+                                    \State $head_p \gets (h,k)$
+                                \ElsIf{$dispari(C[h][k]) \land C[h][k] > max_d \land x_h < x_i$}
+                                    \State $max_d \gets C[h][k]$
+                                    \State $head_d \gets (h,k)$
+                                \EndIf
+                            \EndFor
+                        \EndFor
+                        \If{$max_p > max_d$}
+                            \State $C[i][j] \gets max_p + 1$
+                            \State $H[i][j] \gets head_p$
+                        \Else
+                            \State $C[i][j] \gets max_d + 1$
+                            \State $H[i][j] \gets head_d$
+                        \EndIf
+                        \If{$C[i][j] > lenLCZS$}
+                            \State $lenLCZS \gets C[i][j]$
+                        \EndIf
+                    \EndIf
+                \EndFor
+            \EndFor
+            \State \Return $lenLZS$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{RICOSTRUISCI}{$X$, $C$, $H$}
+            \State $(i,j) \gets $trova-indici$(C, lenLZS)$
+            \While{$(i,j) \ne (0,0)$}
+                \State $print(x_{i})$
+                \State $(i,j) \gets H[i][j]$
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Complessita'}
+La ricerca del massimo sottoproblema richiede $T_s(n, n) = \O(n \cdot m)$.
+Quindi l'algoritmo ha complessita' totale $T(n) = \O(n^2 \cdot m^2)$.

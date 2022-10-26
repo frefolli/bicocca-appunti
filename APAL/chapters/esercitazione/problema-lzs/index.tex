@@ -21,7 +21,10 @@ Sia $Z_k = LZS(X)$ e quindi $S_i = LZS(X_{i})$. \\
 Se $ 0\leq i < 2$ allora $Z_k = X_{i}$ e $S_i = X_i = Z_k$. \\
 Questo perche' banalmente LZS(<>) = <> e LZS(<$\alpha$>) = <$\alpha$>. \\
 
-Ora, sia dato $i \geq 2$. Mi rifaccio ai due sotto problemi $LZS_{p:i}$, $LZS_{d:i}$ che risolvono rispettivamente la LZS pari vincolata a terminare con $x_i$ e aLZS dispari vincolata a terminare con $x_i$. \\
+Mi rifaccio ai due sotto problemi $LZS_{p:i}$, $LZS_{d:i}$ che risolvono rispettivamente
+la LZS pari vincolata a terminare con $x_i$ e
+la LZS dispari vincolata a terminare con $x_i$. \\
+
 Assegno $S_{i} = max \{ LZS_{p:i}, LZS_{d:i} \}$.
 Trovare $LZS_{p:i}$ e $LZS_{d:i}$ a questo punto coincide con il cercare il $S_{i}$ compatibile piu' lungo. \\
 Quindi, $Z_k = max_{length} \{ S_{i} \mid \forall i \in [1,n] \}$.
@@ -57,10 +60,10 @@ Quindi, $Z_k = max_{length} \{ S_{i} \mid \forall i \in [1,n] \}$.
             \For{$i = 2$ to $n$}
                 \State $max_p, max_d, h_p, h_d \gets 0$
                 \For{$h = 1$ to $i-1$}
-                    \If{$pari(X[h]) \land C[h] > max_p \land x_h > x_i$}
+                    \If{$pari(C[h]) \land C[h] > max_p \land x_h > x_i$}
                         \State $max_p \gets C[h]$
                         \State $h_p \gets h$
-                    \ElsIf{$dispari(X[h]) \land C[h] > max_d \land x_h < x_i$}
+                    \ElsIf{$dispari(C[h]) \land C[h] > max_d \land x_h < x_i$}
                         \State $max_d \gets C[h]$
                         \State $h_d \gets h$
                     \EndIf
