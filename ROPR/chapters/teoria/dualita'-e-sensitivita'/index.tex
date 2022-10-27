@@ -1,3 +1,154 @@
-\chapter{Teoria della Dualità e Analisi di Sensitività}
+\chapter{Teoria della Dualita' e Analisi di Sensitivita'}
 
-TODO
+\paragraph{Instroduzione}
+
+Ogni problema di programmazione lineare ha associato un altro problema di programmazione lineare chiamato \textbf{duale}.
+E' utile in programmazione lineare studiare il rapporto tra il problema duale e il problema originale (chiamato \textbf{primale}).
+I \textbf{prezzi ombra} sono forniti dalla soluzione ottimale del problema duale.
+Ma esistono ulteriori applicazioni della teoria della dualita'.
+
+\paragraph{Analisi di Sensitivita'}
+
+L'\textbf{analisi di sensitivita'} e' lo studio dell'effetto dei parametri del problema sulle soluzioni del problema stesso.
+Infatti molti dei parametri usati in un modello PL sono costruiti con stime di condizioni future o probabili.
+Dalla teoria del simplesso uno dei prerequisiti e' la conoscenza a priori con ragionevole certezza dei parametri del problema.
+Questo studio aiuta a verificare e affinare il modello.
+Inoltre alcuni parametri, come le risorse rese disponibili, sono scelte simil-arbitrarie che vengono gestite dal compartimento manageriale, quindi sono anch'esse perfettibili sotto ogni punto di vista.
+
+\paragraph{Problema Duale}
+
+Prima di tutto puo' essere utile un confronto visivo tra il \textbf{primale} e il relativo \textbf{duale}:
+
+\begin{align*}
+    Primale &  &  & Duale \\
+    max \; Z &= \Sigma ^ n _ {j=1} c_j \cdot x_j &
+    min \; Z &= \Sigma ^ m _ {i=1} b_i \cdot y_i \\
+    \Sigma ^ n _ {j=1} a_{ij} \cdot x_{j} \leq b_{i} \; \; & \forall i \in [1,m] &
+    \Sigma ^ m _ {i=1} a_{ij} \cdot y_{i} \leq c_{j} \; \; & \forall j \in [1,n] \\
+    x_j \geq 0 \; \; & \forall j \in [1,n] &
+    y_i \geq 0 \; \; & \forall i \in [1,m] \\
+\end{align*}
+
+Come si puo' notare, se il problema primale e' di massimo, il duale e' di minimo e vice versa.
+I coefficienti del primale sono i termini noti del duale e i termini noti del primale sono i coefficienti del duale.
+I coefficienti di ogni variabile nei vincoli del primale corrisponde a un coefficiente del vincolo del duale.
+Da notare l'uso di simboli uguali per indicare lo spostamento di variabili. \\
+
+Da un punto di vista puramente matematico, la matrice del duale e' composta in modo tale da fare supporre che se si sia calcolata la trasposta della matrice del problema primale, infatti:
+
+\begin{center}
+    \begin{tabular}{||c c c c c c c||}
+        \hline
+        & $x_1$ & $x_2$ & ... & $x_n$ & & \\
+        \hline
+        \hline
+        $y_{1}$ & $a_{11}$ & $a_{12}$ & ... & $a_{1n}$ & $\leq$ & $b_{1}$ \\
+        \hline
+        $y_{2}$ & $a_{21}$ & $a_{22}$ & ... & $a_{2n}$ & $\leq$ & $b_{2}$ \\
+        \hline
+        ... & ... & ... & ... & ... & ... & ... \\
+        \hline
+        $y_{m}$ & $a_{m1}$ & $a_{m2}$ & ... & $a_{mn}$ & $\leq$ & $b_{m}$ \\
+        \hline
+        & VI & VI & ... & VI & & \\
+        \hline
+        & $c_{1}$ & $c_{2}$ & ... & $c_{n}$ & & \\
+        \hline
+    \end{tabular}
+\end{center}
+
+Nella risoluzione con forma tabellare i valori delle variabili slack in riga 0 nel problema primale equivale alla soluzione del problema duale e vice versa.
+
+\paragraph{Proprieta' di Dualita' Debole}
+fonte: Teoria della Dualita' - slide prof Stella \\
+
+se x è una soluzione ammissibile per il problema primale, e y è una soluzione ammissibile per il corrispondente problema duale, allora vale la seguente diseguaglianza:
+\[
+    cx \leq yb
+\]
+
+\paragraph{Proprieta' di Dualita' Forte}
+
+se $x^*$ è una soluzione ottimale per il problema primale, e $y^*$ è una soluzione ottimale per il corrispondente problema duale, allora vale la seguente eguaglianza:
+\[
+    cx^* = y^*b
+\]
+
+\paragraph{Considerazioni}
+
+Queste due proprietà, se considerate insieme, implicano che la diseguaglianza vale per soluzioni ammissibili se una o entrambe non sono ottimali per i corrispondenti problemi, l’uguaglianza vale solo se entrambe le soluzioni sono ottimali.
+\[
+    cx < yb
+\]
+
+Ad ogni iterazione, il metodo del simplesso trova una specifica coppia di soluzioni per i due problemi, dove la soluzione del primale è ammissibile mentre quella del duale non è ammissibile, fatta eccezione per l’ultima iterazione, quella che vede l’arresto del metodo del simplesso.
+
+\newpage
+
+\paragraph{Prolog Time}
+Pericolo fallacia logica!
+
+Per comodita' chiamo: \\
+ammissibile(x) = f(x) \\
+ottimale(x) = g(x) \\
+
+\[
+f(x) \land f(y) \Leftrightarrow cx < yb \lor cx = yb
+\]
+\[
+f(x) \land g(x) \land f(y) \land g(y) \Leftrightarrow cx = yb
+\]
+
+\[ A = \{ f(x), f(y), \neg g(x), \neg g(y) \} \]
+\[ B = \{ f(x), f(y), \neg g(x), g(y) \} \]
+\[ C = \{ f(x), f(y), g(x), \neg g(y) \} \]
+
+Definisco Modus Ponens = MP = $[ (p \rightarrow q) \land p]\vdash q$
+
+\subparagraph{A}
+
+Per A, applico $MP$:
+\[
+    (f(x) \land f(y) \Leftrightarrow cx < yb \lor cx = yb) \land (f(x) \land f(y) \land \neg g(x) \land \neg g(y)) \vdash cx < yb \lor cx = yb
+\]
+\[
+    (f(x) \land g(x) \land f(y) \land g(y) \Leftrightarrow cx = yb) \land (f(x) \land f(y) \land \neg g(x) \land \neg g(y)) \vdash \neg (cx = yb)
+\]
+
+Quindi una semplice risoluzione:
+
+\[
+    ((cx < yb) \lor (cx = yb)) \land \neg (cx = yb) \vdash (cx < yb)
+\]
+
+\subparagraph{B}
+
+Per A, applico $MP$:
+\[
+    (f(x) \land f(y) \Leftrightarrow cx < yb \lor cx = yb) \land (f(x) \land f(y) \land \neg g(x) \land g(y)) \vdash cx < yb \lor cx = yb
+\]
+\[
+    (f(x) \land g(x) \land f(y) \land g(y) \Leftrightarrow cx = yb) \land (f(x) \land f(y) \land \neg g(x) \land g(y)) \vdash \neg (cx = yb)
+\]
+
+Quindi una semplice risoluzione:
+
+\[
+    ((cx < yb) \lor (cx = yb)) \land \neg (cx = yb) \vdash (cx < yb)
+\]
+
+\subparagraph{A}
+
+Per A, applico $MP$:
+\[
+    (f(x) \land f(y) \Leftrightarrow cx < yb \lor cx = yb) \land (f(x) \land f(y) \land g(x) \land \neg g(y)) \vdash cx < yb \lor cx = yb
+\]
+\[
+    (f(x) \land g(x) \land f(y) \land g(y) \Leftrightarrow cx = yb) \land (f(x) \land f(y) \land g(x) \land \neg g(y)) \vdash \neg (cx = yb)
+\]
+
+Quindi una semplice risoluzione:
+
+\[
+    ((cx < yb) \lor (cx = yb)) \land \neg (cx = yb) \vdash (cx < yb)
+\]
