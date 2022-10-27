@@ -152,3 +152,30 @@ Quindi una semplice risoluzione:
 \[
     ((cx < yb) \lor (cx = yb)) \land \neg (cx = yb) \vdash (cx < yb)
 \]
+
+\paragraph{Tasformazione Primale - Duale}
+
+Per trovare il duale si consiglia di rifarsi alla seguente tabella:
+
+\begin{center}
+    \begin{tabular}{||c | c||}
+        \hline
+        Primale & Duale \\
+        \hline
+        \hline
+        Min Z(x) = $c^Tx$ & Max W(y) = $b^Ty$ \\
+        \hline
+        $a^T_ix \geq b_i$ & $y_i \geq 0$ \\
+        \hline
+        $a^T_ix \leq b_i$ & $y_i \leq 0$ \\
+        \hline
+        $a^T_ix = b_i$ & $y_i$ libera \\
+        \hline
+        $x_j \geq 0$ & $y^TA_j \leq c_j$ \\
+        \hline
+        $x_j \leq 0$ & $y^TA_j \geq c_j$ \\
+        \hline
+        $x_j$ libera & $y^TA_j = c_j$ \\
+        \hline
+    \end{tabular}
+\end{center}
