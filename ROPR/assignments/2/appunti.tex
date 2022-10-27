@@ -276,42 +276,59 @@
         x_2 & \leq 0
     \end{align*}
 
-    Cambio l'operatore da $Max$ a $Min$ cambiando il segno della funzione obiettivo.
-
+    Lo porto in forma standard invertendo il primo vincolo e creando la variabile $y = -x_2$
+    
     \begin{align*}
-        Min \; Z = -x_1 &+ 2 x_2 \\
-        x_1 - x_2 & \geq 1 \\
-        x_1 - 2 x_2 & \leq 6 \\
-        2 x_1 - x_2 & \leq 6 \\
-        x_1 & \geq 0 \\
-        x_2 & \leq 0
+        Max \; Z = x_1 &+ 2 y \\
+        -x_1 - y & \leq -1 \\
+        x_1 + 2 y & \leq 6 \\
+        2 x_1 + y & \leq 6 \\
+        x_1, y & \geq 0
     \end{align*}
 
     Si costruisce il problema duale.
     I coefficienti della funzione obiettivo del primale diventano i termini noti dei vincoli del duale.
     I termini noti dei vincoli del primale diventano i coefficienti della funzione obiettivo del duale.
-    L'operazione di ottimizzazione diventa $Max$.
-
+    L'operazione di ottimizzazione diventa $Min$.
+    
     \begin{align*}
-        Max \; Z = a_1 + 6 a_2 &+ 6 a_3 \\
-        a_1 + a_2 + 2 a_3 &\leq -1 \\
-        - a_1 - 2 a_2 - a_3 &\geq 2 \\
-        a_1 &\geq 0 \\
-        a_2, a_3 &\leq 0
+        Min \; W = - a + 6 b &+ 6 c \\
+        -a + b + 2 c \geq 1 \\
+        -a + 2 b + c \geq 2 \\
+        a, b, c & \geq 0
     \end{align*}
 
-    Cambio il segno del primo vincolo funzionale e creo le variabili $b = -a_2$ e $c = -a_3$.
-    Quello che risulta e' il problema duale al problema primale.
-
-    \begin{align*}
-        Max \; Z = a_1 - 6 b &- 6 c \\
-        - a_1 + b + 2 c &\geq 1 \\
-        - a_1 + 2 b + c &\geq 2 \\
-        a_1, b, c &\geq 0
-    \end{align*}
-
+    Quello qua sopra e' il duale del problema primale.
+    \newpage
     \section{Calcolare la soluzione ottima del duale utilizzando la teoria della dualita'.}
     
-    TODO
+    Visto che il problema primale ha soluzione ed e' limitato, secondo il Teorema di Dualita' sia la proprieta' debole della dualita' che la proprietà forte della dualita' sono applicabili.
+    Pertanto la soluzione del problema primale e' ricavabile dai coefficienti delle variabili slack in riga 0 del tableau risolto per il problema primale.
+    In questo caso l'algoritmo del simplesso trova due righe 0 ottimali:
+
+    \begin{center}
+        \begin{tabular}{||c c c c c c c c||}
+            \hline
+            base & Z & $x_1$ & $y$ & $x_3$ & $x_4$ & $x_5$ & b \\
+            \hline
+            \hline
+            Z     & 1 & 0 & 0 & 0 &            1 &            0 &  6 \\
+            \hline
+        \end{tabular}
+    \end{center}
+    e
+    \begin{center}
+        \begin{tabular}{||c c c c c c c c||}
+            \hline
+            base & Z & $x_1$ & $y$ & $x_3$ & $x_4$ & $x_5$ & b \\
+            \hline
+            \hline
+            Z     & 1 & 0 & 0 & 0 &            1 &            0 &  6 \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    In entrambe le variabili slack hanno coefficienti (0, 1, 0) quindi si conclude che sono queste le soluzioni (l'unica essendo identiche) del problema duale.
+    Queste sono anche i prezzi ombra per il problema primale.
 
 \end{document}
