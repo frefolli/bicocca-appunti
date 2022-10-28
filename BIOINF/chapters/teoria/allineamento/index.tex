@@ -1,0 +1,122 @@
+\chapter{Allineamento Sequenziale}
+
+\section{Somiglianza di Sequenze}
+
+Si vuole sapere quanto due sequenze siano simili. In genomica questo ha particolarmente peso perche' il Dogma Centrale della Biologia Molecolare enuncia che se due sequenze sono simili in struttura, hanno funzione simile.
+Inoltre questo puo' essere utile per individuare somiglianza tra piu' sequenze per osservare la catena evolutiva.
+
+La \textbf{Distanza di Hamming} e' il numero di caratteri differenti nella stessa posizione di due stringhe.
+Per distanza invatti si intende una funzione $f : S \times S \rightarrow \mathbb{R}^+$ con $S \times S$ insieme di coppie di stringhe.
+Il calcolo del valore di tale funzione e' molto semplice, ed e' possibile usarla per confrontare la somiglianza di due stringhe o sequenze.
+
+\paragraph{Proprieta'}
+
+\begin{enumerate}
+    \item Riflessivita': $d(x,y) = 0 \Leftrightarrow x = y$
+    \item Simmetria: $d(x,y) = d(y,x)$
+    \item Disuguaglianza triangolare: $d(x,y) + d(y,z) \leq d(x,z)$
+\end{enumerate}
+
+Questa stima di somiglianza ha pero' un importante difetto: e' definito solo tra due sequenze di uguale lunghezza.
+
+\section{Allineamento}
+
+Se due stringhe avessero la stessa lunghezza si potrebbe fare un confronto in colonna, ma non essendo cosi' bisogna ricondursi a questo caso.
+Per riempire i buchi vengono inseriti degli spazi denotati da un simbolo $indel \notin \Sigma$.
+Questo simbolo indica sia un carattere inserito che uno cancellato.
+Ovviamente si pongono vincoli per assicurare il rispetto del Rasoio di Occam:
+
+\begin{itemize}
+    \item Non possono esistere colonne solo di $indel$
+    \item Le stringhe estese devono avere la stessa lunghezza
+\end{itemize}
+
+Esistono infiniti Allineamenti, ma non tutti hanno la stessa "qualita'", quindi si cerca l'ottimo.
+
+\section{Needleman-Wunsch}
+
+L'algoritmo usa le soluzioni dei sottoproblemi per trovare la soluzione del problema corrente.
+Essendo una astrazione del concetto di LCS, non deve stupire la sua somiglianza con esso.
+Si ragiona per prefissi, $M[i][j] = NW(X_i, Y_j)$.
+
+\[
+    M[i][j] =
+    \begin{cases}
+        \text{$0$} & \text{$i = 0 \land j = 0$} \\
+        \text{$M[i-1][0] + d(X[i], indel)$} & \text{$i > 0 \land j = 0$} \\
+        \text{$M[0][j-1] + d(indel, Y[j])$} & \text{$i = 0 \land j > 0$} \\
+        \text{
+            $
+                max 
+                \begin{cases}
+                    M[i-1][j-1] + d(X[i], Y[j]) \\
+                    M[i][j-1] + d(indel, Y[j]) \\
+                    M[i-1][j] + d(X[i], indel) \\
+                \end{cases}
+            $
+        } & \text{$i > 0 \land j > 0$}
+    \end{cases}
+\]
+
+\section{Allineamento locale}
+
+Nel caso in cui due sequenze abbiano una parte limitata simile e tutto il resto dei simboli diversi, il valore complessivo di somiglianza e' relativamente basso.
+L'Allineamento Globale non riuscirebbe a evidenziare questa somiglianza.
+
+Visto che lo scopo di questo confronto e' anche funzionale, avere due regioni fortemente simili e' interessante: si definisce \textbf{Allineamento Locale}.
+
+L'input e' lo stesso: due stringhe $X, Y$, una matrice di score $d$, ma l'algoritmo individua le sottostringhe $P, Q$ tali che $Allineamento(P, Q) \geq Allineamento(p, q) \forall p,q \in X, Y$.
+
+\paragraph{Smith-Waterman}
+E' una variante di Needleman-Wunsch
+
+Si ragiona per suffissi, $H[i][j] = SW(X[n-i:], Y[m-j:])$.
+
+\[
+    H[i][j] =
+    \begin{cases}
+        \text{$0$} & \text{$i = 0 \lor j = 0$} \\
+        \text{
+            $
+                max 
+                \begin{cases}
+                    0 \\
+                    H[i-1][j-1] + d(X[i], Y[j]) \\
+                    H[i-1][j] + d(X[i], indel) \\
+                    H[i][j-1] + d(indel, Y[j]) \\
+                \end{cases}
+            $
+        } & \text{$i > 0 \land j > 0$}
+    \end{cases}
+\]
+
+\section{Distanza di Edit}
+
+Si definisce \textbf{Distanza di Edit} la quantita di modifiche (sostituzione, cancellazione, inserimento) minimo per rendere uguale due stringhe $X,Y$.
+Si ragiona per prefissi, $M[i][j] = NW(X_i, Y_j)$.
+
+\[
+    H[i][j] =
+    \begin{cases}
+        \text{$0$} & \text{$i = 0 \lor j = 0$} \\
+        \text{$M[i][j]$} & \text{$i > 0 \lor j > 0 \land X[i] = Y[j]$} \\
+        \text{
+            $
+                min
+                \begin{cases}
+                    M[i-1][j] + 1 \\
+                    M[i][j-1] + 1 \\
+                    M[i-1][j-1] + 1 \\
+                \end{cases}
+            $
+        } & \text{$i > 0 \land j > 0 \land X[i] \neq Y[j]$}
+    \end{cases}
+\]
+
+\section{Allineamento con GAP}
+
+TODO
+
+\section{Allineamento con Banda}
+
+TODO

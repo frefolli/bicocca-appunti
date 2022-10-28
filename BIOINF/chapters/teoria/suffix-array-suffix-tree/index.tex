@@ -283,4 +283,33 @@ Quindi l'algoritmo ha una complessita' totale di $T(n) = O(n)$.
 
 \section{Range Minimum Query}
 
+Il problema Range Minimum Query consiste nel cercare il minimo tra due intervalli.
+Si ha in input un array $X$ con $|X| = n$.
+
+\subparagraph{Preprocessing}
+Si richiede di indicizzare $X$ in tempo $O(n \cdot log n)$.
+
+\subparagraph{Query}
+Quindi si puo' rispondere a $RMQ$ in tempo O(1).
+
+Il problema, dati $i,j \in [0, n)$, calcola il valore minimo compreso in $X[i:j]$ (estremi compresi).
+
+\paragraph{Preprocessing}
+Consiste nel calcolare gli intervalli e su essi calcolare il minimo.
+Si costruisce un array bidimensionale $A$ indicizzato da $x,y$ che conterra' il minimo della porzione del sotto array $X[x : x + 2^y - 1]$.
+L'ampiezza di ogni sotto array e' $2^y$, quindi vengono calcolati solo gli intervalli che corrispondono a una portenza di 2.
+Questa matrice ha $n \cdot log n$ elementi.
+
+\[
+    A[x][y] =
+    \begin{cases}
+        \text{$X[x]$} & \text{$y = 0$} \\
+        \text{$min(X[x][y-1], X[x+2^(y-1)][y-1])$} & \text{$y > 0$}
+    \end{cases}
+\]
+
+\paragraph{Query}
+
+\section{Longest Common Substring con Suffix Array}
+
 TODO
