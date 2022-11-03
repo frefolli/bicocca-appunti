@@ -1,0 +1,219 @@
+\chapter{Cenni Fondamentali}
+
+\section{Teoria Spicciola}
+
+\paragraph{Definizione}
+
+Un grafo e' un insieme di elementi detti nodi o vertici che possono essere collegati fra loro da linee chiamate archi o lati o spigoli.
+Si difinisce grafo una coppia ordinata G = (V , E) di insiemi, con V insieme dei nodi ed E insieme degli archi, tali che gli elementi di E siano coppie di elementi di V (da $E \subseteq (V \times V)$ segue in particolare che $|E| \leq |V \times V|$). \\
+
+Un cammino da $v_{i}$ a $v_{j}$ e' una sequenza finita di vertici $s \subseteq V$, con $s_1 = v_{i}$ e $s_{|s|} = v_{j}$, tali che $\forall i \in [1, |s|) \mid \exists e \in E \;\; con \;\; e = (s_{i}, s_{i+1})$. \\
+Un vertice $v_{j}$ si dice ragigungibile da un vertice $v_{i}$ se esiste un cammino da $v_{i}$ a $v_{j}$. \\
+La distanza di un vertice $v_{i}$ a un vertice $v_{j}$ e' il numero di archi su un cammino minimo da $v_{i}$ a $v_{j}$.
+
+\paragraph{Approfondimento}
+
+Un grafo e' una tripla (V, E, f), dove V e' detto insieme dei nodi, E e' detto insieme degli archi e f e' una funzione che associa ad ogni arco $e \in E$ due vertici $u, v \in V$ (in tal caso il grafo verra detto ben specificato). Se invece E e' un multiinsieme, allora si parla di multigrafo.
+\\
+Due vertici $u, v$ connessi da un arco $e$ prendono il nome di estremi dell'arco; l'arco $e$ viene anche identificato con la coppia formata dai suoi estremi (u, v). Se $E$ e' una relazione simmetrica allora si dice che il grafo e' non orientato (o indiretto), altrimenti si dice che e' orientato (o diretto).
+\\
+Un arco che ha due estremi coincidenti, ovvero un arco che connette un nodo con se stesso, si dice cappio. Un grafo non orientato, sprovvisto di cappi si dice grafo semplice. Lo scheletro $\mathrm {sk} (G)$ di G e' il grafo che si ottiene da G eliminandone tutti i cappi e sostituendone ogni multiarco con un solo arco avente gli stessi estremi.
+\\
+I vertici appartenenti a un arco o spigolo sono chiamati estremi, punti estremi o vertici estremi dell'arco. Un vertice può esistere in un grafo e non appartenere a un arco.
+
+\paragraph{Rappresentazione di Grafi}
+
+Su un calcolatore il grafo non viene rappresentato in forma di coppia ordinata $G = (V, E)$, ma utilizzando due strutture principali:
+
+\begin{itemize}
+    \item Liste di Adiacenza
+    \item Matrici di Adiacenza
+\end{itemize}
+
+Entrambe sono sufficienti a rappresentare sia grafi orientati che non orientati, semplicemente per quelli orientati necessiteranno di piccole modifiche per supportare l'indicazione di orientamento dell'arco.
+
+\paragraph{Algoritmi di Visita}
+
+Gli algoritmi che si approfondiscono in questo corso sono:
+
+\begin{itemize}
+    \item Breadth-First Search
+    \item Depth-First Search
+\end{itemize}
+
+\section{Liste di Adiacenza}
+
+In questa forma abbiamo per un grafo $G = (V, E)$, con $n = |V|$ e $m = |E|$, liste che contengono i vertici collegati all'i-esimo vertice:
+
+\[
+    L_{i} = \{ v_{j} \in V \mid \exists e \in E \;\; con \;\; e = (v_{i}, v_{j}) \}
+\]
+
+\paragraph{Uso di Memoria}
+
+La dimensione del sistema di liste e' impattato principalmente dal numero di archi, perche' e' proprio questo dato che viene rappresentato direttamente in memoria.
+Nel caso di grafi orientati l'uso di memoria e' $S(n) = \Theta(m)$.
+Nel caso di grafi non-orientati l'uso di memoria e' $S(n) = \Theta(2m)$, perche' devo rappresentare un arco non orientato sia dal punto di vista di $v_{i}$ che dal punto di vista di $v_{j}$.
+Le liste di adiacenza sono utili quindi per rappresentare in modo compatto i grafi sparsi (grafi in cui ci sono pochissimi archi rispetto al numero di nodi).
+
+\paragraph{Tempi di Esecuzione}
+
+Se voglio sapere se due vertici sono collegati da un arco devo scorrere tutta la lista di adiacenza del nodo i-esimo, quindi $T(n) = O(n)$.
+
+\section{Matrici di Adiacenza}
+
+Detto un grafo $G = (V, E)$, con $n = |V|$ e $m = |E|$, la sua matrice di adiacenza e' una Matrice $n \times n$ con funzione caratteristica $f : V \rightarrow \{0,1\}$, definita come:
+
+\[
+    f(i, j) = 
+    \begin{cases}
+        1 & \exists e \in E \land e = (v_{i}, v_{j}) \\
+        0 & altrimenti
+    \end{cases}
+\]
+
+Se gli archi sono pesati, si sceglie un valore $k$ che rappresenti l'inesistenza dell'arco e si usano $k$ al posto degli zeri, i pesi al posto degli uni nella funzione caratteristica.
+
+\paragraph{Uso di Memoria}
+
+L'uso di memoria e' immediato: $S(n) = \Theta(n^2)$.
+La matrice di adiacenza e' ottimale per rappresentare un grafo non-sparso, perche' ottimizza l'uso della memoria e i tempi di accesso (simil-hashmap).
+Se il grafico e' non-orientato la matrice e' simmetrica, quindi si potrebbe rappresentare anche solo i valori sopra la diagonale principale.
+
+\paragraph{Tempi di Esecuzione}
+
+Per scoprire se due nodi sono connessi e' sufficiente visitare la matrice nella cella $(i, j)$. Quindi $T(n) = \Theta(1)$
+
+\section{Breadth-First Search}
+
+Questo algoritmo esplora un grafo andando in ampiezza, ovvero considerando prima tutti i "figli" e solo dopo i sottoalberi dei figli. \\
+l'algoritmo BFS scopre tutti i vertici raggiungibili dal vertice sorgente. Ovvero genera un albero radicato nel nodo input contentente tutti i nodi raggiungibili da esso. \\
+Si supponga di avere a disposizione le liste di adiacenza del grafo G.
+Inoltre attribuisco ad ogni nodo un colore:
+
+\[
+    color[i] = 
+    \begin{cases}
+        bianco & \text{vertice non visitato}\\
+        grigio & \text{non visitato completamente}\\
+        nero & \text{gia' visitato}
+    \end{cases}
+\]
+
+Ho inoltre bisogno di mantere $parent[i]$, il predecessore del nodo $v_{i}$.
+Mantengo $distance[i]$, la distanza da $V_{i}$ a $V_{j}$.
+
+\newpage
+
+\section{Procedura BFS}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{BFS}{G, i}
+        \For{$j \in V \setminus$}
+            \State $color[j] \gets bianco$
+            \State $distance[j] \gets \infty$
+            \State $parent[j] \gets NIL$
+        \EndFor
+        \State $color[i] \gets grigio$ 
+        \State $distance[i] \gets 0$ 
+        \State $parent[i] \gets NIL$
+        \State $Queue \gets \{i\}$
+        \While{$Queue != \emptyset$}
+            \State $j = dequeue(Queue)$
+            \For{$k \in L_{j}$}
+                \If{$color[k] = bianco$}
+                    \State $color[k] = grigio$
+                    \State $parent[k] = j$
+                    \State $distance[k] = distance[j]$
+                    \State $enqueue(Queue, k)$
+                \EndIf
+            \EndFor
+            \State $color[j] \gets nero$ 
+        \EndWhile
+        \State $color[i] \gets nero$ 
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Tempi di Calcolo}
+
+$T(n) = \O(n + m)$
+
+\section{Depth-First Search}
+
+Questo algoritmo esplora un grafo "andando il piu' possibile in profondita'".
+
+Si supponga di avere a disposizione le liste di adiacenza.
+Assegno ad ogni vertice un colore:
+
+\[
+    color[i] = 
+    \begin{cases}
+        bianco & \text{vertice non visitato}\\
+        grigio & \text{non visitato completamente}\\
+        nero & \text{gia' visitato}
+    \end{cases}
+\]
+
+Ho inoltre bisogno di mantere $parent[i]$, il predecessore del nodo $v_{i}$.
+Mantengo anche $discover[i]$, il tempo di scoperta del vertice $v_{i}$.
+Mantengo anche $finish[i]$, il tempo di fine visita del vertice $v_{i}$.
+Queste informazioni restituiscono informazioni sulla relazione trai vari vertici del grafo. Sono utili per analisi post-esecuzione dell'algoritmo.
+
+\newpage
+
+\section{Procedura DFS}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{DFS}{G}
+            \For{$i = 1$ to $n$}
+                \State $color[i] \gets bianco$
+                \State $parent[i] \gets NIL$
+            \EndFor
+            \State $time \gets 0$
+            \For{$i = 1$ to $n$}
+                \If{$color[i] = bianco$}
+                    \State DFS-visit(G, i)
+                \EndIf
+            \EndFor
+         \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{DFS-visit}{G, i}
+            \State $time \gets Time + 1$
+            \State $disc[i] \gets time$
+            \State $color[i] \gets grigio$
+            \For{$j \in L_{i}$}
+                \If{$color[j] = bianco$}
+                    \State $parent[j] = i$
+                    \State DFS-visit(G, j)
+                \EndIf
+            \EndFor
+            \State $color[i] \gets nero$
+            \State $time \gets Time + 1$
+            \State $finish[i] \gets time$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Tempi di Calcolo}
+
+L'algoritmo DFS usa l'algoritmo DFS-visit su tutti i nodi che non sono stati scoperti.
+$T(n) = \Theta(n + m)$
+
+\chapter{All Pairs Shortest Path}
+
+\chapter{Floyd-Warshall APSP}
+
+\chapter{Kruskal}
+
+\chapter{Prim}
+
+\chapter{Dijkstra}
+
+\chapter{Bellman-Ford}
