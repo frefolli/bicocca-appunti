@@ -101,7 +101,6 @@ Inoltre attribuisco ad ogni nodo un colore:
 \]
 
 Ho inoltre bisogno di mantere $parent[i]$, il predecessore del nodo $v_{i}$.
-Mantengo $distance[i]$, la distanza da $V_{i}$ a $V_{j}$.
 
 \newpage
 
@@ -110,7 +109,7 @@ Mantengo $distance[i]$, la distanza da $V_{i}$ a $V_{j}$.
 \begin{algorithm}
     \begin{algorithmic}
         \Procedure{BFS}{G, i}
-        \For{$j \in V \setminus$}
+        \For{$j \in V \setminus v_{i}$}
             \State $color[j] \gets bianco$
             \State $distance[j] \gets \infty$
             \State $parent[j] \gets NIL$
