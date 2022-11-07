@@ -1,0 +1,29 @@
+\chapter{Problema KC}
+
+\section{Introduzione}
+
+il problema Knapsack Colorato e' una variante di Knapsack in cui ad ogni oggetto si associa un colore (rosso o blu) in cui la soluzione deve contenere al piu' oggetti rossi.
+
+\section{Ragionamento}
+
+\paragraph{Definizione del generico sottoproblema}
+Sottoproblema $d_{i,c,r} \Rightarrow KC(X_i, c \leq C, r \leq R)$
+
+\paragraph{Individuazione del caso base}
+
+per $i = 0, c \geq 0, r \geq 0$, $d_{i,c,r}$ = 0 \\
+
+per $i \geq 0, c = 0, r \geq 0$, $d_{i,c,r}$ = 0 \\
+
+\paragraph{Individuazione del caso ricorsivo}
+
+per $i > 0, c > 0, r \geq 0, w_i > c$, $d_{i,c,r}$ = $d_{i-1,c,r}$\\
+
+per $i > 0, c > 0, r = 0, col(i) = rosso$, $d_{i,c,r}$ = $d_{i-1,c,r}$\\
+
+per $i > 0, c > 0, r > 0, col(i) = rosso$, $d_{i,c,r}$ = max ($d_{i-1,c-w_i,r-1} + w_i$, $d_{i-1,c,r}$) \\
+
+per $i > 0, c > 0, r \geq 0, col(i) \neq rosso$, $d_{i,c,r}$ = max ($d_{i-1,c-w_i,r} + w_i$, $d_{i-1,c,r}$) \\
+
+\section{Procedura}
+

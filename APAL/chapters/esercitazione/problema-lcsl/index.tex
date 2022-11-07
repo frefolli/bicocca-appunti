@@ -1,0 +1,58 @@
+\chapter{Problema LCSL}
+
+\section{Introduzione}
+
+LCSL sta per Longest Common Subsequence $\leq$ L. E' il problema decisionale che intende stabilire se la LCS tra X e Y ha lunghezza al piu' L.
+
+\section{Ragionamento}
+
+per $i > 0, j > 0, l = 0, x_i = y_j$, $c_{i,j,l}$ = false \\
+
+per $i = 0, j > 0, l \geq 0$, $c_{i,j,l}$ = true \\
+
+per $i > 0, j = 0, l \geq 0$, $c_{i,j,l}$ = true \\
+
+per $i > 0, j > 0, l > 0, x_i = y_j$, $c_{i,j,l}$ = $c_{i-1,j-1,l-1}$ \\
+
+per $i > 0, j > 0, l \geq 0, x_i \neq y_j$, $c_{i,j,l}$ = $c_{i-1,j,l} \land c_{i,j-1,l}$ \\
+
+\[
+    c_{i,j,l} = 
+    \begin{cases}
+        false & i > 0 \land j > 0 \land l = 0 \land x_i = y_j \\
+        true & i = 0 \land j > 0 \land l \geq 0 \\
+        true & i > 0 \land j = 0 \land l \geq 0 \\
+        c_{i-1,j-1,l-1} & i > 0 \land j > 0 \land l > 0 \land x_i = y_j \\
+        c_{i-1,j,l} \land c_{i,j-1,l} & i > 0 \land j > 0 \land l \geq 0 \land x_i \neq y_j
+    \end{cases}
+\]
+
+\section{Procedura}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{RIEMPI-MATRICI}{$X,Y,L$}
+            \For {$l = 0$ to L}
+                \For {$i = 0$ to $|X|$}
+                    \State $C_l[i,0] \gets true$
+                \EndFor
+                \For {$j = 0$ to $|Y|$}
+                    \State $C_l[0,j] \gets true$
+                \EndFor
+                \For {$i = 1$ to $|X|$}
+                    \For {$j = 1$ to $|Y|$}
+                        \If {$x_i = y_j$}
+                            \If {$l = 0$}
+                                \State $C_l[i,j] \gets false$
+                            \Else
+                                \State $C_l[i,j] \gets C_{l-1}[i-1,j-1]$
+                            \EndIf
+                        \Else
+                            \State $C_l[i,j] \gets C_l[i-1,j] \land C_l[i,j-1]$
+                        \EndIf
+                    \EndFor
+                \EndFor
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
