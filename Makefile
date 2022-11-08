@@ -22,8 +22,8 @@ clean:
 depclean:
 	./depclean.sh
 
-host:
-	static-server -p 8080
+start-host:
+	./server.sh start
 
-async-host:
-	static-server -p 8080 > /dev/null &
+stop-host:
+	./server.sh stop
