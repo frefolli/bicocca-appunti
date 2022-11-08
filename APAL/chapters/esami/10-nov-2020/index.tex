@@ -1,0 +1,103 @@
+\chapter{Esame 10 Nov 2020}
+
+\section{E2}
+
+Si considerino due sequenze X e Y di caratteri sull'alfabeto $\Sigma$ e sia $K \in \mathbb{N}$.
+Sia data la funzione $\phi : \Sigma \rightarrow \mathbb{N}$ che associa ogni carattere ad un numero naturale.
+Si vuole calcolare mediante la programmazione dinamica la lunghezza di una LCS di X e Y nella quale la somma dei numeri associati ai caratteri sia inferiore o uguale a K. (32 punti)
+
+\paragraph{Sottostruttura ottima}
+
+Chiamo il problema P. Sia $L_{i,j,k} = P(X_i, Y_j, k \leq K)$. \\
+
+$LASTCHAR(L_{i,j,k}) = x_i \Leftrightarrow x_i = y_j \land \phi(x_i) \leq k$
+
+\paragraph{Sottoproblemi e variabili per essi}
+
+Mi avvalgo del sottoproblema PR di dimensione (i, j, k) che calcola la lunghezza della LCS di prefissi $X_i$ e $Y_j$ con somma massima $k \leq K$.
+Il numero di sotto problemi e' $(i + 1) \times (j + 1) \times (k + 1)$.
+Suppongo di avere a disposizione quindi $k+1$ matrici M di dimensione $(i + 1) \times (j + 1)$
+
+\paragraph{Casi base}
+
+\[
+    \begin{cases}
+        0 & i \geq 0 \land j = 0\\
+        0 & i = 0 \land j \geq 0
+    \end{cases}
+\]
+
+\paragraph{Caso ricorsivo}
+
+\[
+    \begin{cases}
+        max (M_k[i-1,j-1] , M_{k-\phi(x_i)}[i-1,j-1] + 1) & i > 0 \land j > 0 \land k >= 0 \land x_i = y_j \\
+        max (M_k[i-1,j] , M_k[i,j-1]) & i > 0 \land j > 0 \land k >= 0 \land x_i \neq y_j \\
+    \end{cases}
+\]
+
+\paragraph{Composizione del risultato}
+
+La cella $M_k[n, m]$, con $n = |X|, m = |Y|$, contiene la lunghezza della LCS di peso massimo k su X e Y.
+Se affianco ad essa una serie di $k+1$ matrici $S$ di dimensione $(i+1) \times (j+1)$ e memorizzo in essa l'indicazione della mossa effettuata al passo (i,j,k). \\
+Se nel passo $(i,j,k)$ prendo la cella $(i-1,j,k)$ scrivo UP. \\
+Se nel passo $(i,j,k)$ prendo la cella $(i,j-1,k)$ scrivo LEFT. \\
+Se nel passo $(i,j,k)$ prendo la cella $(i-1,j-1,k-\phi(x_i))$ scrivo TAKE. \\
+Se nel passo $(i,j,k)$ prendo la cella $(i-1,j-1,k)$ scrivo NOTTAKE. \\
+
+\newpage
+\paragraph{Pseudocodice}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{FILL}{$X, Y, K$}
+            \For{$k = 0$ to K}
+                \For{$i = 0$ to n}
+                    \For{$j = 0$ to m}
+                        \If{$i = 0$}
+                            \State $M_k[i,j] \gets 0$
+                        \ElsIf{$j = 0$}
+                            \State $M_k[i,j] \gets 0$
+                        \ElsIf{$x_i = y_j$}
+                            \If{$M_k[i-1,j-1] \geq M_{k-\phi(x_i)}[i-1,j-1] + 1$}
+                                \State $M_k[i,j] \gets M_k[i-1,j-1]$
+                                \State $S_k[i,j] \gets NOTTAKE$
+                            \Else
+                                \State $M_k[i,j] \gets M_{k-\phi(x_i)}[i-1,j-1] + 1$
+                                \State $S_k[i,j] \gets TAKE$
+                            \EndIf
+                        \ElsIf{$x_i \neq y_j$}
+                            \If{$M_k[i-1,j-1] \geq M_k[i-1,j-1] + 1$}
+                                \State $M_k[i,j] \gets M_k[i-1,j]$
+                                \State $S_k[i,j] \gets UP$
+                            \Else
+                                \State $M_k[i,j] \gets M_k[i,j-1]$
+                                \State $S_k[i,j] \gets LEFT$
+                            \EndIf
+                        \EndIf
+                    \EndFor
+                \EndFor
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{BUILD}{$X, Y, K$}
+            \State $i,j,k \gets n, m, K$
+            \While{$i > 0 \land j > 0 \land k > 0$}
+                \If{$S_k[i,j] = TAKE$}
+                    \State $i,j \gets i - 1, j - 1$
+                    \State $print(x_i)$
+                \ElsIf{$S_k[i,j] = NOTTAKE$}
+                    \State $i,j \gets i - 1, j - 1$
+                \ElsIf{$S_k[i,j] = UP$}
+                    \State $i \gets i - 1$
+                \ElsIf{$S_k[i,j] = LEFT$}
+                    \State $j \gets j - 1$
+                \EndIf
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}

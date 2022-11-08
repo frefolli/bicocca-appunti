@@ -1,0 +1,11 @@
+\chapter{Esame 10 Nov 2020}
+
+\section{E2}
+
+Si considerino due sequenze X e Y di caratteri sull'alfabeto $\Sigma$ e sia $K \in \mathbb{N}$.
+Sia data la funzione $\phi : \Sigma \rightarrow \mathbb{N}$ che associa ogni carattere ad un numero naturale.
+Si vuole calcolare mediante la programmazione dinamica la lunghezza di una LCS di X e Y nella quale la somma dei numeri associati ai caratteri sia inferiore o uguale a K. (32 punti)
+
+\paragraph{Sottoproblemi e variabili per essi}
+
+Mi avvalgo del sottoproblema PR di dimensione (i, j, k) che calcola la LCS con somma massima $k \leq K$.
