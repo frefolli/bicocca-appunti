@@ -1,0 +1,51 @@
+\documentclass[a4paper,12pt,oneside]{book}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage[paper=a4paper,margin=1in]{geometry}
+\usepackage{imakeidx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\makeindex
+
+\begin{document}
+    
+    \begin{titlepage}
+        
+	\vspace{40mm}
+        
+	\begin{center}
+            {\LARGE{
+                    \setstretch{1.2}
+                    \textbf{Appunti di \\ Ingegneria del Software}
+                    \par
+            }}
+        \end{center}
+        
+        \vspace{50mm}
+
+        \begin{flushright}
+            {\large \textbf{A cura di:}} \\
+            \large{Francesco Refolli} \\
+            \large{Matricola 865955} 
+        \end{flushright}
+        
+        \vspace{40mm}
+        \begin{center}
+            {\large{\bf Anno Accademico 2022-2023}}
+        \end{center}
+
+        \restoregeometry
+        
+    \end{titlepage}
+    
+    \printindex
+    \part{Task 6 Gennario}
+    \include{task-6-dicembre/unit-of-work/index}
+    \include{task-6-dicembre/lazy-load/index}
+\end{document}
