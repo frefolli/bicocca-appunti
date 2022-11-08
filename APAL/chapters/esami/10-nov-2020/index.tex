@@ -86,10 +86,11 @@ Se nel passo $(i,j,k)$ prendo la cella $(i-1,j-1,k)$ scrivo NOTTAKE. \\
     \begin{algorithmic}
         \Procedure{BUILD}{$X, Y, K$}
             \State $i,j,k \gets n, m, K$
+            \State $RES \gets <>$
             \While{$i > 0 \land j > 0 \land k > 0$}
                 \If{$S_k[i,j] = TAKE$}
+                    \State $RES \gets x_i \bullet RES$
                     \State $i,j \gets i - 1, j - 1$
-                    \State $print(x_i)$
                 \ElsIf{$S_k[i,j] = NOTTAKE$}
                     \State $i,j \gets i - 1, j - 1$
                 \ElsIf{$S_k[i,j] = UP$}
@@ -98,6 +99,7 @@ Se nel passo $(i,j,k)$ prendo la cella $(i-1,j-1,k)$ scrivo NOTTAKE. \\
                     \State $j \gets j - 1$
                 \EndIf
             \EndWhile
+            \State $print(RES)$
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
