@@ -1,0 +1,168 @@
+\section{1}
+
+\begin{align*}
+    Max Z = 3x_1 + x_2  &+ 3x_3 \\
+    2x_1 + x_2 + 3x_3 &\leq 5 \\
+    x_1 + 2x_2 + 3x_3 &\leq 5 \\
+    2x_1 + 2x_2 + x_3 &\leq 6 \\
+    x_1,x_2,x_3 &\geq 0
+\end{align*}
+
+\begin{center}
+    \begin{tabular}{||c c c c c c c c c||}
+        \hline
+        & Z & $x_1$ & $x_2$ & $x_3$ & $x_4$ & $x_5$ & $x_6$ & tn \\
+        \hline
+        Z & 1 & 0 & $\frac {7} {5}$ & 0 & $\frac {6} {5}$ & $\frac {3} {5}$ & 0 & $\frac {27} {5}$ \\
+        $x_1$ & 0 & 1 & $\frac 1 5$ & 0 & $\frac 3 5$ & -$\frac 1 5$ & 0 & $\frac 1 5$ \\
+        $x_3$ & 0 & 0 & $\frac 3 5$ & 1 & -$\frac 1 5$ & $\frac 2 5$ & 0 & $\frac 8 5$ \\
+        $x_6$ & 0 & 0 & 1 & 0 & -1 & 0 & 1 & 4 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\[
+    F = 
+    \begin{bmatrix}
+        1 & 1 & 0 \\
+        2 & 0 & 1 \\
+        2 & 0 & 0
+    \end{bmatrix}
+\]
+
+\[
+    B^{-1} = 
+    \begin{bmatrix}
+          \frac 3 5 & - \frac 1 5 & 0 \\
+        - \frac 1 5 &   \frac 2 5 & 0 \\
+        - 1         & 0           & 1
+    \end{bmatrix}
+\]
+
+\[
+    B^{-1}b =
+    \begin{bmatrix}
+        \frac 1 5 & \frac 8 5 & 4
+    \end{bmatrix}
+\]
+
+\[
+    c^t =
+    \begin{bmatrix}
+        0 & \frac 7 5 & 0 & \frac 6 5 & \frac 3 5 & 0
+    \end{bmatrix}
+\]
+
+\[
+    y^{*} = 
+    \begin{bmatrix}
+        \frac 6 5 & \frac 3 5 & 0
+    \end{bmatrix}
+\]
+
+\paragraph{Analisi su $b_2$}
+
+\[
+    B^{-1} \Delta b \geq -B^{-1}b \\
+\]
+\[
+    \;\;\; \Delta b = 
+    \begin{pmatrix}
+        0 & \Delta b_2 & 0
+    \end{pmatrix}
+\]
+
+\[
+    \begin{cases}
+       - \frac 1 5 * \Delta b_2 \geq - \frac 1 5 & \\
+       \frac 2 5 * \Delta b_2 \geq - \frac 8 5 & \\
+       0 * \Delta b_2 \geq -4 & 
+    \end{cases}
+\]
+
+\[
+    \begin{cases}
+       \Delta b_2 \leq 1 & \\
+       \Delta b_2 \geq - 4 &
+    \end{cases}
+\]
+
+Concludo che $-4 \leq \Delta b_2 \leq 1$
+
+\paragraph{Analisi su $c_1$}
+
+\[
+    B^{-1} \; F = 
+    \begin{bmatrix}
+        \frac 1 5 & \frac 3 5 & - \frac 1 5 \\
+        \frac 3 5 & - \frac 1 5 & \frac 2 5 \\
+        1 & -1 & 0
+    \end{bmatrix}
+\]
+
+\[
+    c^t_b \; B^{-1} \; F =
+    \begin{bmatrix}
+        \Delta c_1 & 0 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+        \frac 1 5 & \frac 3 5 & - \frac 1 5 \\
+        \frac 3 5 & - \frac 1 5 & \frac 2 5 \\
+        1 & -1 & 0
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        \frac 1 5 \Delta c_1 \\
+        \frac 3 5 \Delta c_1 \\
+        - \frac 1 5 \Delta c_1
+    \end{bmatrix}
+\]
+
+\[
+    c^t_f = 
+    \begin{bmatrix}
+        \frac 7 5 \\
+        \frac 6 5 \\
+        \frac 3 5
+    \end{bmatrix}
+\]
+
+\[
+    c^t_b \; B^{-1} \; F \geq - c^t_f = 
+    \begin{cases}
+        \frac 1 5 \Delta c_1 \geq - \frac 7 5 \\
+        \frac 3 5 \Delta c_1 \geq - \frac 6 5 \\
+        - \frac 1 5 \Delta c_1 \geq - \frac 3 5 
+    \end{cases} = 
+    \begin{cases}
+        \Delta c_1 \geq -7 \\
+        \Delta c_1 \geq -2 \\
+        \Delta c_1 \leq 3
+    \end{cases}
+\]
+
+Quindi $-2 \leq \Delta c_1 \leq 3$
+
+\paragraph{Analisi su $c_2$}
+
+\[
+    \Delta c_2 \leq y^{*} A_2 - c_2
+\]
+
+\[
+    c_2 \leq
+    \begin{bmatrix}
+        \frac 6 5 & \frac 3 5 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+        1 \\ 2 \\ 2
+    \end{bmatrix}
+    = \frac 6 5 + \frac 6 5
+    = \frac {12} 5
+\]
+
+\[
+    \Delta c_2 \leq \frac {12} 5 - c_2
+\]
+\[
+    \Delta c_2 \leq \frac 7 5
+\]

@@ -1,5 +1,7 @@
 \chapter{Teoria della Dualita' e Analisi di Sensitivita'}
 
+\section{Dualita'}
+
 \paragraph{Instroduzione}
 
 Ogni problema di programmazione lineare ha associato un altro problema di programmazione lineare chiamato \textbf{duale}.
@@ -179,3 +181,49 @@ Per trovare il duale si consiglia di rifarsi alla seguente tabella:
         \hline
     \end{tabular}
 \end{center}
+
+\section{Sensitivita'}
+
+\paragraph{Analisi di termini noto}
+
+$B^{-1}$ e' la matrice delle colonne slack nel tableau finale. \\
+La colonna dei termini noti del tableau finale e' esattamente $B^{-1} b$
+
+\[
+    \Delta b =
+    \begin{pmatrix}
+        0 & ... & \Delta b_i & ... & 0
+    \end{pmatrix}
+\]
+
+\[
+    B^{-1} \Delta b \geq - B^{-1} b
+\]
+
+\paragraph{Analisi di coefficienti di costo di variabili non in base}
+
+$y^{*}$ e' il vettore dei prezzi ombra. \\
+$A$ e' la matrice dei costi delle variabili dentro i vincoli funzionali.
+$c_f$ e' il coefficiente della f-esima variabile non di base.
+
+\[
+    \Delta c_f \leq y^{*} A - c_f
+\]
+
+\paragraph{Analisi di coefficienti di costo di variabili in base}
+
+$B^{-1}$ e' la matrice delle colonne slack nel tableau finale. \\
+$F$ e' la matrice delle colonne nel tableau iniziale, le quali nel tableau finale corrispondono a variabili che non sono in base. \\
+$c^t_f$ e' il vettore dei coefficienti in riga 0 delle variabili fuori base. \\
+
+\[
+    \Delta c^t_b =
+    \begin{pmatrix}
+        0 & ... & \Delta c_i & ... & 0
+    \end{pmatrix}
+\]
+
+
+\[
+    \Delta c^t_b \; B^{-1} \; F \geq - c^t_f
+\]
