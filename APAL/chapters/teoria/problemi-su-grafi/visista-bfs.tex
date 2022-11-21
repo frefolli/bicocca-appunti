@@ -1,0 +1,57 @@
+\chapter{Breadth-First Search}
+
+\section{l'Algoritmo}
+
+Questo algoritmo esplora un grafo andando in ampiezza, ovvero considerando prima tutti i "figli" e solo dopo i sottoalberi dei figli. \\
+l'algoritmo BFS scopre tutti i vertici raggiungibili dal vertice sorgente. Ovvero genera un albero radicato nel nodo input contentente tutti i nodi raggiungibili da esso. \\
+Si supponga di avere a disposizione le liste di adiacenza del grafo G.
+Inoltre attribuisco ad ogni nodo un colore:
+
+\[
+    color[i] = 
+    \begin{cases}
+        bianco & \text{vertice non visitato}\\
+        grigio & \text{non visitato completamente}\\
+        nero & \text{gia' visitato}
+    \end{cases}
+\]
+
+Ho inoltre bisogno di mantere $parent[i]$, il predecessore del nodo $v_{i}$.
+
+\newpage
+
+\section{Procedura BFS}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{BFS}{G, i}
+        \For{$j \in V \setminus v_{i}$}
+            \State $color[j] \gets bianco$
+            \State $distance[j] \gets \infty$
+            \State $parent[j] \gets NIL$
+        \EndFor
+        \State $color[i] \gets grigio$ 
+        \State $distance[i] \gets 0$ 
+        \State $parent[i] \gets NIL$
+        \State $Queue \gets \{i\}$
+        \While{$Queue != \emptyset$}
+            \State $j = dequeue(Queue)$
+            \For{$k \in L_{j}$}
+                \If{$color[k] = bianco$}
+                    \State $color[k] = grigio$
+                    \State $parent[k] = j$
+                    \State $distance[k] = distance[j]$
+                    \State $enqueue(Queue, k)$
+                \EndIf
+            \EndFor
+            \State $color[j] \gets nero$ 
+        \EndWhile
+        \State $color[i] \gets nero$ 
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Tempi di Calcolo}
+
+$T(n) = \O(n + m)$
+

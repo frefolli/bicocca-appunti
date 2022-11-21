@@ -1,0 +1,68 @@
+\chapter{Depth-First Search}
+
+\section{l'Algoritmo}
+
+Questo algoritmo esplora un grafo "andando il piu' possibile in profondita'".
+
+Si supponga di avere a disposizione le liste di adiacenza.
+Assegno ad ogni vertice un colore:
+
+\[
+    color[i] = 
+    \begin{cases}
+        bianco & \text{vertice non visitato}\\
+        grigio & \text{non visitato completamente}\\
+        nero & \text{gia' visitato}
+    \end{cases}
+\]
+
+Ho inoltre bisogno di mantere $parent[i]$, il predecessore del nodo $v_{i}$.
+Mantengo anche $discover[i]$, il tempo di scoperta del vertice $v_{i}$.
+Mantengo anche $finish[i]$, il tempo di fine visita del vertice $v_{i}$.
+Queste informazioni restituiscono informazioni sulla relazione trai vari vertici del grafo. Sono utili per analisi post-esecuzione dell'algoritmo.
+
+\newpage
+
+\section{Procedura DFS}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{DFS}{G}
+            \For{$i = 1$ to $n$}
+                \State $color[i] \gets bianco$
+                \State $parent[i] \gets NIL$
+            \EndFor
+            \State $time \gets 0$
+            \For{$i = 1$ to $n$}
+                \If{$color[i] = bianco$}
+                    \State DFS-visit(G, i)
+                \EndIf
+            \EndFor
+         \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{DFS-visit}{G, i}
+            \State $time \gets Time + 1$
+            \State $disc[i] \gets time$
+            \State $color[i] \gets grigio$
+            \For{$j \in L_{i}$}
+                \If{$color[j] = bianco$}
+                    \State $parent[j] = i$
+                    \State DFS-visit(G, j)
+                \EndIf
+            \EndFor
+            \State $color[i] \gets nero$
+            \State $time \gets Time + 1$
+            \State $finish[i] \gets time$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Tempi di Calcolo}
+
+L'algoritmo DFS usa l'algoritmo DFS-visit su tutti i nodi che non sono stati scoperti.
+$T(n) = \Theta(n + m)$
+

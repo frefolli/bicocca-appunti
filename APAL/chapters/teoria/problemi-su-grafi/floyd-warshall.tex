@@ -1,0 +1,141 @@
+\chapter{Floyd-Warshall APSP}
+
+\section{l'Algoritmo}
+
+Questo algoritmo risolve il All Pairs Shortest Path.
+Un cammino da $v_{i}$ a $v_{j}$ e' una sequenza finita di vertici $s \subseteq V$, con $s_1 = v_{i}$ e $s_{|s|} = v_{j}$, tali che $\forall i \in [1, |s|) \mid \exists e \in E \;\; con \;\; e = (s_{i}, s_{i+1})$. Il peso del cammino e' la somma dei pesi degli archi che lo compongono. \\
+
+Questo algoritmo prende in input i pesi sottoforma di Matrice di Adiancenza, le cui celle:
+\begin{align*}
+    i = j & \Rightarrow w_{i,j} = 0 \\
+    i \ne j \land (i,j) \in E & \Rightarrow w_{i,j} = p_{i,j} \\
+    i \ne j \land (i,j) \notin E & \Rightarrow w_{i,j} = \infty
+\end{align*}
+
+L'algoritmo restituisce due Matrici di Adiacenza tali che:
+\begin{align*}
+    i = j & \Rightarrow d_{i,j} = 0 \\
+    i \ne j \land \exists cammino(i, j) & \Rightarrow d_{i,j} = \text{peso del cammino} \\
+    i \ne j \land \nexists cammino(i, j) & \Rightarrow d_{i,j} = \infty
+\end{align*}
+
+\begin{align*}
+    i = j & \Rightarrow \pi_{i,j} = NIL \\
+    i \ne j \land \exists cammino(i, j) & \Rightarrow \pi_{i,j} = u \land (u,j) \in E \\
+    i \ne j \land \nexists cammino(i, j) & \Rightarrow \pi_{i,j} = NIL
+\end{align*}
+
+\section{Riempimento di $d_{i,j,k}$}
+
+Ora si ipotizzi di disporre per il cammino minimo intermedio a $(v_i,v_j)$ di tutti e soli i primi $k$ vertici.
+La matrice $d_{i,j,k}$ quindi contiene il peso del cammino minimo che dispone dei primi $k$ vertici.
+
+\paragraph{Caso Base}
+
+\[
+    d_{i,j,k} = 
+    \begin{cases}
+        0 & k = 0 \land i = j\\
+        w_{i,j} & k = 0 \land (i,j) \in E \\
+        \infty & k = 0 \land (i,j) \notin E
+    \end{cases}
+\]
+
+Questo corrisponde a dire che $d_{i,j,0} = w_{i,j}$.
+Ad ogni modo la soluzione sara' contenuta in $d_{i,j,n}$.
+
+\paragraph{Caso Ricorsivo}
+
+Ora si presentano due scenari.
+
+\begin{align*}
+    k \in cammino & \Rightarrow d_{i,j,k} = d_{i,k,k-1} + d_{k,j,k-1} \\
+    k \notin cammino & \Rightarrow d_{i,j,k} = d_{i,j,k-1}
+\end{align*}
+
+Visto che si tratta del cammino minimo, allora $k \in cammino$ sse $d_{i,k,k-1} + d_{k,j,k-1} < d_{i,j,k-1}$.
+Quindi:
+
+\[
+    d_{i,j,k} = 
+    \begin{cases}
+        d_{i,k,k-1} + d_{k,j,k-1} & d_{i,k,k-1} + d_{k,j,k-1} \leq d_{i,j,k-1} \\
+        d_{i,j,k-1} & d_{i,k,k-1} + d_{k,j,k-1} > d_{i,j,k-1} 
+    \end{cases}
+\]
+
+\section{Riempimento di $\pi_{i,j,k}$}
+
+\paragraph{Caso Base}
+
+\[
+    \pi_{i,j,k} = 
+    \begin{cases}
+        NIL & k = 0 \land i = j\\
+        i & k = 0 \land (i,j) \in E \\
+        NIL & k = 0 \land (i,j) \notin E
+    \end{cases}
+\]
+
+\paragraph{Caso Ricorsivo}
+
+Usiamo ora il caso ricorsivo di $d_{i,j,k}$:
+
+\[
+    \pi_{i,j,k} = 
+    \begin{cases}
+        \pi_{i,j,k-1} & d_{i,k,k-1} + d_{k,j,k-1} < d_{i,j,k-1} \\
+        \pi_{k,j,k-1} & d_{i,k,k-1} + d_{k,j,k-1} \geq d_{i,j,k-1} 
+    \end{cases}
+\]
+
+Come prima la soluzione $\pi_{i,j} = \pi_{i,j,n}$.
+
+\section{Procedura FW}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{FLOYD-WARSHALL}{$V, E, W$}
+        \State $D^0 \gets W$
+        \For{$i = 1$ to n}
+            \For{$j = 1$ to n}
+                \If{$i \ne j \land W[i,j] \ne \infty$}
+                    \State $\Pi^0[i,j] \gets i$
+                \Else
+                    \State $\Pi^0[i,j] \gets NIL$
+                \EndIf
+            \EndFor
+        \EndFor
+        \For{$k = 1$ to n}
+            \For{$i = 1$ to n}
+                \For{$j = 1$ to n}
+                    \If{$d_{i,k,k-1} + d_{k,j,k-1} < d_{i,j,k-1}$}
+                        \State $D^k[i,j] \gets d_{i,k,k-1} + d_{k,j,k-1}$
+                        \State $\Pi^k[i,j] \gets \Pi^{k-1}[k,j]$
+                    \Else
+                        \State $D^k[i,j] \gets d_{i,j,k-1}$
+                        \State $\Pi^k[i,j] \gets \Pi^{k-1}[i,j]$
+                    \EndIf
+                \EndFor
+            \EndFor
+        \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{STAMPA-CAMMINO}{$\Pi, i, j$}
+            \If{$\Pi[i,j] \ne NIL$}
+                \State STAMPA-CAMMINO($\Pi, \Pi[i,j], j$)
+                \State PRINT(j)
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Tempi di calcolo}
+
+Il riempimento delle matrici $D, K$ e' $T(n) = \Theta(n^3)$.
+
+
