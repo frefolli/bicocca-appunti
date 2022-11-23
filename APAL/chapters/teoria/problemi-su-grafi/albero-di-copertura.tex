@@ -1,0 +1,7 @@
+\chapter{Albero di Copertura}
+
+Dato un grafo connesso e non orientato G = (V, E), un Albero di Copertura (o di Supporto) per esso e' un albero il cui insieme dei vertici e' coincidente con l'insieme dei nodi del gravo V, e dove gli archi che collegano i vertici padre con i vertici figlio siano un sottoinsieme dell'insieme degli archi del grafo E. \\
+Dato un grafo pesato, connesso e non orientato G = (V, E), sia A l'insieme degli Alberi di Copertura di G. \\
+Il peso dell'Albero di Copertura $a \in A$ si valuta $p(a) = \Sigma_{(i,j) \in a.E} w(v_i,v_j)$. \\
+L'Albero di Copertura (abbr. AC o AS) s, se vale $\forall a \in A \mid p(s) \leq p(a)$ allora si dice Albero di Copertura Minimo (abbr. ACM). \\
+Studieremo due algoritmi ottimi per trovare gli ACM: Kruskal e Prim.

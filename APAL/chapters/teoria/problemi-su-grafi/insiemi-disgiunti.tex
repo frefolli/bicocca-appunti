@@ -1,0 +1,32 @@
+\chapter{Insiemi Disgiunti}
+
+\section{Operazioni}
+
+\paragraph{makeset(x)}
+
+Crea un insieme con rappresentante l'elemento x.
+
+\paragraph{union(x, y)}
+
+Unisce due set che hanno come rappresentanti rispettivamente gli elementi x e y.
+
+\paragraph{findset(x)}
+
+Trova il set che ha come rappresentante l'esemento x.
+
+\section{Componenti Connesse di Grafi}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{COMP-CONN}{$V,E$}
+            \For{$v \in V$}
+                \State $makeset(v)$
+            \EndFor
+            \For{$(v_i, v_j) \in E$}
+                \If{$findset(v_i) \ne findset(v_j)$}
+                    \State $union(v_i, v_j)$
+                \EndIf
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}

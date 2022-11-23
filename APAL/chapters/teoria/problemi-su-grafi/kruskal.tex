@@ -2,5 +2,27 @@
 
 \section{l'Algoritmo}
 
+L'algoritmo di Kruskal e' una rielaborazione dell'algoritmo per le Componenti Connesse di un grafo. Sia un grafo G = (E, V). \\
+Creo una foresta di $|V|$ alberi, ognuno contiene solo un vertice del grafo, tramite la struttura dati degli Insiemi Disgiunti. \\
+L'Albero di Copertura Minimo F e' rappresentato tramite una lista di archi. \\
+Si itera sugli archi ordinati in senso crescente rispetto al peso. Ad ogni iterazione si cerca di collegare due alberi disgiunti della foresta.
+Visto che si visitano per primi gli archi piu' leggeri, e' triviale che l'Albero di Copertura cosi' generato sara' minimo.
+
 \section{Procedura K}
 
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{K}{$V,E$}
+            \State $F \gets \emptyset$
+            \For{$v \in V$}
+                \State $makeset(v)$
+            \EndFor
+            \For{$(v_i, v_j) \in SORT_{weight}(E)$}
+                \If{$findset(v_i) \ne findset(v_j)$}
+                    \State $union(v_i, v_j)$
+                    \State $F \gets F \cup \{(v_i, v_j)\} \cup \{(v_j, v_i)\}$
+                \EndIf
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
