@@ -1,1 +1,78 @@
 \chapter{Prim}
+
+\section{Algoritmo}
+
+Sia un grafo, connesso, non orientato e pesato G = (V, E) su cui si voglia calcolare l'ACM. \\
+Per astrazione si consideri l'albero A = ($A_V \subset V$, $A_E \subset E$) che sia garantito essere un albero di copertura di parte del grafo.
+E' possibile costruire la soluzione espandendo ad ogni iterazione l'estensione di $A_V$. \\
+
+Sia $A_n = ACM(G = (V_n, E_n))$, con $V_n = V[1 \;:\; n]$ e \*
+$E_n = \{ (v_i, v_j) \mid (v_i, v_j) \in E \land v_i \in V_n \land v_i \in V_n \}$. \\
+
+Ora, $V_n = V_{n-1} \cup v_n \Rightarrow v_n \notin V_{n-1}$ e quindi $\forall (v_n,v_i) \in E \mid (v_n,v_i) \notin A_{n-1}$. \\
+
+Quindi supponendo di voler collegare l'albero $A_{n-1}$ a $v_n$ si usera' l'arco di peso minimo $(v_n,v_i) \in E$. \\
+
+Si supponga per assurdo che l'arco corretto sia invece $(v_n,v_j) \ne (v_n,v_i)$.  \*
+Allora $(v_n,v_i) < (v_n,v_j) \Rightarrow p(A_{n-1}) + w((v_n,v_i)) < p(A_{n-1}) + w(v_n,v_j)$. \*
+Quindi necessariamente $p(A_{n-1}) + w((v_n,v_i)) < p(A_{n-1}) + w(v_n,v_j) \Rightarrow p(A_{ni}) < p(A_{nj})$, ma cio' contravviene al concetto stesso di ACM, quindi l'arco corretto e' sempre quello di peso minimo.
+
+Ora, sfortunatamente non e' sempre vero $\forall i,j \in V \mid (v_i, v_j) \in E$, quindi esite un ordine non garantito dalla consequenzialita' all'interno di V. E' quindi necessario valutare tutti gli archi nel grafo agganciati a nodi non connessi all'ACM parziale per verificare quale sia piu' vantaggioso tra quelli raggiungibili esclusivamente tramite i nodi gia' nell'ACM. \\
+
+Visto che il grafo e' connesso, e' ininfluente da quale nodo si parte, puo' essere scelto in modo arbitrario. Se il grafo non fosse connesso, la reiterazione di questo algoritmo su tutti i nodi non ancora identificati in un ACM porta a trovare tutte le componenti connesse di un grafo. \\
+
+A differenza del Kruskal, l'ACM e' rappresentato tramite $A_V$ e $A_E$.
+
+\newpage
+
+\section{Procedura P}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{P}{$V, E$}
+            \State $A_V \gets \{v_0\}$
+            \State $A_E \gets \emptyset$
+            \While{$A_V \ne V$}
+                \State $best_a \gets NIL$
+                \State $best_b \gets NIL$
+                \State $best_w \gets NIL$
+                \For{$(a, b) \in E$}
+                    \If{$a \in A_V \land b \notin A_V$}
+                        \If{$best_a = NIL \lor best_w > w(a, b)$}
+                            \State $best_w \gets w(a, b)$
+                            \State $best_a \gets a$
+                            \State $best_b \gets b$
+                        \EndIf
+                    \EndIf
+                \EndFor
+                \State $A_V \gets A_V \cup \{b\}$
+                \State $A_E \gets A_E \cup \{(a, b)\}$
+            \EndWhile
+            \State \Return $(A_V, A_E)$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\section{Considerazioni}
+
+\paragraph{Tempi di Calcolo}
+
+L'algoritmo e' costutuito da un ciclo $while$ e un ciclo $for$ innestati. Ad ogni passo di $while$ si esplorano tutti gli archi in E e si verificano per essi dei requisiti.
+Visto che tendenzialmente il contenuto del $for$ e' $\Theta(1)$, si conclude che il contenuto del $while$ e' $\Theta(|E|)$. 
+Inoltre si deve considerare che i nodi vengono aggiunti uno ad uno all'interno di $A_V$, quindi i passi del while saranno $\Theta(|V|)$, per un totale di $T(n) = \Theta(|E| \times |V|)$. \\
+
+\paragraph{Ottimizzazioni}
+
+Ovviamente bisogna considerare che questo tempo e' ottimizzabile. Per esempio e' possibile iterare sui soli archi che appartengono ai nodi del ACM, in modo da risparmiare soprattutto nelle prime iterazioni notevole tempo.
+Questo porterebbe il tempo ad essere $T(n) = O(|E| \times |V|)$. \\
+
+\paragraph{Implementazioni}
+
+Addirittura utilizzando diverse implementazioni per memorizzare le informazioni si puo' ottimizzare accessi e ricerche.
+Fonte: \href{https://en.wikipedia.org/wiki/Prim%27s_algorithm#Time_complexity}{Wikipedia} \\
+
+\begin{itemize}
+\item Con la Matrice di Adiacenza per esempio diventa $T(n) = O(|V|^2)$.
+\item Con le Liste di Aidacenza e il Binary Heap diventa $T(n) = O(|E| log |V|)$.
+\item Con le Liste di Aidacenza e il Fibonacci Heap diventa $T(n) = O(|E| + |V| log |V|)$.
+\end{itemize}
