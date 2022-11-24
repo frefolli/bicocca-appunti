@@ -120,3 +120,36 @@ Una variabile $x \in \{0,1\}$ viene trasformata in:
 \paragraph{Simplesso}
 
 Quindi si calcola il simplesso del problema rilassato, e si controlla se la soluzione ottimale e' intera. Se non lo e' non e' possibile approssimare con efficacia questa soluzione in intera.
+
+\section{Matrice Totalmente Unimodulare}
+
+Una matrice si dice Totalmente Unimodulare (TUM) se $det(Q) \in \{1,0,-1\}$ per ogni sua sottomatrice quadrata, di qualunque ordine.
+
+\paragraph{Caso particolare}
+
+Sia A una matrice tale che $\forall i,j \in A \mid a_{ij} \in \{1,0,-1\}$ e tale che ogni colonna ha al più due elementi diversi da zero discordi.
+Questa e' una condizione sufficiente ma non necessaria per asserire che e' una matrice TUM.
+
+esempio preso da slide di A. Gobbi:
+
+\begin{center}
+    \includegraphics[width=12cm]{images/teoria/programmazione-lineare-mista/TUM.png}
+\end{center}
+
+\section{TUM Interezza}
+
+Sia $A$ una matrice TUM e $b$ un intero. Il Poliedro $Ax \geq b \cap x \geq 0$ ha solo vertici interi.
+Quindi ogni sua soluzione ottimale e' automaticamente intera!
+
+\section{TUM Binarieta'}
+
+Il rilassamento lineare di una variabile binaria porta ai seguenti vincoli
+\[
+    \begin{cases}
+        x \leq 1 \\
+        x \geq 0
+    \end{cases}
+\]
+
+Quindi $1 \geq x \geq 0$. Se vale la TUM Interezza allora $x \in \Z$. \\
+Questo assicura che x sia binaria, infatti $1 \geq x \geq 0 \land x \in \Z \Leftrightarrow x \in \{0,1\}$
