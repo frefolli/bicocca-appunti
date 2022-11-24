@@ -1,4 +1,4 @@
-@all: APAL/Makefile ROPR/Makefile BIOINF/Makefile ROPR/assignments/Makefile
+@all: APAL/Makefile ROPR/Makefile BIOINF/Makefile ROPR/assignments/Makefile APS/Makefile
 	make -C APAL
 	make -C BIOINF
 	make -C ROPR
@@ -15,6 +15,9 @@ ROPR/Makefile: skel/Makefile
 
 ROPR/assignments/Makefile: skel/Makefile2
 	cp skel/Makefile2 ROPR/assignments/Makefile
+
+APS/Makefile: skel/Makefile
+	cp skel/Makefile APS/Makefile
 
 clean:
 	./clean.sh

@@ -22,6 +22,7 @@ function job() {
     cleanFolder APAL
     cleanFolder BIOINF
     cleanFolder ROPR
+    cleanFolder APS
 }
 
 function handler() {

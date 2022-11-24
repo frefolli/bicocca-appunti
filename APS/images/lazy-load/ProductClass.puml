@@ -1,0 +1,35 @@
+@startuml
+
+class Product {
+    - ID: String
+    - description: String
+    - price: String
+    + Product(ID: String)
+    - setID(ID: String)
+    - setDescription(description: String)
+    - setPrice(price: double)
+    + getID(): String
+    + getDescription(): String
+    + getPrice(): double
+}
+
+class Database {
+    + getProductData(ID: String) : ProductData
+}
+
+class ProductData {
+    + ProductData(\n\
+                ID: String, \n\
+                description: String, \n\
+                price: double)
+    + getID(): ID
+    + getDescription(): String
+    + getPrice(): double
+}
+
+Catalog -right-> Product
+Product ---> Database
+Product ---> ProductData
+Database -right-> ProductData
+
+@enduml

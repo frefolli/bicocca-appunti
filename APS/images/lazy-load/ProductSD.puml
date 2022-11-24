@@ -1,0 +1,18 @@
+@startuml
+
+Catalog ---> Product ** : Product(ID: String)
+activate Product
+Product ---> Product : setID(ID: String)
+Product ---> Catalog : product: Product
+deactivate Product
+
+Catalog ---> Product : getDescription()
+activate Product
+Product ---> Database : getProductData(ID: String)
+Database ---> Product : productData: ProductData
+Product ---> Product : setDescription(description: String)
+Product ---> Product : setPrice(price: double)
+Product ---> Catalog : description: String
+deactivate Product
+
+@enduml

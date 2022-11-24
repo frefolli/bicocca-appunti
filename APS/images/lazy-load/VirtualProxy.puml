@@ -1,0 +1,10 @@
+@startuml
+
+interface Product
+
+Catalog -right-> Product
+ProductProxy -up-|> Product
+RealProduct -up-|> Product
+ProductProxy -right-> RealProduct : delegate
+
+@enduml

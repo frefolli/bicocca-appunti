@@ -2,11 +2,23 @@
     <head>
         <title>Bicocca Appunti Index</title>
     </head>
-    <body>
-        <ol>
-            <li><a href="/APAL/appunti.pdf">APAL/appunti.pdf</a></li>
-            <li><a href="/ROPR/appunti.pdf">ROPR/appunti.pdf</a></li>
-            <li><a href="/BIOINF/appunti.pdf">BIOINF/appunti.pdf</a></li>
-        </ol>
+    <script>
+        var corsi = ["APAL", "APS", "BIOINF", "ROPR"];
+
+        let loadLinks = () => {
+            let body = document.body;
+            ol = document.createElement("ol");
+            corsi.forEach((el) => {
+                let li = document.createElement("li");
+                let a = document.createElement("a");
+                a.setAttribute("href", `/${el}/appunti.pdf`);
+                a.innerText = `/${el}/appunti.pdf`;
+                li.appendChild(a);
+                ol.appendChild(li);
+            })
+            body.appendChild(ol);
+        }
+    </script>
+    <body onload="loadLinks()">
     </body>
 </html>

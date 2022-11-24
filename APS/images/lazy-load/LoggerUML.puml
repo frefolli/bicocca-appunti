@@ -1,0 +1,7 @@
+@startuml
+class Logger {
+    - Logger()
+    - {static} Logger loggerInstance
+    + {static} Logger getLogger
+}
+@enduml

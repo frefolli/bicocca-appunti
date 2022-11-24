@@ -1,0 +1,6 @@
+@startuml
+
+Catalog -right-> ProductWrapper : interact
+ProductWrapper -down-> RealProduct : delegate
+
+@enduml
