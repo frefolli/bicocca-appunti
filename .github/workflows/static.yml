@@ -38,6 +38,8 @@ jobs:
             APS/appunti.tex
             BIOINF/appunti.tex
             ROPR/appunti.tex
+            ROPR/assignments/1/appunti.tex
+            ROPR/assignments/2/appunti.tex
           work_in_root_file_dir: true
       - name: Create Static Dist Directory
         run: | 
