@@ -1,0 +1,38 @@
+@startuml
+
+participant Client
+participant Customer
+participant Database
+participant UnitOfWork
+participant CustomerClone
+
+activate Client
+Client ---> Customer ** : new Customer(ID: String)
+Client ---> UnitOfWork : load(customer: Customer)
+activate UnitOfWork
+UnitOfWork ---> Customer : load()
+activate Customer
+Customer ---> Database : selectCustomer(ID: String)
+activate Database
+deactivate Database
+Customer ---> UnitOfWork
+deactivate Customer
+UnitOfWork ---> CustomerClone ** : new
+deactivate UnitOfWork
+
+Client ---> Customer : setCreditLimit(creditLimit: int)
+activate Customer
+deactivate Customer
+
+Client ---> UnitOfWork : commit()
+activate UnitOfWork
+UnitOfWork ---> Customer : differencesTo(customerClone: CustomerClone)
+activate Customer
+deactivate Customer
+UnitOfWork ---> Database : updateCustomer(customer: Customer)
+activate Database
+deactivate Database
+deactivate UnitOfWork
+deactivate Client
+
+@enduml

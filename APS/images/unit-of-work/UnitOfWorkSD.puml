@@ -1,0 +1,16 @@
+@startuml
+
+participant AgentA
+participant AgentB
+participant AgentC
+participant AgentD
+participant AgentE
+participant UnitOfWork
+
+AgentA ---> UnitOfWork : registerNew(object)
+AgentB ---> UnitOfWork : registerDirty(object)
+AgentC ---> UnitOfWork : registerClean(object)
+AgentD ---> UnitOfWork : registerDeleted(object)
+AgentE ---> UnitOfWork : commit()
+
+@enduml

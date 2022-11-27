@@ -1,0 +1,29 @@
+@startuml
+
+class Client
+
+class Customer {
+    + Customer(ID: String)
+    + setCreditLimit(creditLimit: int)
+    + save()
+}
+
+class Database {
+    + selectCustomer(ID: String)
+    + updateCustomer(customer: Customer)
+}
+
+class UnitOfWork {
+    + registerNew(object)
+    + registerDirty(object)
+    + registerClean(object)
+    + registerDeleted(object)
+    + commit()
+}
+
+Client -down-> Customer
+Client -down-> UnitOfWork
+UnitOfWork -right-> Customer
+Customer -up-> Database
+
+@enduml

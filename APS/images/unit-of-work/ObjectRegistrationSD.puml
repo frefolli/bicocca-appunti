@@ -1,0 +1,38 @@
+@startuml
+
+participant Client
+participant Customer
+participant Database
+participant UnitOfWork
+
+activate Client
+Client ---> Customer ** : new Customer(ID: String)
+activate Customer
+Customer ---> Database : selectCustomer(ID: String)
+activate Database
+deactivate Database
+Customer ---> UnitOfWork : registerClean(customer: Customer)
+activate UnitOfWork
+deactivate UnitOfWork
+deactivate Customer
+
+Client ---> Customer : setCreditLimit(creditLimit: int)
+activate Customer
+Customer ---> UnitOfWork : registerDirty(customer: Customer)
+activate UnitOfWork
+deactivate UnitOfWork
+deactivate Customer
+
+Client ---> UnitOfWork : commit()
+activate UnitOfWork
+UnitOfWork ---> Customer : save()
+activate Customer
+Customer ---> Database : updateCustomer(customer: Customer)
+activate Database
+deactivate Database
+deactivate Customer
+deactivate UnitOfWork
+
+deactivate Client
+
+@enduml
