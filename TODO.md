@@ -1,1 +1,5 @@
 # TODOs
+
+- Bellman-Ford
+- Dijkstra
+

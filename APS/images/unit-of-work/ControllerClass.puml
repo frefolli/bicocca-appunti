@@ -1,0 +1,34 @@
+@startuml
+
+class Client
+
+class Customer {
+    + Customer(ID: String)
+    + setCreditLimit(creditLimit: int)
+    + differencesTo(customerClone: CustomerClone)
+    + save()
+    + load()
+}
+
+class Database {
+    + selectCustomer(ID: String)
+    + updateCustomer(customer: Customer)
+}
+
+class UnitOfWork {
+    + registerNew(object)
+    + registerDirty(object)
+    + registerClean(object)
+    + registerDeleted(object)
+    + commit()
+    + load(object)
+}
+
+Client -down-> Customer
+Client -down-> UnitOfWork
+UnitOfWork -right-> Customer
+Customer -left-> UnitOfWork
+Customer -down-> Database
+UnitOfWork -down-> Database
+
+@enduml

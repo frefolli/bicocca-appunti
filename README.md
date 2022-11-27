@@ -1,4 +1,10 @@
-# Corsi
+# Bicocca Appunti
+
+Repository con appunti dei corsi universitari che frequento. NON ESAUSTIVI.
+
+I pdf sono caricati sulle Github Pages. Per accedere: https://frefolli.github.io/bicocca-appunti/
+
+## Corsi
 
 | Sigla | Anno | Semestre | Corso | Versione | Note |
 | --- | --- | --- | --- | --- | --- |
@@ -8,29 +14,29 @@
 | APS | 3 | 1 | Ingegneria del Software | 1.0.1 |  |
 |  |  |  |  |  |
 
-# Dipendenze
+## Dipendenze
 
-## Linux
+### Linux
 
-### Debian-based
+#### Debian-based
 
  - texlive
  - texlive-latex-extra
  - texlive-science
  - texlive-pictures
 
-### Arch-based
+#### Arch-based
 
  - texlive-most
 
-## Patologia
+### Patologia
 
 Sei libero di sperimentare sulle varie distribuzioni gia' descritte o assenti quali siano le dipendenze specifiche minime richieste.
 
 Al 10/10/2022 Debian sembra essere ottimale.
 
-# Istruzioni
+## Istruzioni
 
-Lancia `make` (con pdflatex e dipendenze installate) per generare i file pdf `appunti.pdf` per ogni sotto cartella.
+Per compilare i pdf, lancia `make` (con pdflatex e dipendenze installate), il quale generera' i file pdf `appunti.pdf` per ogni sotto cartella.
 
-
+Per far gestire l'hosting locale con npm:static-server, usare `make start-host` e `make stop-host`.
