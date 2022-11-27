@@ -45,6 +45,7 @@ jobs:
         run: | 
           mkdir -p ./static/APAL
           mkdir -p ./static/APS
+          mkdir -p ./static/APS/presentations
           mkdir -p ./static/BIOINF
           mkdir -p ./static/ROPR/assignments/1
           mkdir -p ./static/ROPR/assignments/2
@@ -55,6 +56,7 @@ jobs:
           cp ./ROPR/assignments/1/appunti.pdf ./static/ROPR/assignments/1/appunti.pdf
           cp ./ROPR/assignments/2/appunti.pdf ./static/ROPR/assignments/2/appunti.pdf
           cp ./index.html ./static/index.html
+          cp ./APS/presentations/*.pptx ./static/APS/presentations
       - name: Configure Pages
         uses: actions/configure-pages@v2
       - name: Zip and Upload Artifact
