@@ -30,5 +30,7 @@ UnitOfWork -right-> Customer
 Customer -left-> UnitOfWork
 Customer -down-> Database
 UnitOfWork -down-> Database
+UnitOfWork ---> CustomerClone
+Customer ---> CustomerClone
 
 @enduml
