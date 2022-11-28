@@ -131,3 +131,41 @@ Sia $p_{ij}$ una variabile booleana che indica che l'i-esimo impiegato lavora su
     \Sigma _{z \mid (t,z) \in E} x_{tz} - \Sigma _{z \mid (z,t) \in E} x_{zt} &= -1 \\
     x_{ij} &\in \{0,1\} &\forall i,j \in V
 \end{align*}
+
+\section{Colonnine di Ricarica}
+
+\paragraph{Svolgimento}
+
+dichiaro la funzione $V : Q \times Q \rightarrow \{1,0\}$ \\
+che descrive con $V(q_x, q_y)$ se $q_x$ e $q_y$ sono adiacenti.
+
+\begin{algin*}
+    min Z &= \Sigma ^ {|Q|} _ {i=1} x_i \\
+    \Sigma ^ {|Q|} _ {i=1} V(q_i, q_j) x_i &\geq 1 &\forall j \in [1, |Q|] \\
+    \forall i \in [1,Q] &\rightarrow x_i \in \{1,0\}
+\end{align*}
+
+\section{Gita al Parco Divertimenti}
+
+dichiaro la funzione $P : A \rightarrow N^{+}$ \\
+che descrive con $P(a_x)$ il punteggio della relativa attrazione.
+
+dichiaro la funzione $T : A \rightarrow N^{+}$ \\
+che descrive con $T(a_x)$ il tempo di visita della relativa attrazione.
+
+dichiaro la funzione $F : A \rightarrow \{1,0\}$ \\
+che descrive con $F(a_x)$ se la relativa attrazione e' Adrenaline.
+
+dichiaro la funzione $G : A \rightarrow \{1,0\}$ \\
+che descrive con $F(a_x)$ se la relativa attrazione e' Fantasy.
+
+\begin{algin*}
+    max Z &= \Sigma ^ {|A|} _ {i=1} P(a_i) * x_i \\
+    \Sigma ^ {|A|} _ {i=1} T(a_i) * x_i &\leq 540 \\
+    \Sigma ^ {|A|} _ {i=1} F(a_i) * x_i &\geq 3 \\
+    \Sigma ^ {|A|} _ {i=1} G(a_i) * x_i &\leq 1 \\
+    x_{11} &\leq x_1 \\
+    x_i &\leq 1 - x_5 &\forall i \in [1,|A|] \land F(x_i)\\
+    \forall i \in [1,A] &\rightarrow x_i \in \{1,0\}
+\end{align*}
+
