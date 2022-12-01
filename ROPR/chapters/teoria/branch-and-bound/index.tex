@@ -1,0 +1,16 @@
+\chapter{Branch and Bound}
+
+Si generano diversi sottoproblemi e si esplorano per cercare la soluzione migliore.
+Un PLI o PLB e' di per se' un sottoproblema del PL.
+
+\section{Programmazione Lineare Binaria}
+
+Sia $z^* = f(x^*)$ la soluzione ottima del problema completo e $z = f(x)$ la soluzione ottima di un sotto problema, allora si ha che $f(x) \leq f(x^*)$
+
+\begin{itemize}
+    \item la partizione rispetto al valore delle variabili (branching)
+    \item la determinazione di un limite superiore (bounding)
+    \item l'eliminazione dei sottoproblemi (fathoming)
+\end{itemize}
+
+Durante la fase di branching si fissa per una determinata variabile $x_i = 0$ o $x_i = 1$, quindi si risolvono i relativi sottoproblemi.
