@@ -13,4 +13,42 @@ Sia $z^* = f(x^*)$ la soluzione ottima del problema completo e $z = f(x)$ la sol
     \item l'eliminazione dei sottoproblemi (fathoming)
 \end{itemize}
 
-Durante la fase di branching si fissa per una determinata variabile $x_i = 0$ o $x_i = 1$, quindi si risolvono i relativi sottoproblemi.
+\paragraph{Branching}
+
+Si risolve col metodo del simplesso o metodi alternativi il problema corrente. Dopo di che' si osserva la soluzione.
+
+
+Se la soluzione contiene una variabile con valore non binario (ex: $x = \frac 2 3$), si creano i due sottoproblemi fissando rispettivamente $x \leq \floor {\frac {2} {3}}$ e $x \geq \ceil {\frac {2} {3}}$.
+
+Questo ha l'effetto di fissare nei due sottoproblemi rispettivamente $x = 0$ e $x = 1$, visto che e' un PLI.
+Si risolvono quindi i sottoproblemi e si preleva la soluzione migliore.
+
+\paragraph{Bounding}
+
+Se la soluzione ottimale e' una soluzione binaria ammissibile allora e' considerabile la migliore tra tutti i suoi sotto problemi. Quindi questo nodo di esplorazione puo' considerarsi concluso.
+
+\paragraph{Fathoming}
+
+Se la soluzione e' una soluzione ammissibile non binaria il cui valore della funzione obiettivo e' inferiore della massima soluzione ottimale trovata fin'ora, e' possibile chiudere l'esplorazione di questo ramo ed eliminare la soluzione corrente.
+
+Se il problema e' innammissibile vale lo stesso discorso.
+
+\section{Esplorazione dei sottoproblemi}
+
+\paragraph{Depth First}
+
+Si esplorano i sottoproblemi in profondita' (con regola left-most o right-most).
+
+Si rischia di esplorare prima tutti i sottoproblemi con soluzioni scadenti.
+
+\paragraph{Best Bound First}
+
+Si esplorano i sottoproblemi ordinandoli man mano che li si scopre e risolvendo ad ogni turno sempre quello con il miglior valore della funzione obiettivo.
+
+Si ottengono tardi soluzioni ammissibili binarie, pero' si esplorano prima tutte le vie piu' "promettenti".
+
+\paragraph{Mista}
+
+I nodi vengono scelti alternando i diversi criteri, per evitarne gli svantaggi.
+Ad esempio, all'inizio si applica una strategia Depth First e, quando si ha una "buona" soluzione ammissibile,
+si passa alla strategia Best Bound First.
