@@ -1,1 +1,70 @@
 \chapter{Dijkstra}
+
+Questo algoritmo trova tutti i percorsi minimi tra un nodo $v_x \in V$ e tutti gli altri nodi $v_y \in V \setminus x$.
+
+Si puo' modificare questo algoritmo per cercare un certo percorso tra due nodi definiti in partenza $v_x \in V$ e $v_y \in V \setminus x$, semplicemente fermandosi quando il percorso minimo viene trovato dall'algoritmo.
+
+\section{Algoritmo}
+
+Si marcano tutti i nodi come non-visitati. Quindi si impostano le distanze minime a $\infty$, tranne $d(x, x) = 0$.
+
+Quindi si preleva ad ogni turno il nodo non-visitato $c$ con distanza minima piu' bassa e si notano le lunghezze totali dei percorsi verso i nodi $v$ adiacenti a $c$, ($x, v$), vincolato a passare per $c$. Se questo percorso e' migliore di quello fin'ora trovato per ($x, v$), si aggiorna questa informazione e si segna il passaggio per $c$.
+
+Quando tutti gli archi verso nodi adiacenti sono stati processati, si segna come visitato il nodo corrente $c$ e si preleva il prossimo.
+
+Quando $y$ e' stato visitato o non rimangono nodi da visitare, l'algoritmo termina.
+
+\newpage
+
+\section{Procedura}
+
+Si mantiene un array D delle minime distanze da $x$ al generico nodo $v \in V \setminus x$.
+
+Si mantiene un array H dove ogni cella rappresenta il predecessore del generico nodo $v \in V \setminus x$ nel percorso minimo tra $x$ e $v$.
+
+Si mantiene una priority queue dei nodi non visitati ordinati in base alla minima distanza in D.
+
+Utilizzo le Liste di Adiacenza $L_n$ del generico nodo $n \in V$.
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{DIJKSTRA}{$V, L, x, y$}
+            \For{$i = 1$ to $n$}
+                \State $D[v_i] \gets \infty$
+                \State $H[v_i] \gets NIL$
+            \EndFor
+            \State $D[v_x] \gets 0$
+            \State $Q \gets PriorityQueue(V)$
+            \State $c \gets x$
+            \While{$v_y \in Q$}
+                \For{$(v, d) \in L_{c}$}
+                    \State $length \gets D[v_c] + d$
+                    \If{$length < D[v]$}
+                        \State $D[v] \gets length$
+                        \State $H[v] \gets c$
+                    \EndIf
+                \EndFor
+                \State $c \gets dequeue(Q)$
+            \EndWhile
+            \State \Return $D[v_y]$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{STAMPA-RICORSIVA}{$H, c$}
+            \If{$H[v_c] \ne NIL$}
+                STAMPA-RICORSIVA($H, H[v_c]$)
+            \EndIf
+            print($v_c$)
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Complessita'}
+
+Definisco $h$ come la media del numero di nodi adiacenti per un generico nodo $v$.
+Definisco $n = |V|$.
+
+La complessita' di DIJKSTRA e' $O(n \times h)$, la complessita' di STAMPA-RICORSIVA e' O(n).

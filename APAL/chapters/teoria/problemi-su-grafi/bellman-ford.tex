@@ -1,1 +1,57 @@
 \chapter{Bellman-Ford}
+
+Questo algoritmo trova tutti i minimi cammini tra due generici nodi $x$ e $y$.
+
+\section{Algoritmo}
+
+Come in $Dijkstra$ si pre-impostano distanze e predecessori. Quindi si processano tutti gli archi del grafo per un numero di volte pari a $|V|$.
+Per ogni arco $(u, v, d)$ si controlla la distanza $(x, v)$ vincolata a passare in $u$ e si aggiornano le informazioni su distanza minima e predecessore se questo passaggio risulta fin'ora vantaggioso.
+
+\newpage
+
+\section{Procedura}
+
+Sia $G = (V, E)$ con $E = \{ (v_a, v_b, peso) \}$.
+
+Si mantiene un array D delle minime distanze da $x$ al generico nodo $v \in V \setminus x$.
+
+Si mantiene un array H dove ogni cella rappresenta il predecessore del generico nodo $v \in V \setminus x$ nel percorso minimo tra $x$ e $v$.
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{BELLMAN-FORD}{$V, E, x, y$}
+            \For{$i = 1$ to $n$}
+                \State $D[v_i] \gets \infty$
+                \State $H[v_i] \gets NIL$
+            \EndFor
+            \State $D[v_x] \gets 0$
+            \For{$i = 1$ to $n$}
+                \For{$(u, v, d) \in E$}
+                    \State $length \gets D[u] + d$
+                    \If{$D[v] > length$}
+                        \State $D[v] \gets length$
+                        \State $H[v] \gets u$
+                    \EndIf
+                \EndFor
+            \EndFor
+            \State \Return $D[v_y]$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{STAMPA-RICORSIVA}{$H, c$}
+            \If{$H[v_c] \ne NIL$}
+                STAMPA-RICORSIVA($H, H[v_c]$)
+            \EndIf
+            print($v_c$)
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Complessita'}
+
+Sia $n = |V|$ e $m = |E|$.
+
+La complessita' di BELLMAN-FORD e' $O(n \times m)$, la complessita' di STAMPA-RICORSIVA e' O(n).
