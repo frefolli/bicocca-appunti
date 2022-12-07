@@ -1,0 +1,199 @@
+\chapter{Grafi}
+
+\section{Assemblaggio di genomi}
+
+I genomi vengono sequenziati in pezzi, chiamati $read$, con dimensione 50-10000 base pairs.
+Spesso vengono sequenziati in coppie e con posizione originaria ignota.
+
+L'obiettivo resta riscostruire il genoma, che ha circa 3 miliardi di base pairs.
+
+Le tecnologie in nostro possesso hanno vari range di efficienza. Alcune richiedono piu' read per comporre un sequenziamento lungo, con pero' le singole read piu' veloci, altre l'opposto.
+Inoltre le varie tecnologie hanno anche tipologie di errori differenti. Alcune soffrono di errori sistematici, altri ricorrenti. Ma e' bene comunque ricordare che sono stati fatti passi da gigante in 20/30 anni.
+
+\section{Overlap}
+
+L'overlap e' la condizione di due sequenze in cui condividono una porzione di esse che e' rispettivamente suffisso e prefisso.
+
+Esempio: \\
+
+\texttt{TCTATATCTCGGCTCTAGG---}\\
+\texttt{----||||||| -||||||---}\\
+\texttt{----TATCTCGACTCTAGGCCC}\\
+
+Probabilente l'overlap avviene perche' queste due sequenze sono read di porzioni consequenti, ma puo' anche capitare che sia per colpa del fatto che l'essere umano e' un organismo diploide. Infatti disponendo due filoni genitici (tendenzialmente uno materno e l'altro paterno) si possono avere errori di questo tipo.
+
+L'obiettivo qui e' ricostruire il filone che ha prodotto queste due read.
+
+\section{Greedy Algorithm}
+
+Si puo immaginare di creare un algoritmo greedy come segue:
+
+\begin{itemize}
+\item trovare le due read nel batch con overlap massimo
+\item fondere queste due read e inserire nel batch la stringa ottenuta al posto delle due read
+\item continuare fino a che non rimane solo una stringa nel batch
+\end{itemize}
+
+Il problema e' che questo algoritmo non identifica correttamente i genomi con sequenze ripetute. Per esempio:
+
+\begin{enumerate}
+\item \texttt{ng\_lon \_long\_ a\_long long\_l ong\_ti ong\_lo long\_t g\_long} \textbf{g\_time} \textbf{ng\_tim}
+\item \texttt{ng\_time ng\_lon} \textbf{\_long\_} \texttt{a\_long long\_l ong\_ti ong\_lo long\_t} \textbf{g\_long}
+\item \texttt{ng\_time g\_long\_ ng\_lon a\_long long\_l} \textbf{ong\_ti} \texttt{ong\_lo} \textbf{long\_t}
+\item \texttt{ng\_time long\_ti g\_long\_} \textbf{ng\_lon} \texttt{a\_long long\_l} \textbf{ong\_lo}
+\item \textbf{ng\_time} \texttt{ong\_lon} \textbf{long\_ti} \texttt{g\_long\_ a\_long long\_l}
+\item \textbf{ong\_lon} \texttt{long\_time g\_long\_ a\_long} \textbf{long\_l}
+\item \texttt{long\_lon} \textbf{long\_time} \textbf{g\_long\_} \texttt{a\_long}
+\item \textbf{long\_lon} \textbf{g\_long\_time} \texttt{a\_long}
+\item \textbf{long\_long\_time} \textbf{a\_long}
+\item \texttt{a\_long\_long\_time}
+\end{enumerate}
+
+La sequenza originale era \textbf{a\_long\_long\_long\_time} tuttavia quella ottenuta e' \textbf{a\_long\_long\_time}.
+
+\section{Grafi di overlap}
+
+Sia $R$ un insieme di read su un genoma G.
+
+Si costruisce il grafo $G = (V, E)$, tale che $V \cong R$ e vi sia un arco fra tutte le coppie di vertici corrispondenti a read che abbiano overlap abbastanza lungo.
+
+Esempio:
+
+\begin{tikzpicture}[node distance= 20mm and 20mm, thick, main/.style = {draw, circle}] 
+
+  \node[main] (1) {ACGTGTG};
+  \node[main] (2) [above=of 1] {CGTGTGC};
+  \node[main] (3) [right=of 1] {GTGCCA};
+  \node[main] (4) [right=of 2] {CCACG};
+
+  \draw[->] (1) edge["A"] (2);
+  \draw[->] (1) edge["ACGT"] (3);
+  \draw[->] (2) edge["CGT"] (3);
+  \draw[->] (2) edge["CGTGTG"] (4);
+  \draw[->] (3) edge["GTG"] (4);
+
+\end{tikzpicture}
+
+Per trovare una soluzione si cerca un percorso che rimuova gli archi transitivi del grafo di overlap, per esempio:
+
+\begin{tikzpicture}[node distance= 20mm and 20mm, thick, main/.style = {draw, circle}] 
+
+  \node[main] (1) {ACGTGTG};
+  \node[main] (2) [above=of 1] {CGTGTGC};
+  \node[main] (3) [right=of 1] {GTGCCA};
+  \node[main] (4) [right=of 2] {CCACG};
+
+  \draw[->] (1) edge["A"] (2);
+  \draw[->] (2) edge["CGT"] (3);
+  \draw[->] (3) edge["GTG"] (4);
+
+\end{tikzpicture}
+
+Questa e' la shortest superstring.
+
+\section{Problema del Commesso Viaggatore (TSP)}
+
+E' un problema che dato un grafo $G = (V, E)$ trova il cammino di minimo costo tale che tutti i nodi vengano attraversati una sola volta e che sia nella forma $w = s \cdot v_1 \cdot v_2 ... \cdot v_n \cdot s$ (ovvero formi un ciclo).
+
+Per risolvere il grafo di overlap si necessita di trovare il cammino di minimo costo che attraversi tutti i nodi una sola volta, ma tale che sia aciclico.
+
+Per fare questo si puo' sfruttare TSP e modificare il grafo inserendo due vertici e degli archi che li colleghino al resto del grafo in modo da poter trasformare il problema in TSP.
+
+Per ricostruire la soluzione bastera' escludere Start e End, i quali appariranno per forza consecutivamente nel ciclo TSP.
+
+Esempio:
+
+\begin{tikzpicture}[node distance= 20mm and 20mm, thick, main/.style = {draw, circle}] 
+
+  \node[main] (1) {ACGTGTG};
+  \node[main] (2) [above=of 1] {CGTGTGC};
+  \node[main] (3) [right=of 1] {GTGCCA};
+  \node[main] (4) [right=of 2] {CCACG};
+  \node[main] (start) [below=of 1] {Start};
+  \node[main] (end)   [above=of 4] {End};
+
+  \draw[->] (1) edge["A"] (2);
+  \draw[->] (1) edge["ACGT"] (3);
+  \draw[->] (2) edge["CGT"] (3);
+  \draw[->] (2) edge["CGTGTG"] (4);
+  \draw[->] (3) edge["GTG"] (4);
+
+  \draw[->] (start) -- (1);
+  \draw[->] (start) -- (2);
+  \draw[->] (start) -- (3);
+  \draw[->] (start) -- (4);
+
+  \draw[->] (1) -- (end);
+  \draw[->] (2) -- (end);
+  \draw[->] (3) -- (end);
+  \draw[->] (4) -- (end);
+  \draw[->] (end) -- (start);
+
+\end{tikzpicture}
+
+Che si risolve in:
+
+\begin{tikzpicture}[node distance= 20mm and 20mm, thick, main/.style = {draw, circle}] 
+
+  \node[main] (1) {ACGTGTG};
+  \node[main] (2) [above=of 1] {CGTGTGC};
+  \node[main] (3) [right=of 1] {GTGCCA};
+  \node[main] (4) [right=of 2] {CCACG};
+  \node[main] (start) [below=of 1] {Start};
+  \node[main] (end)   [above=of 4] {End};
+
+  \draw[->] (1) edge["A"] (2);
+  \draw[->] (2) edge["CGT"] (3);
+  \draw[->] (3) edge["GTG"] (4);
+
+  \draw[->] (start) -- (1);
+  \draw[->] (4) -- (end);
+  \draw[->] (end) -- (start);
+
+\end{tikzpicture}
+
+\section{SBH}
+
+Una tecnologia vecchia se si usava erano i DNA array. Per ogni k-mero si conosce se appare nel genoma. Spesso si usa $k \cong 8$.
+
+Ogni k-mero viene diviso in (k-1)-meri, ognuno dei quali sara' un vertice del grafo di overlap.
+Si avra' invece un arco per ogni k-mero.
+
+Quindi si applica TSP. Questa procedura e' detta Grafo di de Bruijn.
+In questo caso non possiamo sapere quante volte un certo k-mero appare nel genoma ma solo se appare.
+
+TODO: include graph
+
+\section{Ciclo Euleriano}
+
+Un assemblaggio valido di un Grafo di de Bruijn e' un cammino euleriano, ovvero un cammino che attraversa ogni arco esattamente una volta.
+
+Sia $N^u_G(v)$ il numero di archi uscenti da v e $N^e_G(v)$ il numero di archi entranti in v.
+Sia G = (V, E) un grafo orientato. G e' semi-euleriano se esistono due vertici s, t tali che
+$N^u_G(s) = N^e_G(s) + 1$ e $N^u_G(t) = N^e_G(t) - 1$ mentre per ogni altro vertice v vale che $N^u_G(v) = N^e_G(v)$.
+
+Sia G = (V, E) un frafo orientato. G e' euleriano se per ogni vertice v vale che $N^u_G(v) = N^e_G(v)$.
+
+Sia G = (V, E) un grafo connesso. G ha un cammino euleriano sse G e' un grafo semi-euleriano.
+Inoltre G ha un ciclo euleriano sse G e' un grafo euleriano.
+
+Siano G = (V, E) un grafo semi-euleriano e P un cammino da s a t.
+Sia $G_1$ il grafo ottenuto da G eliminando tutti gli archi di P. $G_1$ e' euleriano.
+
+Siano G = (V, E) un grafo euleriano e C un ciclo di G. Sia $G_1$ il grafo ottenuto da G eliminando tutti gli archi di C. $G_1$ e' euleriano.
+
+\section{Riduzione del Grafo di Overlap}
+
+\paragraph{Teoria}
+
+Sia G = (V, E) un grafo di overlap con ($a \rightarrow b_1$) unico arco irriducibile uscente da a e con (a, $b_1$),...,(a,$b_n$) archi uscenti da a. Allora ($b_i \rightarrow b_{i+1}$) con $1 \leq i \leq n-1$ sono archi di G.
+
+Sia G = (V, E) un grafo di overlap con ($a \rightarrow b_1$) unico arco irriducibile uscente da a e con (a, $b_1$),...,(a,$b_n$) archi uscenti da a. Allora ($b_i \rightarrow b_i$) con $2 \leq i \leq n-1$ sono archi di G.
+
+\paragraph{Algoritmo}
+
+\begin{enumerate}
+  \item $b_i$ vengono ordinati per peso dell'arco
+  \item si marcano "da-eliminare" i vertici $b_j$ tali che ($b_i \rightarrow b_j$) con $i<j$
+  \item si rimuovono gli archi che terminano in vertici "da-eliminare"
+\end{enumerate}
