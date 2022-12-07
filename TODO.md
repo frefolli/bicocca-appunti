@@ -1,5 +1,3 @@
 # TODOs
 
-- Bellman-Ford
-- Dijkstra
-
+- complete SBH in Bioinf/Grafi

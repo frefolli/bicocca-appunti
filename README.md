@@ -8,10 +8,10 @@ I pdf sono caricati sulle Github Pages. Per accedere: https://frefolli.github.io
 
 | Sigla | Anno | Semestre | Corso | Versione | Note |
 | --- | --- | --- | --- | --- | --- |
-| APAL | 3 | 1 | Analisi e Progettazione di Algoritmi | 1.0.6 |  |
-| BIOINF | 3 | 1 | Elementi di Bioinformatica | 1.0.6 |  |
-| ROPR | 3 | 1 | Ricerca Operativa e Pianificazione delle Risorse | 1.0.6 |  |
-| APS | 3 | 1 | Ingegneria del Software | 1.0.1 |  |
+| APAL | 3 | 1 | Analisi e Progettazione di Algoritmi | 1.0.7 |  |
+| BIOINF | 3 | 1 | Elementi di Bioinformatica | 1.0.7 |  |
+| ROPR | 3 | 1 | Ricerca Operativa e Pianificazione delle Risorse | 1.0.7 |  |
+| APS | 3 | 1 | Ingegneria del Software | 1.0.2 |  |
 |  |  |  |  |  |
 
 ## Dipendenze
