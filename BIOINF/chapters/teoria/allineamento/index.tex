@@ -12,9 +12,9 @@ Il calcolo del valore di tale funzione e' molto semplice, ed e' possibile usarla
 \paragraph{Proprieta'}
 
 \begin{enumerate}
-    \item Riflessivita': $d(x,y) = 0 \Leftrightarrow x = y$
-    \item Simmetria: $d(x,y) = d(y,x)$
-    \item Disuguaglianza triangolare: $d(x,y) + d(y,z) \leq d(x,z)$
+\item Riflessivita': $d(x,y) = 0 \Leftrightarrow x = y$
+\item Simmetria: $d(x,y) = d(y,x)$
+\item Disuguaglianza triangolare: $d(x,y) + d(y,z) \leq d(x,z)$
 \end{enumerate}
 
 Questa stima di somiglianza ha pero' un importante difetto: e' definito solo tra due sequenze di uguale lunghezza.
@@ -27,8 +27,8 @@ Questo simbolo indica sia un carattere inserito che uno cancellato.
 Ovviamente si pongono vincoli per assicurare il rispetto del Rasoio di Occam:
 
 \begin{itemize}
-    \item Non possono esistere colonne solo di $indel$
-    \item Le stringhe estese devono avere la stessa lunghezza
+\item Non possono esistere colonne solo di $indel$
+\item Le stringhe estese devono avere la stessa lunghezza
 \end{itemize}
 
 Esistono infiniti Allineamenti, ma non tutti hanno la stessa "qualita'", quindi si cerca l'ottimo.
@@ -39,23 +39,27 @@ L'algoritmo usa le soluzioni dei sottoproblemi per trovare la soluzione del prob
 Essendo una astrazione del concetto di LCS, non deve stupire la sua somiglianza con esso.
 Si ragiona per prefissi, $M[i][j] = NW(X_i, Y_j)$.
 
+L'input e' lo stesso: due stringhe $X, Y$, una matrice dei costi $D$, ma l'algoritmo individua le sottostringhe $P, Q$ tali che $Allineamento(P, Q) \geq Allineamento(p, q) \forall p,q \in X, Y$.
+
+Sia $A_x = alfabeto(X)$ e $A_y = alfabeto(Y)$. Si usa una matrice dei costi (o "premi") D, dove ogni cella $D[i,j]$ indica quando sono simili $(A_x)_i$ e $(A_y)_j$.
+
 \[
-    M[i][j] =
+M[i][j] =
+\begin{cases}
+  \text{$0$} & \text{$i = 0 \land j = 0$} \\
+  \text{$M[i-1][0] + d(X[i], indel)$} & \text{$i > 0 \land j = 0$} \\
+  \text{$M[0][j-1] + d(indel, Y[j])$} & \text{$i = 0 \land j > 0$} \\
+  \text{
+    $
+    max 
     \begin{cases}
-        \text{$0$} & \text{$i = 0 \land j = 0$} \\
-        \text{$M[i-1][0] + d(X[i], indel)$} & \text{$i > 0 \land j = 0$} \\
-        \text{$M[0][j-1] + d(indel, Y[j])$} & \text{$i = 0 \land j > 0$} \\
-        \text{
-            $
-                max 
-                \begin{cases}
-                    M[i-1][j-1] + d(X[i], Y[j]) \\
-                    M[i][j-1] + d(indel, Y[j]) \\
-                    M[i-1][j] + d(X[i], indel) \\
-                \end{cases}
-            $
-        } & \text{$i > 0 \land j > 0$}
+      M[i-1][j-1] + d(X[i], Y[j]) \\
+      M[i][j-1] + d(indel, Y[j]) \\
+      M[i-1][j] + d(X[i], indel) \\
     \end{cases}
+    $
+  } & \text{$i > 0 \land j > 0$}
+\end{cases}
 \]
 
 \section{Allineamento locale}
@@ -65,7 +69,9 @@ L'Allineamento Globale non riuscirebbe a evidenziare questa somiglianza.
 
 Visto che lo scopo di questo confronto e' anche funzionale, avere due regioni fortemente simili e' interessante: si definisce \textbf{Allineamento Locale}.
 
-L'input e' lo stesso: due stringhe $X, Y$, una matrice di score $d$, ma l'algoritmo individua le sottostringhe $P, Q$ tali che $Allineamento(P, Q) \geq Allineamento(p, q) \forall p,q \in X, Y$.
+L'input e' lo stesso: due stringhe $X, Y$, una matrice dei costi $D$, ma l'algoritmo individua le sottostringhe $P, Q$ tali che $Allineamento(P, Q) \geq Allineamento(p, q) \forall p,q \in X, Y$.
+
+Sia $A_x = alfabeto(X)$ e $A_y = alfabeto(Y)$. Si usa una matrice dei costi (o "premi") D, dove ogni cella $D[i,j]$ indica quando sono simili $(A_x)_i$ e $(A_y)_j$.
 
 \paragraph{Smith-Waterman}
 E' una variante di Needleman-Wunsch
@@ -73,21 +79,21 @@ E' una variante di Needleman-Wunsch
 Si ragiona per suffissi, $H[i][j] = SW(X[n-i:], Y[m-j:])$.
 
 \[
-    H[i][j] =
+H[i][j] =
+\begin{cases}
+  \text{$0$} & \text{$i = 0 \lor j = 0$} \\
+  \text{
+    $
+    max 
     \begin{cases}
-        \text{$0$} & \text{$i = 0 \lor j = 0$} \\
-        \text{
-            $
-                max 
-                \begin{cases}
-                    0 \\
-                    H[i-1][j-1] + d(X[i], Y[j]) \\
-                    H[i-1][j] + d(X[i], indel) \\
-                    H[i][j-1] + d(indel, Y[j]) \\
-                \end{cases}
-            $
-        } & \text{$i > 0 \land j > 0$}
+      0 \\
+      H[i-1][j-1] + D[X[i], Y[j]] \\
+      H[i-1][j] + D[X[i], indel] \\
+      H[i][j-1] + D[indel, Y[j]] \\
     \end{cases}
+    $
+  } & \text{$i > 0 \land j > 0$}
+\end{cases}
 \]
 
 \section{Distanza di Edit}
@@ -96,27 +102,94 @@ Si definisce \textbf{Distanza di Edit} la quantita di modifiche (sostituzione, c
 Si ragiona per prefissi, $M[i][j] = NW(X_i, Y_j)$.
 
 \[
-    H[i][j] =
+H[i][j] =
+\begin{cases}
+  \text{$0$} & \text{$i = 0 \lor j = 0$} \\
+  \text{$M[i][j]$} & \text{$i > 0 \lor j > 0 \land X[i] = Y[j]$} \\
+  \text{
+    $
+    min
     \begin{cases}
-        \text{$0$} & \text{$i = 0 \lor j = 0$} \\
-        \text{$M[i][j]$} & \text{$i > 0 \lor j > 0 \land X[i] = Y[j]$} \\
-        \text{
-            $
-                min
-                \begin{cases}
-                    M[i-1][j] + 1 \\
-                    M[i][j-1] + 1 \\
-                    M[i-1][j-1] + 1 \\
-                \end{cases}
-            $
-        } & \text{$i > 0 \land j > 0 \land X[i] \neq Y[j]$}
+      M[i-1][j] + 1 \\
+      M[i][j-1] + 1 \\
+      M[i-1][j-1] + 1 \\
     \end{cases}
+    $
+  } & \text{$i > 0 \land j > 0 \land X[i] \neq Y[j]$}
+\end{cases}
 \]
 
 \section{Allineamento con GAP}
 
-TODO
+Si definisce $gap$ una sequenza continua di $indel$ a seguito dell'allineamento.
 
-\section{Allineamento con Banda}
+Voglio ottimizzare il Needleman-Wunsch per assegnare un costo anche direttamente ad un gap. Quindi sia $P(k) = $ costo di un gap lungo k indel.
 
-TODO
+\[
+M[i][j] =
+\begin{cases}
+  \text{$0$} & \text{$i = 0 \land j = 0$} \\
+  \text{$P(i)$} & \text{$i > 0 \land j = 0$} \\
+  \text{$P(j)$} & \text{$i = 0 \land j > 0$} \\
+  \text{
+    $
+    max 
+    \begin{cases}
+      M[i-1][j-1] + d(X[i], Y[j]) \\
+      max k>0 \mid M[i][j-k] + P(k) \\
+      max k>0 \mid M[i-k][j] + P(k) \\
+    \end{cases}
+    $
+  } & \text{$i > 0 \land j > 0$}
+\end{cases}
+\]
+
+\section{Allineamento con Gap affine}
+
+Se volessi invece assegnare un costo $P_0$ all'apertura del gap e contemporaneamento un costo $P_e$ all'estensione del gap, si potrebbe formulare in questo modo:
+
+\begin{itemize}
+\item $M[i,j] = ottimo(X_i, Y_j)$
+\item $E_x[i,j] = ottimo(X_i, Y_j)$ vincolato ad avere estensione di gap finale in $X_i$
+\item $E_y[i,j] = ottimo(X_i, Y_j)$ vincolato ad avere estensione di gap finale in $Y_j$
+\item $N_x[i,j] = ottimo(X_i, Y_j)$ vincolato ad avere apertura di gap alla fine di $X_i$
+\item $N_y[i,j] = ottimo(X_i, Y_j)$ vincolato ad avere apertura di gap alla fine di $Y_j$
+\end{itemize}
+
+\[
+M[i][j] = max
+\begin{cases}
+  M[i-1,j-1] + D[x_i, y_j]
+  E_x[i,j] + E_y[i,j]
+  N_x[i,j] + N_y[i,j]
+\end{cases}
+\]
+
+\[
+E_x[i][j] = max
+\begin{cases}
+  E_x[i,j-1] + P_e
+  N_x[i,j-1] + P_e
+\end{cases}
+\]
+
+\[
+E_y[i][j] = max
+\begin{cases}
+  E_y[i-1,j] + P_e
+  N_y[i-1,j] + P_e
+\end{cases}
+\]
+
+\[ N_x[i,j] = M[i,j-1] + P_0 + P_e \]
+\[ N_y[i,j] = M[i-1,j] + P_0 + P_e \]
+
+\section{Matrici di Sostituzione}
+
+\paragraph{PAM}
+
+\paragraph{BLOSUM}
+
+\section{Karlin-Altschul}
+
+\section{Basic Local Alignment Search Tool}
