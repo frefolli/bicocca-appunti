@@ -186,10 +186,60 @@ E_y[i][j] = max
 
 \section{Matrici di Sostituzione}
 
+La matrice dei costi D introdotta nei precedenti algoritmi viene comunemente chiamata Matrice di Sostituzione. Semanticamente esprime la similarita' di simboli e caratteri. Di solito vengono ottenute con metodi statistici, ma possono anche essere create arbitrariamente, purche' garantiscano un senso compiuto. Vengono utilizzate per esprimere le mutazioni e le loro frequenze.
+
 \paragraph{PAM}
+
+Le matrici PAM-k riflettono una distanza espressa in PAM (Percentage Accepted Mutation), ovvero la frequenza delle mutazioni.
+
+Due sequenze si dicono distanti k-PAM se il numero di mutazioni accertate e' $\partial(X, Y) = (\frac k 100)|X|$, ovvero la percentuale dei caratteri mutati e' \textbf{circa} k.
+
+Una PAM-k viene costruita selezionando varie sequenze distanti k-PAM, quindi queste vengono allineate e si calcolano le frequenze per i singoli caratteri e le coppie di caratteri in base agli allineamenti ottenuti.
+
+\[
+    \text{PAM-k}[i,j] = log (\frac {f(i,j)} {f(i)f(j)})
+\]
 
 \paragraph{BLOSUM}
 
+Mentre le PAM allineano sequenze vicine, le matrici BLOSUM confrontanto sequenze lontane e le regioni mutate hanno la stessa importanza di quelle non mutate.
+
+Il valore BLOSUM-k si riferisce al valore di soglia percentuale k usato per determinare se due sequenze sono simili e quindi se devono essere aggregate prima di effettuare l'analisi di frequenza.
+
+Quella piu' usata e' la BLOSUM62.
+
 \section{Karlin-Altschul}
 
+La statistica di Karlin-Altschul esprima la probabilita' che l'allineamento locale venga trovato tra due sequenze della stessa lunghezza:
+
+\[
+    E = k m n e ^ {- \lambda S}
+\]
+
+\begin{center}
+    \begin{tabular}{|| c | c ||}
+        \hline
+        variabile & valore \\ 
+        \hline
+        E & numero di allineamenti \\
+        k & costante \\
+        n & numero di caratteri nel database \\
+        m & lunghezza stringa query \\
+        $\lambda S$ & punteggio normalizzato \\
+        \hline
+    \end{tabular}
+\end{center}
+
 \section{Basic Local Alignment Search Tool}
+
+E' un algoritmo per confrontare le sequenze di amminoacidi o nucleotidi o comunque sequenze di DNA o RNA.
+
+\begin{itemize}
+    \item Si rimuovono le regioni della sequenza a "bassa complessita'", ovvero composte da pochi elementi uguali, perche' potrebbero drogare il risultato con punteggi inverosimilmente alti.
+    \item Si crea una lista di tutte le sequenze consecutive lunghe 3 presenti della sequenza in input.
+    \item Si confrontano le parole in questa lista con tutte le parole presenti nel database utilizzano una matrice di sostituzione per attribuire un punteggio di similarita', come per esempio BLOSUM62.
+    \item Vengono scartate le parole con punteggio basso,
+    \item Per tutte le parole che sono rimaste con punteggio alto si inizia a estendere a destra e a sinistra di un carattere rispettivamente finche' il relativo punteggio non cala.
+    \item Si listano tutte queste regioni estese e si fondono quelle vicine
+    \item Si usa l'algoritmo Smith-Waterman
+\end{itemize}

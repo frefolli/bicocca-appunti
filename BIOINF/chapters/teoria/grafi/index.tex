@@ -162,7 +162,26 @@ Si avra' invece un arco per ogni k-mero.
 Quindi si applica TSP. Questa procedura e' detta Grafo di de Bruijn.
 In questo caso non possiamo sapere quante volte un certo k-mero appare nel genoma ma solo se appare.
 
-TODO: include graph
+\begin{tikzpicture}[node distance= 20mm and 20mm, thick, main/.style = {draw, circle}] 
+    \node[main] (acg) {ACG};
+    \node[main] (cgt) [above=of acg] {CGT};
+    \node[main] (gtg) [right=of cgt] {GTG};
+    \node[main] (tgt) [above=of gtg] {TGT};
+    \node[main] (tgc) [right=of gtg] {TGC};
+    \node[main] (gcc) [above=of tgc] {GCC};
+    \node[main] (cca) [right=of gcc] {CCA};
+    \node[main] (cac) [below=of tgc] {CAC};
+
+    \draw[->] (acg) -- (cgt);
+    \draw[->] (cgt) -- (gtg);
+    \draw[->] (gtg) -- (tgt);
+    \draw[->] (gtg) -- (tgc);
+    \draw[->] (tgt) -- (gtg);
+    \draw[->] (tgc) -- (gcc);
+    \draw[->] (gcc) -- (cca);
+    \draw[->] (cca) -- (cac);
+    \draw[->] (cac) -- (acg);
+\end{tikzpicture}
 
 \section{Ciclo Euleriano}
 
