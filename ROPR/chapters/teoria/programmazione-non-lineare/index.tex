@@ -1,0 +1,228 @@
+\chapter{Programmazione Non Lineare}
+
+\section{Introduzione}
+
+Un problema di programmazione non lineare puo' essere scritto cosi':
+
+\begin{align*}
+    opt & f(x) \\
+    g_j(x) \leq 0 && j = 1,...,m \\
+    x_i \geq 0 && i = 1,...,n
+\end{align*}
+
+E' simile se non usuale a un problema di programmazione lineare. Tuttavia qua non vale l'assunzione che $f$ e $g_j$ siano lineare.
+
+Esistono diversi modelli a seconda di quali siano le caratterische non lineari di funzione obiettivo e vincoli.
+
+\section{Ottimizzazione di Portafoglio}
+
+Nei problemi di gestione di un portafoglio di titoli finanziari l’obiettivo è massimizzare il rendimento atteso (guadagno) minimizzando il rischio associato all’investimento. La programmazione non lineare viene utilizzata per determinare un portafoglio che, in determinate ipotesi, fornisce un compromesso ottimale tra questi due fattori.
+
+Supponiamo che il portafoglio possa essere formato da un mix di azioni (titoli) da scegliere tra $n$ possibili.
+Le variabili di decisione $x_j$ ($j$ = 1, 2, ... , $n$) rappresentano il numero di azioni del titolo $j$ da includere.
+Siano $\mu$ e $\delta$ la media (stimata) e la varianza, rispettivamente, del rendimento su ciascuna quota del titolo $j$, dove $\delta$ misura il rischio associato a questo titolo.
+
+Per $i$ = 1,...,$n \mid (i \ne j)$, sia $\delta_{ij}$ la covarianza del rendimento dei titoli $i$ e $j$.
+
+\begin{align*}
+    R(x) = \Sigma ^ n _ {j=1} \mu _ j x _ j && \text{rendimento totale} \\
+    V(x) = \Sigma ^ n _ {i=1} \Sigma ^ n _ {j=1} \delta _ {ij} x _ i x _ j && \text{rischio totale}
+\end{align*}
+
+Date queste due funzioni, si sceglie di usare una come vincolo e l'altra come funzione obiettivo.
+Questa scelta e' vincolata ad una visione filosofica del problema:
+
+\begin{itemize}
+    \item spendere al massimo B, ottenere almeno rendimento L, con minimo rischio
+    \item spendere al massimo B, rischiare al massimo A, con massima resa
+\end{itemize}
+
+In questo caso formalizzo il primo scenario.
+
+\begin{align*}
+    Min & V(x) = \Sigma ^ n _ {i=1} \Sigma ^ n _ {j=1} \delta _ {ij} x_ i x _ j \\
+    \Sigma ^ n _ {j=1} \mu _ j x _ j &\geq L \\
+    \Sigma ^ n _ {j=1} P _ j x _ j &\leq B \\
+    x _ j \geq 0 && j = 1,...,n
+\end{align*}
+
+\section{Tipologie di PNL}
+
+\paragraph{Ottimizzazione non vincolata}
+
+I problemi PNL di ott. non vincolata non hanno vincoli sulla regione ammissibile, quindi l'obiettivo e' semplicemente $max f(x)$ o $min f(x)$.
+
+\paragraph{Ottimizzazione con vincoli lineari}
+
+I vincoli $g_j(x)$ sono lineare, ma la funzione obiettivo e' non lineare
+
+l'Ottimizzazione di Portafoglio presentata prima e' un caso particolare di Programmazione Quadratica, che a sua volta e' un caso particolare di ottimizzazione con vincoli lineari.
+
+\paragraph{Ottimizzazione convessa}
+
+Ogni vincolo $g_j(x)$ e' una funzione convessa. La funzione obiettivo puo' essere sia concava che convessa.
+
+\paragraph{Ottimizzazione non convessa}
+
+Ogni vincolo $g_j(x)$ e la funzione obiettivo possono essere concavi.
+Sono i problemi piu' difficili da risolvere perche' possono presentare piu' di un minimo/massimo.
+
+\paragraph{Risoluzione di PNL}
+
+Non si puo' usare il metodo del simplesso, perche' la soluzione puo' non stare sulla frontiera.
+
+\section{Problemi Affini}
+
+\paragraph{Clustering}
+
+Il clustering e' una serie di tecniche per analizzare e raggruppare dati in categorie omogenee inferendo delle proprieta' comuni. L'algoritmo piu' usato e' il K-Means.
+
+Dato un insieme di $n$ punti X = $\{x_i\}$ e un insieme di K punti $\{C_k\}$ detti centroidi, si definisce la distanza totale:
+
+\[
+    f(C_1,...,C_k) = \Sigma ^ K _ {k=1} \Sigma ^ n _ {i=1} (||C_k - X_i||)^2
+\]
+
+L'obiettivo del k-means e' minimizzare questa distanza totale. E' un problema PNL.
+
+\paragraph{Classificazione Lineare}
+
+Nel "Machine Learning" si deifniscono delle tecniche di classificazione che permettono a un programma di classificare degli input in k categorie accomunate da proprieta' che devono essere inferite (come nel Clustering).
+
+Si condideri un insieme di $n$ punti X = $\{x_i\}$, a cui sono associati i relativi target Y = $\{y_j\}$.
+I target sono le categorie di cui si sa gia' l'appartenenza. $(X,Y)$ e' un dataset di training.
+
+Un classificatore lineare cerca di identificare  i parametri $w \in \R^d$ e $b \in R$ relativi ad una suprtficie di separazione $w^tx - b = 0$, tali che le osservazioni della classe $A$ ricadano da un lato della superficie e le osservazioni della classe $B$ vice versa ricadano nell'altra.
+
+Genericamente catalogate in questo modo:
+
+\[
+    \begin{cases}
+        w^tx < b & y_i = A \\
+        w^tx > b & y_j = B
+    \end{cases}
+\]
+
+\paragraph{Addestrare una Rete Neurale}
+
+TODO: inserisci definizione formale di rete neurale
+
+Si disponga del seguente modello di RN:
+
+\begin{enumerate}
+    \item $x_1 \rightarrow x_1 * w_1$, $x_2 \rightarrow x_2 * w_2$
+    \item $s = x_1 * w_1 + x_2 * w_2$
+    \item $y = \frac 1 {1 + e ^ {-s}}$
+\end{enumerate}
+
+L'output e' $y$, gli input $x_1$ e $x_2$.
+Si cercano i parametri $w_1,w_2$ che diano le migliori previsioni.
+
+Si supponga di avere la seguente tabella input-output (dataset di training)
+
+\begin{center}
+    \begin{tabular}{||c | c | c||}
+        \hline
+        $x_1$ & $x_2$ & $y^r$ \\
+        \hline
+        0 & 1 & 0.88 \\
+        1 & 0 & 0.73 \\
+        0 & 0 & 0.5 \\
+        1 & 1 & 0.6 \\
+        0.5 & 0.7 & 0.86 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+La funzione di distanza ora e' $f(X_1,X_2,Z) = \Sigma ^ 5 _ {i=1} (y_i(w_1,w_2) - y^r_i)^2$.
+
+Il problema PNL avra' funzione obiettivo $Min f(X_1,X_2,Y)$.
+
+\section{Risoluzione di PNL}
+
+L'idea e' quella di costruire una sequenza di punti $\{x_k\}$ tali che $lim _ {k \rightarrow \infty} x_k = x^o$
+e $f(x_{k+1}) \leq f(x_k)$. Ovvero ad ogni iterazione k si cerca un punto $x_{k+1}$ che sia migliore di $x_k$.
+
+A differenza dell'algoritmo del simplesso, questo metodo puo' non terminare in un numero finito di iterazioni.
+Quindi esistono una serie di criteri che e' possibile valutare per decidere quando occorre fermarsi.
+
+\begin{itemize}
+    \item la soluzione e' sufficientemente accurata, ovvero $\frac {df(x_k)} {dx} \simeq0$
+    \item si fissa un numero massimo di iterazioni o di tempo computazionale
+    \item il progresso della soluzione k-esima non e' abbastanza soddisfacente
+    \item la soluzione diverge o si verificano cicli
+\end{itemize}
+
+\paragraph{Algoritmi}
+
+\begin{itemize}
+    \item dicotomici: algoritmi di ricerca per individuare un determinato valore (per il quale la funzione derivata si annulla) all'interno di un intervallo che ad ogni iterazione viene ridotto. Un esempio e' il metodo della Bisezione.
+    \item di approssimazione: utilizzano approssimazioni locali della funzione. Un esempio e' il metodo di Newton.
+\end{itemize}
+
+\section{Metodo della Bisezione}
+
+Se $f(x)$ e' continua e concava in un intervallo chiuso $[a,b]$, allora considerando un generico punto $x_k$.
+
+\begin{itemize}
+    \item se $\frac {df(x_k)} {dx} < 0$ allora il punto di ottimo si trova a sinistra di $x_k$.
+    \item se $\frac {df(x_k)} {dx} > 0$ allora il punto di ottimo si trova a destra di $x_k$.
+    \item se $\frac {df(x_k)} {dx} \simeq 0$ allora il punto di ottimo e' appossimabile a $x_k$.
+\end{itemize}
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{bisezione}{a,b}
+            \While{true}
+                \State calcolo df = $\frac {df(x_k)} {dx}$
+                \If {$df \simeq 0$}
+                    \State \Return $x_k$
+                \Else
+                    \If {$df < 0$}
+                        \State $b \gets x_k$
+                    \Else
+                        \State $a \gets x_k$
+                    \EndIf
+                \EndIf
+                \State $x_{k+1} \gets \frac {a + b} 2$
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\section{Metodo di Newton}
+
+Si usa lo sviluppo di Taylor:
+
+\[
+    f(x_{k+1}) = f(x_k) + df(x_k)(x_{k+1} - x_k) + 0.5 d^2f(x_k)(x_{k+1} - x_k)^2 + O((x_{k+1} - x_k)^2)
+\]
+
+\[
+    f(x_{k+1}) \simeq f(x_k) + df(x_k)(x_{k+1} - x_k) + 0.5 d^2f(x_k)(x_{k+1} - x_k)^2
+\]
+
+\[
+    df(x_k) + d^2f(x_k)(x_{k+1} - x_k) = 0 \Rightarrow x_{k+1} = x_k - \frac {df(x_k)} {d^2f(x_k)}
+\]
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{newton}{}
+            \While{true}
+                \State calcolo df = $\frac {df(x_k)} {dx}$
+                \State calcolo d2f = $\frac {d^2f(x_k)} {dx}$
+                \State $x_{k+1} \gets \frac {df} {d2f}$
+                \If {$|x_{k+1} - x_k| \simeq 0$}
+                    \State \Return $x_k$
+                \EndIf
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\section{Confronto dei due metodi}
+
+La bisezione richiesolo solo il calcolo della derivata prima e converge sempre, anche se e' un metodo lento.
+Mentre il metodo di Newton ha velocita' di convergenza quadratica, ma richiede la derivata seconda e potrebbe pure divergere.
+Esso infatti puo' fallire se il punto iniziale e' lontano dal punto di ottimo. Quindi deve ssere utilizzato con strategie di ottimizzazione globale.
