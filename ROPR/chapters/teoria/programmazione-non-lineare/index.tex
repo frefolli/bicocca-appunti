@@ -175,7 +175,7 @@ Se $f(x)$ e' continua e concava in un intervallo chiuso $[a,b]$, allora consider
         \Procedure{bisezione}{a,b}
             \While{true}
                 \State calcolo df = $\frac {df(x_k)} {dx}$
-                \If {$df \simeq 0$}
+                \If {$df \simeq 0 \lor b - a \leq \epsilon$}
                     \State \Return $x_k$
                 \Else
                     \If {$df < 0$}
@@ -212,7 +212,7 @@ Si usa lo sviluppo di Taylor:
             \While{true}
                 \State calcolo df = $\frac {df(x_k)} {dx}$
                 \State calcolo d2f = $\frac {d^2f(x_k)} {dx}$
-                \State $x_{k+1} \gets \frac {df} {d2f}$
+                \State $x_{k+1} \gets x_k - \frac {df} {d2f}$
                 \If {$|x_{k+1} - x_k| \simeq 0$}
                     \State \Return $x_k$
                 \EndIf

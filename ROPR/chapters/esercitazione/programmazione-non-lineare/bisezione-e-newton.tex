@@ -1,0 +1,94 @@
+\chapter{PNL - Bisezione e Newton}
+
+\section{1}
+
+Si determini nell'intervallo $[-3, 0]$ il punto massimo della funzione $f(x) = x^3 - 3x + 5$.
+
+\paragraph{Analiticamente}
+
+La derivata $g = \frac {df(x)} {dx} = 3x^2 - 3$. Le soluzioni di $g$ sono $(x = \pm 1)$.
+
+La derivata $h = \frac {dg(x)} {dx} = 6x$. Applico le soluzioni di $g$ in h.
+
+$x = 1 \notin [-3, 0]$. $h(-1) = -6$, $x=-1$ e' il punto di massimo.
+
+\paragraph{Con bisezione e massimo 4 iterazioni}
+
+La derivata $g = \frac {df(x)} {dx} = 3x^2 - 3$.
+
+\begin{enumerate}
+    \item $x_k = - \frac 3 2$. $g(x_k) = \frac {15} 4$. L'ottimo e' a destra di $x_k$. Il nuovo range e' $[- \frac 3 2, 0]$.
+    \item $x_k = - \frac 3 4$. $g(x_k) = -\frac {21} {16}$. L'ottimo e' a sinistra di $x_k$. Il nuovo range e' $[-\frac 3 2, -\frac 3 4]$.
+    \item $x_k = - \frac {9} 8$. $g(x_k) = \frac {51} {64}$. L'ottimo e' a destra di $x_k$. Il nuovo range e' $[-\frac {9} {8}, -\frac {3} {4}]$.
+    \item $x_k = - \frac {15} {16}$. $g(x_k) = -\frac {93} {256}$. L'ottimo e' a sinistra di $x_k$. Il nuovo range e' $[-\frac {9} {8}, -\frac {15} {16}]$.
+\end{enumerate}
+
+Dopo 4 iterazioni $x_k = -\frac {33} {32}$.
+
+\section{2}
+
+Si determini il punto minimo con il metodo della bisezione della funzione $f(x) = x^4 - 14x^3 + 60x^2 - 70x$, con range $[0,1]$ e precisione $\epsilon = 0.1$.
+
+La derivata $g = \frac {df(x)} {dx} = 4x^3 - 42x^2 + 120x - 70$.
+
+\begin{enumerate}
+    \item $x_k = \frac 1 2$. $g(x_k) = -20$. L'ottimo e a di $x_k$. Il nuovo range e' $[1, \frac 1 2]$.
+    \item $x_k = \frac 1 {4}$. $g(x_k) = -\frac {681} {16}$. L'ottimo e a di $x_k$. Il nuovo range e' $[0, \frac {1} {4}]$.
+    \item $x_k = \frac 1 {8}$. $g(x_k) = -\frac {7123} {128}$. L'ottimo e a di $x_k$. Il nuovo range e' $[0, \frac {1} {8}]$.
+    \item $x_k = \frac 1 {16}$. $g(x_k) = -\frac {64167} {1024}$. L'ottimo e a di $x_k$. Il nuovo range e' $[0, \frac {1} {16}]$.
+    \item $x_k = \frac 1 {32}$. $g(x_k) = -\frac {-543055} {8192}$. L'ottimo e a di $x_k$. Il nuovo range e' $[0, \frac {1} {32}]$.
+\end{enumerate}
+
+\section{3}
+
+Si determini il punto di massimo della funzione $f(x) = -5x^2 + 5x + 4$.
+
+La derivata $g = \frac {df(x)} {dx} = -10x + 5$.
+La derivata $h = \frac {dg(x)} {dx} = -10$.
+Il rapporto $r = \frac g h = \frac {10x - 5} {10} = x - \frac 1 2$
+
+\paragraph{Newton da $x_0 = 0$}
+
+\begin{itemize}
+    \item $x_k = 0$. $r(x_k) = - \frac 1 2$. Diventa $x_k = \frac 1 2$.
+    \item $x_k = \frac 1 2$. $r(x_k) = 0$. Resta $x_k = \frac 1 2$.
+\end{itemize}
+
+Mi fermo con $x_k = \frac 1 2$.
+
+\paragraph{Newton da $x_0 = 6$}
+
+\begin{itemize}
+    \item $x_k = 6$. $r(x_k) = \frac {11} 2$. Diventa $x_k = \frac 1 2$.
+    \item $x_k = \frac 1 2$. $r(x_k) = 0$. Resta $x_k = \frac 1 2$.
+\end{itemize}
+
+Mi fermo con $x_k = \frac 1 2$.
+
+\section{4}
+
+Si determini il punto di massimo della funzione $f(x) = -e^{-x^2}$.
+
+La derivata $g = \frac {df(x)} {dx} = 2e^{-x^2}(x)$.
+La derivata $h = \frac {dg(x)} {dx} = 2e^{-x^2}(1 - 2x^2)$.
+Il rapporto $r = \frac g h = \frac {2e^{-x^2}(x)} {2e^{-x^2}(1 - 2x^2)} = \frac {x} {1 - 2x^2}$
+
+\paragraph{Newton con $x_0 = \frac 1 4$}
+
+\begin{itemize}
+    \item $x_k = \frac 1 4$. $r(x_k) = \frac 2 7$. Diventa $x_k = -\frac 1 {28}$.
+    \item $x_k = -\frac 1 {28}$. $r(x_k) = \frac {14} {391}$. Diventa $x_k = -1/28 - 14/391 = -\frac {783} {10948}$.
+\end{itemize}
+
+Mi fermo con $x_k = -\frac {783} {10948}$.
+
+\paragraph{Newton con $x_0 = 1$}
+
+\begin{itemize}
+    \item $x_k = 1$. $r(x_k) = -1$. Diventa $x_k = 2$.
+    \item $x_k = 2$. $r(x_k) = -\frac 2 7$. Diventa $x_k = \frac {16} {7}$.
+\end{itemize}
+
+Mi fermo con $x_k = \frac {16} {7}$.
+
+
