@@ -1,0 +1,166 @@
+\chapter{PNL Multivariata}
+
+\section{Derivata direzionale}
+
+Sia $f : \R^n \rightarrow \R$ una funzione continua e $v \in \R^n$ un vettore direzionale (con $|v| = 1$) di $\R^n$.
+Allora il limite: $\frac {\delta f(x)} {\delta v} = lim _ {h \rightarrow 0} \frac {f(x + hv) - f(x)} {h}$ e' chiamato derivata direzionale di f nella direzione v.
+
+Le derivate parziali sono derivate direzionali con $v$ uguale ad un vettore della base canonica. Ovvero derivate direzionali con $v = <0,...,1,...,0>$.
+
+\section{Gradiente}
+
+Sia $f : \R^n \rightarrow \R$ una funzione reale. Il gradiente di f corrisponde al vettore delle derivate parziali:
+
+$\nabla f(x) = [ \frac {\delta f(x)} {\delta x_1}, ..., \frac {\delta f(x)} {\delta x_n} ]$.
+
+\section{Henessiano}
+
+La matrice Henessiana rappresenta l'estensione del concetto di derivata seconda per una funzione a piu' dimensioni:
+
+\[
+    \nabla^2 f(x) =
+    \begin{pmatrix}
+        \frac {\delta f(x)} {\delta x_1^2} && \frac {\delta f(x)} {\delta x_1 \delta x_2} && ... && \frac {\delta f(x)} {\delta x_1 \delta x_n} \\
+        \frac {\delta f(x)} {\delta x_2 \delta x_1} && \frac {\delta f(x)} {\delta x_2^2} && ... && \frac {\delta f(x)} {\delta x_2 \delta x_n} \\
+        ... && ... && ... && ... \\
+        \frac {\delta f(x)} {\delta x_n \delta x_1} && \frac {\delta f(x)} {\delta x_n \delta x_2} && ... && \frac {\delta f(x)} {\delta x_n^2}
+    \end{pmatrix}
+\]
+
+\section{Matrici positive e negative}
+
+\begin{itemize}
+    \item una matrice M e' definita positiva se tutti gli autovalori della matrice sono positivi.
+    \item una matrice M e' definita negativa se tutti gli autovalori della matrice sono negativi.
+    \item una matrice M e' semi-definita positiva se tutti gli autovalori della matrice sono non-negativi.
+    \item una matrice M e' semi-definita negativa se tutti gli autovalori della matrice sono non-positivi.
+    \item per qualsiasi altra condizione la matrice M e' indefinita.
+\end{itemize}
+
+\section{Legame tra Henessiano e Convessita'}
+
+Sia $f : \R^n \rightarrow \R$ una funzione reale due volte differenzialbile. Allora per ogni punti $x_0$ e' possibile calcolare il valore della matrice Henessiana in quel punto
+
+\[
+    \nabla^2 f(x_0) =
+    \begin{pmatrix}
+        \frac {\delta f(x_0)} {\delta x_1^2} && \frac {\delta f(x_0)} {\delta x_1 \delta x_2} && ... && \frac {\delta f(x_0)} {\delta x_1 \delta x_n} \\
+        \frac {\delta f(x_0)} {\delta x_2 \delta x_1} && \frac {\delta f(x_0)} {\delta x_2^2} && ... && \frac {\delta f(x_0)} {\delta x_2 \delta x_n} \\
+        ... && ... && ... && ... \\
+        \frac {\delta f(x_0)} {\delta x_n \delta x_1} && \frac {\delta f(x_0)} {\delta x_n \delta x_2} && ... && \frac {\delta f(x_0)} {\delta x_n^2}
+    \end{pmatrix}
+\]
+
+\begin{itemize}
+    \item Se $H_f(x_0)$ e' definita positiva allora la funzione f(x) e' convessa in quel punto.
+    \item Se $H_f(x_0)$ e' definita negativa allora la funzione f(x) e' concava in quel punto.
+    \item Se la funzione f(x) e' convessa in $x_0$ allora $H_f(x_0)$ e' semi-definita positiva.
+    \item Se la funzione f(x) e' concava in $x_0$ allora $H_f(x_0)$ e' semi-definita negativa.
+\end{itemize}
+
+\section{Ricerca di punti di Massimo/Minimo}
+
+Poniamo il gradiente della funzione uguale a zero per cercare i punti stazionari, ovvero i punti di massimo e minimo.
+
+\[
+    \nabla f = 0
+\]
+
+In questo caso si risolvono n equazioni di n incognite.
+Molto spesso pero' le equazioni che si ottengono sono non-lineari.
+
+\section{Algoritmi numerici per la ricerca non-lineare}
+
+Si prendono in considerazione due algoritmi: il gia' noto Metodo di Newton e il Metodo del Gradiente.
+Il metodo del gradiente e' concettualmente affine al metodo di newton.
+
+Consideriamo una generica funzione $f : \R^n \rightarrow \R$, ed un generico punto $x_0 \in R^n$ in cui la funzione sia differenziabile.
+
+$<x, y> = z$ e' il prodotto scalare $x \dot y = z$.
+Definisco il vettore di discesa un generico vettore $v \in \R^n$ tale che $<v, \nabla f(x_0)> < 0$.
+Definisco il vettore di salita un generico vettore $v \in \R^n$ tale che $<v, \nabla f(x_0)> > 0$.
+
+\paragraph{Algoritmo generale per il minimo}
+
+Se voglio cercare un punto di minimo per una funzione:
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{gradient}{f}
+            \State $k \gets 0$
+            \State $x_k \gets \textbf{generico punto}$
+            \State $d_k \gets \textbf{vettore di discesa}$
+            \State $a_k \gets \textbf{step size}$
+            \State $x_{k+1} \gets x_k \pm a_k d_k$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Step Size ottimale}
+
+voglio minimizzare/massimizzare il valore della funzione $f(x_{k+1}) = x_k + a_k d_k$ pongo
+
+\[
+    \frac {df(x_k + a_k d_k)} {da_k} = 0
+\]
+
+uso quindi un metodo di minimizzazione/massimizzazione per pnl monovariati per trovare $a_k$ ottimale.
+
+\paragraph{Metodo del gradiente}
+
+\[
+    g(x_k, d_k) = a_k \textbf{tale che}
+    \frac {df(x_k + a_k d_k)} {da_k} = 0
+\]
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{gradient}{f}
+            \State $k \gets 0$
+            \State $x_k \gets \textbf{punto iniziale}$
+            \While{true}
+                \State $d_k \gets \nabla f(x_k)$
+                \State $a_k \gets g(x_k, x_k)$
+                \State $x_{k+1} \gets x_k \pm a_k d_k$
+                \If{$|f(x_{k+1}) - f(x_k)| < \epsilon_1 \lor |\nabla f(x_k)| < \epsilon_2$}
+                    \State \Return $x_k$
+                \Else
+                    \State $k \gets k+1$
+                \EndIf
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\paragraph{Metodo di newton}
+
+Si adatta lo sviluppo di Taylor usato nel metodo monovariato in questo modo:
+
+\[
+    f(x_k + \Delta x) = f(x_k) + \nabla f(x_k) \Delta x + 0.5 \Delta x \nabla^2 f(x_k) \Delta x
+\]
+
+Come nel caso monovariato ho un rapporto tra derivate. $\Delta x$ non e' altro che la direzione di salita/discesa.
+
+\[
+    \Delta x = - \frac {\nabla f(x_k)} {\nabla^2 f(x_k)}
+\]
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{gradient}{f}
+            \State $k \gets 0$
+            \State $x_k \gets \textbf{punto iniziale}$
+            \While{true}
+                \State $x_{k+1} \gets x_k - \frac {\nabla f(x_k)} {\nabla^2 f(x_k)}$
+                \If{$|f(x_{k+1}) - f(x_k)| < \epsilon_1 \lor |\nabla f(x_k)| < \epsilon_2$}
+                    \State \Return $x_k$
+                \Else
+                    \State $k \gets k+1$
+                \EndIf
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+Se il metodo di newton converge, lo fa in modo piu' veloce rispetto al metodo del gradiente, ma qua c'e' uno sforzo computazionale maggiore.

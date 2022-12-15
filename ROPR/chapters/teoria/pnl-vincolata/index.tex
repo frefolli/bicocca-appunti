@@ -1,0 +1,70 @@
+\chapter{PNL Vincolata}
+
+\section{Riduzione del numero di variabili libere}
+
+Supponiamo di avere un problema di ottimizzazione soggetto ad un certo numero $n$ di vincoli di uguaglianza.
+
+Nel caso in cui sia possibile esplicitare $n$ variabili in funzione delle restanti $m-n$ variabili utilizzando i vincoli di ugualianza del problema allora possiamo trasformare tale problema in un problema di ottimizzazione non vincolata con $m-n$ variabili
+
+Quindi esplicito le variabili nei vincoli e le sostituisco all'interno del resto del sistema (vincoli funzionali e funzione obiettivo)
+
+Posso esplicitare una variabile solo se facendolo puo' assumere solo un valore.
+
+\section{Metodo dei moltiplicatori di Lagrange}
+
+Sia un generico pnl vincolato con solo vincoli di uguaglianza:
+
+\begin{align*}
+    opt & f (x_1,...,x_n) \\
+    g_i(x_1,...,x_n) &= 0
+\end{align*}
+
+Consideriamo la funzione L:
+
+\[
+    L(x_1,...,x_n,\lambda_1,...,\lambda_n) = f(x_1,...,x_n) + \Sigma ^ m _ {i=0} \lambda_i g_i(x_1,...,x_n)
+\]
+
+Tale funzione prende il nome di Lagrangiana e le variabili $\lambda_i$ sono chiamate moltiplicatori di Lagrange
+
+Sia $x_o = (x_{1o},...,x_{no})$ il punto stazionario di f, allora esistono m moltiplicatori di Lagrange tali che, detto $\lambda_o = (\lambda_{1o},...,\lambda_{mo})$, $(x_o,\lambda_o)$ e' un punto stazionario della Lagrangiana associata.
+
+\paragraph{Condizione di ottimalita' di primo grado}
+
+Sia $x_o = (x_{1o},...,x_{no})$ il punto stazionario di f, allora esistono m moltiplicatori di Lagrange tali che, detto $\lambda_o = (\lambda_{1o},...,\lambda_{mo})$, nel punto $(x_o,\lambda_o)$ il gradiente della Lagrangiana associata si annulla.
+
+\paragraph{Condizione di ottimalita' di primo grado}
+
+Sia J la matrice dei gradienti dei vincoli (matrice Jacobiana).
+Consideriamo l'insieme dei vettori $y \in \R^n$ tali che:
+
+\[ J(x_o) \cdot y = 0 \]
+
+Dove
+
+\[
+    J(x_o) =
+    \begin{pmatrix}
+        \frac {\delta g_1} {\delta x_1} && ... && \frac {\delta g_1} {\delta x_n} \\
+        ... && ... && ... \\
+        \frac {\delta g_m} {\delta x_1} && ... && \frac {\delta g_m} {\delta x_n}
+    \end{pmatrix}
+\]
+
+Consideriamo ora la Henessiana della funzione Lagrangiana ristretta alle variabili $x_i$:
+
+\[
+    H(x_o, \lambda_o) =
+    \begin{pmatrix}
+        \frac {\delta^2 L} {\delta^2 x_1} && ... && \frac {\delta^2 L} {\delta x_1 x_n} \\
+        ... && ... && ... \\
+        \frac {\delta^2 L} {\delta x_1 x_n} && ... && \frac {\delta^2 L} {\delta^2 x_n}
+    \end{pmatrix}
+\]
+
+\begin{itemize}
+        \item amogus
+\end{itemize}
+
+\section{Condizioni di Karush-Kuhn Tucker}
+
