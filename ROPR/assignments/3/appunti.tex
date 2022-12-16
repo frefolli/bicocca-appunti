@@ -1,0 +1,77 @@
+\documentclass[a4paper,12pt,oneside]{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+    \thispagestyle{plain}
+    \begin{center}
+        \normalsize
+        \textbf{Assignment 2}
+            
+        \vspace{0.2cm}
+        \normalsize
+        12/11/2022
+            
+        \vspace{0.2cm}
+        \textbf{Francesco Refolli 865955}
+    \end{center}
+
+    \section{Esercizio 1}
+
+    \paragraph{Consegna}
+
+    Una catena di supermercati deve decidere quali tra 5 dei suoi magazzini aprire per rifornire 10 nuovi punti vendita. Il costo per l’apertura e mantenimento del magazzino i e' di $\theta_i$ euro. In ciascun magazzino i possono essere stoccati $\alpha_i$ Kg di merce. Ciascun supermercato j si aspetta giornalmente di ricevere almeno $\beta_j$ Kg di merce. Il costo di trasporto unitario di trasporto della merce dal magazzino i al punto vendita j è stimato a $y_{ij}$ euro/Kg. Elaborare un modello di Programmazione Lineare Intera che aiuti la catena di supermercati a decidere quali magazzini aprire e a soddisfare le domande dei punti vendita, minimizzando i costi totali.
+    Si tenga inoltre in considerazione che la catena:
+    \begin{enumerate}
+        \item vuole aprire al massimo 4 magazzini
+        \item per ragioni logistiche, vuole aprire il magazzino 5 solo se il magazzino 4 e il magazzino 3 non vengono aperti
+        \item impone che il magazzino 1 consegni la merce al supermercato 5 (il più distante) solo in pallet da $k$ kg (si supponga che $a_i$ sia multiplo di k)
+        \item vuole che almeno uno dei seguenti scenari sia verificato: scenario a) siano aperti almeno 3 magazzini scenario b) sia aperto almeno 1 tra i magazzini 1, 2 e 5.
+    \end{enumerate}
+
+    \paragraph{Modello - funzione obiettivo}
+    $d_{ij}$ e' la quantita' di prodotto intera mandata dal magazzino $i$ al supermercato $j$.
+    \begin{align*}
+        min & \Sigma ^ {5} _ {i=1} \Sigma ^ {10} _ {j=1} d_{ij} \cdot y_{ij} & funzione \;\; obiettivo \\
+        d_{ij} &\geq 0 \; e \;\; intera & \forall i,j \in [1,5] x [1,10]
+    \end{align*}
+
+    \paragraph{Modello - vincoli di coerenza del problema di trasporto}
+    \begin{align*}
+        \Sigma ^ {10} _ {j} d_{ij} &= a_{i} & \forall i \in [1,5] \\
+        \Sigma ^ {5} _ {i} d_{ij} &= b_{j} & \forall j \in [1,10]
+    \end{align*}
+ 
+    \paragraph{Modello - condizione 1}
+    
+    Si vuole aprire al massimo 4 magazzini. Sfrutto la ricetta \textbf{Vincoli di tipo Either-Or}.
+    $M_i$ variabili con valore enorme di supporto per le variabili binarie $v_i$ create e necessarie alla condizione 1.
+    
+    \begin{align*}
+        \Sigma ^ {10} _ {j=1} d_{ij} &\leq 0 + M \cdot v_i & \forall i [1,5] \\
+        \Sigma ^ {10} _ {j=1} d_{ij} &\geq 1 - M \cdot (1 - v_i) & \forall i [1,5] \\
+        \Sigma ^ {5} _ {i=1} v_i &\geq 0 \; e \;\; intera \\
+        v_i &\geq 0 \; e \;\; intera & \forall i \in [1,5] \\
+        v_i &\leq 1 \; e \;\; intera & \forall i \in [1,5]
+    \end{align*}
+
+    \paragraph{Modello - condizione 2}
+    Si vuole aprire il magazzino 5 solo se il magazzino 4 e il magazzino 3 non vengono aperti.
+
+    \paragraph{Modello - condizione 3}
+    Si impone che il magazzino 1 consegni la merce al supermercato 5 (il più distante) solo in pallet da $k$ kg.
+    x e' la quantita' di pallet che il magazzino 1 spedisce al supermercato 5.
+    \begin{align*}
+        d_{ij} - k \cdot x &= 0 \\
+        x &\geq 0 \; e \;\; intera
+    \end{align*}
+
+    \paragraph{Modello - condizione 4}
+
+\end{document}

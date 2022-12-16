@@ -63,8 +63,53 @@ Consideriamo ora la Henessiana della funzione Lagrangiana ristretta alle variabi
 \]
 
 \begin{itemize}
-        \item amogus
+    \item Se $y^t \cdot H_L(x,\lambda_o) \cdot y > 0$ allora $x$ e' punto di minimo
+    \item Se $y^t \cdot H_L(x,\lambda_o) \cdot y < 0$ allora $x$ e' punto di massimo
+    \item Se $x$ e' un punto di minimo allora $y^t \cdot H_L(x,\lambda_o) \cdot y \geq 0$
+    \item Se $x$ e' un punto di massimo allora $y^t \cdot H_L(x,\lambda_o) \cdot y \leq 0$
 \end{itemize}
 
 \section{Condizioni di Karush-Kuhn Tucker}
 
+Queste condizioni (necessarie ma non sufficienti) generalizzano il metodo dei moltiplicatori di Lagrange ai vincoli di disuguaglianza.
+
+Sia un generico pnl vincolato:
+
+\begin{align*}
+    opt & f (x_1,...,x_n) \\
+    g_i(x_1,...,x_n) &= 0 \\
+    h_j(x_1,...,x_n) &\leq 0
+\end{align*}
+
+Sia $x_o = (x_{o1},...,x_{on})$ un punto di ottimo di f, allora $h_j(x_o)$ puo' essere attivo ($h_j(x_o) = 0$) o inattivo ($h_j(x_o) < 0$).
+
+Indico con $I(x_o)$ l'insieme degli indici dei vincoli attivi.
+
+
+Sia $x_o = (x_{1o},...,x_{no})$ il punto di ottimo di f, allora esistono m moltiplicatori $\lambda_o = (\lambda_{1o},...,\lambda_{mo})$ e $u_o = (u_{o1},...,u_{op})$, tali che si verifichino le seguenti condizioni:
+
+\paragraph{Condizioni di stazionarieta'}
+
+\begin{align*}
+    \nabla f(x_o) + \Sigma ^ m _ {i=1} \lambda_oi \nabla g_i(x_o) + \Sigma ^ p _ {j=1} u_oi \nabla h_j(x_o) = 0 && problemi di minimo \\
+    \nabla f(x_o) - \Sigma ^ m _ {i=1} \lambda_oi \nabla g_i(x_o) - \Sigma ^ p _ {j=1} u_oi \nabla h_j(x_o) = 0 && problemi di massimo
+\end{align*}
+
+\paragraph{Ammissibilita' primale}
+
+\begin{align*}
+    g_i(x_o) = 0 && \forall i = 1,...,m \\
+    h_j(x_o) = 0 && \forall j = 1,...,p
+\end{align*}
+
+\paragraph{Ammissibilita' duale}
+
+\begin{align*}
+    u_{oj} = 0 && \forall j = 1,...,p
+\end{align*}
+
+\paragraph{Condizioni di complementarieta'}
+
+\begin{align*}
+    u_{oj} \cdot h_j(x_o) = 0 && \forall j = 1,...,p
+\end{align*}
