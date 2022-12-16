@@ -12,7 +12,7 @@
     \thispagestyle{plain}
     \begin{center}
         \normalsize
-        \textbf{Assignment 2}
+        \textbf{Assignment 3}
             
         \vspace{0.2cm}
         \normalsize
@@ -44,25 +44,38 @@
 
     \paragraph{Modello - vincoli di coerenza del problema di trasporto}
     \begin{align*}
-        \Sigma ^ {10} _ {j} d_{ij} &= a_{i} & \forall i \in [1,5] \\
+        \Sigma ^ {10} _ {j} d_{ij} &\leq a_{i} & \forall i \in [1,5] \\
         \Sigma ^ {5} _ {i} d_{ij} &= b_{j} & \forall j \in [1,10]
     \end{align*}
  
     \paragraph{Modello - condizione 1}
     
     Si vuole aprire al massimo 4 magazzini. Sfrutto la ricetta \textbf{Vincoli di tipo Either-Or}.
-    $M_i$ variabili con valore enorme di supporto per le variabili binarie $v_i$ create e necessarie alla condizione 1.
+    Con $M$ variabile con valore enorme di supporto per le variabili binarie $v_i$ create e necessarie alla condizione 1.
     
     \begin{align*}
         \Sigma ^ {10} _ {j=1} d_{ij} &\leq 0 + M \cdot v_i & \forall i [1,5] \\
         \Sigma ^ {10} _ {j=1} d_{ij} &\geq 1 - M \cdot (1 - v_i) & \forall i [1,5] \\
-        \Sigma ^ {5} _ {i=1} v_i &\geq 0 \; e \;\; intera \\
+        \Sigma ^ {5} _ {i=1} v_i &\leq 4 \; e \;\; intera \\
         v_i &\geq 0 \; e \;\; intera & \forall i \in [1,5] \\
         v_i &\leq 1 \; e \;\; intera & \forall i \in [1,5]
     \end{align*}
 
     \paragraph{Modello - condizione 2}
     Si vuole aprire il magazzino 5 solo se il magazzino 4 e il magazzino 3 non vengono aperti.
+    Sfrutto la ricetta \textbf{Vincoli di tipo Either-Or}.
+    Con $M$ variabile con valore enorme di supporto per la variabile binaria $u$ creata e necessaria alla condizione 2.
+
+    \begin{align*}
+        \Sigma ^ {10} _ {j=1} d_{5j} &\leq 0 + M \cdot u \\
+        \Sigma ^ {10} _ {j=1} d_{3j} &\geq 0 - M \cdot u \\
+        \Sigma ^ {10} _ {j=1} d_{4j} &\geq 0 - M \cdot u \\
+        \Sigma ^ {10} _ {j=1} d_{5j} &\geq 1 - M \cdot (1 - u) \\
+        \Sigma ^ {10} _ {j=1} d_{3j} &\leq 0 + M \cdot (1 - u) \\
+        \Sigma ^ {10} _ {j=1} d_{4j} &\leq 0 + M \cdot (1 - u) \\
+        u &\geq 0 \; e \;\; intera \\
+        u &\leq 1 \; e \;\; intera
+    \end{align*}
 
     \paragraph{Modello - condizione 3}
     Si impone che il magazzino 1 consegni la merce al supermercato 5 (il più distante) solo in pallet da $k$ kg.
@@ -73,5 +86,34 @@
     \end{align*}
 
     \paragraph{Modello - condizione 4}
+    Si vuole che almeno uno dei seguenti scenari sia verificato: scenario a) siano aperti almeno 3 magazzini scenario b) sia aperto almeno 1 tra i magazzini 1, 2 e 5. Sfrutto la ricetta \textbf{K Vincoli su N}.
+    Con $M$ variabile dal valore enorme e $N = ~ 2 \cdot M$.
+
+    \begin{align*}
+        \Sigma ^ {10} _ {j=1} d_{ij} &\leq 0 + M \cdot s_i + N \cdot t_1 & \forall i [1,5] \\
+        \Sigma ^ {10} _ {j=1} d_{ij} &\geq 1 - M \cdot (1 - s_i) - N \cdot t_1 & \forall i [1,5] \\
+        \Sigma ^ {5} _ {i=1} v_i &\geq 3 \; e \;\; intera \\
+        \Sigma ^ {10} _ {j=1} d_{1j} &\geq 0 - N \cdot t_2 \\
+        \Sigma ^ {10} _ {j=1} d_{1j} &\geq 0 - N \cdot t_3 \\
+        \Sigma ^ {10} _ {j=1} d_{1j} &\geq 0 - N \cdot t_4 \\
+        \Sigma ^ {4} _ {l=1} t_l &\geq 1 \\
+        t_i &\geq 0 \; e \;\; intera & \forall i \in [1,4] \\
+        t_i &\leq 1 \; e \;\; intera & \forall i \in [1,4] \\
+        s_i &\geq 0 \; e \;\; intera & \forall i \in [1,5] \\
+        s_i &\leq 1 \; e \;\; intera & \forall i \in [1,5]
+    \end{align*}
+
+  \section{Esercizio 2}
+
+    Trovare l’ottimo del seguente problema di Programmazione Lineare Intera applicando l’algoritmo di Branch & Bound, adottando una tecnica di esplorazione dell’albero Depth First (con navigazione a sinistra). Riportare l’albero di ricerca ottenuto, evidenziando chiaramente l’ordine di esplorazione dei nodi, i branching effettuali, i criteri di fathoming eventualmente applicati, la soluzione ottima e il valore ottimo del rilassamento continuo in ogni nodo. Risolvere tutti i rilassamenti continui per via grafica, mostrando la regione ammissibile iniziale e come essa cambi con l’aggiunta dei vincoli di branching.
+
+    \begin{align*}
+        max & 2 x_1 + x_2 \\
+        5 x_1 + 3 x_2 &\leq 9 \\
+        4 x_1  - 3 x_2 &\eq 3 \\
+        x_1,x_2 &\geq \;\; e \;\; intere
+    \end{align*}
+
+
 
 \end{document}
