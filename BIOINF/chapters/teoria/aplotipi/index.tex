@@ -1,0 +1,51 @@
+\chapter{Aplotipi}
+
+\section{Ricostruzione aplotipi in pedigree}
+
+\paragraph{Istanza del problema}
+
+Abbiamo un Pedigree P, per ogni individuo il suo genotipo (00, 11, 01), nessuna ricombinazione e nessun dato mancante. Siamo nel caso biallelico.
+
+\paragraph{Variabili}
+
+\begin{itemize}
+    \item $g_i[j] = $ genotipo dell'individuo i-esimo nel locus j. Vale 0 o 1 se omozigote, 2 se eterozigote.
+    \item $w_i[j] = $ 0 se nel locus j-esimo dell'individuo i-esimo e' omozigote, 1 se eterozigote.
+    \item detto x genitore di i, se x passa il suo aplotipo paterno a i allora $h_{xi}$ = 0, altrimenti = 1.
+    \item $p_i[j] = $ aplotipo paterno dell'individuo i-esimo nel locus j-esimo.
+\end{itemize}
+
+$(g_i[j], g_i[j]) = (0, 1)$ se omozigote, oppure $= (1,0)$ se eterozigote. L'aplotipo materno e' $= p_i[j] + w_i[j] \in \mathbb{Z}_2$
+
+\section{Eretitarieta' di Mendel}
+
+\paragraph{Variabili}
+
+\begin{itemize}
+    \item p padre, m madre, f figlio/a, x genitore
+    \item $h_{pf} = 0 \Rightarrow p_f[j] = p_p[j]$
+    \item $h_{pf} = 1 \Rightarrow p_f[j] = p_p[j] + w_p[j]$
+    \item $h_{mf} = 0 \Rightarrow p_f[j] + w_f[j] = p_m[j]$
+    \item $h_{mf} = 1 \Rightarrow p_f[j] + w_f[j] = p_m[j] + w_m[j]$
+    \item $p_f[j] = p_p[j] + w_p[j] \cdot h_{pf}$
+    \item $p_f[j] + w_f[j] = p_m[j] + w_m[j] \cdot h_{mf}$
+    \item $p_f[j] + d_{xf} = p_x[j] + w_x[j] \cdot h_{mf}, dove d_{pf} = 0 e d_{mf} = w_f$
+\end{itemize}
+
+\paragraph{Equazioni}
+
+\begin{itemize}
+    \item $p_f[j] + d_{xf} = p_x[j] + w_x[j] \cdot h_{xf}$ per ogni coppia $(x,f)$ genitore-figlio
+    \item $d_{pf} = 0$ per ogni coppia $(p,f)$ padre-figlio
+    \item $d_{mf} = w_f$ per ogni coppia $(m,f)$ madre-figlio
+    \item $p_i[j] = g_i[j]$ se $g_i[j] \ne 2$
+    \item $w_i[i] = 1$ se $g_i[j]$
+    \item $w_i[i] = 0$ altrimenti
+\end{itemize}
+
+\paragraph{Incognite}
+
+\begin{itemize}
+    \item $p_x[j]$
+    \item $h_{xf}$
+\end{itemize}
