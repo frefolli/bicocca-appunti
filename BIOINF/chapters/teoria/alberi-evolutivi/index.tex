@@ -1,0 +1,146 @@
+\chapter{Alberi Evolutivi e Filogenesi}
+
+\section{Evoluzione}
+
+L'Evoluzione e' l'effetto di una sequenza di mutazioni che a lungo termine porta a dei cambiamenti sostanziali e diffusi nella composizione del genoma di una specie.
+
+Le cellule subiscono continue mutazioni durante la loro vita. Alcune fanno parte di un processo intrinseco di mutazione, altreno invece sono provocate da agenti esterni o dall'ambiente in cui ci si ritrova.
+
+La teoria moderna dell'evoluzione e' basata su caratteri che vengono acquisiti una sola volta nell'albero evolutivo.
+
+\section{Algoritmo di Gusfield}
+
+La filogenesi e' il processo di ramificazione delle linee di discendenza nell'evoluzione della vita.
+
+Sia $M$ la matrice $n \cdot n$ che ha come colonne i caratteri e come righe gli organismi La cella $M[i,j]$ indica con un numero $\{0,1\}$ se l'organismo i-esimo ha il carattere j-esimo.
+
+Sia per esempio la seguente matrice:
+
+\begin{center}
+    \begin{tabular}{||c c c c c c||}
+        \hline
+        & A & J & H & L & V \\
+        \hline
+        Scorpione & 0 & 0 & 0 & 0 & 0 \\
+        Anguilla & 0 & 0 & 0 & 0 & 1 \\
+        Tonno & 0 & 1 & 0 & 0 & 1 \\
+        Salamandra & 0 & 1 & 0 & 1 & 1 \\
+        Tartaruga & 1 & 1 & 0 & 1 & 1 \\
+        Leopardo & 1 & 1 & 1 & 1 & 1 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+Abbiamo bisogno di un algoritmo che prenda in input una matrice binaria siffatta e restituisca in output l'albero che spiega M, se esiste. Usiamo per esempio l'algoritmo di Gusfield.
+
+Si usa prima il Radix Sort sulle colonne in ordine decrescente (anche del numero di 1), quindi si passa a costruire l'albero una specie alla volta. Quindi si fa:
+
+\begin{itemize}
+    \item Considerando ogni colonna binaria come un numero binario si riordinano con il Radix Sort in ordine descrescente in modo da avere il numero piu' grande in colonna 1
+    \item Per ogni riga p di $M_o$ si costruisce la stringa dei caratteri, in ordine crescente, che p possiede
+    \item Si costruisce l'albero dei suffissi T per le $n$ stringhe cosi' costruite
+    \item Si testa se T e' una filogenesi perfetta per M (ovvero se la spiega)
+\end{itemize}
+
+\paragraph{Caratteri e Stato}
+
+Un carattere c e' acquisito quando lo stato di c passa da $0$ a $1$ in un arco.
+Un carattere c e' perso quando lo statoc di c passa da $1$ a $0$ in un arco. (Mutazione ricorrente)
+
+\paragraph{Modelli di evoluzione}
+
+Ogni carattere c e' acquisito esattamente una volta nell'albero.
+
+\begin{itemize}
+    \item Filogenesi perfetta: nessuna mutazione ricorrente, nessuna perdita
+    \item Dollo: mutazioni ricorrenti senza limiti, ma senza perdite
+    \item Camin-Sokal: perdite senza limiti, ma senza mutazioni ricorrenti
+\end{itemize}
+
+\section{Approcci basati su parsimonia}
+
+I problemi di parsimonia si dividono in due categorie: piccola parsimonia (topologia nota) e massima parsimonia (topologia ignota).
+
+Per i problemi di piccola parsimonia si trattano due algoritmi: Fitch e Sankoff.
+
+\paragraph{Istanza del problema}
+
+Input:
+
+\begin{itemize}
+    \item Matrice M con n specie in S e m caratteri in C
+    \item Albero T le cui foglie corrispondono alle specie di M
+    \item Per ogni carattere un costo $w_c$ fra ogni coppia di stati
+\end{itemize}
+
+Output:
+
+Per ogni carattere c una etichettatura $\lambda_c $ che assegna ad ogni nodo uno degli stati possibili per c
+
+Funzione obiettivo:
+
+$min \Sigma _ {c \in C} \Sigma _ {(x,y) \in archi} w_c(\lambda_c(x), \lambda_c(y))$
+
+\section{Algoritmo di Sankoff}
+
+Ogni carattere e' gestito separatamente. Si usa la programmazione dinamica.
+
+Sia P un matrice con $P[x,z] = $ soluzione ottimale del sottoalbero T che ha radice x sotto la condizione che abbia etichetta z.
+
+\paragraph{Caso base}
+
+Se x e' una foglia con etichetta z allora $P[x,z] = 0$.
+
+Se x e' una foglia con etichetta diversa da z allora $P[x,z] = +\infty$.
+
+\paragraph{Caso ricorsivo}
+
+Se x e' un nodo interno, detto F(x) = insieme di nodi figli di x allora:
+
+$P[x,z] = \Sigma _ {f \in F(x)} min_s \{ w(z,s) + P[f,s] \}$.
+
+La soluzione ottimale e' $min_s \{P[r,s]\}$, dove r e' la radice di T.
+
+\section{Algoritmo di Fitch}
+
+Solo per il caso non pesato di un albero T binario.
+
+Con $S(x) = $ insieme degli stati ottimali per il nodo x.
+
+Se x e' una foglia allora $S(x) = \lambda_c(x)$.
+
+Se x e' un nodo interno, siano $a$ e $b$ si suoi figli in T.
+Se $S(a) \cap S(b) = \emptyset$ allora $S(x) = S(a) \cup S(b)$.
+Altrimenti $S(x) = S(a) \cap S(b)$.
+
+\section{Approcci basati su distanza}
+
+Sia $d : S x S \rightarrow N$. tale che:
+
+\begin{align*}
+    d(a,b) = 0 &\Leftrightarrow a = b &\forall a,b \in S \\
+    d(a,b) &= d(b,a) & \forall a,b \in S \\
+    d(a,b) &\leq d(a,c) + d(c,b) &\forall a,b,c \in S
+\end{align*}
+
+\section{UPGMA}
+
+UPGMA sta per Unweighted Pair Group with Arithmetic Mean/
+
+\begin{enumerate}
+    \item Per ogni specie si crea un cluster $C_i$.
+    \item Quindi si definisce la funzione di distanza $D : C x C \rightarrow N$ con $D(C_a,C_b) = \frac {\Sigma _ {i \in C_a} \Sigma _ {j \in C_b} d(i,j)} {|C_a| \cdot |C_b|}$.
+    \item All'inizio $h(C_i) = 0 \forall i$.
+    \item Quindi si fondono i due cluster $C_a,C_b$ piu' vicini, ovvero tali che $min \{ D(C_a,C_b) \forall a,b \}$.
+    \item La fusione di $C_a,C_b$ la chiamo $C_x$.
+    \item Per ogni cluster $C_y \ne C_x$, calcolo la distanza $D(C_x,C_y)$.
+    \item Quindi $h(C_x) \gets \frac {D(C_a,C_b)} {2}$
+    \item $(C_x,C_a)$ e' etichettato con $h(C_x) - h(C_a)$
+    \item $(C_x,C_b)$ e' etichettato con $h(C_x) - h(C_b)$
+\end{enumerate}
+
+UPGMA produce una ultrametrica. Una ultrametrica e' uno spazio metrico (basato su distanza) in cui la diseguaglianza triangolare e' rinforzata. Ovvero in cui vale anche che $d(a,b) \leq max \{ d(a,c), d(c,b) \} \forall a,b,c \in S$.
+
+\section{Modelli di Evoluzione}
+
+TODO
