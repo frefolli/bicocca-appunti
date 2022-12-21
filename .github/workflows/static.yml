@@ -50,6 +50,7 @@ jobs:
           mkdir -p ./static/BIOINF
           mkdir -p ./static/ROPR/assignments/1
           mkdir -p ./static/ROPR/assignments/2
+          mkdir -p ./static/ROPR/assignments/3
           cp ./APAL/appunti.pdf ./static/APAL/appunti.pdf
           cp ./APS/appunti.pdf ./static/APS/appunti.pdf
           cp ./BIOINF/appunti.pdf ./static/BIOINF/appunti.pdf
