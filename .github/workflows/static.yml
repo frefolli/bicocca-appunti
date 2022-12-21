@@ -55,6 +55,7 @@ jobs:
           cp ./ROPR/appunti.pdf ./static/ROPR/appunti.pdf
           cp ./ROPR/assignments/1/appunti.pdf ./static/ROPR/assignments/1/appunti.pdf
           cp ./ROPR/assignments/2/appunti.pdf ./static/ROPR/assignments/2/appunti.pdf
+          cp ./ROPR/assignments/3/appunti.pdf ./static/ROPR/assignments/3/appunti.pdf
           cp ./index.html ./static/index.html
           cp ./APS/presentations/*.pptx ./static/APS/presentations
       - name: Configure Pages
