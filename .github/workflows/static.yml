@@ -40,6 +40,7 @@ jobs:
             ROPR/appunti.tex
             ROPR/assignments/1/appunti.tex
             ROPR/assignments/2/appunti.tex
+            ROPR/assignments/3/appunti.tex
           work_in_root_file_dir: true
       - name: Create Static Dist Directory
         run: | 
@@ -49,12 +50,14 @@ jobs:
           mkdir -p ./static/BIOINF
           mkdir -p ./static/ROPR/assignments/1
           mkdir -p ./static/ROPR/assignments/2
+          mkdir -p ./static/ROPR/assignments/3
           cp ./APAL/appunti.pdf ./static/APAL/appunti.pdf
           cp ./APS/appunti.pdf ./static/APS/appunti.pdf
           cp ./BIOINF/appunti.pdf ./static/BIOINF/appunti.pdf
           cp ./ROPR/appunti.pdf ./static/ROPR/appunti.pdf
           cp ./ROPR/assignments/1/appunti.pdf ./static/ROPR/assignments/1/appunti.pdf
           cp ./ROPR/assignments/2/appunti.pdf ./static/ROPR/assignments/2/appunti.pdf
+          cp ./ROPR/assignments/3/appunti.pdf ./static/ROPR/assignments/3/appunti.pdf
           cp ./index.html ./static/index.html
           cp ./APS/presentations/*.pptx ./static/APS/presentations
       - name: Configure Pages
