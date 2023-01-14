@@ -1,0 +1,86 @@
+\chapter{Esame}
+
+\section{Metodo del gradiente}
+
+Sia la funzione f(x) con un problema di minimo.
+\[
+  f(x) = x_1 ^ 2 - 2 x_1 x_2 + 3 x_2
+\]
+
+Si applichi una iterazione del metodo del gradiente con punto di partenza A = (1,1) e con line search in modo esatto.
+
+\begin{itemize}
+  \item Calcolo il gradiente di f(x), ovvero $\nabla f(x) = [2 x_1 - 2 x_2, -2 x_1 + 6 x_2]$.
+  \item Si considera il punto di partenza $x_0 = A = (1,1)$.
+  \item Calcolo la direzione di discesa $d_0$, applicando il punto di partenza nel gradiente, $d_0 = \nabla f(x_0) = [0,4]$.
+  \item Definisco la funzione temporanea $g(\alpha) = f(x_0 - \alpha d_0) = 48 \alpha ^ 2 - 16 \alpha + 4$.
+  \item Calcolo la derivata prima dell funzione $g(\alpha)$ rispetto ad $\alpha$, $dg(\alpha) = 96 \alpha - 16$.
+  \item Calcolo la derivata seconda dell funzione $g(\alpha)$ rispetto ad $\alpha$, $d^2g(\alpha) = 96$.
+  \item Per $dg(\alpha) = 0$, $\alpha = \frac 1 6$.
+  \item Calcolo il nuovo punto $x_1 = x_0 + \alpha d_0 = (a, \frac 1 3)$.
+\end{itemize}
+
+\section{Metodo di Newton}
+
+Sia la funzione f(x) con un problema di minimo.
+\[
+  f(x) = x_1 ^ 2 - 2 x_1 x_2 + 3 x_2
+\]
+
+Si applichi una iterazione del metodo di Newton.
+
+\begin{itemize}
+  \item Calcolo il gradiente di f(x), ovvero $\nabla f(x) = [2 x_1 - 2 x_2, -2 x_1 + 6 x_2]$.
+  \item Calcolo il gradiente henessiano di f(x), ovvero $[\nabla ^ 2 f(x)] = \begin{pmatrix} 2 & -2 \\ -2 & 6 \end{pmatrix}$.
+    \item Calcolo l'inverso del gradiente henessiano di f(x), ovvero $[\nabla ^ 2 f(x)]^{-1} = \begin{pmatrix} \frac 3 4 & \frac 1 4 \\ \frac 1 4 & \frac 1 4 \end{pmatrix}$.
+      \item Calcolo lo step di newton, $d(x) = [\nabla ^ 2 f(x)]^{-1} [\nabla f(x)] = \begin{pmatrix} x_1 & 0 \\ 0 & x_2 \end{pmatrix} = (x_1, x_2)$.
+  \item Si considera il punto di partenza $x_0 = A = (1,1)$.
+  \item Il nuovo punto e' $x_1 = x_0 - d(x_0) = (1,1) - (1, 1) = (0,0)$.
+\end{itemize}
+
+\section{Scrittura delle condizioni KKT}
+
+Sia la funzione f(x) con un problema di minimo.
+\[
+  f(x) = x_1 ^ 2 - 2 x_1 x_2 + 3 x_2
+\]
+
+Siano i vincoli $g_i(x) \leq 0$
+
+\begin{itemize}
+  \item $x_1^2 + x_2^2 - 4 \leq 0$
+  \item $x_1 - x_2 - 2 \leq 0$
+  \item $- x_1^2 + x_2 + 2 \leq 0$
+\end{itemize}
+
+Si scrivano le condizioni di KKT per il problema vincolato.
+
+\begin{itemize}
+  \item L'equazione di KKT per un problema di minimo con solo vincoli $\leq$ e' $\nabla f(x) + \Sigma \lambda_i \nabla g_i(x) = 0$.
+  \item Calcolo il gradiente di f(x), ovvero $\nabla f(x) = [2 x_1 - 2 x_2, -2 x_1 + 6 x_2]$.
+  \item Calcolo il gradiente di $g_1(x)$, ovvero $\nabla g_1(x) = [2 x_1, 2 x_2]$.
+  \item Calcolo il gradiente di $g_2(x)$, ovvero $\nabla g_2(x) = [1, -1]$.
+  \item Calcolo il gradiente di $g_3(x)$, ovvero $\nabla g_3(x) = [-2x_1, +1]$.
+  \item L'equazione di KKT e' $[2 x_1 - 2 x_2, -2 x_1 + 6 x_2] + \lambda _1 [2 x_1, 2 x_2] + \lambda _2 [1, -1] + \lambda _3 [-2x_1,1] = [0,0]$.
+  \item Avendo due variabili avro' due equazioni: 1) $2x_1 - 2x_2 + \lambda _1 2x_1 + \lambda _2 - \lambda _3 2x_1 = 0$.
+  \item Avendo due variabili avro' due equazioni: 2) $-2x_1 - 6x_2 + \lambda _1 2x_2 - \lambda _2 + \lambda _3 = 0$.
+  \item Inoltre valgono le condizioni base per i moltiplicatori lagrangiani, $\lambda_i \geq 0$.
+  \item Quindi trascivo i vincoli funzionali.
+  \item Quindi aggiungo le condizioni di annullamento dei moltiplicatori di Lagrange, $\lambda_i g_i(x) = 0$.
+\end{itemize}
+
+In totale avro'
+
+\begin{itemize}
+  \item $2x_1 - 2x_2 + \lambda _1 2x_1 + \lambda _2 - \lambda _3 2x_1 = 0$
+  \item $-2x_1 - 6x_2 + \lambda _1 2x_2 - \lambda _2 + \lambda _3 = 0$
+  \item $\lambda_i \geq 0$
+  \item $x_1^2 + x_2^2 - 4 \leq 0$
+  \item $x_1 - x_2 - 2 \leq 0$
+  \item $- x_1^2 + x_2 + 2 \leq 0$
+  \item $\lambda_1 (x_1^2 + x_2^2 - 4) = 0$
+  \item $\lambda_2 (x_1 - x_2 - 2) = 0$
+  \item $\lambda_3 (- x_1^2 + x_2 + 2) = 0$
+\end{itemize}
+
+\section{Applicazione delle condizioni KKT}
