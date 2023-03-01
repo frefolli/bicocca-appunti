@@ -1,2 +1,10 @@
 server_pid.txt
 **/Makefile
+*.aux
+*.dvi
+*.idx
+*.out
+*.log
+*.ind
+*.ilg
+*.pdf

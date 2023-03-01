@@ -3,6 +3,8 @@
 	make -C BIOINF
 	make -C ROPR
 	make -C ROPR/assignments
+	make -C APS
+	make -C SAF
 
 APAL/Makefile: skel/Makefile
 	cp skel/Makefile APAL/Makefile
@@ -18,6 +20,9 @@ ROPR/assignments/Makefile: skel/Makefile2
 
 APS/Makefile: skel/Makefile
 	cp skel/Makefile APS/Makefile
+
+SAF/Makefile: skel/Makefile
+	cp skel/Makefile SAF/Makefile
 
 clean:
 	./clean.sh

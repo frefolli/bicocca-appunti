@@ -1,0 +1,36 @@
+\chapter{Introduzione ai Test e all'Analisi del Software}
+
+\section{Testing Adequacy}
+
+Il metodo naive per testare il software e' chiaramente il *Testing Esaustivo*.
+Ovvero si mette il software in azione provando e controllando tutti i possibili input e tutte le possibili condizioni. 
+Per adottare questo approccio naturalmente e' necessario che venga stesa una specifica per assicurarsi che il programma funzioni come ci si aspetta.
+
+Mentre in teoria e' l'unico vero metodo per testare (quasi) completamente il codice, resta in pratica un metodo infallibile.
+Questo spesso a causa del fatto che o lo spazio di input e' infinito o troppo elevanto, oppure la totalita' degli stati condizionali e' troppo varia.
+
+La correttezza di un sistema quindi e' un problema indecidibile (vedi Halting Problem). Puo' essere ottenuta solo una ottimistica approssimazione di essa.
+
+\section{Bugs}
+
+*Bug* e' una parola utilizzata spesso a sproposito, in quanto e' nei fatti una parola ombrello per diversi tipi di problemi che agiscono su livelli diversi.
+
+\begin{center}
+    \begin{tabular}{|| c c ||}
+        \hline
+        nome & descrizione \\
+        \hline
+        failure (fallimento) & crash o comportamento scorretto del software \\
+        fault (difetto) & problema nel codice, puo' causare una *failure* \\
+        error (errore) & ragione o spiegazione del *fault* \\
+        \hline
+    \end{tabular}
+\end{center}
+
+Il *testing* e' l'attivita' che permette di rivelare i *faults* mostrando le *failures*.
+Quindi il *testing* fornisce un stima (letteralmente *confidence*) della correttezza.
+
+La percentuale di copertura del codice (*coverage*) pero' non fornisce di per se' motivo di sicurezza.
+Infatti e' possibile (e nella pratica e' cosi') che il sottospazio degli input che manifestano *failure* sia molto piccolo rispetto allo spazio degli input.
+
+Non potendo fare infiniti test si e' costretti a selezionare quelli giusti e piu' (anche solo potenzialmente) utili tra quelli possibili.

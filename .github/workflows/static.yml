@@ -36,6 +36,7 @@ jobs:
           root_file: |
             APAL/appunti.tex
             APS/appunti.tex
+            SAF/appunti.tex
             BIOINF/appunti.tex
             ROPR/appunti.tex
             ROPR/assignments/1/appunti.tex
@@ -46,6 +47,7 @@ jobs:
         run: | 
           mkdir -p ./static/APAL
           mkdir -p ./static/APS
+          mkdir -p ./static/SAF
           mkdir -p ./static/APS/presentations
           mkdir -p ./static/BIOINF
           mkdir -p ./static/ROPR/assignments/1
@@ -53,6 +55,7 @@ jobs:
           mkdir -p ./static/ROPR/assignments/3
           cp ./APAL/appunti.pdf ./static/APAL/appunti.pdf
           cp ./APS/appunti.pdf ./static/APS/appunti.pdf
+          cp ./SAF/appunti.pdf ./static/SAF/appunti.pdf
           cp ./BIOINF/appunti.pdf ./static/BIOINF/appunti.pdf
           cp ./ROPR/appunti.pdf ./static/ROPR/appunti.pdf
           cp ./ROPR/assignments/1/appunti.pdf ./static/ROPR/assignments/1/appunti.pdf

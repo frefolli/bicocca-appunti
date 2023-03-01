@@ -23,4 +23,8 @@ I PDF non verranno piu' mantenuti dentro al repo, bensi' si useranno le Github P
 E' istituita la branch `dev` che contiene tutti i commit fatti di seguito che riguardano sia il repo intero che gli appunti.
 La branch `master` e' aggiornata tramite un merge `dev` in `master` perche' cosi' triggera il workflow che aggiorna le Github Pages associate al repo.
 
+# 6 del 01/03/23
+
+E' istituita la dicitura "SAF" per "Sicurezza e Affidabilita'"
+
 # Discussioni in corso

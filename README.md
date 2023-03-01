@@ -12,6 +12,7 @@ I pdf sono caricati sulle Github Pages. Per accedere: https://frefolli.github.io
 | BIOINF | 3 | 1 | Elementi di Bioinformatica | 1.0.7 |  |
 | ROPR | 3 | 1 | Ricerca Operativa e Pianificazione delle Risorse | 1.0.7 |  |
 | APS | 3 | 1 | Ingegneria del Software | 1.0.2 |  |
+| SAF | 3 | 2 | Sicurezza e Affidabilita' | 1.0.0 |  |
 |  |  |  |  |  |
 
 ## Dipendenze
