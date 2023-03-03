@@ -43,4 +43,36 @@ Se possibile si puo' inserire anche il semver della versione del pacchetto.
 	cargo run
 \end{verbatim}
 
+\paragraph{Codice}
 
+Per usare tree sitter bisogna importare il suo modulo e quindi creare un parser.
+
+\begin{verbatim}
+  let mut the_parser = tree_sitter::Parser::new():
+\end{verbatim}
+
+Quindi e' necessario dirgli il linguaggio di cui fare il parsing
+
+\begin{verbatim}
+  the_parser.set_language(the_language);
+\end{verbatim}
+
+\textbf{the_language} e' una variabile di tipo \begin{verbatim}tree_sitter::Language\end{verbatim};
+Usando l'appropriato modulo tree_sitter_<language_name> si puo' importare il linguaggio desiderato e quindi assegnarlo al parser.
+Nel caso del \textbf{c++}:
+
+\begin{verbatim}
+  let the_parser = tree_sitter_cpp::language();
+\end{verbatim}
+
+Quindi per fare il parsing e ottenere un albero con il DSL di tree sitter basta usare:
+
+\begin{verbatim}
+  let tree = the_parser.parse(the_text);
+\end{verbatim}
+
+\textbf{theText} e' una stringa che contiene il codice da analizzare; puo' essere caricata per esempio da un file con:
+
+\begin{verbatim}
+  std::fs::read_to_string(file_path);
+\end{verbatim}
