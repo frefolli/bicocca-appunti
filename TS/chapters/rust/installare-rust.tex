@@ -1,0 +1,26 @@
+\chapter{Installare Rust}
+
+Il processo di installazione consigliato e' mediante \textbf{rustup}, uno script di installazione che permette di mantenere un ecosistema consistente e scaricare su qualsiasi ambiente una copia di esso in formato minimale o completo.
+
+All'inizio fa un'analisi della macchina, quindi chiede conferma o permette di modificare le impostazioni di installazione. 
+Io ho installato rust con il formato completo.
+
+Una volta terminato usciranno due scritte:
+
+\begin{verbatim}
+  stable-i686-unknown-linux-gnu installed - rustc 1.67.1 (d5a82bbd2 2023-02-07)
+  Rust is installed now. Great!
+\end{verbatim}
+
+La prima dipende dalla macchina su chi si e'. Nel mio caso linux 32bit.
+
+Quindi chiede di riavviare la shell per aggiornare la variabile d'ambiente PATH per avere al suo interno anche
+\begin{verbatim}
+  "\$HOME/.cargo/bin"
+\end{verbatim}
+ovvero il percorso root dell'installazione rust.
+
+Se si preferisce mantenere la sessione bastera' aggiornare manualmente la PATH con
+\begin{lstlisting}
+  source "\$HOME/.cargo/env"
+\end{lstlisting}
