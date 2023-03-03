@@ -1,0 +1,46 @@
+\chapter{Tree Sitter}
+
+\section{Progetto Cargo}
+
+\paragraph{Creare un progetto Cargo}
+
+\begin{verbatim}
+	cargo new <project-name>
+\end{verbatim}
+
+\paragraph{Configurare il progetto Cargo}
+
+sotto la sezione \textbf{dependencies} bisogna aggiungere le dipendenze di tree sitter, quindi.
+
+\begin{verbatim}
+  [dependencies]
+  tree-sitter = "*"
+\end{verbatim}
+
+Quindi per ogni linguaggio che si vuole supportare si aggiunge la seguente riga alla sezione sopra citata:
+
+\begin{verbatim}
+  tree-sitter-<language-name> = "*"
+\end{verbatim}
+
+Nel caso del \textbf{c++}:
+
+\begin{verbatim}
+  tree-sitter-cpp = "*"
+\end{verbatim}
+
+Se possibile si puo' inserire anche il semver della versione del pacchetto.
+
+\paragraph{Compilazione}
+
+\begin{verbatim}
+	cargo build
+\end{verbatim}
+
+\paragraph{Esecuzione}
+
+\begin{verbatim}
+	cargo run
+\end{verbatim}
+
+
