@@ -1,0 +1,45 @@
+\chapter{Esercizi}
+
+\section{Esercizio 1}
+
+\begin{verbatim}
+int deleteIfEqual(String[] theSet, String toBeDeleted);
+\end{verbatim}
+
+La funzione \textbf{deleteIfEqual} rimuove gli elementi di un array di al massimo 100 elementi che sono uguali a \textbf{toBeDeleted}.
+Se l'array ha piu' di 100 elementi ritorna -100. Se l'array e' vuoto ritorna -1. Altrimenti ritorna il numero di elementi eliminati.
+
+\paragraph{Analisi delle Categorie}
+
+\begin{itemize}
+  \item lunghezza dell'array di input
+  \item la quantita' di elementi eliminati
+\end{itemize}
+
+\paragraph{Obiettivi}
+
+\begin{itemize}
+  \item array con lunghezza (0, 1, $1 < x < 100$, 100, 101)
+  \item quantita' di elementi eliminati (0, $0 < x \leq 100$)
+\end{itemize}
+
+\section{Esercizio 2}
+
+\begin{verbatim}
+double registratoreDiCassa(Prodotto[] carrello, PoliticaDiSconto pSconto);
+\end{verbatim}
+
+\paragraph{Analisi delle Categorie}
+
+\begin{itemize}
+  \item lunghezza del carrello
+  \item numero di prodotti di tipo differente
+  \item numero di prodotti per i quali sono presenti piu' prodotti dello stesso tipo
+  \item numero di prodotti per un certo tipo
+  \item politica con sconto senza soglia minima
+  \item politica con sconto con soglia minima
+  \item valore della soglia minima per lo sconto su un tipo di prodotto
+\end{itemize}
+
+\paragraph{Obiettivi}
+
