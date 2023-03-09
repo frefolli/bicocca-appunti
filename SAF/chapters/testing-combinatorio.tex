@@ -1,0 +1,75 @@
+\chapter{Combinatorial Testing}
+
+\section{Dalla specifica ai test case}
+
+\paragraph{Decomporre la specifica}
+
+La specifica e' gonfia e confusionaria, occorre spezzettarla in caratteristiche individualmente testabili
+Ci si concentra separatamente su come la specifica descrive il comportamento del sistema rispetto a input, parametri e risultati.
+Quindi si applica \textbf{boundary testing} per ognuno di questi.
+
+\paragraph{Aggregazione per Combinazione}
+
+Si formano delle combinazioni che permettono di testare contemporaneamente diverse di queste condizioni.
+Quindi si implementano queste combinazioni nei \textbf{text case}.
+
+\section{Concetti Chiave}
+
+\begin{itemize}
+    \item Category-partition Testing (Decompose)
+    \item Pairwise Testing (Aggregate)
+    \item Catalog-based Testing (Decompose)
+\end{itemize}
+
+\paragraph{Category-partition Testing}
+
+Identificazione manuale dei rappresentanti per i test objectives delle categorie che caratterizzano l'input space.
+Quindi si generano automaticamnete tutte le combinazioni rilevanti ai fini del testing.
+
+\paragraph{Pairwise Testing}
+
+Testing sistematico delle interazioni tra gli attributi dell'input space.
+Questo puo' essere fatto attraverso software specifici che permettono di generare quelle combinazioni sufficienti a testare tutte le interazioni a coppie.
+Chiaramente e' possibile che le interazioni siano piu' complesse di semplici coppie. Si fare la stessa cosa con combinazioni di n-attributi contemporaneamente. Il concetto rimane lo stesso.
+
+\paragraph{Catalog-based Testing}
+
+Aggregazione o sintesi dell'esperienza dei test designers in un particolare dominio  per identificare i valori degli attributi.
+
+\section{Altri Concetti Chiave}
+
+\begin{itemize}
+    \item inputs
+    \item parametri
+    \item risultati
+    \item caratteristiche
+    \item controllabilita'
+\end{itemize}
+
+\paragraph{inputs}
+
+Gli input sono esplicitamente indicati dalla specifica.
+
+\paragraph{parametri}
+
+Altri fattori che possono essere variabili e che alterano il comportamento del software.
+
+\paragraph{risultati}
+
+Sono le condizioni misurabili che il programma resistituisce, sia come valori sia come comportamento.
+Si vuole testare tutti i distiti tipi di risultati osservabili durante i test.
+
+\paragraph{caratteristiche}
+
+Sono caratteristiche intriseche di input, parametri e risultati.
+
+\paragraph{controllabilita'}
+
+Si definisce controllabile un qualcosa che puo' essere ottenuto durante l'esecuzione.
+Non si e' interessati a testare valori che si sa con certezza che non possano essere ottenuti a runtime.
+
+\paragraph{Vincoli}
+
+Alcuni attributi possono porre vincoli ad altri, come la lunghezza di un array ai valori contenuti nell'array.
+Questi vincoli sono utili per intuire quali combinazioni e' inutile / impossibile testare.
+I vincoli possono introdurre categorie che rendono superfluo testare piu' di un rappresentante per categoria.
