@@ -1,1 +1,0 @@
-# Sicurezza e Affidabilita'
