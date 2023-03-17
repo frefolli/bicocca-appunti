@@ -42,14 +42,12 @@ jobs:
             ROPR/assignments/2/appunti.tex
             ROPR/assignments/3/appunti.tex
             SAF/appunti.tex
-            TS/appunti.tex
           work_in_root_file_dir: true
       - name: Create Static Dist Directory
         run: | 
           mkdir -p ./static/APAL
           mkdir -p ./static/APS
           mkdir -p ./static/SAF
-          mkdir -p ./static/TS
           mkdir -p ./static/APS/presentations
           mkdir -p ./static/BIOINF
           mkdir -p ./static/ROPR/assignments/1
@@ -65,7 +63,6 @@ jobs:
           cp ./index.html ./static/index.html
           cp ./APS/presentations/*.pptx ./static/APS/presentations
           cp ./SAF/appunti.pdf ./static/SAF/appunti.pdf
-          cp ./TS/appunti.pdf ./static/TS/appunti.pdf
       - name: Configure Pages
         uses: actions/configure-pages@v2
       - name: Zip and Upload Artifact
