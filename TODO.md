@@ -1,3 +1,3 @@
 # TODOs
 
-- complete SBH in Bioinf/Grafi
+Translate TCOM to LaTex
