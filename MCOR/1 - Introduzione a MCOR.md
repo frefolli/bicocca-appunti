@@ -73,7 +73,7 @@ Si denota un sistema CCS come tupla $(K, Act, T)$, dove
 - $(A \cup B)$ sono le azioni osservabili
 - $t$ e' azione di handshake tra due processi (azione che non aspetta nulla indre', ndr)
 
-Sia $P$ un processo $P in K$, ricordando la notazione LTS:
+Sia $P$ un processo $P \in K$, ricordando la notazione LTS:
 - es: $(P = a . \ P)$ := P esegue $a$ e poi si comporta come $P$ (ricorsione)
 - $(P1) \xrightarrow[]{a} (P2)$ denota sincronizzazione e mutamento
 - $(P1) \xrightarrow[]{a} (P1)$ denota ricorsione di processo
