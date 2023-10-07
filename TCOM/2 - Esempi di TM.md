@@ -1,4 +1,4 @@
-# Lez.1
+# Lez.1 - Introduzione a TCOM
 
 ## Distinzione tra:
 
@@ -10,7 +10,7 @@
 - Problema indecidibile: problema "impossibile"
 - Algoritmi galattici: algoritmi polinomiali ma impraticabili
 
-Se si trova un algoritmo polinomiale per i *forse/probabilmente* intrattabili implica l'esistenza di un algoritmo polinomiale per gli altri, fatta eccezione per i *dimostrabili*.
+Se si trova un algoritmo polinomiale per i _forse/probabilmente_ intrattabili implica l'esistenza di un algoritmo polinomiale per gli altri, fatta eccezione per i _dimostrabili_.
 
 ### Esempio di P.N.T. dimostrabile
 
@@ -43,23 +43,23 @@ Una macchina di Turing `M = (Q, Z, q0, S)`, dove:
 - L'input e' sul nastro.
 - Se la funzione S non e' definita per la coppia corrente (Q, Z), la macchina termina.
 - Si possono aggiungere degli stati di accettazione per distinguere tra arresto e rigettazione.
-- Lo stato globale e' chiamato *configurazione*:
+- Lo stato globale e' chiamato _configurazione_:
   - stato
   - simbolo sotto la testina
   - stringa sul nastro a sinistra della testina
   - stringa sul nastro a destra della testina
-- Una computazione e' una *sequenza di Configurazioni*.
+- Una computazione e' una _sequenza di Configurazioni_.
 
 ### Esempio
 
-Input: stringa *x*
+Input: stringa _x_
 Output: scrivere "Hello"
 
 `M = (Q, Z, q6, S)`
 - Z = {"H", "e", "l", "o", ">", " "}
 - Q = {q0, q1, q2, q3, q4, q5, q6, q7}
 - S
-  - Si inizia cancellando l'input *x*
+  - Si inizia cancellando l'input _x_
   - (q6, h/e/l/o) -> (q6, " ", ->)
   - E si torna indietro
   - (q6, " ") -> (q7, " ", <-)
@@ -86,51 +86,3 @@ Le configurazioni
 - (q5, "l", ">He", "lo")
 - ...
 - (q5, ">", "", "Hello")
-
-# Lez.2
-
-## Esempio di TM #1: Incremento
-
-Input: un numero naturale *x*, rappresentato in binario
-Output: *x + 1*, rappresentato in binario
-
-Attenzione: la soluzione per un numero del tipo "1111....." sembra essere spostare il simbolo di start ">", ma non va assolutamente fatto. Bisogna trovare un altro modo per ottenere lo stesso risultato.
-
-- prima scorro fino alla fine del numero
-- (q0, 0/1) |- (q0, 0/1, ->)
-- (q0, " ") |- (q1, " ", <-)
-- quindi inizio ad aggiungere 1 in coda
-- (q1, 1) |- (q1, 0, <-)
-- (q1, >) |- (q3, >, ->)
-- (q1, 0) |- (q2, 1, <-)
-- (q3, 0) |- (q4, 1, ->)
-- (q4, 0) |- (q4, 0, ->)
-- (q4, " ") |- (q2, 0, -)
-
-Le configurazioni per "100":
-- (q0, 1, >, 00)
-- |- (q0, 0, >1, 0)
-- |- (q0, 0, >10, "")
-- |- (q0, " ", >100, "")
-- |- (q1, 0, >10, "")
-- |- (q2, 1, >10, "")
-
-Le nozioni di Computazione e Configurazione di TM sono fondamentali per formalizzare l'algoritmo come Computazione.
-
-## Esempio di TM #2
-
-Input: stringa *w*
-Output: (palindromap w)
-
-es: "abba"
-
-generics: x, y
-- (q0, x) |- (q1, " ", ->)
-- (q1, a/b) |- (q1, a/b, ->)
-- (q1, " ") |- (q2, " ", <-)
-- (q2, x) |- (q3, " ", <-)
-- (q3, y) |- (q4, " ", <-)
-- (q4, " ") |- (q5, " ", ->)
-- (q5, y) |- (q0, " ", ->)
-
-In alternativa si potrebbe tornare direttamente indietro senza ottimizzare il ritorno e ripartire da q0.
