@@ -77,3 +77,51 @@ Sia $P$ un processo $P \in K$, ricordando la notazione LTS:
 - es: $(P = a . \ P)$ := P esegue $a$ e poi si comporta come $P$ (ricorsione)
 - $(P1) \xrightarrow[]{a} (P2)$ denota sincronizzazione e mutamento
 - $(P1) \xrightarrow[]{a} (P1)$ denota ricorsione di processo
+
+### ${B^1}$
+
+${B^1}_0 = in \; . \; {B^1}_1$
+${B^1}_1 = \overline {out} \; . \; {B^1}_0$
+
+```d2lang
+B1: "{B^1}_0"
+B2: "{B^1}_1"
+
+B1 -> B2: "in"
+B2 -> B1: "out"
+```
+
+### ${B^2}$
+
+${B^2}_0 = in \; . \; {B^2}_1$
+${B^2}_1 = \overline {out} \; . \; {B^2}_0 \; + \; in \; . \; {B^2}_2$
+${B^2}_2 = \overline {out} \; . \; {B^2}_1$
+
+```d2lang
+B0: "{B^2}_0"
+B2: "{B^2}_1"
+B2: "{B^2}_2"
+
+B0 -> B1: "in"
+B1 -> B0: "out"
+B1 -> B2: "in"
+B2 -> B1: "out"
+```
+
+### L'esecuzione parallela ${B^1}_0 | {B^1}_0$ e' bisimile a ${B^2}_0$
+
+```d2lang
+A0: "B0 | B0"
+A1: "B0 | B1"
+A2: "B1 | B0"
+A3: "B1 | B1"
+
+A0 -> A1: "in"
+A0 -> A2: "in"
+A1 -> A3: "in"
+A1 -> A0: "out"
+A2 -> A3: "in"
+A2 -> A0: "out"
+A3 -> A1: "out"
+A3 -> A2: "out"
+```
