@@ -1,0 +1,24 @@
+# Lez.4
+
+# Bisimulazione debole come simulazione avversaria
+
+- Attaccante: cerca di dimostrare $p \not \equiv_{BIS} q$
+- Difensore: cerca di dimostrare $p \equiv_{BIS} q$
+
+### una simulazione G(p, q)
+
+e' composta di varie `run`. Ogni `run` e' una sequenza finita o infinita di configurazioni (p0,q0), (p1,q1), ... (pi,qi)
+In ogni `step` di `run`, si passa da una configurazione all'altra (parte l'attaccante).
+
+- si sceglie uno dei due processi ed esegue una azione `a`, `p \xrightarrow[]{a} p'`, si trasforma l'altro processo con l'azione `a` verificando che il processo $q'$ e' bisimile a $p'$.
+- e' possibile che uno dei due attori non possa muovere, in quel caso vince l'altro
+- se la `run` e' finita, allora vince il difensore
+- importante: il difensore puo' usare la `t` come un ponte jolly.
+
+per ogni simulazione, solo uno dei due attori ha una strategia vincente che gli da la possibilita' di vincere ogni partita
+
+P_1 = t . a . NIL + b . NIL
+P_2 = t (a . NIL + b . NIL)
+
+attaccante con $ t \; . \; b$ su P_2
+
