@@ -1,4 +1,4 @@
-# Lez.4 - MT Recap
+# Lez.4 - Categorie di Linguaggi
 
 ## MT con alfabeto binario vs MT con alfabeto non binario
 
