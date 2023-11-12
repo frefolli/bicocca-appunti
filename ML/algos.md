@@ -20,13 +20,13 @@ pub fn find_s(training: &Vec<I>) -> H {
 
 ```rust
 pub fn id3(tree: &mut T, training: &Vec<I>, attrs: &[A]) -> T {
- 	if attrs.size > 0 {
-		let attr: A = elect_by_max_ig(training, attrs);
-      	tree.set_root(N::from_attr(attr));
-  		for v in attr.values.into_iter() {
-    		let D: Vec<I> = training.filter(|x| {x.get<attr>() == v});
-      		let n_attrs = attrs.filter(|x| {x != attr});
-      		tree.add_sub_tree(id3(&N::new().as_tree(), &D, &n_attrs));
+    if attrs.size > 0 {
+        let attr: A = elect_by_max_ig(training, attrs);
+        tree.set_root(N::from_attr(attr));
+        for v in attr.values.into_iter() {
+            let D: Vec<I> = training.filter(|x| {x.get<attr>() == v});
+            let n_attrs = attrs.filter(|x| {x != attr});
+            tree.add_sub_tree(id3(&N::new().as_tree(), &D, &n_attrs));
         }
     } else {
         node = N::from_label(elect_label(training));
