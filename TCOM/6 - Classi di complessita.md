@@ -59,8 +59,8 @@ esiste $NP_{intermedio}$ tale che:
 
 ### Riduzione polinomiale
 
-$\exist$ Funzione di riduzione $f : \Sigma^{*} \rightarrow \Sigma^{*}$ tale che:
-- $\forall x \in \Sigma^{*} \Rightarrow x \in L_a \Leftrightarrow f(x) \in L_b$
+$\exists$ Funzione di riduzione $f : \Sigma^{\*} \rightarrow \Sigma^{\*}$ tale che:
+- $\forall x \in \Sigma^{\*} \Rightarrow x \in L_a \Leftrightarrow f(x) \in L_b$
 
 Allora, se chiamo $f \; \equiv \; \leq_p$:
 - $L_a \leq_p L_b \; \land \; L_b \in P \; \Rightarrow \; L_a \in P$
