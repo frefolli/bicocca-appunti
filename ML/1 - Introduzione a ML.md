@@ -45,7 +45,7 @@ While in `Inductive` learning the assumption is never having **overfitting**, an
 
 By the Find-S algorithm one could derive the most specific hypothesis which accepts whole positive training data set. The downside is that this approach doesn't test back this hypotesis on negative cases, so that it is in fact impossible to know if the new hypothesis is consistent within the whole dataset without wasting computational time into iterating also in such space. And again that would present another problem, which is driven not only by noise cases but also by such language power (It's a formal system, thus a language in the tuple category).
 
-Resilience on dataset noise is null, but the real problem here is the missing representational power for expressing non trivial clauses such as the logic `or`. For example an hypothesis `h` could only assert either $a = v \in V$ or $\forall v \in V$, but couldn't logically imply somthing like $v,u \in V \; | \; a = v \land a \not = u$ or $v,u \in V \; | \; a = v \lor a = u$.
+Resilience on dataset noise is null, but the real problem here is the missing representational power for expressing non trivial clauses such as the logic `or`. For example an hypothesis `h` could only assert either $a = v \in V$ or $\forall v \in V$, but couldn't logically imply somthing like $v \in V \; | \; a = \star \land a \not = v$ or $v,u \in V \; | \; a = v \lor a = u$.
 
 Refer to [this page for the Find-S algorithm](./algos.md)
 
