@@ -12,7 +12,7 @@
 
 Se si trova un algoritmo polinomiale per i _forse/probabilmente_ intrattabili implica l'esistenza di un algoritmo polinomiale per gli altri, fatta eccezione per i _dimostrabili_.
 
-### Esempio di P.N.T. dimostrabile
+### Esempio di P. N. T. dimostrabile
 
 - Input: insieme di elementi V di n elementi
 - Output: enumerare tutti i sottoinsiemi di V

@@ -9,7 +9,7 @@ Detto il tempo di lettura e scrittura di $M$ e $M'$ rispettivamente $T_{M}$ e $T
 
 Come con la trasformazione di una macchina multi nastro in una a singolo nastro (vedi [Lez3](Lez3)), e' possibile costruire un'algoritmo meccanico che effettua queste conversioni.
 
-## 
+## Simulazione di TM
 
 Esiste na MT U t.c. $\forall \sigma, x \in \Sigma^{'*}$, $U(\sigma, x) = M_{\sigma}(x)$, ovvero e' la MT rappresentata da $\sigma$.
 In particolare e' una macchina a tre nastri

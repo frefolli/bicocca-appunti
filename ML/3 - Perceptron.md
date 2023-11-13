@@ -21,11 +21,11 @@ Within a **perceptron**:
 For each training case, the perceptron is applied to it and weights are updated proportionally to a learning rate $\eta$ and to the proper error, computed as difference of expected value and obtained one:
 
 - $x_i$ is the input for weight $w_i$
-- $w_i \leftarrow w_i + \frac {\delta \theta(f(x))} {\delta x_i} * \eta * x_i$
+- $w_i \leftarrow w_i + \frac {\delta \theta(f(x))} {\delta x_i} \cdot \eta \cdot x_i$
 
 if the feed function $f$ is a linear sum, we'll have:
 - $\frac {\delta \theta(f(x))} {\delta x_i} = (y - \overline y)$
-- $w_i \leftarrow w_i + (y - \overline y) * \eta * x_i$
+- $w_i \leftarrow w_i + (y - \overline y) \cdot \eta \cdot x_i$
 
 ## Convergence Theorem
 
