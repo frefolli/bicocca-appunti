@@ -11,6 +11,16 @@ Output: l'espressione ammette soluzione?
   - costruisco la macchina di turing non deterministica che forka in tempo polinomiale i certificati per il verificatore
 - $SAT \in NP$
 
+## NP
+
+NP e' la classe dei problemi che possono:
+- essere risolti in tempo polinomiale da una $M \in NDTM$
+- essere verificati in tempo polinomiale da una $M \in DTM$
+
+- $P \subseteq NP$
+- $P \stackrel{?}{=} NP$, non e' stato dimostrato ne' $=$ ne' $\not =$.
+  - La conseguenza sarebbe $co \; NP = NP$
+
 ## dTSP
 
 Dato $TSP$ si crea un problema di decisione $dTSP$ che ha come input un'istanza di TSP e un valore K: come output decide se quel input ha soluzione in TSP con al massimo costo K.
@@ -47,7 +57,7 @@ Dato $TSP$ si crea un problema di decisione $dTSP$ che ha come input un'istanza 
 
 - $co \; NP = \{L \; | \; \overline {L} \in NP \}$
   - insieme dei linguaggi il cui complemento e' ricorsivamente enumerabile
-  - non e' stato dimostrato se $NP \equiv co \; NP$
+  - $co \; NP \stackrel{?}{=} NP$, non e' stato dimostrato ne' $=$ ne' $\not =$.
   - $P \subseteq NP \land P \subseteq co \; NP \;\; \Leftrightarrow \;\; P \subseteq (NP \cap co \; NP)$
 
 ## Riducibilita' dei problemi
@@ -55,14 +65,21 @@ Dato $TSP$ si crea un problema di decisione $dTSP$ che ha come input un'istanza 
 esiste $NP_{intermedio}$ tale che:
 - ${NP}_{intermedio} \subseteq NP$
 - ${NP}_{intermedio} \not \subseteq {NP}_{hard}$
+
+Pirola disse:
 - ${NP}_{intermedio} \not \subseteq {co \; NP}$
+
+Ma le altre fonti indicano:
+- ${NP}_{intermedio} \not \subseteq {P}$
+
+  mi so mia
 
 ### Riduzione polinomiale
 
 $\exists$ Funzione di riduzione $f : \Sigma^{\star} \rightarrow \Sigma^{\star}$ tale che:
 - $\forall x \in \Sigma^{\star} \Rightarrow x \in L_a \Leftrightarrow f(x) \in L_b$
 
-Allora, se chiamo $f \; \equiv \; \leq_p$:
+Allora, se chiamo $f \; \equiv \; \leq_p$ una riduzione in tempo $O(f(n))$:
 - $L_a \leq_p L_b \; \land \; L_b \in P \; \Rightarrow \; L_a \in P$
 - $L_a \leq_p L_b \; \land \; L_b \leq_p L_c \; \Rightarrow \; L_a \leq_p L_c$
 
@@ -74,6 +91,7 @@ Per definizione di ${NP}_{completo}$:
 - $L \in {NP}_{completo} \; \Leftarrow \; L \in NP \; \land \; L \in {NP}_{hard}$
 
 $L_a {\leq}_{p} L_b \; \land \; L_a \in {NP}_{hard} \; \Rightarrow \; L_b \in {NP}_{hard}$
+$L_a {\leq}_{p} L_b \; \land \; L_a \in NP \; \Rightarrow \; L_b \in NP$
 
 ### Teoriema di Cook-Levim
 

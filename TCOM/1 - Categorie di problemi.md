@@ -22,9 +22,9 @@ Se si trova un algoritmo polinomiale per i _forse/probabilmente_ intrattabili im
 
 - Input: numero natuale n in N
 - Output: if (n e' primo) then TRUE else FALSE
-- esiste un algoritmo esaustivo (n % (1 -> sqrt(n)) == 0)
-- O(2^(k/2)), con k = nbit(n)
-- esistono algoritmi probabilistici (test di primalita' di non-ricordo)
+- esiste un algoritmo esaustivo (n % (2 -> sqrt(n)) == 0)
+- O(2^(k/2)), con $k = log_2(n)$
+- esistono algoritmi probabilistici (test di primalita' di non-ricordo con i teoremi di Fermat)
 - E' un problema trattabile, e' stato trovato un algoritmo polinomiale in O(k^12) o cosi'
 
 ## Macchina di Turing
@@ -37,8 +37,8 @@ E' enunciato formale non dimostrabile ma accettato come valido, ha come consegue
 ### Formalmente
 
 Una macchina di Turing `M = (Q, Z, q0, S)`, dove:
-- Q e' l'insieme finito degli stati (stato zero = q0)
-- Z e' l'insieme finito dei simboli (Alfabeto), che si assume contenga ">", " " (caratteri di controllo).
+- Q e' l'insieme **finito** degli stati (stato zero = q0)
+- Z e' l'insieme **finito** dei simboli (Alfabeto), che si assume contenga $|>$, $\_$ (caratteri di controllo start e blank).
 - S e' la funzione di transizione `S : (Q, x Z) -> (Q x Z x {<-,->,-})`.
 - L'input e' sul nastro.
 - Se la funzione S non e' definita per la coppia corrente (Q, Z), la macchina termina.

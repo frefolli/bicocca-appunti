@@ -5,7 +5,7 @@
 Input: un numero naturale _x_, rappresentato in binario
 Output: _x+1_, rappresentato in binario
 
-Attenzione: la soluzione per un numero del tipo "1111....." sembra essere spostare il simbolo di start ">", ma non va assolutamente fatto. Bisogna trovare un altro modo per ottenere lo stesso risultato.
+Attenzione: la soluzione per un numero del tipo "1111....." sembra essere spostare il simbolo di start ">", ma non va assolutamente fatto. Bisogna trovare un altro modo per ottenere lo stesso risultato. Il simbolo di start non deve essere (sovra)scritto ne' spostato.
 
 - prima scorro fino alla fine del numero
 - (q0, 0/1) |- (q0, 0/1, ->)
