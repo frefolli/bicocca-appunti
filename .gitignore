@@ -8,3 +8,4 @@ server_pid.txt
 *.ind
 *.ilg
 *.pdf
+*.toc
