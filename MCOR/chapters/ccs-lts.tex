@@ -1,0 +1,127 @@
+\chapter{CCS e LTS}
+
+\section{Programmazione Sequenziale}
+
+\begin{itemize}
+  \item Semantica operazionale: data una Macchina Astratta si descrivono i passi di computazione come funzione $M : I \rightarrow O$.
+  \item Semantica denotazionale: dato un Programma, assegno una funzione $f : I \rightarrow O$ (= lambda calcolo).
+  \item Semantica assiomatica: specificare le proprieta' di un programma come funzione $P : I \rightarrow O$, dove i dati in input vengono specificati come i valori che gli input possono assumere in termini di condizioni, e vice versa gli output.
+\end{itemize}
+
+Caratteristiche della programmazione sequenziale:
+\begin{itemize}
+  \item Terminazione
+  \item Composizionalita': composizione funzionale f,g: $h : D(f) \rightarrow C(g) = f * g$, con $C(f) \equiv D(g)$
+\end{itemize}
+
+Notazione `I P O`, ex: $\{x>0\}$ P $\{x<0\}$
+
+\subsection{Con programmi concorrenti}
+
+\begin{itemize}
+  \item P1: $x = 2$, allora $\{x = V\}$ P1 $\{x = 2\}$.
+  \item P2: $x = 3$, allora $\{x = V\}$ P2 $\{x = 3\}$.
+  \item P3: $x += 1$, allora $\{x = V\}$ P3 $\{x = V\}$.
+\end{itemize}
+
+Come si nota, in presenza di concorrenza non c'e' determinismo e quindi composizionalita' semplice (come nei programmi sequenziali).
+
+\begin{itemize}
+  \item Esecuzione di $P1 \rightarrow P2$. $\{x = V\}$ P1 P2 $\{x = 3\}$.
+  \item Se si mettono in parallelo: $\{x = V\}$ P1 \&\& P2 $\{x = 2 \lor x = 3\}$.
+  \item Con esecuzione in parallelo di P1,P2,P3: $\{x = V\}$ P2 \&\& P3 $\{x = 2 \lor x = 3 \lor x = 4\}$.
+\end{itemize}
+
+\section{Labelled Transition System (LTS)}
+
+Sistema di Transizioni Etichettate scritto $(S, AcT, T)$ dove:
+\begin{itemize}
+  \item $S$ e' insieme di stati
+  \item $Act$ e' insieme di nomi di azioni
+  \item $T$ e' la funzione di transizione denotata $T: S \times AcT \rightarrow S$, dove:
+    \begin{itemize}
+      \item $(s, a, s') \in T$
+      \item $s \xrightarrow[]{a} s'$
+      \item $(s) \xrightarrow[]{a} (s')$
+    \end{itemize}
+  \item formalmente, $s \xrightarrow[]{w} s'$ sse:
+  \begin{itemize}
+    \item o) $w = \epsilon \land s = s'$
+    \item o) $w = a*x \land s \xrightarrow[]{a} s'' \xrightarrow[]{x} s'$
+  \end{itemize}
+\end{itemize}
+
+\section{Calculus of Communicating Systems (CCS)}
+
+\begin{itemize}
+  \item Lambda calcolo di processi concorrenti
+  \item Communicating Sequential Processes.
+\end{itemize}
+
+\paragraph{definizione}
+Un set di programmi e' un insieme di processi che vengono composti con l'operatore di esecuzione parallela e tramite la sincronizzazione l'interazione con l'ambiente.
+
+CCS e' un sistema di calcolo interpretato come LTS che viene denotato con la seguente espressione BNF:
+
+$
+P ::= 0 \,\,\,
+  | \,\,\, a. \, P_{1} \,\,\,
+  | \,\,\, A\,\,\,
+  | \,\,\, P_{1} + P_{2} \,\,\,
+  | \,\,\, P_{1} | P_{2} \,\,\,
+  | \,\,\, P_{1} [b/a] \,\,\,
+  | \,\,\, P_{1} {\backslash }a \,\,\,
+$
+
+Che significa rispettivamente:
+\begin{itemize}
+  \item il processo inattivo generico $0$
+  \item $P$ esegue $a$ e diventa $P_1$
+  \item definendo $A \stackrel{def}{\equiv} P_1$ si usa $A$ come identificatore
+  \item $P$ diventa $P_1$ **o** $P_2$
+  \item $P_1$ e $P_2$ coesistono
+  \item a $P_1$ si rinomina l'azione $a \rightarrow b$
+  \item a $P_1$ si rimuove l'azione $a$
+\end{itemize}
+
+Due processi P1 e P2 sono detti equivalenti non in termini funzionali, ma "all'osservazione", cioe' se un processo esterno non e' in grado di distinguere tra i processi P1 e P2 interagendo con essi. (Liskov dei poveri). La Bisimulazione e' tecnica di verifica per identificare se due processi sono dissimili.
+
+Si denota un sistema CCS come tupla $(K, Act, T)$, dove
+\begin{itemize}
+  \item $K$, insieme di nomi di Processi
+  \item $A$, insieme di nomi di azioni
+  \item $\overline A$, insieme di conomi di azioni, (= $\overline a \in \overline A$ e' il reciproco di $a \in A$, es: SYN e ACK)
+  \item $Act = A \cup B \cup \{t\}$, con $t \not \in A$
+  \item $(A \cup B)$ sono le azioni osservabili
+  \item $t$ e' azione di handshake tra due processi (azione che non aspetta nulla indre', ndr)
+\end{itemize}
+
+Sia $P$ un processo $P \in K$, ricordando la notazione LTS:
+\begin{itemize}
+  \item es: $(P = a . \ P)$ := P esegue $a$ e poi si comporta come $P$ (ricorsione)
+  \item $(P1) \xrightarrow[]{a} (P2)$ denota sincronizzazione e mutamento
+  \item $(P1) \xrightarrow[]{a} (P1)$ denota ricorsione di processo
+\end{itemize}
+
+\subsection{${B^1}$}
+
+\begin{itemize}
+  \item ${B^1}_0 = in \; . \; {B^1}_1$
+  \item ${B^1}_1 = \overline {out} \; . \; {B^1}_0$
+\end{itemize}
+
+\putimage{images/1.png}{diagram}{png:1}
+
+\subsection{${B^2}$}
+
+\begin{itemize}
+  \item ${B^2}_0 = in \; . \; {B^2}_1$
+  \item ${B^2}_1 = \overline {out} \; . \; {B^2}_0 \; + \; in \; . \; {B^2}_2$
+  \item ${B^2}_2 = \overline {out} \; . \; {B^2}_1$
+\end{itemize}
+
+\putimage{images/2.png}{diagram}{png:2}
+
+\subsection{L'esecuzione parallela ${B^1}_0 | {B^1}_0$ e' bisimile a ${B^2}_0$}
+
+\putimage{images/3.png}{diagram}{png:3}
