@@ -1,24 +1,158 @@
 \chapter{Reti}
 
-\section{Reti di Posti e Transizioni}
+\section{Rete}
 
-$\Sigma  = (S, T, F, K, W, M_0)$ si dice sistema di Posti e Transizioni (sistema $P/T$) sse:
+$N = (B, E, F)$ e' una rete sse:
 \begin{itemize}
-    \item (S, T, F) e' una rete
-    \item $K : S \rightarrow N^+ \cup \{\infty\}$ e' la funzione capacita' dei posti
-    \item $W : F \rightarrow N$ e' la funzione peso degli archi
-    \item $M_0 : S \rightarrow N : \forall s \in S \;\; M_0(s) \leq K(s)$ e' la marcatura iniziale
+  \item $B$ e' l'insieme di condizioni (stati locali)
+  \item $E$ e' l'insieme di eventi
+  \item tali che $B \cap E = \emptyset$ e $B \cup E \neq \emptyset$
+  \item $F \subseteq (B \cdot E) \cup (E \cdot B)$ relazione di flusso rappresenta da $\rightarrow$
 \end{itemize}
+
+La relazione di flusso definisce pre-elementi ($\cdot x$) e post-elementi ($x \cdot$). \\
+
+Un \textbf{caso} e' un'insieme di condizioni $c \subseteq B$ che rappresenta lo stato globale del sistema.
 
 \paragraph{regola di scatto}
 
+L'evento $e$ e' abilitato in $c$ ($c[e>$) sse: $\cdot e \subseteq c$ and $e \cdot \cap c = \emptyset$.
+Quando $e$ scatta (sse e' abilitato), si genera un caso $c' = (c - \cdot e) \cup e \cdot$. \\
+
+Una rete si dice \textbf{semplice} se $\cdot x = \cdot y \land x \cdot = y \cdot \Rightarrow x = y$.\\
+
+Una rete si dice \textbf{pura} se $\forall e \in E : \cdot e \cap e \cdot = \emptyset$.
+
+Sia $U \subseteq E$
 \begin{itemize}
-    \item $M[t$ sse $\forall s \in S \;\; M(s) \geq W(s, t) \land M(s) + W(t, s) \leq K(s)$
-    \item $M[t > M'$ sse $M'(s) = M(s) - W(s, t) + W(t, s)$
+  \item due eventi $e_1,e_2 \in U$ sono indipendenti se $(\cdot e_1 \cup e_1 \cdot) \cap (\cdot e_2 \cup e_2 \cdot) = \emptyset$.
+  \item $U$ e' un insieme di eventi indipendenti se tutti gli eventi sono a due a due indipendenti
+  \item $U$ e' un passo abilitato se $\forall e \in U$, $c[e>$.
+  \item $U$ e' un passo da $c_1$ a $c_2$ ($c_1[U>c_2$) sse: $c_2 = (c_1 - \cdot U) \cup U \cdot$
 \end{itemize}
 
-L'insieme delle marcature raggiungibili di $\Sigma$ e' $[M_0$:
+\section{Sistema Elementare}
+
+E' detto sistema elementare $\Sigma = (B, E, F, c_{in})$ sse:
 \begin{itemize}
-    \item $M_0 \in [M_0 >$
-    \item se $M \in [M_0 > \land \exists t \in T : M[t > M' allora M' \in [M_0 >$
+  \item $N = (B, E, F)$ e' una rete e il caso iniziale e' $c_{in} \subseteq B$.
 \end{itemize}
+
+L'insieme dei casi raggiungibili del sistema elementare e' definito dal piu' piccolo sottoinsieme $C_\Sigma \subseteq 2^B$ tale che:
+\begin{itemize}
+  \item $c_{in} \in C_\Sigma$
+  \item detti $c \in C_\Sigma, U \subseteq E, c' \subseteq B$, se $c[U>c'$ allora $c' \in C_\Sigma$
+\end{itemize}
+
+Del resto, e' detto insieme dei passi il corrispondente insieme $U_\Sigma \subseteq 2^E$ tale che \\ $\forall U \subseteq E \; | \; \exists c,c' \; : \; c[U>c'$.
+
+Di conseguenza il grafo dei casi sequenziale e' il sistema a transizioni etichettate LTS $CG_\Sigma = (C_\Sigma, U_\Sigma, A, c_{in})$ dove:
+\begin{itemize}
+  \item $C_\Sigma$ e' l'insieme dei nodi del grafo
+  \item $U_\Sigma$ e' l'alfabeto
+  \item $A$ e' l'insieme degli archi etichettati con le parole $p \in U$
+  \item $A = \{ (c, U, c') | c,c' \in C_\Sigma, U \in U_\Sigma, c[U>c'\}$
+\end{itemize}
+
+\section{Diamond Property}
+
+\paragraph{Anche detto "Teorema dei Due Passi"}
+
+In quel tempo il figlio dell'uomo si stava dilettando con i sistemi elementari, al che ne prese uno, lo spezzo', ne diede un po' ai suoi discepoli e disse:
+
+\begin{itemize}
+  \item Sia un sistema elementare $\Sigma = (B, E, F, c_{in})$
+  \item Sia $U \subseteq E$ un sottoinsieme siano $U_1,U_2$ una sua partizione ($U_1,U_2 \neq \emptyset$, $U_1 \cup U_2 = U \land U_1 \cap U_2 = \emptyset$)
+  \item Siano $C,D \subseteq B$ due casi in $\Sigma$
+\end{itemize}
+
+Se $C[U>D$ allora esiste un caso intermedio $E \subseteq B$ tale che siano anche $C[U_1>E$ e $E[U_2>D$. \\
+Vice versa se $C[U_1>E$ e $E[U_2>D$, allora $C[U>D$.
+
+\section{E le sue consequenze}
+
+Per la \textbf{Diamond Property} il \textbf{Grafo dei Casi Sequenziale} e il relativo \textbf{Sistema Elementare} sono tra solo semanticamente equivalenti e percio' si possono ricavare l'uno dall'altro.
+
+Dato questo principio base, e' immediato che l'equivalenza di due Sistemi Elementari puo' essere data dall'isomorfismo tra i due relativi Grafi dei Casi Sequenziali.
+
+Tale isomorfismo tra $S_0$ e $S_1$ , $I = (a, b)$, e' composto da due mappature biunivoche tali che:
+\begin{itemize}
+  \item $a: S_0 \rightarrow S_1$
+  \item $b : E_0 \rightarrow E_1$
+  \item $a(s^0_0) = s^1_0$
+  \item $\forall s,s' \in S; \forall e \in E; (s, e, s') \in T_0 \Leftrightarrow (a(s), b(e), a(s')) \in T_1$
+\end{itemize}
+
+\section{Sono state un disastro per la razza umana}
+
+Dato un sistema etichettato $A = (S, E, T, s_0)$, esiste un sistema elementare $\Sigma = (B, E, F, c_0)$ tale che il grafo dei casi $CG_\Sigma$ sia isomorfo ad $A$ (e in tal costruire $\Sigma$)?
+
+Bella domanda, comunque e' stato risolto dalla \textbf{Teoria delle Regioni}.
+
+\section{Contatto}
+
+Sia un sistema elementare $\Sigma = (B, E, F, c_0)$, si definisce contatto un caso $c \subseteq B$ tale che: \\
+$\cdot e \subseteq c \land c \cap e \cdot \neq \emptyset$.
+
+Cioe' un evento potrebbe anche scattare se non fosse che alcune post-condizioni non sono inattive.
+
+Un sistema \textbf{senza contatti} e' un sistema in cui $\forall e \in E, c \in C_\Sigma \; | \; \cdot e \subseteq c \rightarrow c \cap e \cdot = \emptyset$.
+
+E' possibile trasformare un sistema elementare \textbf{con contatti} in uno \textbf{senza contatti} aggiungendo il complementare di ogni condizione facendo rimanere isomorfo il grafo dei casi sequenziale.
+Ovvero: $\forall b \in B\; \exists b' \in B' \supseteq B \; \forall e \in b \cdot \rightarrow b' \in \cdot e$.
+
+\putimage{images/6.png}{example}{png:6}
+
+\section{Dipendenza}
+
+Due eventi $e_1,e_2$ si dicono sequenziali sse $c[e_1> \land \neg c[e_2> \land c[e_1e_2 >$, ovvero se $c[e_1 > c[e_2 >$, ovvero se c'e' dipendenza causale fra i due.
+
+Vice versa due eventi si dicono concorrenti se $c[e_1> \land c[e_2> \land (\cdot e_1 \cup e_1 \cdot) \cap (\cdot e_2 \cup e_2 \cdot) = \emptyset$.
+Ovvero se sono entrambi abilitati ed indipendenti.
+
+\section{Conflitto}
+
+Due eventi si dicono in \textbf{conflitto} sse $c[e_1> \land c[e_2> \land \cdot e_1 \cap e_2 \cdot \neq \emptyset$.
+
+Importante notare che in molti casi non e' possibile stabilire se si e' risolto un conflitto o no. C'e' molta confusione visto che il sistema e' visto dall'alto senza vedere i passi intermedi che compongono il passaggio da un caso all'altro.
+
+\section{Genesi}
+
+Data una rete $N = (B, E, F)$ e' possibile generare delle sottoreti.
+
+Sia $N' = (B', E', F')$ una rete.
+
+Essa si dice genericamente sottorete di N sse:
+\begin{itemize}
+  \item $B' \subseteq B$
+  \item $E' \subseteq E$
+  \item $F' = F \cap (B' x E') \cup (E' x B')$
+\end{itemize}
+
+Quindi N' si dice sottorete generata da B sse:
+\begin{itemize}
+  \item $B' \subseteq B$
+  \item $E' = \cdot B \cup B \cdot$
+  \item $F' = F \cap (B' x E') \cup (E' x B')$
+\end{itemize}
+
+Similarmente N' si dice sottorete generata da E sse:
+\begin{itemize}
+  \item $B' = \cdot E \cup E \cdot$
+  \item $E' \subseteq E$
+  \item $F' = F \cap (B' x E') \cup (E' x B')$
+\end{itemize}
+
+\section{Composizione}
+
+Non ho la minima idea del se l'abbiano fatto o meno, comunque giusto per completezza ...
+
+Due Reti sono componibili in tre modi:
+\begin{itemize}
+  \item sincrono
+  \item asincrono
+  \item misto
+\end{itemize}
+
+\putimagebig{images/7.png}{sincrono}{png:7}
+\putimagebig{images/8.png}{asincrono}{png:8}

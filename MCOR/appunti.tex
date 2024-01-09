@@ -17,7 +17,6 @@
     linkcolor=blue,
     filecolor=magenta,
     urlcolor=cyan,
-    pdftitle={Overleaf Example},
     pdfpagemode=FullScreen,
 }
 
@@ -25,6 +24,14 @@
 	\begin{figure}[H]
 	    \centering
 	    \includegraphics[width=0.30\linewidth]{#1}
+	    \caption{#2}\label{#3}
+	\end{figure}
+}
+
+\newcommand{\putimagebig}[3] {
+	\begin{figure}[H]
+	    \centering
+	    \includegraphics[width=0.60\linewidth]{#1}
 	    \caption{#2}\label{#3}
 	\end{figure}
 }
@@ -76,6 +83,7 @@
     \include{chapters/ccs-lts.tex}
     \include{chapters/bisimulazione.tex}
     \include{chapters/reti.tex}
+    \include{chapters/reti-complesse.tex}
     \part{Esami}
     \include{chapters/exams.tex}
 \end{document}
