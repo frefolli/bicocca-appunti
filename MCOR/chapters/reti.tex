@@ -1,0 +1,24 @@
+\chapter{Reti}
+
+\section{Reti di Posti e Transizioni}
+
+$\Sigma  = (S, T, F, K, W, M_0)$ si dice sistema di Posti e Transizioni (sistema $P/T$) sse:
+\begin{itemize}
+    \item (S, T, F) e' una rete
+    \item $K : S \rightarrow N^+ \cup \{\infty\}$ e' la funzione capacita' dei posti
+    \item $W : F \rightarrow N$ e' la funzione peso degli archi
+    \item $M_0 : S \rightarrow N : \forall s \in S \;\; M_0(s) \leq K(s)$ e' la marcatura iniziale
+\end{itemize}
+
+\paragraph{regola di scatto}
+
+\begin{itemize}
+    \item $M[t$ sse $\forall s \in S \;\; M(s) \geq W(s, t) \land M(s) + W(t, s) \leq K(s)$
+    \item $M[t > M'$ sse $M'(s) = M(s) - W(s, t) + W(t, s)$
+\end{itemize}
+
+L'insieme delle marcature raggiungibili di $\Sigma$ e' $[M_0$:
+\begin{itemize}
+    \item $M_0 \in [M_0 >$
+    \item se $M \in [M_0 > \land \exists t \in T : M[t > M' allora M' \in [M_0 >$
+\end{itemize}
