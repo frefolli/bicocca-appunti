@@ -7,28 +7,28 @@ $N = (B, E, F)$ e' una rete sse:
   \item $B$ e' l'insieme di condizioni (stati locali)
   \item $E$ e' l'insieme di eventi
   \item tali che $B \cap E = \emptyset$ e $B \cup E \neq \emptyset$
-  \item $F \subseteq (B \cdot E) \cup (E \cdot B)$ relazione di flusso rappresenta da $\rightarrow$
+  \item $F \subseteq (B \times E) \cup (E \times B)$ relazione di flusso rappresenta da $\rightarrow$
 \end{itemize}
 
-La relazione di flusso definisce pre-elementi ($\cdot x$) e post-elementi ($x \cdot$). \\
+La relazione di flusso definisce pre-elementi ($\bullet x$) e post-elementi ($x \bullet$). \\
 
 Un \textbf{caso} e' un'insieme di condizioni $c \subseteq B$ che rappresenta lo stato globale del sistema.
 
 \paragraph{regola di scatto}
 
-L'evento $e$ e' abilitato in $c$ ($c[e>$) sse: $\cdot e \subseteq c$ and $e \cdot \cap c = \emptyset$.
-Quando $e$ scatta (sse e' abilitato), si genera un caso $c' = (c - \cdot e) \cup e \cdot$. \\
+L'evento $e$ e' abilitato in $c$ ($c[e>$) sse: $\bullet e \subseteq c$ and $e \bullet \cap c = \emptyset$.
+Quando $e$ scatta (sse e' abilitato), si genera un caso $c' = (c - \bullet e) \cup e \bullet$. \\
 
-Una rete si dice \textbf{semplice} se $\cdot x = \cdot y \land x \cdot = y \cdot \Rightarrow x = y$.\\
+Una rete si dice \textbf{semplice} se $\bullet x = \bullet y \land x \bullet = y \bullet \Rightarrow x = y$.\\
 
-Una rete si dice \textbf{pura} se $\forall e \in E : \cdot e \cap e \cdot = \emptyset$.
+Una rete si dice \textbf{pura} se $\forall e \in E : \bullet e \cap e \bullet = \emptyset$.
 
 Sia $U \subseteq E$
 \begin{itemize}
-  \item due eventi $e_1,e_2 \in U$ sono indipendenti se $(\cdot e_1 \cup e_1 \cdot) \cap (\cdot e_2 \cup e_2 \cdot) = \emptyset$.
+  \item due eventi $e_1,e_2 \in U$ sono indipendenti se $(\bullet e_1 \cup e_1 \bullet) \cap (\bullet e_2 \cup e_2 \bullet) = \emptyset$.
   \item $U$ e' un insieme di eventi indipendenti se tutti gli eventi sono a due a due indipendenti
   \item $U$ e' un passo abilitato se $\forall e \in U$, $c[e>$.
-  \item $U$ e' un passo da $c_1$ a $c_2$ ($c_1[U>c_2$) sse: $c_2 = (c_1 - \cdot U) \cup U \cdot$
+  \item $U$ e' un passo da $c_1$ a $c_2$ ($c_1[U>c_2$) sse: $c_2 = (c_1 - \bullet U) \cup U \bullet$
 \end{itemize}
 
 \section{Sistema Elementare}
@@ -92,14 +92,14 @@ Bella domanda, comunque e' stato risolto dalla \textbf{Teoria delle Regioni}.
 \section{Contatto}
 
 Sia un sistema elementare $\Sigma = (B, E, F, c_0)$, si definisce contatto un caso $c \subseteq B$ tale che: \\
-$\cdot e \subseteq c \land c \cap e \cdot \neq \emptyset$.
+$\bullet e \subseteq c \land c \cap e \bullet \neq \emptyset$.
 
 Cioe' un evento potrebbe anche scattare se non fosse che alcune post-condizioni non sono inattive.
 
-Un sistema \textbf{senza contatti} e' un sistema in cui $\forall e \in E, c \in C_\Sigma \; | \; \cdot e \subseteq c \rightarrow c \cap e \cdot = \emptyset$.
+Un sistema \textbf{senza contatti} e' un sistema in cui $\forall e \in E, c \in C_\Sigma \; | \; \bullet e \subseteq c \rightarrow c \cap e \bullet = \emptyset$.
 
 E' possibile trasformare un sistema elementare \textbf{con contatti} in uno \textbf{senza contatti} aggiungendo il complementare di ogni condizione facendo rimanere isomorfo il grafo dei casi sequenziale.
-Ovvero: $\forall b \in B\; \exists b' \in B' \supseteq B \; \forall e \in b \cdot \rightarrow b' \in \cdot e$.
+Ovvero: $\forall b \in B\; \exists b' \in B' \supseteq B \; \forall e \in b \bullet \rightarrow b' \in \bullet e$.
 
 \putimage{images/6.png}{example}{png:6}
 
@@ -107,12 +107,12 @@ Ovvero: $\forall b \in B\; \exists b' \in B' \supseteq B \; \forall e \in b \cdo
 
 Due eventi $e_1,e_2$ si dicono sequenziali sse $c[e_1> \land \neg c[e_2> \land c[e_1e_2 >$, ovvero se $c[e_1 > c[e_2 >$, ovvero se c'e' dipendenza causale fra i due.
 
-Vice versa due eventi si dicono concorrenti se $c[e_1> \land c[e_2> \land (\cdot e_1 \cup e_1 \cdot) \cap (\cdot e_2 \cup e_2 \cdot) = \emptyset$.
+Vice versa due eventi si dicono concorrenti se $c[e_1> \land c[e_2> \land (\bullet e_1 \cup e_1 \bullet) \cap (\bullet e_2 \cup e_2 \bullet) = \emptyset$.
 Ovvero se sono entrambi abilitati ed indipendenti.
 
 \section{Conflitto}
 
-Due eventi si dicono in \textbf{conflitto} sse $c[e_1> \land c[e_2> \land \cdot e_1 \cap e_2 \cdot \neq \emptyset$.
+Due eventi si dicono in \textbf{conflitto} sse $c[e_1> \land c[e_2> \land \bullet e_1 \cap e_2 \bullet \neq \emptyset$.
 
 Importante notare che in molti casi non e' possibile stabilire se si e' risolto un conflitto o no. C'e' molta confusione visto che il sistema e' visto dall'alto senza vedere i passi intermedi che compongono il passaggio da un caso all'altro.
 
@@ -132,13 +132,13 @@ Essa si dice genericamente sottorete di N sse:
 Quindi N' si dice sottorete generata da B sse:
 \begin{itemize}
   \item $B' \subseteq B$
-  \item $E' = \cdot B \cup B \cdot$
+  \item $E' = \bullet B \cup B \bullet$
   \item $F' = F \cap (B' x E') \cup (E' x B')$
 \end{itemize}
 
 Similarmente N' si dice sottorete generata da E sse:
 \begin{itemize}
-  \item $B' = \cdot E \cup E \cdot$
+  \item $B' = \bullet E \cup E \bullet$
   \item $E' \subseteq E$
   \item $F' = F \cap (B' x E') \cup (E' x B')$
 \end{itemize}
