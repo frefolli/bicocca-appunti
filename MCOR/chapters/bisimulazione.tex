@@ -1,0 +1,148 @@
+\chapter{Bisimulazione}
+
+\begin{itemize}
+  \item $S = (P_1 | B_1 | C_1) \setminus \{dep, est\}$
+  \item $P_1 = prod \; . \; P_2$
+  \item $P_2 = \overline {dep} \; . \; P_1$
+  \item $C_1 = estr \; . \; C_2$
+  \item $C_2 = cons \; . \; C_1$
+  \item $B_1 = dep \; . \; B_2$
+  \item $B_2 = \overline {estr} \; . \; B_1$
+\end{itemize}
+
+$
+(P_1 | B_1 | C_1)
+\xrightarrow[]{prod} (P_2 | B_1 | C_1)
+\xrightarrow[]{\overline {dep} / dep} (P_1 | B_2 | C_1)
+\xrightarrow[]{prod} (P_2 | B_2 | C_1)
+\xrightarrow[]{\overline {estr} / estr} (P_1 | B_1 | C_2)
+\xrightarrow[]{prod} (P_2 | B_1 | C_2)
+\xrightarrow[]{cons} (P_2 | B_1 | C_1)
+$
+
+\section{Nozione di equivalenza}
+
+Nel caso di programmi sequenziali e' sufficiente una congruenza funzionale $H: L(I, O) \rightarrow L(I, O)$.
+Invece nei programmi CCS non sequenziali, si deve tener conto dell'interazione dei moduli con l'environment.
+Serve una relazione di equivalenza $R : C -> C$ che permetta di valutare l'interscambiabilita' di moduli.
+
+\subsection{$S_1 \sim S_2$, $S_1$ isomorfo a $S_2$}
+
+Detto ${LTS}_1 = (Q_1, E_1, T_1, q_{0_1})$ e ${LTS}_2 = (Q_2, E_2, T_2, q_{0_2})$, allora
+
+\begin{itemize}
+  \item $\alpha : Q_1 \rightarrow Q_2$
+  \item $\beta : E_1 \rightarrow E_2$
+  \item $\alpha(q_{0_1}) = q_{0_2}$
+\end{itemize}
+
+$(q_1,a,q_1) \in T_1 \rightarrow (\alpha(q_1),\beta(a),\alpha(q_1)) \in T_2$
+
+\begin{itemize}
+  \item tracce di un processo (TODO: tutte le possibili sequenze di azioni e sincronizzazioni a partire da un processo)
+\end{itemize}
+
+Due processi $P_1$ e $P_2$ sse $Tracce(P_1) \equiv Tracce(P_1)$
+
+\section{CCS di un Dispensatore di Bevande}
+
+$Uni = (M | LP) \setminus \{coin, \; caffe\}$
+
+\begin{itemize}
+  \item $M_1 = \overline {coin} \; . \; (caffe \; . \; M_1 + \overline {coin} \; . \; tea \; . \; M_1)$
+  \item $M_2 = \overline {coin} \; . \; caffe \; . \; M_2 + \overline {coin} \; . \; \overline {coin} \; . \; tea \; . \; M_2$
+\end{itemize}
+
+\subsection{Schema di $M_1$}
+
+\putimage{images/4.png}{diagram}{png:4}
+
+\subsection{Schema di $M_2$}
+
+\putimage{images/5.png}{diagram}{png:5}
+
+\subsection{Comparazione}
+
+Il sistema di transizioni di $M_1$ e $M_2$ non sono isomorfi, ovviamente.
+
+tracce di $M_1$:
+\begin{itemize}
+  \item coin caffe
+  \item coin coin tea
+\end{itemize}
+
+tracce di $M_2$
+\begin{itemize}
+  \item coin caffe
+  \item coin coin tea
+\end{itemize}
+
+Le tracce sono uguali, ma il comportamento di queste CCS e' potenzialmente differente perche' non c'e' isomorfismo. Si dicono equivalenti perche' eseguono le stesse sequenze, ma non c'e' garanzia dell'effettiva esecuzione di $M_2$ perche' e' non deterministica (i.e. e' concorrenti sull'azione $\overline {coin}$).
+
+\section{Equivalenza ad Osservazione}
+
+$M_1$ e $M_2$ sono intercambiabili sse un osservatore esterno non e' in grado di distinguere i due attori distinti.
+
+Transizioni:
+\begin{itemize}
+  \item $p \xRightarrow[]{a} p'$ : transizione debole, si puo' usare delle \textbf{t-mosse} per percorrere l'azione a
+  \item $p \xrightarrow[]{a} p'$ : transizione forte, non si possono usare delle \textbf{t-mosse} per percorrere l'azione a
+  \item $p \xrightarrow[]{t} p'$ : \textbf{t-mossa}, l'avversario puo' fare una \textbf{t-mossa} o stare fermo
+\end{itemize}
+
+  L'attaccante puo' sempre decidrere se usare \textbf{P} o \textbf{Q} come mossa.
+
+\subsection{Bisimulazione debole}
+
+La relazione $R : P \times P$,  e' una relazione di equivalenza (di bisimulazione forte) sse
+
+$\forall p,q \in P \;\; | \;\; p,q \in P$ 
+
+\begin{itemize}
+  \item $\forall \alpha \in Act = A \cup \overline A \cup \{t\}, \;\; se \; p \xrightarrow[]{a} p' \; | \; \exists q' \in Q \; | \; q \xRightarrow[]{a} q'$
+  \item $\forall \alpha \in Act = A \cup \overline A \cup \{t\}, \;\; se \; q \xrightarrow[]{a} q' \; | \; \exists p' \in P \; | \; p \xRightarrow[]{a} p'$
+\end{itemize}
+
+$p \xleftrightarrow[]{bis} q$ sse $\exists R$ relazione di Bisimulazione t.c. $p \; R \; q$.
+
+\subsection{Bisimulazione forte}
+
+La relazione $R : P \times P$,  e' una relazione di equivalenza (di bisimulazione forte) sse
+
+$\forall p,q \in P \;\; | \;\; p,q \in P$ 
+
+\begin{itemize}
+  \item $\forall \alpha \in Act = A \cup \overline A \cup \{t\}, \;\; se \; p \xrightarrow[]{a} p' \; | \; \exists q' \in Q \; | \; q \xrightarrow[]{a} q'$
+  \item $\forall \alpha \in Act = A \cup \overline A \cup \{t\}, \;\; se \; q \xrightarrow[]{a} q' \; | \; \exists p' \in P \; | \; p \xrightarrow[]{a} p'$
+\end{itemize}
+
+$p \xleftrightarrow[]{bis} q$ sse $\exists R$ relazione di Bisimulazione t.c. $p \; R \; q$.
+
+\section{Bisimulazione debole come simulazione avversaria}
+
+\begin{itemize}
+  \item Attaccante: cerca di dimostrare $p \not \equiv_{BIS} q$
+  \item Difensore: cerca di dimostrare $p \equiv_{BIS} q$
+\end{itemize}
+
+\subsection{Una simulazione G(p, q)}
+
+e' composta di varie \textbf{run}. Ogni \textbf{run} e' una sequenza finita o infinita di configurazioni (p0,q0), (p1,q1), ... (pi,qi)
+In ogni \textbf{step} di \textbf{run}, si passa da una configurazione all'altra (parte l'attaccante).
+
+\begin{itemize}
+  \item si sceglie uno dei due processi ed esegue una azione \textbf{a}, $p \xrightarrow[]{a} p'$, si trasforma l'altro processo con l'azione \textbf{a} verificando che il processo $q'$ e' bisimile a $p'$.
+  \item e' possibile che uno dei due attori non possa muovere, in quel caso vince l'altro
+  \item se la \textbf{run} e' finita, allora vince il difensore
+  \item importante: il difensore puo' usare la \textbf{t} come un ponte jolly.
+\end{itemize}
+
+per ogni simulazione, solo uno dei due attori ha una strategia vincente che gli da la possibilita' di vincere ogni partita
+
+\begin{itemize}
+  \item $P_1$ = t . a . NIL + b . NIL
+  \item $P_2$ = t (a . NIL + b . NIL)
+\end{itemize}
+
+attaccante con $ t \; . \; b$ su $P_2$
+

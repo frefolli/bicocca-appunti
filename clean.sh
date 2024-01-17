@@ -24,6 +24,7 @@ function job() {
     cleanFolder ROPR
     cleanFolder APS
     cleanFolder SAF
+    cleanFolder MCOR
 }
 
 function handler() {
