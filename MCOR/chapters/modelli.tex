@@ -1,0 +1,129 @@
+\chapter{Modelli}
+
+\section{Modelli di Kripke}
+
+Sia $AP = \{p, q, z ... \}$ un insieme di proposizioni atomiche. Si dice Modello di Kripke la tupla $M = (Q, T, I)$ dove $(Q, T)$ \`e un sistema di transizioni e $I : Q \rightarrow 2^{AP}$ \`e la semantica che definisce l'insieme di proposizioni vere nello stato $q$.
+
+Si denota cammino $\pi = q_0q_1q_2q_3q_4....$, dove $\forall i, (q_i, q_{i+1}) \in T$.
+Il suo suffisso i-esimo \`e denotato $\pi^{(i)} = q_{i}q_{i+1}q_{i+2}...$.
+
+Quello che \`e importante identificare nei modelli di Kripke sono tutti i cammini massimali, tra cui i cammini $\pi$ infiniti, distinti del sistema. In buona sostanza \`e simile alle tracce.
+
+\section{LTL}
+
+La \textbf{Logica Temporale Lineare} \`e l'insieme delle formule ben formattate $FBF_{LTL}$:
+\begin{itemize}
+    \item le proposizioni atomiche in $AP$
+    \item True e False
+    \item le composizioni della logica proposizionale $\alpha \rightarrow \beta$, $\alpha \land \beta$ ...
+    \item $X\alpha$, nel prossimo stato
+    \item $F\alpha$, prima o poi
+    \item $G\alpha$, sempre
+    \item $U(\alpha, \beta)$, vale $\alpha$ fino a che non vale $\beta$ (implica $F\beta$)
+\end{itemize}
+
+Data una semantica per definire se una $fbf$ \`e vera in un certo cammino massimale $\pi$, si dice che la formula sia vera in $q$ sse \`e vera in tutti i cammini massimali che partono da $q$.
+
+\subsection{In altre parole}
+
+Si definisce l'operatore di induzione $\models$, tale che $\pi \models \alpha$ sse $\alpha$ \`e vera nel cammino $\pi$.
+Due formule si dicono $equivalenti$ sse $\pi \models \alpha \Leftrightarrow \pi \models \beta$.
+Quindi posso riscrivere la semantica degli operatori della LTL come:
+
+\begin{itemize}
+    \item $\pi \models X\alpha$ sse $\pi^{1} \models \alpha$
+    \item $\pi \models F\alpha$ sse $\exists i \in N \; : \; \pi^{i} \models \alpha$
+    \item $\pi \models G\alpha$ sse $\forall i \in N \; : \; \pi^{i} \models \alpha$
+    \item $\pi \models U(\alpha, \beta)$ sse $\exists i \in N \; : \; \pi^{i} \models \beta \; \land \; \forall \in [0, i)\; : \; \pi^{j} \models \alpha$
+\end{itemize}
+
+Allo stesso modo due modelli $M_1, M_2$ con stati iniziali $p, q$, si dicono equivalenti rispetto ad una logica L sse $\forall \alpha \in FBF_L \; : \; M_0,p \models \alpha \Leftrightarrow M_1,q \models \alpha$.
+
+\subsection{Operatori Derivati}
+
+\begin{itemize}
+  \item While (o Weak Until), $W(\alpha, \beta) \equiv G\alpha \lor U(\alpha, \beta)$
+  \item Release, $R(\alpha, \beta) \equiv W(\beta, \beta \land \alpha)$, ovvero $\alpha$ rilascia $\beta$
+\end{itemize}
+
+\subsection{Insieme Minimale di Operatori}
+
+L'insieme $\{X, U\}$ forma un insieme minimale perch\`e \`e possibile derivare tutti gli altri. (TODO: provaci)
+
+\subsection{Limiti espressivi}
+
+Uno dei pi\`u importanti riguarda la negazione delle formule riguardo all'implicazione che una sia vera nello stato sse \`e vera in tutti i cammini. In fact non \`e possibile esprimere appunto questi quantificatori in modo accurato, e in generale non \`e possibile esprimere la nozione di esistenza di cammino speciale. Un esempio:
+
+"Non \`e vero che $F\alpha$" non \`e equivalente a dire $\neg F\alpha$ perch\`e la negazione \`e immersa nel quantificatore implicito di "tutti i cammini" che costituisce la semantica della LTL. Al contrario $\neg F\alpha \equiv G \neg \alpha$, ovvero in ogni cammino non \`e vero che prima o poi $\alpha$ diventa vera.
+
+\section{CTL}
+
+La \textbf{Computation Tree Logic} \`e l'insieme delle formule ben formattate $FBF_{CTL}$:
+\begin{itemize}
+    \item le proposizioni atomiche in $AP$
+    \item True e False
+    \item le composizioni della logica proposizionale $\alpha \rightarrow \beta$, $\alpha \land \beta$ ...
+    \item $AX\alpha$, $EX\alpha$, nel prossimo stato
+    \item $AF\alpha$, $EF\alpha$, prima o poi
+    \item $AG\alpha$, $EG\alpha$, sempre
+    \item $AU(\alpha, \beta)$ $EU(\alpha, \beta)$, vale $\alpha$ fino a che non vale $\beta$ (implica $F\beta$)
+\end{itemize}
+
+Dove $A$ e $E$ sono i quantificatori sui cammini: $A \equiv$ per ogni cammino, $E \equiv$ esiste un cammino tale che.
+
+\subsection{Differenze Espressive}
+
+Come gi\`a detto prima, in LTL non \`e possibile dare la nozione di possibilit\`a di esistenza di un cammino. Ebbene anche CTL non pu\`o esprimere alcuni concetti. Prendiamo un esempio.
+
+"In tutti i cammini prima o poi si raggiunge uno stato a partire dal quale $p$ \`e sempre vera".
+
+\begin{itemize}
+  \item In logica LTL si pu\`o dire $FGp$ (ricordando che la nozione di tutti i cammini \`e assunta per costruzione di semantica LTL)
+  \item In logica CTL si \`e tentati di usare lo stetto costrutto, ma dovendo inserire i quantificatori in precedenza agli operatori temporali si \`e costretti a dire $AFAGp$
+\end{itemize}
+
+Se queste due formule fossero equivalenti allora $M,q \models AFAGp \Leftrightarrow M,q \models FGp$ per ogni $q \in Q$. Tuttavia non \`e cos\`i:
+
+\putimagebig{images/13.png}{Esempio}{png:13}
+
+$M,s_0 \not \models AFAGp $ ma $ M,s_0 \models FGp$. Per comprendere meglio questa diversit\`a \`e utile spezzettare la formula CTL:
+
+\begin{itemize}
+  \item $k \equiv AGp$.
+  \item $AFAGp \equiv AFk$.
+  \item $M,s_0 \not \models k$, $M,s_1 \not \models k$, $M,s_2 \models k$.
+  \item ora, $M,s_1 \models AFk$ e $M,s_2 \models AFk$ ma $M,s_0 \not \models AFk$ perch\`e esiste il cammino massimale $s_0,s_0,s_0...$ dove non \`e vero che prima o poi $k$.
+\end{itemize}
+
+\section{$CTL^\ast$}
+
+Questa logica estende LTL e CTL rimuovendo il vincolo di avere un quantificatore accanto ad un operatore.
+
+\putimagebig{images/14.png}{Esempio}{png:14}
+
+In questo modo $FGp$ \`e una formula FBF.
+
+\subsection{Perch\`e no?}
+
+La ragione ricalca un p\`o alcuni problemi di LTL: quest'ultimo oltre ad essere poco espressivo possiede un tempo di model checking esponenziale. Visto che CTL pu\`o essere verificato bottom up (pezzo per pezzo, in forma di enunciati semplici) la sua verifica ha tempo lineare.
+Poi il problema di tutto questo \`e che nonostante sia lineare rispetto al numero di stati de facto se \`e estratta da una rete di petri, il numero di stati tende ad essere esponenziale.
+
+\section{$\mu-calcolo$}
+
+\`E una logica pi\`u complessa di CTL che permette di definire formule ricorsive.
+
+Si supponga per esempio di voler esprimere $EF\alpha$ con il solo operatore $X$: $EF\alpha = \alpha \lor EX\alpha \lor EXEX\alpha \lor EXEXEX\alpha ...$.
+Ovvero $EF\alpha \equiv \alpha \lor EX(EF\alpha)$, con il $\mu$-calcolo: $\mu Y.(a \lor EXY)$.
+
+Allo stesso modo si supponga per esempio di voler esprimere $AG\alpha$ con il solo operatore $X$: $AG\alpha = \alpha \land AX\alpha \land AXAX\alpha \land AXAXAX\alpha ...$.
+Ovvero $AG\alpha \equiv \alpha \land AX(AG\alpha)$, con il $\mu$-calcolo: $\mu Y.(a \land AXY)$.
+
+A quanto pare la semantica del calcolo $\mu$ \`e definita sui modelli di Kripke attraverso operatori di punto fisso.
+
+Questa logica ha la massima potenza espressiva ($\mu-calcolo \supset CTL^\ast$) al costo di un'alta complessit\`a di calcolo nella verifica e nella leggibilit\`a delle formule stesse (formule "oscure").
+
+A proposito di questo riporto le stime di complessit\`a (indicative) di un modello di Kripke $M$ e una formula $f$:
+\begin{itemize}
+  \item $CTL \; : \; O(|M| \times |f|)$
+  \item $LTL \; : \; O(|M| \times 2^{|f|})$
+\end{itemize}

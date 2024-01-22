@@ -7,10 +7,10 @@ Semplice: reti piu' complesse!
 
 $\Sigma  = (S, T, F, K, W, M_0)$ si dice sistema di Posti e Transizioni (sistema $P/T$) sse:
 \begin{itemize}
-    \item (S, T, F) e' una rete
-    \item $K : S \rightarrow N^+ \cup \{\infty\}$ e' la funzione capacita' dei posti
-    \item $W : F \rightarrow N$ e' la funzione peso degli archi
-    \item $M_0 : S \rightarrow N : \forall s \in S \;\; M_0(s) \leq K(s)$ e' la marcatura iniziale
+    \item (S, T, F) \`e una rete
+    \item $K : S \rightarrow N^+ \cup \{\infty\}$ \`e la funzione capacita' dei posti
+    \item $W : F \rightarrow N$ \`e la funzione peso degli archi
+    \item $M_0 : S \rightarrow N : \forall s \in S \;\; M_0(s) \leq K(s)$ \`e la marcatura iniziale
 \end{itemize}
 
 \paragraph{regola di scatto}
@@ -20,7 +20,7 @@ $\Sigma  = (S, T, F, K, W, M_0)$ si dice sistema di Posti e Transizioni (sistema
     \item $M[t > M'$ sse $M'(s) = M(s) - W(s, t) + W(t, s)$
 \end{itemize}
 
-L'insieme delle marcature raggiungibili di $\Sigma$ e' $[M_0$:
+L'insieme delle marcature raggiungibili di $\Sigma$ \`e $[M_0$:
 \begin{itemize}
     \item $M_0 \in [M_0 >$
     \item se $M \in [M_0 > \land \exists t \in T : M[t > M' allora M' \in [M_0 >$
@@ -30,33 +30,33 @@ Valgono tutte le considerazioni delle Reti di petri su conflitto, concorrenza e 
 
 \paragraph{Grafo delle marcature raggiungibili}
 
-Sia $\Sigma = (S, T, F, K, W, M_0)$ un sistema $P/T$. $RG(\Sigma) = ([M_0>, U_\Sigma, A, M_0)$ e' il suo grafo dove: \\
+Sia $\Sigma = (S, T, F, K, W, M_0)$ un sistema $P/T$. $RG(\Sigma) = ([M_0>, U_\Sigma, A, M_0)$ \`e il suo grafo dove: \\
 
 $A = \{ (M, U, M') \; : \; M,M' \in [M_0> \land U \in U_\Sigma \land M[U>M' \}$.
 
-Se $U$ e' una singola transizione (insieme singoletto), allora si ha il grafo di raggiungibilita' sequenziale $SRG(\Sigma)$.
+Se $U$ \`e una singola transizione (insieme singoletto), allora si ha il grafo di raggiungibilita' sequenziale $SRG(\Sigma)$.
 
-Tensio': La \textbf{Diamond Property} non e' piu' valida in generale perche' qui si ammettono i self loop.
+Tensio': La \textbf{Diamond Property} non \`e piu' valida in generale perch\`e qui si ammettono i self loop.
 
-$\Sigma$ e' detto limitato sse $\exists n \in N$, tale che $\forall s \in S$, $\forall M \in [M_0>$, $M(s) \leq N$.
-$\Sigma$ e' limitato $\Leftrightarrow$ $[M_0>$ e' un insieme finito (il grafo delle marcature e' finito).
+$\Sigma$ \`e detto limitato sse $\exists n \in N$, tale che $\forall s \in S$, $\forall M \in [M_0>$, $M(s) \leq N$.
+$\Sigma$ \`e limitato $\Leftrightarrow$ $[M_0>$ \`e un insieme finito (il grafo delle marcature \`e finito).
 
 \putimagebig{images/12.png}{example}{png:12}
 
 \section{Contatti}
 
-Un sistema $P/T$ $\Sigma = (S, T, F, K, W, M_0)$ e' detto \textbf{senza contatti} sse:
+Un sistema $P/T$ $\Sigma = (S, T, F, K, W, M_0)$ \`e detto \textbf{senza contatti} sse:
 \begin{itemize}
   \item $\forall M \in [M_0>$, $\forall t \in T$, $\forall s \in S$
   \item $M(s) \leq W(s, t) \Rightarrow M(s) + W(t, s) \leq K(s)$
 \end{itemize}
 
 Per rendere un sistema senza contatti si puo' complementare i posti come nel caso delle reti di petri.
-La conseguenza di questa condizione e' che l'abilitazione di una transizione $t \in T$ in $M \in [M_0>$ non dipende piu' dalla capacita' dei posti, ma solo dalla marcatura del posto e dal peso degli archi.
+La conseguenza di questa condizione \`e che l'abilitazione di una transizione $t \in T$ in $M \in [M_0>$ non dipende piu' dalla capacita' dei posti, ma solo dalla marcatura del posto e dal peso degli archi.
 
 \section{Reti Marcate}
 
-Un sistema $P/T$ $\Sigma = (S, T, F, K, W, M_0)$ e' detto \textbf{rete marcata} sse:
+Un sistema $P/T$ $\Sigma = (S, T, F, K, W, M_0)$ \`e detto \textbf{rete marcata} sse:
 
 \begin{itemize}
   \item $\forall s \in S$, $M_0(s) \in N \land K(s) = \infty$
@@ -67,9 +67,9 @@ Ovvero nel computo dell'abilitazione di una transizione, il peso degli archi e l
 
 \paragraph{Sicurezza}
 
-Una Rete Marcata e' detta sicura ss: $\forall M \in [M_0>$, $\forall s \in S$, $M(s) \leq 1$.
+Una Rete Marcata \`e detta sicura ss: $\forall M \in [M_0>$, $\forall s \in S$, $M(s) \leq 1$.
 
-Sorpresa delle sorprese, una rete marcata \textbf{sicura} e \textbf{pura} e' anche una rete di petri \textbf{pura}.
+Sorpresa delle sorprese, una rete marcata \textbf{sicura} e \textbf{pura} \`e anche una rete di petri \textbf{pura}.
 
 \section{Matrice di Incidenza}
 

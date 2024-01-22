@@ -22,9 +22,9 @@ $
 
 \section{Nozione di equivalenza}
 
-Nel caso di programmi sequenziali e' sufficiente una congruenza funzionale $H: L(I, O) \rightarrow L(I, O)$.
+Nel caso di programmi sequenziali \`e sufficiente una congruenza funzionale $H: L(I, O) \rightarrow L(I, O)$.
 Invece nei programmi CCS non sequenziali, si deve tener conto dell'interazione dei moduli con l'environment.
-Serve una relazione di equivalenza $R : C -> C$ che permetta di valutare l'interscambiabilita' di moduli.
+Serve una relazione di equivalenza $R : C \rightarrow C$ che permetta di valutare l'interscambiabilita' di moduli.
 
 \subsection{$S_1 \sim S_2$, $S_1$ isomorfo a $S_2$}
 
@@ -39,7 +39,8 @@ Detto ${LTS}_1 = (Q_1, E_1, T_1, q_{0_1})$ e ${LTS}_2 = (Q_2, E_2, T_2, q_{0_2})
 $(q_1,a,q_1) \in T_1 \rightarrow (\alpha(q_1),\beta(a),\alpha(q_1)) \in T_2$
 
 \begin{itemize}
-  \item tracce di un processo (TODO: tutte le possibili sequenze di azioni e sincronizzazioni a partire da un processo)
+  \item si dice traccia una sequenza $s \in Act^\ast$ di azioni percorribili dalla radice (ovvero dal processo considerato).
+  \item l'insieme delle tracce di un processo \`e composto da tutte le possibili sequenze di azioni e di sincronizzazioni a partire da esso.
 \end{itemize}
 
 Due processi $P_1$ e $P_2$ sse $Tracce(P_1) \equiv Tracce(P_1)$
@@ -77,15 +78,15 @@ tracce di $M_2$
   \item coin coin tea
 \end{itemize}
 
-Le tracce sono uguali, ma il comportamento di queste CCS e' potenzialmente differente perche' non c'e' isomorfismo. Si dicono equivalenti perche' eseguono le stesse sequenze, ma non c'e' garanzia dell'effettiva esecuzione di $M_2$ perche' e' non deterministica (i.e. e' concorrenti sull'azione $\overline {coin}$).
+Le tracce sono uguali, ma il comportamento di queste CCS \`e potenzialmente differente perch\`e non c'\`e isomorfismo. Si dicono equivalenti perch\`e eseguono le stesse sequenze, ma non c'\`e garanzia dell'effettiva esecuzione di $M_2$ perch\`e \`e non deterministica (i.e. \`e concorrenti sull'azione $\overline {coin}$).
 
 \section{Equivalenza ad Osservazione}
 
-$M_1$ e $M_2$ sono intercambiabili sse un osservatore esterno non e' in grado di distinguere i due attori distinti.
+$M_1$ e $M_2$ sono intercambiabili sse un osservatore esterno non \`e in grado di distinguere i due attori distinti.
 
 Transizioni:
 \begin{itemize}
-  \item $p \xRightarrow[]{a} p'$ : transizione debole, si puo' usare delle \textbf{t-mosse} per percorrere l'azione a
+  \item $p \xRightarrow[]{a} p' \equiv p \xrightarrow[]{t^\ast} q  \xrightarrow[]{a} q  \xrightarrow[]{t^\ast} p'$ : transizione debole, si puo' usare delle \textbf{t-mosse} per percorrere l'azione a
   \item $p \xrightarrow[]{a} p'$ : transizione forte, non si possono usare delle \textbf{t-mosse} per percorrere l'azione a
   \item $p \xrightarrow[]{t} p'$ : \textbf{t-mossa}, l'avversario puo' fare una \textbf{t-mossa} o stare fermo
 \end{itemize}
@@ -94,7 +95,7 @@ Transizioni:
 
 \subsection{Bisimulazione debole}
 
-La relazione $R : P \times P$,  e' una relazione di equivalenza (di bisimulazione forte) sse
+La relazione $R : P \times P$,  \`e una relazione di equivalenza (di bisimulazione forte) sse
 
 $\forall p,q \in P \;\; | \;\; p,q \in P$ 
 
@@ -107,7 +108,7 @@ $p \xleftrightarrow[]{bis} q$ sse $\exists R$ relazione di Bisimulazione t.c. $p
 
 \subsection{Bisimulazione forte}
 
-La relazione $R : P \times P$,  e' una relazione di equivalenza (di bisimulazione forte) sse
+La relazione $R : P \times P$,  \`e una relazione di equivalenza (di bisimulazione forte) sse
 
 $\forall p,q \in P \;\; | \;\; p,q \in P$ 
 
@@ -127,13 +128,13 @@ $p \xleftrightarrow[]{bis} q$ sse $\exists R$ relazione di Bisimulazione t.c. $p
 
 \subsection{Una simulazione G(p, q)}
 
-e' composta di varie \textbf{run}. Ogni \textbf{run} e' una sequenza finita o infinita di configurazioni (p0,q0), (p1,q1), ... (pi,qi)
+\`e composta di varie \textbf{run}. Ogni \textbf{run} \`e una sequenza finita o infinita di configurazioni (p0,q0), (p1,q1), ... (pi,qi)
 In ogni \textbf{step} di \textbf{run}, si passa da una configurazione all'altra (parte l'attaccante).
 
 \begin{itemize}
-  \item si sceglie uno dei due processi ed esegue una azione \textbf{a}, $p \xrightarrow[]{a} p'$, si trasforma l'altro processo con l'azione \textbf{a} verificando che il processo $q'$ e' bisimile a $p'$.
-  \item e' possibile che uno dei due attori non possa muovere, in quel caso vince l'altro
-  \item se la \textbf{run} e' finita, allora vince il difensore
+  \item si sceglie uno dei due processi ed esegue una azione \textbf{a}, $p \xrightarrow[]{a} p'$, si trasforma l'altro processo con l'azione \textbf{a} verificando che il processo $q'$ \`e bisimile a $p'$.
+  \item \`e possibile che uno dei due attori non possa muovere, in quel caso vince l'altro
+  \item se la \textbf{run} \`e finita, allora vince il difensore
   \item importante: il difensore puo' usare la \textbf{t} come un ponte jolly.
 \end{itemize}
 

@@ -2,7 +2,7 @@
 
 \section{Rete Causale}
 
-$N = (B, E, F)$ e' una rete causale sse:
+$N = (B, E, F)$ \`e una rete causale sse:
 \begin{itemize}
     \item $\forall b \ in B$, $|\bullet b| \leq 1 \land |b \bullet| \leq 1$ (quindi non ci sono conflitti)
     \item $\forall x,y \in B \cup E \; : \; (x, y) \in F^+ \Rightarrow (y, x) \notin F^+$ (quindi non ci sono cicli)
@@ -22,18 +22,18 @@ Ad una rete causale corrisponde un ordine parziale $(X, \leq) = (B \cup E, F^*)$
 Definite queste due relazioni si definiscono i sequenti sottoinsiemi:
 
 \begin{itemize}
-    \item $C \subseteq X$ e' detto \textbf{co-set} sse $\forall x,y \in C$, $x \; co \; y$
-    \item $C$ e' detto \textbf{taglio} sse co-set massimale ($\forall x \in (X \ C)$, $\exists c \in C \; : \; c \; li \; x$)
-    \item $C$ e' detto \textbf{B-taglio} se $C \subseteq B$
-    \item $L \subseteq X$ e' detto \textbf{li-set} sse $\forall x,y \in L$, $x \; li \; y$
-    \item $L$ e' detto \textbf{linea} sse li-set massimale ($\forall x \in (X \ L)$, $\exists l \in L \; : \; l \; co \; x$)
+    \item $C \subseteq X$ \`e detto \textbf{co-set} sse $\forall x,y \in C$, $x \; co \; y$
+    \item $C$ \`e detto \textbf{taglio} sse co-set massimale ($\forall x \in (X \ C)$, $\exists c \in C \; : \; c \; li \; x$)
+    \item $C$ \`e detto \textbf{B-taglio} se $C \subseteq B$
+    \item $L \subseteq X$ \`e detto \textbf{li-set} sse $\forall x,y \in L$, $x \; li \; y$
+    \item $L$ \`e detto \textbf{linea} sse li-set massimale ($\forall x \in (X \ L)$, $\exists l \in L \; : \; l \; co \; x$)
 \end{itemize}
 
 \subsection{K-Density}
 
-Una Rete Causale $N$ e' detta \textbf{K-densa} sse $\forall l \in Linee(N), \forall c \in Tagli(N) \; | \; |l \cap c| = 1$.
+Una Rete Causale $N$ \`e detta \textbf{K-densa} sse $\forall l \in Linee(N), \forall c \in Tagli(N) \; | \; |l \cap c| = 1$.
 
-NB: Se N e' finita allora e' anche densa.
+NB: Se N \`e finita allora \`e anche densa.
 
 \section{Intermezzo}
 
@@ -45,15 +45,15 @@ Questo esempio di Sistema Elementare $\Sigma$ verra' usato per illustrare i Proc
 
 Dato un sistema elementare senza contatti e finito $\Sigma = (S, T, F, c_{in})$, sia $N = (B, E, F)$ una \textbf{rete causale}. \\
 
-$P = <N, \phi : B \cup E \rightarrow S \cup T>$ e' detto \textbf{Processo non Sequenziale} sse:
+$P = <N, \phi : B \cup E \rightarrow S \cup T>$ \`e detto \textbf{Processo non Sequenziale} sse:
 
 \begin{itemize}
     \item $\phi(B) \subseteq S, \phi(E) \subseteq T$
     \item $\forall x,y \in B \cup E \; : \; \phi(x) = \phi(y) \Rightarrow x \; li \; y$
     \item $\forall e \ in E \; : \; \phi(\bullet e) = \bullet \phi(e) \land  \phi(e \bullet) = \phi(e) \bullet$
     \item $Min(N) = \{ x \in B \cup E \} \; | \; \nexists y \; : \; (y, x) \in F \}$
-    \item $Min(N)$ de facto e' il set dei minimali della rete causale
-    \item ecco, $\phi(Min(N)) = c_{in}$, (con un po' di immaginazione il concetto e' quello)
+    \item $Min(N)$ de facto \`e il set dei minimali della rete causale
+    \item ecco, $\phi(Min(N)) = c_{in}$, (con un po' di immaginazione il concetto \`e quello)
 \end{itemize}
 
 \putimagebig{images/9.png}{example}{png:9}
@@ -64,11 +64,11 @@ Sia $<N , \phi>$ un processo non sequenziale di un sistema elementare $\Sigma$ f
 
 \paragraph{Teorema}
 
-$N = (B, E, F)$ e' K-Densa, e $\forall K \subseteq B$, $K$ e' B-Taglio di $N$ tale che K e' finito e $\exists c \in C_\Sigma \; : \; \phi(K) = c$.
+$N = (B, E, F)$ \`e K-Densa, e $\forall K \subseteq B$, $K$ \`e B-Taglio di $N$ tale che K \`e finito e $\exists c \in C_\Sigma \; : \; \phi(K) = c$.
 
 \section{Rete di Occorrenze}
 
-$N = (B, E, F)$ e' detta \textbf{Rete di Occorrenze} sse:
+$N = (B, E, F)$ \`e detta \textbf{Rete di Occorrenze} sse:
 
 \begin{itemize}
     \item $\forall b \in B$, $|\bullet b| \leq 1$ (due eventi non hanno una stessa post-condizione, conflitti solo in avanti)
@@ -80,7 +80,7 @@ L'ordine parziale $(X, \leq) = (B \cup E, F^*)$ persiste.
 
 \section{Conflitti}
 
-Sia definita la relazione $\# : B \cup E \rightarrow B \cup E$ simmentrica ma non riflessiva ne' transitiva:
+Sia definita la relazione $\# : B \cup E \rightarrow B \cup E$ simmentrica ma non riflessiva n\`e transitiva:
 
 \begin{itemize}
     \item $x \# y$, sse $\exists e_1,e_2 \in E \; : \; \bullet e_1 \land \bullet e_2 \neq \emptyset \land e_1 \leq x \land e_2 \leq y$.
@@ -91,14 +91,14 @@ Sia definita la relazione $\# : B \cup E \rightarrow B \cup E$ simmentrica ma no
 
 Dato un sistema elementare senza contatti e finito $\Sigma = (S, T, F, c_{in})$, sia $N = (B, E, F)$ una \textbf{rete di occorrenze}. \\
 
-$P = <N, \phi : B \cup E \rightarrow S \cup T>$ e' detto \textbf{Processo Ramificato} sse:
+$P = <N, \phi : B \cup E \rightarrow S \cup T>$ \`e detto \textbf{Processo Ramificato} sse:
 
 \begin{itemize}
     \item $\phi(B) \subseteq S, \phi(E) \subseteq T$
     \item $\forall x,y \in E \; : \; \phi(x) = \phi(y) \land \bullet x = \bullet y \Rightarrow x \; = \; y$
-    \item $\phi$ e' una biiezione su $\phi(\bullet e) \Leftrightarrow \bullet \phi(e)$ 
-    \item $\phi$ e' una biiezione su $\phi(e \bullet) \Leftrightarrow \phi(e) \bullet$ 
-    \item $\phi$ e' una biiezione su $\phi(Min(N)) \Leftrightarrow c_{in}$ 
+    \item $\phi$ \`e una biiezione su $\phi(\bullet e) \Leftrightarrow \bullet \phi(e)$ 
+    \item $\phi$ \`e una biiezione su $\phi(e \bullet) \Leftrightarrow \phi(e) \bullet$ 
+    \item $\phi$ \`e una biiezione su $\phi(Min(N)) \Leftrightarrow c_{in}$ 
 \end{itemize}
 
 \putimagebig{images/10.png}{example}{png:10}
@@ -107,12 +107,12 @@ $P = <N, \phi : B \cup E \rightarrow S \cup T>$ e' detto \textbf{Processo Ramifi
 
 Dato un sistema elementare $\Sigma$ e due suoi processi ramificati $P_1 = (N_1, \phi_1), P_2 = (N_2, \phi_2)$, $P_1$ si dice prefisso di $P_2$ sse:
 
-$N_1$ e' sottorete di $N_2$ e $\phi_{2|N_1} = \phi_1$
+$N_1$ \`e sottorete di $N_2$ e $\phi_{2|N_1} = \phi_1$
 
 \section{Unfolding}
 
-Un sistema elementare $\Sigma$ ammette un solo massimale rispetto alla relazione di prefisso tra processi ramificati. Questo processo e' chiamato \textbf{unfolding} ($= Unf(\Sigma)$).
-Ogni processo non sequenziale di $\Sigma$ e' un prefisso di $Unf(\Sigma)$.
+Un sistema elementare $\Sigma$ ammette un solo massimale rispetto alla relazione di prefisso tra processi ramificati. Questo processo \`e chiamato \textbf{unfolding} ($= Unf(\Sigma)$).
+Ogni processo non sequenziale di $\Sigma$ \`e un prefisso di $Unf(\Sigma)$.
 
-Da prendere con le pinze, ma a quanto pare un processo sequenziale e' un processo ramificato tale che la rete sia una rete causale (senza conflitti).
+Da prendere con le pinze, ma a quanto pare un processo sequenziale \`e un processo ramificato tale che la rete sia una rete causale (senza conflitti).
 Boh si chiama anche corsa (run).
