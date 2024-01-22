@@ -24,7 +24,7 @@ Notazione `I P O`, ex: $\{x>0\}$ P $\{x<0\}$
   \item P3: $x += 1$, allora $\{x = V\}$ P3 $\{x = V\}$.
 \end{itemize}
 
-Come si nota, in presenza di concorrenza non c'e' determinismo e quindi composizionalita' semplice (come nei programmi sequenziali).
+Come si nota, in presenza di concorrenza non c'\`e determinismo e quindi composizionalita' semplice (come nei programmi sequenziali).
 
 \begin{itemize}
   \item Esecuzione di $P1 \rightarrow P2$. $\{x = V\}$ P1 P2 $\{x = 3\}$.
@@ -36,9 +36,9 @@ Come si nota, in presenza di concorrenza non c'e' determinismo e quindi composiz
 
 Sistema di Transizioni Etichettate scritto $(S, AcT, T)$ dove:
 \begin{itemize}
-  \item $S$ e' insieme di stati
-  \item $Act$ e' insieme di nomi di azioni
-  \item $T$ e' la funzione di transizione denotata $T: S \times AcT \rightarrow S$, dove:
+  \item $S$ \`e insieme di stati
+  \item $Act$ \`e insieme di nomi di azioni
+  \item $T$ \`e la funzione di transizione denotata $T: S \times AcT \rightarrow S$, dove:
     \begin{itemize}
       \item $(s, a, s') \in T$
       \item $s \xrightarrow[]{a} s'$
@@ -59,9 +59,9 @@ Sistema di Transizioni Etichettate scritto $(S, AcT, T)$ dove:
 \end{itemize}
 
 \paragraph{definizione}
-Un set di programmi e' un insieme di processi che vengono composti con l'operatore di esecuzione parallela e tramite la sincronizzazione l'interazione con l'ambiente.
+Un set di programmi \`e un insieme di processi che vengono composti con l'operatore di esecuzione parallela e tramite la sincronizzazione l'interazione con l'ambiente.
 
-CCS e' un sistema di calcolo interpretato come LTS che viene denotato con la seguente espressione BNF:
+CCS \`e un sistema di calcolo interpretato come LTS che viene denotato con la seguente espressione BNF:
 
 $
 P ::= 0 \,\,\,
@@ -84,16 +84,16 @@ Che significa rispettivamente:
   \item a $P_1$ si rimuove l'azione $a$
 \end{itemize}
 
-Due processi P1 e P2 sono detti equivalenti non in termini funzionali, ma "all'osservazione", cioe' se un processo esterno non e' in grado di distinguere tra i processi P1 e P2 interagendo con essi. (Liskov dei poveri). La Bisimulazione e' tecnica di verifica per identificare se due processi sono dissimili.
+Due processi P1 e P2 sono detti equivalenti non in termini funzionali, ma "all'osservazione", cio\`e se un processo esterno non \`e in grado di distinguere tra i processi P1 e P2 interagendo con essi. (Liskov dei poveri). La Bisimulazione \`e tecnica di verifica per identificare se due processi sono dissimili.
 
 Si denota un sistema CCS come tupla $(K, Act, T)$, dove
 \begin{itemize}
   \item $K$, insieme di nomi di Processi
   \item $A$, insieme di nomi di azioni
-  \item $\overline A$, insieme di conomi di azioni, (= $\overline a \in \overline A$ e' il reciproco di $a \in A$, es: SYN e ACK)
+  \item $\overline A$, insieme di conomi di azioni, (= $\overline a \in \overline A$ \`e il reciproco di $a \in A$, es: SYN e ACK)
   \item $Act = A \cup B \cup \{t\}$, con $t \not \in A$
   \item $(A \cup B)$ sono le azioni osservabili
-  \item $t$ e' azione di handshake tra due processi (azione che non aspetta nulla indre', ndr)
+  \item $t$ \`e azione di handshake tra due processi (azione che non aspetta nulla indr\`e, ndr)
 \end{itemize}
 
 Sia $P$ un processo $P \in K$, ricordando la notazione LTS:
@@ -122,6 +122,6 @@ Sia $P$ un processo $P \in K$, ricordando la notazione LTS:
 
 \putimage{images/2.png}{diagram}{png:2}
 
-\subsection{L'esecuzione parallela ${B^1}_0 | {B^1}_0$ e' bisimile a ${B^2}_0$}
+\subsection{L'esecuzione parallela ${B^1}_0 | {B^1}_0$ \`e bisimile a ${B^2}_0$}
 
 \putimage{images/3.png}{diagram}{png:3}

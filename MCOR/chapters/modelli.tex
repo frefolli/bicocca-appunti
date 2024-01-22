@@ -1,0 +1,74 @@
+\chapter{Modelli}
+
+\section{Modelli di Kripke}
+
+Sia $AP = \{p, q, z ... \}$ un insieme di proposizioni atomiche. Si dice Modello di Kripke la tupla $A = (Q, T, I)$ dove $(Q, T)$ \`e un sistema di transizioni e $I : Q \rightarrow 2^{AP}$ \`e la semantica che definisce l'insieme di proposizioni vere nello stato $q$.
+
+Si denota cammino $\pi = q_0q_1q_2q_3q_4....$, dove $\forall i, (q_i, q_{i+1}) \in T$.
+Il suo suffisso i-esimo \`e denotato $\pi^{(i)} = q_{i}q_{i+1}q_{i+2}...$.
+
+Quello che \`e importante identificare nei modelli di Kripke sono tutti i cammini massimali, tra cui i cammini $\pi$ infiniti, distinti del sistema. In buona sostanza \`e simile alle tracce.
+
+\section{LTL}
+
+La \textbf{Logica Temporale Lineare} \`e l'insieme delle formule ben formattate $FBF_{LTL}$:
+\begin{itemize}
+    \item le proposizioni atomiche in $AP$
+    \item True e False
+    \item le composizioni della logica proposizionale $\alpha \rightarrow \beta$, $\alpha \land \beta$ ...
+    \item $X\alpha$, nel prossimo stato
+    \item $F\alpha$, prima o poi
+    \item $G\alpha$, sempre
+    \item $U(\alpha, \beta)$, vale $\alpha$ fino a che non vale $\beta$ (implica $F\beta$)
+\end{itemize}
+
+Data una semantica per definire se una $fbf$ \`e vera in un certo cammino massimale $\pi$, si dice che la formula sia vera in $q$ sse \`e vera in tutti i cammini massimali che partono da $q$.
+
+\subsection{In altre parole}
+
+Si definisce l'operatore di induzione $\models$, tale che $\pi \models \alpha$ sse $\alpha$ \`e vera nel cammino $\pi$.
+Due formule si dicono $equivalenti$ sse $\pi \models \alpha \Leftrightarrow \pi \models \beta$.
+Quindi posso riscrivere la semantica degli operatori della LTL come:
+
+\begin{itemize}
+    \item $\pi \models X\alpha$ sse $\pi^{1} \models \alpha$
+    \item $\pi \models F\alpha$ sse $\exists i \in N \; : \; \pi^{i} \models \alpha$
+    \item $\pi \models G\alpha$ sse $\forall i \in N \; : \; \pi^{i} \models \alpha$
+    \item $\pi \models U(\alpha, \beta)$ sse $\exists i \in N \; : \; \pi^{i} \models \beta \; \land \; \forall \in [0, i)\; : \; \pi^{j} \models \alpha$
+\end{itemize}
+
+\subsection{Operatori Derivati}
+
+\begin{itemize}
+  \item While (o Weak Until), $W(\alpha, \beta) \equiv G\alpha \lor U(\alpha, \beta)$
+  \item Release, $R(\alpha, \beta) \equiv W(\beta, \beta \land \alpha)$, ovvero $\alpha$ rilascia $\beta$
+\end{itemize}
+
+\section{Insieme Minimale di Operatori}
+
+L'insieme $\{X, U\}$ forma un insieme minimale perch\`e \`e possibile derivare tutti gli altri. (TODO: provaci)
+
+\section{Limiti espressivi}
+
+Uno dei pi\`u importanti riguarda la negazione delle formule riguardo all'implicazione che una sia vera nello stato sse \`e vera in tutti i cammini. In fact non \`e possibile esprimere appunto questi quantificatori in modo accurato, e in generale non \`e possibile esprimere la nozione di esistenza di cammino speciale. Un esempio:
+
+"Non \`e vero che $F\alpha$" non \`e equivalente a dire $\neg F\alpha$ perch\`e la negazione \`e immersa nel quantificatore implicito di "tutti i cammini" che costituisce la semantica della LTL. Al contrario $\neg F\alpha \equiv G \neg \alpha$, ovvero in ogni cammino non \`e vero che prima o poi $\alpha$ diventa vera.
+
+\section{CTL}
+
+La \textbf{Computation Tree Logic} \`e l'insieme delle formule ben formattate $FBF_{CTL}$:
+\begin{itemize}
+    \item le proposizioni atomiche in $AP$
+    \item True e False
+    \item le composizioni della logica proposizionale $\alpha \rightarrow \beta$, $\alpha \land \beta$ ...
+    \item $AX\alpha$, $EX\alpha$, nel prossimo stato
+    \item $AF\alpha$, $EF\alpha$, prima o poi
+    \item $AG\alpha$, $EG\alpha$, sempre
+    \item $AU(\alpha, \beta)$ $EU(\alpha, \beta)$, vale $\alpha$ fino a che non vale $\beta$ (implica $F\beta$)
+\end{itemize}
+
+Dove $A$ e $E$ sono i quantificatori sui cammini: $A \equiv$ per ogni cammino, $E \equiv$ esiste un cammino tale che.
+
+\section{$CTL^\ast$}
+
+\section{$\mu-calcolo$}
