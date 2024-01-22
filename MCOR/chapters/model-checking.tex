@@ -30,6 +30,8 @@ Allora posso trovare:
 
 \section{Algoritmo per CTL}
 
+\putimagebig{images/15.png}{Esempio}{png:15}
+
 Siano $M = (Q, T, I)$ un modello di Kripke e $\alpha$ una formula. Si definisce $[[\alpha]]$ l'estensione di $alpha$, dove $[[\alpha]] = \{q \in Q \; | \; M,q \models \alpha\}$.
 
 Ora sia $\alpha \equiv AF\beta$. A questa formula si associa una funzione $f_\alpha : 2^Q \rightarrow 2^Q$ tale che, per ogni $H \subseteq Q$:
@@ -50,19 +52,31 @@ Vice versa sia ora $\alpha \equiv EG\beta$. A questa formula si associa una funz
   \item Il massimo punto fisso di $g_a$ \`e $[[\alpha]]$
 \end{itemize}
 
-
 \section{Automi di Buchi}
 
 Gli automi di Buchi sono automi che riconoscono parole infinite su un alfabeto finito $\Sigma$.
 Invece che avere stati finali abbiamo stati "accettanti", e il criterio di accettazione per questo genere di automi e' di conseguenza: "l'automa accetta se durante la computazione passa infinite volte per almeno uno degli stati accettanti".
 
-\section{E Quindi?}
+\section{Algoritmo per LTL}
+
+Per calcolare la validit\`a di una formula LTL su un Modello di Kripke dobbiamo usare il seguente metodo.
 
 \begin{itemize}
-  \item Si costruisce l'automa di Buchi $B_{neq \alpha}$
+  \item Si costruisce l'automa di Buchi $B_{\neg \alpha}$
   \item Si trasforma M in automa etichettato da insiemi di proposizioni atomiche (ogni arco entrante ha come label le proposizioni atomiche di uno stato)
-  \item Si calcola il prodotto sincrono dei due atomi $PS$
+  \item Si calcola il prodotto sincrono dei due automi $PS$
   \item Si verifica se $L(PS) = \emptyset$ (decidibile), allora $M,q_0 \models \alpha$
 \end{itemize}
 
 Questa cosa "funziona" solo perch\`e con la composizione completamente sincrona si fa in modo che i due automi eseguano le stesse istruzioni somehow. Non l'ho capita allora ma non l'ha nemmeno spiegato in realt\`a, l'ha dato per scontato.
+
+\section{Fairness}
+
+Un ultimo concetto da presentare \`e la nozione di Fairness su sistemi elementari. Un'esecuzione si dice \textbf{unfair} se un evento \`e abilitato ma non scatta mai. Questa eventualit\`a esiste (e per certi versi rappresenta i limiti espressivi di un modello sequenziale, ma sono parole in libert\`a), per questa ragione si vuole limitare la valutazione di una formula alle esecuzioni \textbf{fair}.
+
+Esistono due tipi di fairness:
+
+\begin{itemize}
+  \item Fairness debole: $\forall i : (FGen_i) \Rightarrow (F(ex_i))$
+  \item Fairness forte: $\forall i : (GFen_i) \Rightarrow (GF(ex_i))$ 
+\end{itemize}
