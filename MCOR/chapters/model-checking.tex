@@ -1,0 +1,68 @@
+\chapter{Model Checking}
+
+\section{Reticoli}
+
+Un \textbf{reticolo} \`e un insieme ordinato parzialmente ordinato $R = (L, \leq)$ tale che $\forall x,y \in L$ esistono $x \land y$ e $x \lor y$.
+Un reticolo si dice completo se $\lor B$ e $\land B$ esistono per ogni $B \subseteq L$.
+
+\section{Monotonia}
+
+Siano $X, Y$ due insiemi parzialmente ordinati, data una funzione $f : X \rightarrow Y$, essa si dice monotona sse $\forall a, b \in X$, $a \geq b \Rightarrow f(a) \geq f(b)$ e $a \leq b \Rightarrow f(a) \leq f(b)$.
+
+\section{Punti Fissi}
+
+Data una funzione monadica $f : X \rightarrow X$, $x \in X$ \`e un punto fisso sse $f(x) = x$.
+
+\section{Teorema di Knaster Tarski}
+
+Sia $R = (L, \leq)$ un reticolo completo, e $f : L \rightarrow L$ una funzione monotona. Allora $f$ ha un minimo e un massimo punto fisso.
+
+\section{Teorema di Kleene}
+
+Sia una funzione $f : 2^A \rightarrow 2^A$, essa si dice continua se $f(\cup X_i) = \cup F(X_i)$.
+
+Allora posso trovare:
+
+\begin{itemize}
+  \item il massimo punto fisso calcolando $f(A), f(f(A)), f(f(f(A))) ...$
+  \item il minimo punto fisso calcolando $f(\emptyset), f(f(\emptyset)), f(f(f(\emptyset))) ...$
+\end{itemize}
+
+\section{Algoritmo per CTL}
+
+Siano $M = (Q, T, I)$ un modello di Kripke e $\alpha$ una formula. Si definisce $[[\alpha]]$ l'estensione di $alpha$, dove $[[\alpha]] = \{q \in Q \; | \; M,q \models \alpha\}$.
+
+Ora sia $\alpha \equiv AF\beta$. A questa formula si associa una funzione $f_\alpha : 2^Q \rightarrow 2^Q$ tale che, per ogni $H \subseteq Q$:
+
+\begin{itemize}
+  \item $f_\alpha(H) = [[\beta]] \cup \{p \in Q \; | \; \forall (p, q) \in T \; q \in H\}$
+  \item ovvero ad ogni passo seleziono solo gli stati tali per cui posso andare solo in H e "li aggiungo"
+  \item $f_a(\emptyset) = \beta$ trivialmente
+  \item Il minimo punto fisso di $f_a$ \`e $[[\alpha]]$
+\end{itemize}
+
+Vice versa sia ora $\alpha \equiv EG\beta$. A questa formula si associa una funzione $g_\alpha : 2^Q \rightarrow 2^Q$ tale che, per ogni $H \subseteq Q$:
+
+\begin{itemize}
+  \item $g_\alpha(H) = [[\beta]] \cap \{p \in Q \; | \; \exists (p, q) \in T \; q \in H\}$
+  \item ovvero ad ogni passo seleziono solo gli stati tali per cui posso andare in H e "rimuovo" gli altri
+  \item $g_a(Q) = \beta$ trivialmente
+  \item Il massimo punto fisso di $g_a$ \`e $[[\alpha]]$
+\end{itemize}
+
+
+\section{Automi di Buchi}
+
+Gli automi di Buchi sono automi che riconoscono parole infinite su un alfabeto finito $\Sigma$.
+Invece che avere stati finali abbiamo stati "accettanti", e il criterio di accettazione per questo genere di automi e' di conseguenza: "l'automa accetta se durante la computazione passa infinite volte per almeno uno degli stati accettanti".
+
+\section{E Quindi?}
+
+\begin{itemize}
+  \item Si costruisce l'automa di Buchi $B_{neq \alpha}$
+  \item Si trasforma M in automa etichettato da insiemi di proposizioni atomiche (ogni arco entrante ha come label le proposizioni atomiche di uno stato)
+  \item Si calcola il prodotto sincrono dei due atomi $PS$
+  \item Si verifica se $L(PS) = \emptyset$ (decidibile), allora $M,q_0 \models \alpha$
+\end{itemize}
+
+Questa cosa "funziona" solo perch\`e con la composizione completamente sincrona si fa in modo che i due automi eseguano le stesse istruzioni somehow. Non l'ho capita allora ma non l'ha nemmeno spiegato in realt\`a, l'ha dato per scontato.
