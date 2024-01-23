@@ -14,6 +14,8 @@ I pdf sono caricati sulle Github Pages. Per accedere: https://frefolli.github.io
 | APS | 3 | 1 | Ingegneria del Software | 1.0.2 |  |
 | SAF | 3 | 2 | Sicurezza e Affidabilita' | 1.0.0 |  |
 | TCOM | 4 | 1 | Teoria della Computazione | 1.0.0 |
+| MCOR | 4 | 1 | Modelli della Concorrenza | 1.0.0 |
+| ML | 4 | 1 | Machine Learning | 1.0.0 |
 |  |  |  |  |  |
 
 ## Dipendenze
