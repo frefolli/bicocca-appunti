@@ -4,7 +4,7 @@
 
 $N = (B, E, F)$ \`e una rete causale sse:
 \begin{itemize}
-    \item $\forall b \ in B$, $|\bullet b| \leq 1 \land |b \bullet| \leq 1$ (quindi non ci sono conflitti)
+    \item $\forall b \in B$, $|\bullet b| \leq 1 \land |b \bullet| \leq 1$ (quindi non ci sono conflitti)
     \item $\forall x,y \in B \cup E \; : \; (x, y) \in F^+ \Rightarrow (y, x) \notin F^+$ (quindi non ci sono cicli)
     \item $\forall e \in E$, $\{ x \in B \cup E \; | \; (x, e) \in F \}$ e\ un insieme finito (la rete puo' essere infinita)
 \end{itemize}
