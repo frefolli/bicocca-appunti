@@ -1,0 +1,52 @@
+\chapter{Algoritmo KMP}
+
+\section{Definizioni}
+
+\paragraph{Prefix Function} del pattern P di lunghezza m: $\phi : [0,m] \rightarrow [-1,m]$. $\phi(j) = |B(P[1,j])|$ se $j \geq 1$ altrimenti $\phi(j) = -1$. \`E la lunghezza del bordo del prefisso del pattern di lunghezza j.
+
+\section{L'Algoritmo}
+
+L'algoritmo ricalca quello banale a finestra per la ricerca esatta, con la differenza che la funzione $\phi$ viene utilizzata per fare un salto ottimizzato quando si ottiene un mismatch. Infatti in caso di mismatch:
+
+\begin{itemize}
+    \item $i$ \`e la posizione della finestra W
+    \item $j$ \`e la posizione di mismatch sul pattern P
+    \item $P[1,j-1]$ \`e il prefisso di match
+    \item $i+j-1$ \`e la posizione del mismatch su T
+    \item Il confronto riparte dalla posizione $i' = i + j - phi(j) - 1$ sul testo (posizione della finestra)
+    \item Il confronto riparte dalla posizione $j' = phi(j) + 1$ sul pattern
+\end{itemize}
+
+Un caso particolare \`e quando $j = m+1$ ovvero il confronto arriva oltre l'ultima posizione del pattern. Si restituisce $i$ come occorrenza del pattern e il confronto riparte da $i' = i + m - phi(m)$ sul testo e da $j' = phi(m) + 1$ sul pattern.
+
+\section{Confronto}
+
+\begin{center}
+    \begin{tabular}{|c c c|}
+        \hline
+        Classe & ASF & KMP \\
+        \hline
+        Spazio & $O(m|\Sigma|)$ & $O(m)$ \\
+        \hline
+        Tempo & $O(m|Sigma| + n)$ & $O(n+m)$ \\
+        \hline
+        Preprocessing di P & $O(m|\Sigma|)$ & $O(m)$ \\
+        \hline
+        Scansione di T & $O(n)$ & $O(n)$ \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item Automa
+    \begin{itemize}
+        \item efficiente per pattern piccoli
+        \item richiede più tempo e memoria per pattern grandi
+        \item ricerca di P in testi diversi
+    \end{itemize}
+    \item KMP
+    \begin{itemize}
+        \item efficiente per pattern grandi
+        \item richiede più tempo per pattern piccoli
+    \end{itemize}
+\end{itemize}
