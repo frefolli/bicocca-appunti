@@ -1,0 +1,181 @@
+\chapter{Ricerca con Automa a Stati Finiti}
+
+\section{Definizioni}
+
+\paragraph{Bordo di una stringa X} $B(X)$ \`e il pi\`u lungo prefisso proprio di $X$ che occorre come suffisso di $X$.
+
+\begin{itemize}
+    \item $B(aaaccbbaac) = \epsilon$
+    \item $B(\textbf{ababa}ba) = ababa$
+    \item $B(\textbf{aaaaaaa}a) = \textbf{aaaaaaa}$
+\end{itemize}
+
+\section{Automa a Stati Finiti}
+
+Dato un pattern $P$ di lungheza $m$ si costruisce un automa a stati finiti $A = (Q, \Sigma, \delta, q_0, F)$ con
+
+\begin{itemize}
+    \item $Q = {0,1,2,3....m}$
+    \item $\Sigma$, alfabeto di $P$
+    \item $\delta Q \times \Sigma \rightarrow Q$, funzione di transizione 
+    \item $q_0$, stato iniziale
+    \item $F = {m}$, stato accettante
+\end{itemize}
+
+Gli stati rappresentano la quantit\`a di caratteri consecutivi in match del pattern P sul testo letto T.
+
+\section{Funzione di Transizione}
+
+$\forall (j, \sigma) \in Q \times \Sigma$, $\delta(j, \sigma)$ rappresenta lo stato a cui si arriva da $j$ attraverso il carattere $\sigma$. Questo pu\`o essere uno stato in avanti $j \rightarrow j+1$ nel caso di un match, oppure $j \rightarrow j' \land j' < j$ nel caso di un mismatch. Questo passo indietro \`e deciso in base al bordo della sottostringa letta fin'ora (i match + il carattere di mismatch). Il passo indietro \`e effettuato anche in caso si abbia riconosciuto tutta la stringa.
+
+\paragraph{definizione di $\delta$}
+
+\begin{itemize}
+    \item $\delta(j, \sigma) = j+1$ sse $j < m \land P[j+1] \neq \sigma$
+    \item $\delta(j, \sigma) = |B(P[1,j]\;\ast\;\sigma)|$ sse $j = m \lor P[j+1] \neq \sigma$
+\end{itemize}
+
+La ragione di passo indietro siffatto \`e che ragionevolmente un'occorrenza esatta di quel pattern non pu\`o avvenire se non in una posizione corrispondente con l'inizio del massimo prefisso.
+
+\subsection{Esempio}
+
+\putimage{images/1.png}{Esempio di Funzione di Transizione per un Pattern P}{png:1}
+
+\section{Costruzione della Funzione di Transizione}
+
+La funzione $\delta$ pu\`o essere costruita iterativamente riutilizzando $\delta_i$ per il calcolo di $\delta_{i+1}$, dove $\delta_i$ \`e la funzione di transizione per il carattere i-esimo.
+
+Per calcolare la funzione di transizione di $\delta_j$ a partire da $\delta_{j-1}$
+\begin{itemize}
+    \item chiamo $k$ lo stato in cui andrebbe l'automa dallo stato $j-1$ con il nuovo j-esimo carattere del pattern
+    \item cambio il valore di $\delta$ in $j-1,P[j]$ in modo che proceda allo stato successivo (j)
+    \item per ogni simbolo in $\Sigma$ copio il valore della riga k-esima nella riga j-esima.
+\end{itemize}
+
+Il tempo \`e $\theta(m|\Sigma|)$
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{BUILD-SIGMA}{$\delta$, P, $Sigma$}
+            \State $m \gets |P|$
+            \For{$\sigma \in \Sigma$}
+                \State $\delta(0, \sigma) \gets 0$
+            \EndFor
+            \For{$j = 1$ to $m$}
+                \State $k \gets \delta(j-1, P[j])$
+                \State $\delta(j-1, P[j]) \gets j$
+                \For{$\sigma \in \Sigma$}
+                    \State $\delta(j, \sigma) \gets \delta(k, \sigma)$
+                \EndFor
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\section{Scansione del Testo}
+
+Il tempo \`e lineare in quanto \`e una basilare scansione del testo in $\theta(N)$
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{ASF-EXACT-OCCURENCES}{$\delta$, T, m}
+            \State $n \gets |T|$
+            \State $j \gets 0$
+            \For{$i \gets 1$ to $n$}
+              \State $j \gets \delta(j, T[i])$
+              \If{$j = m$}
+                \State output $i-m+1$
+              \EndIf
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\subsection{Esempio}
+
+\putimagebig{images/2.png}{Esempio di Funzione di Scansione del Testo}{png:2}
+
+\section{Esercizi}
+
+\subsection{1}
+
+Durante la ricerca esatta del pattern $acbdccbd$ con l'ASF si arriva allo stato $6$ dopo avere letto un certo simbolo nel testo. Quale simbolo?
+
+\paragraph{soluzione} $j = 6 \Rightarrow T[i] = P[j]$, quindi $P[j] = c$
+
+\subsection{2}
+
+L’esecuzione per la ricerca esatta del pattern $acbdacad$, automa si trova allo stato 6. Che simbolo del testo viene letto dopo, se l’algoritmo passa allo stato successivo?
+
+\paragraph{soluzione} $j' = j + 1 \Rightarrow T[j+1] = P[j+1]$, quindi $P[j+1] = a$
+
+\subsection{3}
+
+Dato il pattern $dccdbcd$, si può dire che l’esecuzione dell’automa su un determinato testo non arriva mai allo stato 0, dopo avere letto il simbolo $d$ a partire da uno stato diverso da 0? In caso affermativo, specificare quali sono i possibili stati di arrivo.
+
+\paragraph{soluzione} Per ogni $j \neq 0$, il pezzo del pattern da cui calcolare il bordo sarebbe siffatto: $d...d$, quindi il bordo non sarebbe mai nullo, ergo non si arriva mai allo stato zero. In particolare:
+
+\begin{itemize}
+    \item $1 \rightarrow 1$
+    \item $2 \rightarrow 1$
+    \item $3 \rightarrow 4$
+    \item $4 \rightarrow 1$
+    \item $5 \rightarrow 1$
+    \item $6 \rightarrow 7$
+\end{itemize}
+
+\subsection{4}
+
+Durante la ricerca esatta di un pattern P con automa a finiti, si passa dallo stato 6 allo stato 4 dopo avere il simbolo $g$ nel testo. Dimostrare che $P[1] = g$.
+
+\paragraph{soluzione} Se $B(P[1,6]g) = 4$ allora $P[1,4] = T[i-3,i]$, ovvero che $P[4] = g$. Ma se ero nello stato 6 allora il testo aveva in posizione T[i-6,i-1] un match di 6 caratteri sul pattern. Se $P[4] = g$, allora $T[i-6+4-1] = T[i-3] = g$, ovvero, ricordando che $P[1,4] = T[i-3,i]$, $T[i-3] = g = P[1]$.
+
+\subsection{5}
+
+Dato il pattern $accabaccba$, l'automa arriva allo stato 4 dopo avere letto il simbolo $a$. Determinare i possibili stati di partenza.
+
+\paragraph{soluzione} in totale sono due i casi:
+
+\begin{itemize}
+    \item da 3 leggendo $a$ si arriva in 4
+    \item da 8 leggendo $a$ si arriva in 4 perch\`e la lunghezza del bordo di $B(\textbf{acca}bacca) = \textbf{acca}$
+\end{itemize}
+
+\subsection{6}
+
+Dire, motivando la risposta, se la seguente catena si pu\`o verificare durante l’esecuzione di un automa a stati finiti per la ricerca esatta di un pattern.
+
+\putimage{images/3.png}{Catena di Computazione in Esame}{png:3}
+
+\paragraph{soluzione} Il problema della catena \`e che i passi indietro possono essere anche grossi ma i passi in avanti sono sempre in avanti di 1. Quindi la catena \`e sbagliata.
+
+\subsection{7}
+
+Dire, motivando la risposta, se la seguente catena si pu\`o verificare durante l’esecuzione di un automa a stati finiti per la ricerca esatta di un pattern. Se non \`e possibile, renderla "plausibile" correggendo uno dei tre simboli di transizione. Supporre che l’ultimo simbolo letto sia in posizione i del testo.
+
+\putimage{images/4.png}{Catena di Computazione in Esame}{png:4}
+
+\begin{itemize}
+    \item Dal primo stato si ricava che $P = xxxxa$
+    \item Dal secondo che $P = xxxb$
+    \item Dal terzo che $P = xxb$
+\end{itemize}
+
+Ora per\`o bisogna verificare che i bordi delle transizioni siano corrette.
+
+\begin{itemize}
+    \item $5 \xrightarrow[]{b} 4$ implica che $B(P[1,5]b) = 4$, ovvero che $P[1,4] = xxab$
+    \item $4 \xrightarrow[]{b} 3$ implica che $B(P[1,4]b) = 3$, ovvero che $P[1,3] = abb$
+\end{itemize}
+
+Ora incrociamo queste informazioni con quelle ricavate prima:
+
+\begin{itemize}
+    \item $P = xxxxa$
+    \item $P = xxxb$
+    \item $P = xxb$
+    \item $P = abb$
+    \item $P = xxab$ conflitto con $P = abb$
+\end{itemize}
+
+TODO: continuare con il renderlo plausibile

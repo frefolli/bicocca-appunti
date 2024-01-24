@@ -1,0 +1,126 @@
+\chapter{Pattern Matching}
+
+\section{Programma}
+
+\begin{itemize}
+    \item Ricerca con Automa a Stati Finiti
+    \begin{itemize}
+        \item Ricerca esatta
+        \item Confronto di simboli
+        \item Preprocessing: pattern $\rightarrow \theta(m|S|)$
+        \item Ricerca: scansione del testo $\rightarrow \theta(n)$
+        \item Tempo totale $\rightarrow \theta(m|S|+n)$
+    \end{itemize}
+
+    \item Algoritmo di Knuth-Morris-Pratt (KMP)
+    \begin{itemize}
+        \item Ricerca esatta
+        \item Confronto di simboli
+        \item Preprocessing: pattern $\rightarrow \theta(m)$
+        \item Ricerca: scansione del testo $\rightarrow \theta(n)$
+        \item Tempo totale $\rightarrow \theta(m+n)$
+    \end{itemize}
+
+    \item Algoritmo di Baeza-Yates e Gonnet (BYG)
+    \begin{itemize}
+        \item Ricerca esatta
+        \item Paradigma SHIFT-AND
+        \item Preprocessing: pattern $\rightarrow \theta(|S|+m)$
+        \item Ricerca: scansione del testo $\rightarrow \theta(n)$
+        \item Tempo totale $\rightarrow \theta(|S|+m+n)$
+    \end{itemize}
+
+    \item Algoritmo di Wu-Manber (WM)
+    \begin{itemize}
+        \item Ricerca approssimata
+        \item Paradigma SHIFT-AND
+        \item Preprocessing: pattern $\rightarrow \theta(|S|+m)$
+        \item Ricerca: scansione del testo $\rightarrow \theta(kn)$
+        \item Tempo totale $\rightarrow \theta(|S|+m+kn)$
+    \end{itemize}
+
+    \item Ricerca con Suffix Array (SA)
+    \begin{itemize}
+        \item Ricerca esatta
+        \item Confronto di simboli
+        \item Preprocessing: testo (costruzione di SA)
+        \item Ricerca $\rightarrow O(m log n)$
+    \end{itemize}
+
+    \item Ricerca con Burrows-Wheeler Transform/FM-index
+    \begin{itemize}
+        \item Ricerca esatta
+        \item Preprocessing: testo (costruzione di BWT/FM-index)
+        \item Ricerca $\rightarrow \theta(m)$
+    \end{itemize}
+\end{itemize}
+
+\section{Definizioni}
+
+\paragraph{Pattern Matching} cercare un motivo all'interno di un oggetto pi\`u o meno complesso.
+\paragraph{Pattern Matching su Stringhe} cercare all'interno di un testo $T$ le occorrenze di un pattern $P$.
+\paragraph{String Matching \textbf{Esatto}} cercare occorrenze esatte di P in T
+\paragraph{String Matching \textbf{Approssimato}} cercare occorrenze approssimate di P in T
+
+\paragraph{Stringa} giustapposizione (operatore $\ast$) di simboli su un alfabeto $\Sigma$ (lunghezza di $X = |X|$).
+\paragraph{Stringa nulla $\epsilon$} stringa composta da zero simboli.
+\paragraph{Sottostringa} $X[i,j] = X[i.j] = X[i:j] = X[i]X[i+1]...X[j]$, gli indici partono da $1$.
+\paragraph{Sottostringa propria} $i \neq 1 \land j \neq |X|$.
+\paragraph{Prefisso} $X[1,j]$
+\paragraph{Suffisso} $X[i,|X|]$
+
+\paragraph{Occorrenza Esatta} Una posizione $i$ del testo $T$ tale che $T[i, i+m-1] = P$ \`e un'occorrenza esatta di $P$ in $T$.
+\paragraph{Occorrenza Approssimata} Una posizione $i$ del testo $T$ tale che esista almeno una sottostringa $S = T[i-L+1, i]$ tale che $ED(P, S) \leq k$, con $k$ soglia di errore, \`e un'occorrenza Approssimata di $P$ in $T$.
+Nota bene: se $ED(P, S) \geq |P| - L$ allora $i$ non \`e mai un'occorrenza approssimata.
+
+\paragraph{Match} Due simboli $\alpha,\beta$ sono un \textbf{match} sse $\alpha = \beta$
+\paragraph{Mismatch} Due simboli $\alpha,\beta$ sono un \textbf{match} sse $\alpha \neq \beta$
+
+\section{Algoritmo Banale per R.E.}
+
+Uso una finestra $W$ di lunghezza $m = |P|$ che scorre su T da sinistra a destra. Il cursore scorre lungo la finestra e il pattern P verificando un match. In caso di mismatch la finistra si sposta a destra di $1$ e il cursore riparte dalla prima posizione della finestra $W$ e dal primo carattere del pattern $P$.
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{TRIVIAL-EXACT-OCCURRENCES}{P, T}
+            \State $n \gets |T|$
+            \State $m \gets |P|$
+            \State $i \gets 1$
+            \While{$i \leq n-m+1$}
+              \State $j \gets 1$
+              \While{$P[i] = P[i+j-1] \land j \leq m$}
+                \State $j \gets j+1$
+              \EndWhile
+              \If {j = m+1}
+                \State output $i$
+              \EndIf
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\section{Algoritmo Banale per R.A.}
+
+Uso una finestra $W$ di lunghezza variabile $m \in [m-k, m+k]$ che scorre su T da sinistra a destra. La posizione iniziale della finestra \`e $i = m-k$, la lunghezza iniziale pure $m - k$. Se la finestra non evidenzia un'occorrenza approssimata di P in T allora scorro a destra di una posizione.
+
+Fondamentalmente la differenza concettuale rispetto all'algoritmo banale della ricerca esatta \`e che la finestra \`e trascinata da destra invece che da sinistra, e allungata a sinistra ogni volta fino a che si pu\`o.
+
+\begin{algorithm}
+    \begin{algorithmic}
+        \Procedure{TRIVIAL-APPROX-OCCURRENCES}{T, P, k}
+            \State $n \gets |T|$
+            \State $m \gets |P|$
+            \State $i \gets m-k$
+            \While{$i \leq n$}
+              \State $L \gets m-k$
+              \While{$L \leq m+k \land i-L+1 \geq 1$}
+                \If {$ED(T[i-L+1, i], P) \leq k$}
+                  \State output $i$
+                \EndIf
+                \State $L \gets L+1$
+              \EndWhile
+              \State $i \gets i+1$
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}

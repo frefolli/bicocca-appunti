@@ -6,6 +6,7 @@
 	make -C ROPR/assignments
 	make -C APS
 	make -C SAF
+	make -C TCOM
 
 APAL/Makefile: skel/Makefile
 	cp skel/Makefile APAL/Makefile

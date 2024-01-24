@@ -25,6 +25,7 @@ function job() {
     cleanFolder APS
     cleanFolder SAF
     cleanFolder MCOR
+    cleanFolder TCOM
 }
 
 function handler() {
