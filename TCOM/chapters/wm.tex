@@ -16,7 +16,7 @@ $D^h_i$ pu\`o essere calcolata a partire da $D^{h-1}_i$ in tempo costante:
   \item ovvero l'occorrenza esatta \textbf{oppure} correzione con sostituzione \textbf{oppure} correzione con rimozione da T \textbf{oppure} correzione con rimozione da P
 \end{itemize}
 
-Astraendo dal carattere particolare del pattern $j$: $(RSHIFT1(D^h_{i-1}) AND B_{T[i]}) \; OR \; RSHIFT1(D^{h-1}_{i-1}) \; OR \; D^{h-1}_{i-1} \; OR \; RSHIFT1(D^{h-1}_i)$.
+Astraendo dal carattere particolare del pattern $j$:\\ $(RSHIFT1(D^h_{i-1}) \; AND \; B_{T[i]}) \; OR \; RSHIFT1(D^{h-1}_{i-1}) \; OR \; D^{h-1}_{i-1} \; OR \; RSHIFT1(D^{h-1}_i)$.
 La scansione ha tempo $\theta(kn)$.
 
 \section{Esercizi}
