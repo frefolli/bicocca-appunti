@@ -18,6 +18,8 @@ I pdf sono caricati sulle Github Pages. Per accedere: https://frefolli.github.io
 | ML | 4 | 1 | Machine Learning | 1.0.0 |
 |  |  |  |  |  |
 
+Nota bene: spesso spostero' questa tabella in un glossario degli acronimi dei corsi.
+
 ## Dipendenze
 
 ### Linux

@@ -1,1 +1,87 @@
 \chapter{Algoritmo BYG}
+
+Inizia adesso una classe di algoritmi che non effettuano pi\`u un confronto esplicito tra i simboli del pattern ma dipendono da operazioni bitwise effettuate in parallelo.
+
+In particolare \textbf{Baeza-Yates-Gonnet} segue il paradigma \textbf{SHIFT-AND}.
+
+\section{Definizioni}
+
+\paragraph{Word di Bit} \textbf{1}010\textbf{1}, il bit pi\`u significativo \`e a sinistra, il meno significativo \`e a destra.
+
+\paragraph{AND} and logico bitwise
+
+\paragraph{OR} or logico bitwise
+
+\paragraph{RSHIFT} shift dei bit di una posizione verso destra con il bit pi\`u significativo posto a 0
+
+\paragraph{RSHIFT1} shift dei bit di una posizione verso destra con il bit pi\`u significativo posto a 1
+
+\section{Preprocessing del Pattern}
+
+Si calcolano $|\Sigma|$ words di $m$ bit in tempo $\theta(|\Sigma|+m)$.
+
+\begin{itemize}
+    \item tutte le words $B_\sigma$ sono inizializzate a $m$ bit a 0
+    \item si crea una maschera $M$ di $m$ bit tutti a zero tranne il pi\`u significativo
+    \item si esegue una scansione di $P$ da sinistra a destra e per ogni posizione $j$ di P si eseguono le operazioni bitwise:
+    \item \begin{itemize}
+        \item $B_{P[j]} = M \; OR \; B_{P[j]}$
+        \item $M = RSHIFT(M)$
+    \end{itemize}
+    \item ovvero $\forall j \in [1, |P|]$, $B_\sigma[j] = 1 \Leftrightarrow P[j] = \sigma$
+    \item ovvero si setta ad $1$ il j-esimo bit della word corrispondente al carattere $\sigma = P[j]$
+\end{itemize}
+
+\putimagebig{images/5.png}{Esempio di words costruite sul pattern P}{png:5}
+
+\section{Algoritmo}
+
+Il testo viene scansionato dalla prima all'ultima posizione come nel caso dell'automa, ma per ogni posizione $i$ del testo $T$ viene calcolata una word $D_i$ di $m$ bit; ogni occorrenza di P in T avr\`a un 1 nel bit meno significativo della corrispondente word $D_i$ (occorrenza in $i-m+1$).
+
+\paragraph{Word $D_i$} $D_i[j] = 1 \Leftrightarrow P[1,j] = suff(T[1,i])$. Ovvero sse $P[i,j] = T[i-j+1, i]$.
+
+\putimagebig{images/6.png}{Esempio di word $D_i$}{png:6}
+
+\begin{itemize}
+    \item $D_0$ \`e inizializzata con $m$ bit a 0
+    \item $\forall i \in [1,n]$ la word $D_i$ \`e calcolata a partire da $D_{i-1}$
+    \item con $j = 1$, $D_{i}[1] = 1 \; AND \; B_{T[i]}[1]$
+    \item $\forall j in [2,m]$, $D_i[j] = D_{i-1}[j-1] \; AND \; B_{T[i]}[j]$
+\end{itemize}
+
+Semplificando un p\`o si arriva a poter comporre $D_i = RSHIFT1(D_{i-1}) \; AND \; B_{T[i]}$.
+
+Il tutto in tempo $\theta(n)$.
+
+\section{Esercizi}
+
+\subsection{1}
+
+Una word $D_i$ dell'algoritmo di BYG è uguale a $11111$ e si riferisce al simbolo $T[i]=c$ sul testo. Si chiede di specificare il pattern P.
+
+\paragraph{soluzione} $D_i[j] \Leftrightarrow P[1,j] = suff(T[1,i])$ quindi se $D_i = 11111$ allora $\forall j \in [1,5]$, $P[1,j] = suff(T[1,j])$. Quindi $P = ccccc4$.
+
+\subsection{2}
+
+Una word $D_i$ dell'algoritmo di BYG \`e uguale a 01001. Si chiede di specificare la lunghezza del bordo del pattern.
+
+\paragraph{soluzione} La lunghezza del bordo del pattern corrisponde alla posizione $k < m$ del bit a 1 pi\`u a destra, visto che $D_i[k]$ \`e il massimo suffisso di T che ha match con il massimo prefisso di uguale lunghezza su P. Non \`e l'ultima posizione visto che il bordo deve essere un prefisso proprio. Quindi il bordo \`e lungo 2.
+
+\subsection{3}
+
+Sia $D_7 = 0000$ una word dell’algoritmo di BYG per $P=catg$ e un dato testo T. Sapendo che $T[5,7] = atg$, si pu\`o dire con certezza che in posizione 4 di T non c'\`e il simbolo $c$?
+
+\paragraph{soluzione} Se per assurdo $T[4] = c$, allora $T[4,7] = P$, ma allora $D_7[4] = 1$, tuttavia questo bit \`e uguale a zero, quindi $T[4] \leq c$.
+
+Se mancasse l'informazione sul testo \textbf{non si potrebbe dire con certezza}.
+
+\subsection{4}
+
+Alla i-esima iterazione dell'algoritmo di BYG per cercare $P = aabaa$ (di cui si conosce la tabella B), viene calcolata la word $D_i = 11000$. Sapendo che la word $D_{i-1}$ \`e uguale a $D_i$, specificare il simbolo di T in posizione i.
+
+\begin{itemize}
+    \item $B_a = 11011$
+    \item $b_b = 00100$
+\end{itemize}
+
+\paragraph{soluzione} $D_i = RSHIFT1(D_{i-1}) \; AND \; B_{T[i]}$, allora $11000 = RSHIFT1(11000) \; AND \; B_{T[i]} = 11100 \; AND \; B_{T[i]}$, allora $B_{T[i]} = B_a$, quindi $T[i] = a$.

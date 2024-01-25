@@ -1,1 +1,35 @@
 \chapter{Algoritmo WM}
+
+\`E molto simile a BYG, ma questo permette di ottenere tutte le occorrenze approssimate a meno di $k$ errori.
+
+\section{Algoritmo}
+
+Si utilizza ancora la tabella $B_{\sigma}$ con $\sigma \in \Sigma$ costruita in tempo $\theta(|\Sigma|+m)$. Ma le word $D_i$ assumono un significato diverso: $\forall h \in [0, k]$ dico che $D^h_i[j] = 1$ sse $P[1,j]$ \`e uguale ad un suffisso di $T[1,i]$ a meno di $h$ errori. Come funzione di errore stiamo ancora usando la distanza di edit $ED$.
+
+In questo caso il passo di calcolo della $D_i$ \`e riprodotto in $k+1$ iterazioni, ($D^0_i$ \`e uguale all word di BYG) e se $D^k_i[m] = 1$, allora $i-m+1$ \`e una occorrenza approssimata.
+
+$D^h_i$ pu\`o essere calcolata a partire da $D^{h-1}_i$ in tempo costante:
+
+\begin{itemize}
+  \item $D^0_i$ \`e calcolata come in BYG.
+  \item $D^h_i = (D^h_{i-1}[j-1] \; AND \; B_{T[i]}[j]) \; OR \; D^{h-1}_{i-1}[j-1] \; OR \; D^{h-1}_{i-1}[j] \; OR \; D^{h-1}_{i}[j-1]$
+  \item ovvero l'occorrenza esatta \textbf{oppure} correzione con sostituzione \textbf{oppure} correzione con rimozione da T \textbf{oppure} correzione con rimozione da P
+\end{itemize}
+
+Astraendo dal carattere particolare del pattern $j$:\\ $(RSHIFT1(D^h_{i-1}) \; AND \; B_{T[i]}) \; OR \; RSHIFT1(D^{h-1}_{i-1}) \; OR \; D^{h-1}_{i-1} \; OR \; RSHIFT1(D^{h-1}_i)$.
+La scansione ha tempo $\theta(kn)$.
+
+\section{Esercizi}
+
+\subsection{1}
+
+La parola 0100 \`e la parola $D^0_i$ dell'algoritmo di ricerca approssimata di Wu e Manber. Dire se $1011$ può essere
+la parola $D^1_i$.
+
+\paragraph{soluzione} $D^0_1[2] = 1 \Rightarrow P[1,2] = suff_0(T[1,i]) \Rightarrow P[1,2] = suff_1(T[1,i])$. In generale $D^h_i[j] = 1 \Rightarrow D^{h+1}_i[j] = 1$
+
+\subsection{2}
+
+La parola $D^0_i$ dell'algoritmo di ricerca approssimata di Wu e Manber \`e uguale a $10100$. Indicare quali bit della parola $D^1_i$ \`e possibile dedurre da $D^0_i$.
+
+\paragraph{soluzione} innanzitutto $D^h_i[j] = 1 \Rightarrow D^{h+1}_i[j] = 1$ quindi $D^1_i = 1x1xx$. Poi $D^h_i[j] = 1 \Rightarrow D^{h+1}_i[j+1] = 1$. Di conseguenza $D^1_i = 1111x$.
