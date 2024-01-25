@@ -49,7 +49,7 @@ Il testo viene scansionato dalla prima all'ultima posizione come nel caso dell'a
     \item $\forall j in [2,m]$, $D_i[j] = D_{i-1}[j-1] \; AND \; B_{T[i]}[j]$
 \end{itemize}
 
-Semplificando un p\`o si arriva a poter comporre $D_i = RSHIFT1(D_{i-1}) AND B_{T[i]}$.
+Semplificando un p\`o si arriva a poter comporre $D_i = RSHIFT1(D_{i-1}) \; AND \; B_{T[i]}$.
 
 Il tutto in tempo $\theta(n)$.
 
@@ -77,11 +77,11 @@ Se mancasse l'informazione sul testo \textbf{non si potrebbe dire con certezza}.
 
 \subsection{4}
 
-Alla i-esima iterazione dell'algoritmo di BYG per cercare $P = aabaa$ (di cui si conosce la tabella B), viene calcolata la word $D_i = 11000$. Sapendo che la word $D_{i−1}$ \`e uguale a $D_i$, specificare il simbolo di T in posizione i.
+Alla i-esima iterazione dell'algoritmo di BYG per cercare $P = aabaa$ (di cui si conosce la tabella B), viene calcolata la word $D_i = 11000$. Sapendo che la word $D_{i-1}$ \`e uguale a $D_i$, specificare il simbolo di T in posizione i.
 
 \begin{itemize}
     \item $B_a = 11011$
     \item $b_b = 00100$
 \end{itemize}
 
-\paragraph{soluzione} $D_i = RSHIFT1(D_{i-1}) AND B_{T[i]}$, allora $11000 = RSHIFT1(11000) AND B_{T[i]} = 11100 AND B_{T[i]}$, allora $B_{T[i]} = B_a$, quindi $T[i] = a$.
+\paragraph{soluzione} $D_i = RSHIFT1(D_{i-1}) \; AND \; B_{T[i]}$, allora $11000 = RSHIFT1(11000) \; AND \; B_{T[i]} = 11100 \; AND \; B_{T[i]}$, allora $B_{T[i]} = B_a$, quindi $T[i] = a$.
