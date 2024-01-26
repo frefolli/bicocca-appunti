@@ -1,0 +1,63 @@
+\chapter{Suffix Array e BWT}
+
+Questa \`e la prima classe di algoritmi che non effettuano il \textbf{preprocessing} sul pattern ma sul testo, creando una vera e propria indicizzazione multipurpose dello stesso.
+
+\section{Suffix Array}
+
+\`E una struttura dati che rappresenta l'ordine lessicografico dei suffissi di un testo $T$, in spazio $\theta(n\;logn)$. Permette l'identificazione di occorrenze esatte in tempo $\theta(m\;logn)$.
+
+Come nota: al 2003 \`e possibile costruire il Suffix Array in tempo $\theta(n)$.
+
+$\forall i \in [1, |n|]$, $SA[i] = q$ sse $T[q,|n|]$ \`e l'i-esimo suffisso del testo T in ordine lessicografico.
+
+\subsection{Esempio}
+
+\putimagebig{images/7.png}{Esempio di SA}{png:7}
+
+\subsection{Ricerca Esatta con SA}
+
+A questo punto la ricerca di pattern P diventa una ricerca binaria sul Suffix Array per determinare la posizione di suffisso che ha un match sul pattern. Se il pattern occorre $k$ allora \`e anche prefisso di $k$ suffissi di T.
+
+\section{Burrows-Wheeler Transform}
+
+\`E una struttura dati che rappresenta una permutazione reversibile di un T in $\theta(n\;log\Sigma)$ spazio.
+
+La costruzione della BWT coincide con l'ordinamento di tutte le permutazioni del testo T in ordine lessicografico.
+
+\paragraph{definizione} una permutazione $T_q$ \`e uguale alla concatenazione di $T[1,q-1] \ast T[q,|n|]$.
+Di conseguenza $T[q-1]$ \`e il primo simbolo di $T_q$, e $T[q-1 ,|T|]$ contiene $T[q, |T|]$.
+
+Formalmente \`e l'array tale che $\forall i \in [1,|T|]$, $BWT[i] = \sigma$ sse $T_q$ \`e la i-esima rotazione in ordine lessicografico di T e $\sigma$ \`e l\ultimo carattere di $T_q$, ovvero $T[q-1] = \sigma$ (con q = 1, $T[n] = \sigma$).
+
+\paragraph{definizione} $F$ \`e l'array con l'ordine lessicografico dei simboli di T. Servir\`a dopo.
+
+\subsection{Esempio}
+
+\putimagebig{images/8.png}{Esempio di BWT}{png:8}
+
+\subsection{Reversibile}
+
+\`E possibile riottenere il testo T a partire dalla BWT tramite l'array F. Visto che la BTW gli ultimi simboli delle permutazioni di T, allora $F[i] = T[q] \Rightarrow BWT[j] = T[q-1]$.
+
+\begin{itemize}
+  \item Si inizializza il puntatore $i = 1$ sulle prime posizioni dei due array
+  \item Siccome $\$ = min \Sigma$ allora $BWT[1] = T[n]$, in ogni caso
+  \item ad ogni passo scrivo all'indietro $BWT[i]$ sul testo da riempire T e $i$ diventa la posizione su F della q-esima occorrenza di $BWT[i]$ ($\sigma = BWT[i]$ \`e la q-esima occorrenza di $\sigma$ in BTW).
+  \item si continua cos\`i fino a che $BWT[i] = \$$, in quel caso il testo \`e terminato.
+  \item come metodo di verifica della correttezza di una BWT semplicemente non si deve ottenere $\$$ prima di aver riempito $|T|$ caselle di T.
+\end{itemize}
+
+Come nota: la corrispondenza della q-esima occorrenza di $\sigma$ su F con la q-esima occorrenza di $\sigma$ su BWT si chiaman \textbf{Last-First Mapping}.
+
+\subsection{Calcolo di BWT da SA}
+
+Se conosco il testo T posso passare da BWT e SA agilmente.
+
+\paragraph{definizione} Visto che SA lista gli indici dei simboli in F, si pu\`o costruire la BWT come $\forall i \in [1, |T|]$, $BWT[i] = T[SA[i] - 1]$.
+
+\subsection{Calcolo di SA da BWT}
+
+\section{FM-Index}
+
+Fornisce una rappresentazione della \textbf{BWT} tramite due funzioni numerice ($Occ$ e $C$) per ottenere la ricerca di occorrenze esatte in tempo lineare rispetto al pattern $\theta(m)$.
+

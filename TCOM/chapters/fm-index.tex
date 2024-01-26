@@ -1,0 +1,61 @@
+\chapter{FM-Index}
+
+\section{FM-Index}
+
+Fornisce una rappresentazione della \textbf{BWT} tramite due funzioni numerice ($Occ$ e $C$) per ottenere la ricerca di occorrenze esatte in tempo lineare rispetto al pattern $\theta(m)$.
+
+\subsection{C}
+
+$C(\sigma) \; : \; \Sigma \rightarrow [0,n]$, \`e la funzione che restituisce il numero di simboli della BWT che sono $< \sigma$.
+
+\subsection{Occ}
+
+$Occ(i, \sigma) \; : \; [1,n+1] \times \Sigma \rightarrow [0,n]$, \`e la funzione che restituisce il numero di simboli nell'${i-1}$-esimo prefisso della BWT, $BWT[1,i-1]$, che sono $= \sigma$.
+
+\subsection{Esempio}
+
+\putimagebig{images/12.png}{Esempio di Ricerca con Occ e C}{png:12}
+
+\subsection{Costruzione}
+
+La funzione $Occ$ si pu\`o costruire facilmente scandendo la BWT simbolo per simbolo, calcolando $Occ[i] = Occ[i-1] + [0 ... 1 ... 0]$ in corrispondenza con il simbolo $\sigma$ sulla cella $BWT[i]$. Notare che $Occ[0] = [0 ... 0]$.
+
+A quel punto $C$ \`e costruito con una scansione lineare di $Occ[n]$ calcolando $C[\sigma'] = C[\sigma] + Occ[n][\sigma]$, con $C[\$] = 0$.
+
+La costruzione di queste due tabelle richiede tempo $\theta(|\Sigma|n)$.
+
+\section{Last First Mapping}
+
+La \textbf{FM-Index} \`e rilevante perch\`e permette di calcolare in tempo costante la funzione $LF(i)$ che viene usata dagli algoritmi su BWT (ricostruzione del testo T e ricerca di pattern P).
+
+La formula \`e $LF(i) = C(BWT[i]) + Occ(i, B[i]) + 1$, si sommano:
+
+\begin{itemize}
+    \item il numero di simboli precedenti a $\sigma$
+    \item il numero di carateri uguali a $\sigma$ che lo precedono nella BWT
+    \item 1 perch\`e la funzione Occ indica il numero di simboli $q-1$ che precedono $\sigma$, ma noi vogliamo la q-esima occorrenza 
+\end{itemize}
+
+\subsection{Backward Extension}
+
+In questo modo la formula per il nuovo Q-intervallo della ricerca con BWT si semplifica:
+
+\begin{itemize}
+    \item siccome per definizione non esistono occorrenze di $\sigma$ in $BWT[b, i_0-1]$, allora il numero di simboli $\sigma$ in $BWT[1,i_0-1]$ \`e uguale al numero di simboli in $BWT[1,b-1]$, ovvero a $Occ(b, \sigma)$
+    \item per la stessa ragione si pu\`o riscrivere $Occ(i_f, \sigma) = Occ(e, \sigma)$
+\end{itemize}
+
+per ottenere:
+
+\begin{itemize}
+    \item $b' = C(\sigma) + Occ(b, \sigma) + 1$
+    \item $e' = C(\sigma) + Occ(e, \sigma) + 1$
+\end{itemize}
+
+Ora questa estensione del Q-intervallo \`e fatta in tempo costante, e la ricerca del pattern ha tempo lineare rispetto al pattern $O(m)$.
+
+\section{Self Index}
+
+Dire che \textbf{FM-index} sia un \textbf{self-index} significa che esprime informazioni sui dati e li indicizza allo stesso tempo.
+
+La funzione $Occ$ permette di ricostruire la BWT, infatti per ottenere il simbolo di $BWT[i]$ si guarda all'indice del simbolo dell'unico 1 all'interno di $(Occ[i+1] - Occ[i])$.

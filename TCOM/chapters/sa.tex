@@ -1,1 +1,21 @@
-\chapter{Ricerca con Suffix Array}
+\chapter{Suffix Array}
+
+Questa \`e la prima classe di algoritmi che non effettuano il \textbf{preprocessing} sul pattern ma sul testo, creando una vera e propria indicizzazione multipurpose dello stesso.
+
+\section{Suffix Array}
+
+\`E una struttura dati che rappresenta l'ordine lessicografico dei suffissi di un testo $T$, in spazio $\theta(n\;logn)$. Permette l'identificazione di occorrenze esatte in tempo $\theta(m\;logn)$.
+
+Come nota: al 2003 \`e possibile costruire il Suffix Array in tempo $\theta(n)$.
+
+$\forall i \in [1, |n|]$, $SA[i] = q$ sse $T[q,|n|]$ \`e l'i-esimo suffisso del testo T in ordine lessicografico.
+
+\subsection{Esempio}
+
+\putimagebig{images/7.png}{Esempio di SA}{png:7}
+
+\subsection{Ricerca Esatta con SA}
+
+A questo punto la ricerca di pattern P diventa una ricerca binaria sul Suffix Array per determinare la posizione di suffisso che ha un match sul pattern. Se il pattern occorre $k$ allora \`e anche prefisso di $k$ suffissi di T.
+
+
