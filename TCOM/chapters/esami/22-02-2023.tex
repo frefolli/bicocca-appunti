@@ -1,0 +1,32 @@
+\chapter{22 Febbraio 2023}
+
+\section{Esercizio 1}
+
+Dare la definizione di parola $D_i$ dell'algoritmo di ricerca esatta basato su paradigma SHIFT-AND. Specificare (1) quando la parola indica un occorrenza e (2) come si ottiene la posizione di inizio di tale occorrenza.
+
+\paragraph{soluzione}
+
+La parola $D_i$ \`e una sequenza di bit tale che $\forall j \in [1,|P|]$ \`e vero che $D_i[j] = 1$ \textbf{SSE} $P[1,j] = suff(T[1,i])$. Se $D_i[m] = 1$ allora \`e vero che $P[1,m] = P = suff(T[1,i])$ ovvero che c'\`e un'occorrenza di P come suffisso di $T[1,i]$. La posizione dell'occorrenza $i' = i - m + 1$, ovvero al primo carattere di tale suffisso.
+
+\section{Esercizio 2}
+
+Dare la definizione di Q-intervallo sia rispetto al Suffix Array che rispetto alla BWT.
+
+\paragraph{soluzione}
+
+\subparagraph{Il Q-Intervallo rispetto al SA} \`e l'intervallo di indici sul Suffix Array dove i suffissi puntati dalle celle nel range condividono tutti come prefisso la stringa Q.
+
+\subparagraph{Il Q-Intervallo rispetto alla BWT} \`e l'intervallo di indici sulla BWT i cui simboli puntati dalle celle precedono nel testo un suffisso di esso che contiene come prefisso la stringa Q.
+
+\section{Esercizio 3}
+
+Spiegare la proprietà di Last-First-mapping aiutandosi con un testo a scelta.
+
+\paragraph{soluzione} Prendo il testo $T = aabca$.
+
+La BWT = $\{a \; c \; \$ \; a \; a \; b\}$ mentre F = $\{\$ \; a \; a \; a \; b \; c\}$.
+
+Ora per ricostruire il testo T mappato dalla BWT cos\`i come per la ricerca di un pattern sul testo tramite la BWT, torna utile la cosiddetta propriet\`a \textbf{Last First Mapping}.
+Ovvero una relazione biettiva tra la q-esima occorrenza di un simbolo $\sigma$ nella BWT e la q-esima occorrenza di quel simbolo $\sigma$ nella F e di conseguenza l'indice di inizio della permutazione corrispondente alla cella di F (= indice nella stessa cella del Suffix Array).
+
+Per esempio $LF(B[4]) = F[3]$, oppure $LF(B[6]) = F[5]$.
