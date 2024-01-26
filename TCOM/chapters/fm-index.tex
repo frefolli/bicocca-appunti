@@ -58,4 +58,4 @@ Ora questa estensione del Q-intervallo \`e fatta in tempo costante, e la ricerca
 
 Dire che \textbf{FM-index} sia un \textbf{self-index} significa che esprime informazioni sui dati e li indicizza allo stesso tempo.
 
-La funzione $Occ$ permette di ricostruire la BWT, infatti per ottenere il simbolo di $BWT[i]$ si guarda all'indice del simbolo dell'unico 1 all'interno di $(Occ[i] - Occ[i-1])$.
+La funzione $Occ$ permette di ricostruire la BWT, infatti per ottenere il simbolo di $BWT[i]$ si guarda all'indice del simbolo dell'unico 1 all'interno di $(Occ[i+1] - Occ[i])$.
