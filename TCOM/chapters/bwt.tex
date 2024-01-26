@@ -17,7 +17,7 @@ Formalmente \`e l'array tale che $\forall i \in [1,|T|]$, $BWT[i] = \sigma$ sse 
 
 \putimagebig{images/8.png}{Esempio di BWT}{png:8}
 
-\subsection{Reversibile}
+\section{Reversibile}
 
 \`E possibile riottenere il testo T a partire dalla BWT tramite l'array F. Visto che la BTW gli ultimi simboli delle permutazioni di T, allora $F[i] = T[q] \Rightarrow BWT[j] = T[q-1]$.
 
@@ -31,10 +31,48 @@ Formalmente \`e l'array tale che $\forall i \in [1,|T|]$, $BWT[i] = \sigma$ sse 
 
 Come nota: la corrispondenza della q-esima occorrenza di $\sigma$ su F con la q-esima occorrenza di $\sigma$ su BWT si chiaman \textbf{Last-First Mapping}.
 
-\subsection{Calcolo di BWT da SA}
+\section{Calcolo di BWT da SA}
 
 Se conosco il testo T posso passare da BWT e SA agilmente.
 
 \paragraph{definizione} Visto che SA lista gli indici dei simboli in F, si pu\`o costruire la BWT come $\forall i \in [1, |T|]$, $BWT[i] = T[SA[i] - 1]$.
 
-\subsection{Calcolo di SA da BWT}
+\section{Q-Intervallo}
+
+\paragraph{Q} \`e una sottostringa di P (nell'algoritmo generalmente un suffisso)
+\paragraph{Q-Intervallo su BWT} \`e l'intervallo di posizioni $[b,e)$ sulla BWT tali che i suffissi successivi ai simboli nella BWT condividano strettamente il prefisso Q
+\paragraph{Q-Intervallo su SA} \`e l'intervallo di posizioni $[b,e)$ sul SA tali che i suffissi corrispondenti condividano strettamente il prefisso Q
+\paragraph{il numero di occorrenze} di Q in T \`e uguale a $(e-b)$.
+
+\subsection{Esempio}
+
+\putimagebig{images/9.png}{Esempio di Q-intervalli}{png:9}
+
+\section{Backward Extension}
+
+La \textbf{backward extension} di un Q-intervallo $[b, e)$ con un simbolo $\sigma$ \`e il $\sigma Q$-intervallo. Ricavarlo \`e semplice perch\`e la BWT contiene l'informazione del simbolo precedente al suffisso i-esimo. Quindi per ogni posizione dell'intervallo $[b,e)$ dove $BWT[i] = \sigma$ si usa il \textbf{Last First Mapping} per risalire all'indice nel SA del suffisso che inizia con quel simbolo. Il nuovo intervallo $[b',e')$ e' formato dagli estremi indici ricavati in questo modo.
+
+\begin{itemize}
+    \item $b' = LF($ pi\`u piccola posizione in $[b, e]$ tale che $B[i] = \sigma$)
+    \item $e' = LF($ pi\`u grande posizione in $[b, e]$ tale che $B[i] = \sigma$) + 1
+\end{itemize}
+
+\subsection{Esempio}
+
+\putimagebig{images/10.png}{Esempio di Backward Extension}{png:10}
+
+\section{Algoritmo di Ricerca}
+
+\begin{itemize}
+    \item Si parte con il suffisso vuoto del pattern P, $Q \equiv \epsilon$, il Q-intervallo \`e $[1,n+1)$.
+    \item Quindi si inizializza $i = |P|$
+    \item ad ogni passo si, $P[i] = \sigma$ viene concatenato a Q e si effettua la backward extension calcolando il Q-intervallo di $\sigma Q$.
+    \item se il Q-intervallo diventa l'intervallo vuoto allora P non ha occorrenze in T.
+    \item una volta che $Q = P$ se l'intervallo \`e non vuoto allora ci sono $(e-b)$ occorrenze in T, e gli indici sul SA indicano le posizioni dei suffissi su T, ovvero delle occorrenze su T.
+\end{itemize}
+
+Il tutto in tempo $O(n\,m)$, ma si pu\`o ottimizzare ulteriormente.
+
+\subsection{Esempio}
+
+\putimagebig{images/11.png}{Esempio di Ricerca con BWT e SA}{png:11}
