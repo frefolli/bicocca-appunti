@@ -6,7 +6,7 @@ Dare la definizione di funzione di transizione per la ricerca esatta tramite aut
 
 \paragraph{soluzione}
 
-La funzione di transizione dell'ASF \`e $\delta \; : \; [0, |P|] \times \Sigma \rightarrow [0, |P|]$. Il suo valore \`e $\delta(q, P[q]) = q+1$ per i match e $\forall \sigma \neq P[q] \; \Rightarrow \; \delta(|B(P[q]\sigma)|)$ per i mismatch.
+La funzione di transizione dell'ASF \`e $\delta \; : \; [0, |P|] \times \Sigma \rightarrow [0, |P|]$. Il suo valore \`e $\delta(q, P[q+1]) = q+1$ sse $P[q+1] = T[i] \land q < m$ e $\delta(q, P[q+1]) = |B(P[q]\sigma)|$ se $P[q+1] \neq T[i] \lor q = m$.
 
 \section{Esercizio 2}
 
@@ -30,7 +30,8 @@ Il SA \`e $\{6 \; 1 \; 2 \; 4 \; 3 \; 5\}$ e quindi la BWT \`e $\{a \; a \; b \;
 Dalla BWT calcolo la funzione Occ:
 
 \begin{center}
-  \begin{tabular}{|c c c c c|}
+  \begin{tabular}{|c | c | c | c | c|}
+    \hline
     $i$ & \$ & a & b & c \\ \hline
     1 & 0 & 0 & 0 & 0 \\ \hline
     2 & 0 & 1 & 0 & 0 \\ \hline

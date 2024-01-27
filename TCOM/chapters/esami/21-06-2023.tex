@@ -1,0 +1,22 @@
+\chapter{21 Giugno 2023}
+
+\section{Esercizio 1}
+
+Spiegare come avviene la ricerca esatta di P in T con automa a stati finiti, supponendo di avere già definito la funzione di transizione $\delta$.
+Specificare in particolar modo come vengono identificate le occorrenze.
+
+\paragraph{soluzione} La ricerca esatta consiste in una scansione lineare del testo con l'automa. Ogni carattere \`e letto e passato alla funzione di transizione per passare dallo stato $q \rightarrow q'$. Se dopo una transizione l'automa si trova nello stato $m$ allora ha identificato una occorrenza esatta di P all'indice $i-m+1$ su T. La ricerca esatta ha tempo $\theta(n)$, con $n = |T|$.
+
+\section{Esercizio 2}
+
+L'esecuzione della ricerca esatta di $P = bbbbbacca$ in un testo T con l'algoritmo KMP si trova con la finestra W in posizione 32.
+Il pi\`u lungo prefisso di P che occorre in posizione 32 \`e composto da 4 simboli. Calcolare la successiva posizione della finestra e le posizioni dei simboli su T e su P da cui riparte il confronto.
+Spiegare il procedimento usato.
+
+\paragraph{soluzione} Se il pi\`u lungo prefisso di P \`e lungo $4$, allora l'indice dell'ultimo match su P \'e $j-1 = 4$ e quind $\phi(j-1) = |B(P[1,4])| = 3$. Di conseguenza il confronto riparte dalla posizione $i' = i + j - 1 = 35$ sul testo T e dalla posizione $j' = phi(4) + 1 = 4$ sul pattern P.
+
+\section{Esercizio 3}
+
+Dare la definizione di Last-First Function $j = LF(i)$, che realizza la proprietà di Last-First mapping della BWT, spiegando il significato di $i$ e $j$.
+
+\paragraph{soluzione} Formalmente $LF \; : \; [1,n] \rightarrow [1,n]$: il Dominio \`e l'insieme degli indici della BWT, il Codominio \`e l'insieme degli indici su F. La funzione \textbf{LF} realizza la corrispondenza $LF(i) = j$ tale che $B[i]$ e $F[j]$ siano lo stesso simbolo sul testo T.

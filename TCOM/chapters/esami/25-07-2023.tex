@@ -1,0 +1,25 @@
+\chapter{25 Luglio 2023}
+
+\section{Esercizio 1}
+
+Descrivere l'algoritmo di ricerca esatta di un pattern in un testo tramite il paradigma SHIFT-AND, cio\`e descrivere la fase di preprocessing e la fase di scansione.
+
+\paragraph{soluzione}
+
+\subparagraph{Il preprocessing} consiste nella creazione di una serie di word $\forall \sigma \in \Sigma \; B_\sigma[j] = 1 \Leftrightarrow P[j] = \sigma$. La costruzione avviene linearmente mantenendo una maschera $M$ di $|P|$ bit inizialmente con solo il bit pi\`u significativo a 1. $\forall i \in [1,|P|]$, si seleziona la word $B_\sigma$ corrispondente $\sigma = P[j]$ e si opera $B_\sigma = B_\sigma \; OR \; M$ (settando di fatto il bit corrispondente alla posizione j a 1), quindi si opera sulla maschera $M = RSHIFT(M)$ preparandola per la prossima iterazione. Il tutto in tempo $\theta(|P|)$.
+
+\subparagraph{Nella scansione} si mantiene una word $D_i$ di $|P|$ bit dove $D_i[j] = 1$ sse il prefisso $P[1,j]$ \`e uguale ad un suffisso di $T[1,i]$. La word $D_0$ \`e settata tutta a zero. Ogni word successiva $D_{i+1}$ \`e calcolata a partire da $D_{i}$ tramite $D_{i+1} \equiv D_{i} \; AND \; B_{T[i]}$. Se il bit meno significativo di $D_i$ \`e uguale a 1 allora $T[i-m+1,i]$ \`e un'occorrenza di P su T.
+
+\section{Esercizio 2}
+
+L'esecuzione della ricerca esatta di $P = abcaac$ in testo T con automa a stati finiti passa dallo stato 4 allo stato 2 dopo avere letto un certo simbolo $\sigma$ di T.
+Specificare, motivando la risposta, che simbolo \`e $\sigma$.
+
+\paragraph{soluzione} Per costruzione della funzione di transizione $\delta(4) = |B(P[1,4]\sigma)| = 2$, quindi $|B(abca\sigma)| = 2$. Di conseguenza $\sigma = b$, infatti $B(abc\textbf{ab}) = \textbf{ab}$.
+
+\section{Esercizio 3}
+
+Sia data la BWT $B = cc\$aaab$ di un testo. Indicare, motivando la risposta, qual \`e il valore j restituito per $i = 4$ dalla LF-function $j = LF(i)$.
+(si ricorda che $j = LF(i)$ \`e la posizione nel Suffix Array del suffisso del testo che inizia con il simbolo $B[i]$)
+
+\paragraph{soluzione} Se $B = cc\$aaab$ allora $F = \$aaabcc$. La funzione $LF$ realizza il Last-First Mapping, ovvero la q-esima occorrenza di un simbolo $\sigma$ su F e la q-esima occorrenza di un simbolo $\sigma$ su B sono lo stesso simbolo sul testo T. Di conseguenza $B[i] = a \Rightarrow LF(i) = 2$ visto che $F[2]$ \`e la prima occorrenza di $a$.
