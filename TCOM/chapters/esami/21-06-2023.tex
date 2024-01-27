@@ -13,7 +13,7 @@ L'esecuzione della ricerca esatta di $P = bbbbbacca$ in un testo T con l'algorit
 Il pi\`u lungo prefisso di P che occorre in posizione 32 \`e composto da 4 simboli. Calcolare la successiva posizione della finestra e le posizioni dei simboli su T e su P da cui riparte il confronto.
 Spiegare il procedimento usato.
 
-\paragraph{soluzione} Se il pi\`u lungo prefisso di P \`e lungo $4$, allora l'indice dell'ultimo match su P \'e $j-1 = 4$ e quind $\phi(j-1) = |B(P[1,4])| = 3$. Di conseguenza il confronto riparte dalla posizione $i' = i + j - 1 = 35$ sul testo T e dalla posizione $j' = phi(4) + 1 = 4$ sul pattern P.
+\paragraph{soluzione} Se il pi\`u lungo prefisso di P \`e lungo $4$, allora l'indice dell'ultimo match su P \'e $j-1 = 4$ e quind $\phi(j-1) = |B(P[1,4])| = 3$. Di conseguenza la nuova posizione della finestra \'e $i' = i + j - phi - 1 = 33$ il confronto riparte dalla posizione $x = i + j - 1 = 36$ sul testo T e dalla posizione $j' = phi(4) + 1 = 4$ sul pattern P.
 
 \section{Esercizio 3}
 
