@@ -13,8 +13,9 @@ L'algoritmo ricalca quello banale a finestra per la ricerca esatta, con la diffe
     \item $j$ \`e la posizione di mismatch sul pattern P
     \item $P[1,j-1]$ \`e il prefisso di match
     \item $i+j-1$ \`e la posizione del mismatch su T
-    \item Il confronto riparte dalla posizione $i' = i + j - phi(j) - 1$ sul testo (posizione della finestra)
-    \item Il confronto riparte dalla posizione $j' = phi(j) + 1$ sul pattern
+    \item La nuova posizione della finestra \`e $i \equiv i + j - phi(j-1) - 1$
+    \item Il confronto riparte dalla posizione $j \equiv phi(j-1) + 1$ sul pattern
+    \item Il confronto riparte dalla posizione $k = i + j - 1$ sul testo
 \end{itemize}
 
 Un caso particolare \`e quando $j = m+1$ ovvero il confronto arriva oltre l'ultima posizione del pattern. Si restituisce $i$ come occorrenza del pattern e il confronto riparte da $i' = i + m - phi(m)$ sul testo e da $j' = phi(m) + 1$ sul pattern.
