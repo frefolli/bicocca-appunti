@@ -17,4 +17,10 @@ Dare la definizione di parola $Di$ dell'algoritmo di Baeza-Yates-Gonnet.
 
 Definire l'operazione di backward extension di un Q-intervallo.
 
-\paragraph{soluzione} TODO:
+\paragraph{soluzione}
+
+Detto $Q$ una sottostringa del pattern P, il Q-intervallo \`e l'intervallo di indici sul Suffix Array e sulla BWT i quali suffissi corrispondenti hanno come prefisso Q. L'operazione di backward extension consiste nel calcolare l'intervallo per $\sigma Q$, con $\sigma \in \Sigma$.
+Questa operazione pu\`o essere fatta in tempo lineare individuando due indici $i_1, i_k$ rispettivamente la prima e l'ultima posizione in cui $BWT[i] = \sigma$ (ricordardo che il simbolo nella BWT \`e il carattere che precede il primo carattere del suffisso corrispondente all'indice del Suffix Array).
+Quindi si utilizza il Last-First Mapping per individuare il nuovo intervallo $[b', e') = [LF(i_1), LF(i_k)+1)$.
+
+In alternativa utilizzando la FM-Index \`e possibile effettuare questa operazione in tempo costante con $[b', e') = [Occ(b, \sigma) + C(\sigma) + 1, Occ(e, \sigma) + C(\sigma) + 1)$.
