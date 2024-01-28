@@ -1,0 +1,32 @@
+\chapter{4 Febbraio 2021}
+
+\section{Esercizio 5}
+
+Dare la definizione di funzione di fallimento (prefix-function) dell'algoritmo KMP facendo attenzione a specificare dominio e codominio.
+
+\paragraph{soluzione}
+
+La prefix-function $\phi : [0, m] \rightarrow [-1, m]$ ha valore $\phi(j) = |B(P[1,j])|$ sse $j \geq 1$ altrimenti $\phi(j) = -1$. \`E utilizzata per calcolare un salto della finestra ottimizzato quando si ottiene un mismatch oppure \`e stata riconosciuta un'occorrenza del pattern P su T.
+
+\section{Esercizio 6}
+
+Si consideri la seguente parola $D^0_j = 010110$ dell'algoritmo di Wu e Manber. Indicare (spiegando la motivazione) quali sono i bit determinabili della parola $D^1_j$.
+
+\paragraph{soluzione}
+
+$D^1_j[2] = 1 \land D^1_j[4] = 1 \land D^1_j[5] = 1$ perch\`e $D^i_j[q] = 1 \Rightarrow D^{i+1}_j[q] = 1$, se il prefisso q-esimo occorre con al massimo $i$ errori allora \`e anche vero che occorre con al massimo $i+1$ errori tautologicamente.
+
+Inoltre visto che $D^i_j[q] = 1 \Rightarrow D^{i+1}_j[q+1]$ (il carattere q+1-esimo extra viene rimosso potendomi sbagliare su un simbolo in pi\`u) allora $D^0_j[2] = 1 \Rightarrow D^1_j[3] = 1$ e $D^0_j[5] = 1 \Rightarrow D^1_j[6] = 1$.
+
+Inoltre visto che $ED(P[1,1], T[j-1,j]) \leq 1$ (se sono due simboli diversi ne sostituisco uno dei due) allora posso anche dire che $D^1_j[1] = 1$.
+
+In totale allora $D^1_j = 111111$.
+
+\section{Esercizio 7}
+
+Si consideri il pattern $P = acacaca$. Durante l'esecuzione dell'algoritmo KMP, di ricerca di P in un testo, la finestra passa dalla posizione i alla posizione $p = 21$.
+Sapendo che il pi\`u lungo prefisso di P che occorre in posizione i del testo \`e $acaca$, trovare la posizione iniziale i.
+
+\paragraph{soluzione}
+
+Se il pi\`u lungo prefisso di P che occorre in posizione i \`e lungo 5 allora il mismatch \`e avvenuto in posizione $j = 6$ sul pattern P. Di conseguenza la nuova posizione della finestra $p = i + j - \phi(j-1) - 1 = 21$. Per definizione di prefix function $\phi(j-1=5) = 3$. Quindi $i + 6 - 3 - 1 = 21 \Rightarrow i + 2 = 21 \Rightarrow i = 19$.
