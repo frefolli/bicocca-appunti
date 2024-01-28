@@ -5,16 +5,24 @@
 Dare la definizione di funzione di fallimento per la ricerca esatta di un pattern P in un testo T tramite algoritmo KMP. In particolare, specificare il dominio e il codominio.
 Specificare e spiegare, aiutandosi con uno schema, la formula di calcolo del salto della finestra (dell'algoritmo KMP) durante la scansione del testo.
 
-\paragraph{soluzione} TODO:
+\paragraph{soluzione} Spiego solo la regola di salto perch\`e la prefix function l'ho fatta un tot di volte.
+
+Data la prefix function $\phi : [0,m] \rightarrow [-1,m]$, detta la vecchia posizione della finestra $i$ e la prima posizione di mismatch sul pattern $j$, la nuova posizione della finestra \`e $y = i + j - phi(j-1) - 1$.
+
+Il ragionamento \`e quanto segue: $j-1$ \`e il massimo prefisso del pattern riconosciuto in posizione $i$ sul testo, $\phi(j-1)$ \`e la lunghezza del bordo, ovvero del massimo prefisso proprio di $P[1,j-1]$ uguale ad un suffisso di $P[1,j-1]$, ovvero il prefisso della prossima possibile occorrenza a cui sono interessato. $j - 1 - \phi(j - 1)$ esprime il numero di caratteri che separano l'inizio della finestra dall'inizio di questa possibile occorrenza. Lo spostamento ottimizzato della finestra esegue questo salto.
 
 \section{Esercizio 6}
 
-Dare la definizione di parola Dki dell'algoritmo di Wu e Manber.
+Dare la definizione di parola $D^k_i$ dell'algoritmo di Wu e Manber.
 
-\paragraph{soluzione} TODO:
+\paragraph{soluzione} Sar\`a la quarta volta che lo faccio direi che sia superfluo.
 
 \section{Esercizio 7}
 
 Definire la Burrows-Wheeler Transform di un testo in termini di Suffix Array.
 
-\paragraph{soluzione} TODO:
+\paragraph{soluzione}
+
+Per definizione il Suffix Array \`e l'array degli indici di inizio dei suffissi di un testo in ordine lessicografico.
+Sempre per definizione la BWT contiene in ogni cella l'ultimo carattere delle rotazioni in ordine lessicografico. Ovvero \`e uguale al primo carattere del suffisso precedente.
+Di conseguenza per ottenere la BWT $B$ dal Suffix Array $S$ su un testo $T$, dico che $B[i] = T[S[i] - 1]$ se $S[i] > 1$ altrimenti $B[i] = T[n]$.

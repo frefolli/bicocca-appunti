@@ -2,19 +2,25 @@
 
 \section{Esercizio 8}
 
-Si dia la definizione di parola $D^h_i$ dell'algoritmo di Wu e Manber, specificando il significato dell'apice h e del pedice i (NB: tutte le notazioni utilizzate devono essere adeguatamente spiegate). Fare un esempio per un testo e un pattern a piacere. Specificare inoltre (motivando adeguatamente la risposta) la parola $D^4_0$ per un generico pattern lungo 8 simboli.
+Si dia la definizione di parola $D^h_i$ dell'algoritmo di Wu e Manber, specificando il significato dell'apice h e del pedice i (NB: tutte le notazioni utilizzate devono essere adeguatamente spiegate).
+Fare un esempio per un testo e un pattern a piacere. Specificare inoltre (motivando adeguatamente la risposta) la parola $D^4_0$ per un generico pattern lungo 8 simboli.
 
-\paragraph{soluzione} TODO:
+\paragraph{soluzione} Mi ha lasciato un p\`o \textbf{perplesso}. Vuole seriamente che risponda $D^4_0 = 11110000...$?
 
 \section{Esercizio 9}
 
 Durante l'esecuzione dell'algoritmo KMP la finestra si trova in posizione 20 e il primo mismatch tra pattern e testo si trova in posizione 24 sul testo.
 Specificare la posizione sul testo da cui riparte il confronto dopo lo spostamento della finestra e perche' non si puo' derivare (con i dati a disposizione) la corrispondente posizione sul pattern (da cui riparte il confronto).
 
-\paragraph{soluzione} TODO:
+\paragraph{soluzione}
+
+Se il primo mismatch sul testo \`e in posizione 24 allora la posizione di mismatch sul pattern \`e $j = 5$. Il confronto riparte dalla posizione $i + j - 1 = 20 + 5 - 1 = 24$ sul testo.
+Non \`e possibile calcolare la posizione di ripartenza sul pattern senza conoscere la lunghezza del bordo del massimo prefisso riconosciuto in posizione $i = 20$ sul testo, visto che quindi non si pu\`o conoscere il numero di caratteri che si assume l'algoritmo abbia gi\`a letto per la prossima possibile occorrenza di P su T.
 
 \section{Esercizio 10}
 
 Definire l'FM-index di un testo (NB: tutte le notazioni utilizzate devono essere adeguatamente spiegate) specificando dominio e codominio delle funzioni.
 
-\paragraph{soluzione} TODO:
+\paragraph{soluzione}
+
+Anche qui mi prendete per sfinismento. FM-Index \`e definito come la coppia di funzioni $Occ : [1, m+1] \times \Sigma \rightarrow [0, m]$ ($Occ(i, \sigma)$ \`e il numero di simboli = $\sigma$ nel prefisso i-1-esimo della BWT: $B[1,i-1]$) e $C : \Sigma \rightarrow [0,m]$ ($C(\sigma)$ \`e il numero di simboli nella BWT inferiori a $\sigma$, ricordando che $\Sigma$ \`e un insieme totalmente ordinato).
