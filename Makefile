@@ -1,11 +1,11 @@
-@all: APAL/Makefile MCOR/Makefile BIOINF/Makefile ROPR/Makefile ROPR/assignments/Makefile APS/Makefile SAF/Makefile
-	make -C APAL
-	make -C BIOINF
+@all: MCOR/Makefile TCOM/Makefile #APAL/Makefile BIOINF/Makefile ROPR/Makefile ROPR/assignments/Makefile APS/Makefile SAF/Makefile
+	#make -C APAL
+	#make -C BIOINF
 	make -C MCOR
-	make -C ROPR
-	make -C ROPR/assignments
-	make -C APS
-	make -C SAF
+	#make -C ROPR
+	#make -C ROPR/assignments
+	#make -C APS
+	#make -C SAF
 	make -C TCOM
 
 APAL/Makefile: skel/Makefile
@@ -13,6 +13,9 @@ APAL/Makefile: skel/Makefile
 
 BIOINF/Makefile: skel/Makefile
 	cp skel/Makefile BIOINF/Makefile
+
+TCOM/Makefile: skel/Makefile
+	cp skel/Makefile TCOM/Makefile
 
 MCOR/Makefile: skel/Makefile
 	cp skel/Makefile MCOR/Makefile
