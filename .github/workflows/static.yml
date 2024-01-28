@@ -34,41 +34,16 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: |
-            #APAL/appunti.tex
-            #APS/appunti.tex
-            #BIOINF/appunti.tex
-            #ROPR/appunti.tex
-            #ROPR/assignments/1/appunti.tex
-            #ROPR/assignments/2/appunti.tex
-            #ROPR/assignments/3/appunti.tex
-            #SAF/appunti.tex
             MCOR/appunti.tex
             TCOM/appunti.tex
           work_in_root_file_dir: true
       - name: Create Static Dist Directory
         run: | 
-          #mkdir -p ./static/APAL
-          #mkdir -p ./static/APS
-          #mkdir -p ./static/SAF
-          #mkdir -p ./static/APS/presentations
-          #mkdir -p ./static/BIOINF
           mkdir -p ./static/MCOR
           mkdir -p ./static/TCOM
-          #mkdir -p ./static/ROPR/assignments/1
-          #mkdir -p ./static/ROPR/assignments/2
-          #mkdir -p ./static/ROPR/assignments/3
-          #cp ./APAL/appunti.pdf ./static/APAL/appunti.pdf
-          #cp ./APS/appunti.pdf ./static/APS/appunti.pdf
-          #cp ./BIOINF/appunti.pdf ./static/BIOINF/appunti.pdf
-          #cp ./ROPR/appunti.pdf ./static/ROPR/appunti.pdf
           cp ./MCOR/appunti.pdf ./static/MCOR/appunti.pdf
           cp ./TCOM/appunti.pdf ./static/TCOM/appunti.pdf
-          #cp ./ROPR/assignments/1/appunti.pdf ./static/ROPR/assignments/1/appunti.pdf
-          #cp ./ROPR/assignments/2/appunti.pdf ./static/ROPR/assignments/2/appunti.pdf
-          #cp ./ROPR/assignments/3/appunti.pdf ./static/ROPR/assignments/3/appunti.pdf
           cp ./index.html ./static/index.html
-          #cp ./APS/presentations/*.pptx ./static/APS/presentations
-          #cp ./SAF/appunti.pdf ./static/SAF/appunti.pdf
       - name: Configure Pages
         uses: actions/configure-pages@v2
       - name: Zip and Upload Artifact
