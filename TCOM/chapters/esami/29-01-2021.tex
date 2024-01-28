@@ -1,0 +1,65 @@
+\chapter{29 Gennaio 2021}
+
+\section{Esercizio 5}
+
+Dare la definizione di parola $D_j$ per la ricerca esatta con algoritmo di Baeza-Yates-Gonnet.
+Con riferimento al pattern P = $aca$ e al testo T = $gtccata$ specificare (motivando la risposta) la parola $D_6$.
+
+\paragraph{soluzione}
+
+In BYG la word $D_j$ \`e utilizzata per individuare le occorrenze esatte di un pattern P. Formalmente \`e una word di $m$ bit dove $\forall i \; D_j[i] = 1$ sse $P[1,i] = suff(T[1,j])$ ovvero se il prefisso i-esimo del pattern \`e uguale ad un suffisso del prefisso j-esimo di T. Per costruzione, un'occorrenza esatta \`e identificabile verificando che il bit $D_j[m] = 1$. In quel caso l'occorrenza di P si trova all'indice $j - m + 1$.
+La word $D_j$ \`e calcolata ad ogni iterazione tramite $D_j = RSHIFT1(D_{j-1}) \land B_{T[i]}$, dove $\forall \sigma \in \Sigma$, $B_{\sigma}$ \`e l'array di bit dove $B_{\sigma}[i] = 1 \Leftrightarrow P[i] = \sigma$.
+
+Di conseguenza, $D_6[i] = 1$ sse $P[1,i] = T[1,6]$. In questo caso $D_6[1] = 0$ ($a \neq suff(gtccat) \Rightarrow P[1,1] \neq suff(T[1,6])$), $D_6[2] = 0$ ($ac \neq suff(gtccat) \Rightarrow P[1,1] \neq suff(T[1,6])$),  $D_6[1] = 0$ ($aca \neq suff(gtccat) \Rightarrow P[1,1] \neq suff(T[1,6])$). Quindi $D_6 = 000$.
+
+\section{Esercizio 6}
+
+Dare la definizione di funzione di transizione per la ricerca esatta con automa a stati finiti specificando insieme di partenza (dominio) e insieme di arrivo (codominio).
+Scegliere (e specificare) un pattern, un testo e un alfabeto e mostrare: la funzione di transizione e l'esecuzione dell'algoritmo di ricerca esatta con automa a stati finiti.
+
+\paragraph{soluzione}
+
+La funzione di transizione $\delta : Q \times \Sigma \rightarrow Q$, dove Q \`e insieme degli stati $Q = \{0, ... m\}$ dove $q \in Q$ rappresenta la corrispondenza esatta tra il suffisso del testo $T[i-q+1,i]$ e il prefisso q-esimo $P[1,q]$.
+\`E cos\`i definita:
+
+\begin{itemize}
+  \item $\sigma = T[i]$, il carattere appena letto sul testo
+  \item $\delta(q, \sigma) = q+1$ sse $q < m \land P[q+1] = \sigma$
+  \item $\delta(q, \sigma) = |B(P[1,q]\sigma)|$ sse $q = m \lor P[q+1] \neq \sigma$ (funzione di fallimento)
+\end{itemize}
+
+Prendo come esempio il pattern $P = abc$ e il testo $T = aaabca$.
+
+\begin{center}
+  \begin{tabular}{|c c c c|}
+    $\delta$ & a & b & c \\ \hline
+    0 & 1 & 0 & 0 \\ \hline
+    1 & 1 & 2 & 0 \\ \hline
+    2 & 1 & 0 & 3 \\ \hline
+    3 & 1 & 0 & 0 \\ \hline
+  \end{tabular}{|c c c c|}
+      $\delta$ & a & b & c \\ \hline
+      0 & 1 & 0 & 0 \\ \hline
+\end{center}
+
+La computazione sul testo T: $q_0 \xrightarrow{}[a] q_1 \xrightarrow{}[a] q_1 \xrightarrow{}[a] q_1 \xrightarrow{}[b] q_2 \xrightarrow{}[c] q_3 \xrightarrow{}[a] q_1$.
+
+\section{Esercizio 7}
+
+Definire la BWT di un testo e specificarla per un testo scelto a piacere.
+
+\paragraph{soluzione}
+
+L'alfabeto di un testo per la BWT \`e esteso con il carattere temrinale $\$$. Quindi la BWT \`e definita come l'array di $n+1$ simboli dove $BWT[i] = \sigma$ sse $\sigma$ \`e l'ultimo simbolo della i-esima permutazione in ordine lessicografico.
+
+Dato il testo $T = abca\$$, sull'alfabeto $\Sigma = \{a,b,c,\$\}$, le permutazioni in ordine lessicografico sono:
+
+\begin{itemize}
+  \item $\$abca$
+  \item $a\$abc$
+  \item $abca\$$
+  \item $bca\$a$
+  \item $ca\$ab$
+\end{itemize}
+
+Quindi la BWT del testo \`e uguale a $ac\$ab$.
