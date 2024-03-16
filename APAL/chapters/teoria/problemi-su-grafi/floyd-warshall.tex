@@ -109,11 +109,13 @@ Come prima la soluzione $\pi_{i,j} = \pi_{i,j,n}$.
         \For{$k = 1$ to n}
             \For{$i = 1$ to n}
                 \For{$j = 1$ to n}
-                    \If{$d_{i,k,k-1} + d_{k,j,k-1} < d_{i,j,k-1}$}
-                        \State $D^k[i,j] \gets d_{i,k,k-1} + d_{k,j,k-1}$
+                    \State $a \gets D^{k-1}[i,k] + D^{k-1}[k,j]$
+                    \State $b \gets D^{k-1}[i,j]$
+                    \If{$a < b$}
+                        \State $D^k[i,j] \gets a$
                         \State $\Pi^k[i,j] \gets \Pi^{k-1}[k,j]$
                     \Else
-                        \State $D^k[i,j] \gets d_{i,j,k-1}$
+                        \State $D^k[i,j] \gets b$
                         \State $\Pi^k[i,j] \gets \Pi^{k-1}[i,j]$
                     \EndIf
                 \EndFor
