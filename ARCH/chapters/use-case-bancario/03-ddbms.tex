@@ -1,0 +1,131 @@
+\chapter{DBMS Distribuiti}
+
+\putimage{images/03-01.png}{Di tutti i tipi di DDBMS ci interessano quelli ad Accesso Distribuito}{png:3-01}
+
+\section{Query Processing}
+
+\putimage{images/03-02.png}{Schema di Query Processing Distribuito}{png:3-02}
+
+\begin{itemize}
+  \item \textbf{query decomposition}: simile alla fase per i DBMS centralizzati, non considera la distribuzione dei dati e quindi non ottimizza rispetto ai costi di comunicazione.
+  \item \textbf{data localization}: considera la distribuzione dei rammenti e ottimizza le operazioni in tal senso con tecniche di riduzioni, ma ancora non e' ottimizzata.
+  \item \textbf{global query optimization}: utilizza le statistiche sui frammenti per ottimizzare le operazioni del query tree e trovare l'ordinamento migliore di esecuzione (in particolare i join).
+  \item \textbf{local query optimization}: questa fase e' simile a quella dei DBMS centralizzati ed eseguita in modo indipendente sui nodi.
+\end{itemize}
+
+\subsection{Esempio}
+
+\putimage{images/03-03.png}{Query da Ottimizzare}{png:3-03}
+
+\putimage{images/03-04.png}{Disposizione dei Frammenti}{png:3-04}
+
+\putimage{images/03-05.png}{Strategia A}{png:3-05}
+
+\putimage{images/03-06.png}{Strategia B}{png:3-06}
+
+O invio i dati progressivamente dove devono essere elaborati (Strategia A) e in quel caso il tempo massimo di attesa e' dato da uno dei due rami.
+Oppure invio tutti i dati al nodo di elaborazione 5 e in questo caso il costo massimo e' dato da uno degli invii.
+
+La scelta di una di queste due possibilita' non e' banale perche' posso avere casi in cui la B sia piu' vantaggiosa. Per esempio quando la rete e' poco congestionata e tempi di invio sono molto bassi.
+Ovvero se siamo interessati a minimizzare il tempo totale di elaborazione (A) o a massimizzare la parallelizzazione (B).
+
+\subsection{Semi Join}
+
+Il Semi Join in alcuni casi puo' risultare piu' efficiente. Consiste nell'inviare al Nodo 1 le chiavi primarie usate nel join dal Nodo 2 affinche' il Nodo 1 effettui un'operazione simile alla select. Quindi rimanda indietro i dati e il Nodo 1 li aggrega per formare il join finale.
+Attenzione: il Semi Join non e' commutativo.
+
+Ci sono piu' strategie per il join tramite semijoin:
+
+\begin{itemize}
+  \item $R join_A S \Leftrightarrow (R semijoin_A S) join_A S$
+  \item $R join_A S \Leftrightarrow R join_A(S semijoin_A R)$
+  \item $R join_A S \Leftrightarrow (R semijoin_A S) join_A (S semijoin_A R)$
+\end{itemize}
+
+La scelta di una strategia richiede la stima dei costi.
+
+In generale comunque, l'uso del semijoin e' conveniente se il costo del suo calcolo e del trasferimento del risultato e' inferiore al costo del trasferimento dell'intera relazione e del costo del join intero.
+
+\section{Controllo della Concorrenza}
+
+Le transazioni distribuite di tipo read-write richiedono un protocollo transazionale di coordinamento (two-phase commit).
+
+La distribuzione non ha conseguenze su consistenza (essa dipende solo dalla schema logico) e sulla durabilita' (garantita localmente dai singoli nodi).
+Invece e' necessario garantire Isolamento e Atomocita' in questo caso particolare.
+
+Per quanto riguarda la serializzabilita' globale della schedule, si osserva che non e' automatica data la seriabilizzabilita' delle schedule locali.
+Infatti se il DB non e' replicato e ogni schedule locale e' serializzabile non ci sono problemi (gli ordini di serializzazione sono gli stessi per tutti i nodi coinvolti), ma se abbiamo delle repliche possiamo avere casi in cui due schedule sia ordinate differentemente su due nodi replicati distinti provocando un'inconsistenza nei dati.
+Serve un protocollo di controllo delle repliche.
+
+\subsection{Protocollo ROWA per il controllo delle repliche}
+
+Read Once, Write All. Ovvero provo a scrivere una transazione su tutti i nodi replicati, e confermo la possibilita' di leggere i dati scritti se e solo se tutti i nodi hanno finito di scrivere.
+
+\subsection{2PL Centralizzato}
+
+Ogni nodo ha un Lock Manager e uno viene eletto coordinatore (esso gestisce i locks per l'intero DDB).
+Il Transaction Manager e' il coordinatore della transazione, esso richiede i lock al Lock Manager Centrale e li assegna ai nodi che devono effettuare l'accesso ai dati. Finite le operazioni chiede il rilascio dei lock al Lock Manager Centrale.
+
+Il problema e' che avere un unico Lock Manager Centrale e' un importante collo di bottiglia.
+
+\subsection{Primary Copy 2PL}
+
+Per ogni risorsa e' individuata una copia primaria, che e' individuata prima dell'asegnazione dei lock. Diversi nodi hanno lock manager attivi e ognuno gestisce una partizione dei lock complessivi. Per ogni risorsa della transazione il Transaction Manager comunica le richieste di lock al Lock Manager responsabile della copia primaria, che assegna i lock.
+Cosi' si evita il bottleneck di avere un solo Lock Manager Centrale ma e' anche vero che e' necessario determinare a priori i lock manager che gestiscono le risorse e il mantenimento di una directory globale per sapere chi e' chi.
+
+\section{Deadlock Distribuito}
+
+Il problema delle transazioni con i lock e' anche stabilire quando e' avvenuto un deadlock, ovvero un'attesa circolare tra due o piu' nodi.
+Di solito l'algoritmo e' implementato con dei time-out come trigger.
+
+E' attivato periodicamente sui nodi del DDBMS: in ogni nodo integra la sequenza di attesa con le condizioni di attesa locale degli altri nodi logicamente legati dalle condizioni di attesa. Quindi analizza le condizioni di attesa sul nodo e rileva i deadlock locali e comunica le sequenze di attesa ad altre istanze del DDBMS.
+Quest'ultima cosa e' dovuta al fatto che e' possibile evitare che uno stesso deadlock venga scoperto piu' volte, e quindi che tutte le transazioni coinvolte vengano uccise per poi ripartire da capo.
+
+\section{Recovery Management}
+
+La gestione dei guasti e' particolarmente problematica nei DDBMS perche' il fallimento di alcuni nodi durante una transazione o la perdita di messaggi in generale lasciano l'esecuzione di un protocollo in una situazione di indecisione che deve essere gestita.
+Per questo il protocollo 2PC permette di giungere ad una decisione di abort/commit su ciascuno dei nodi in modo affidabile.
+
+\section{Two Phase Commit}
+
+\putimage{images/03-07.png}{Schema 2PC}{png:3-07}
+
+La decisione di commit/abort e' decisa da un coordinatore chiamato Transaction Manager che invia la richiesta se committare o abortire a tutti i nodi coinvolti (Resource Managers). Se anche uno solo di essi dichiara abort allora la transazione e' abortita, altrimenti si committa. Presa la decisione, il Transaction Manager la comunica ai Resource Manager e si assicura che ognuno di essi abbia capito la decisione.
+Una cosa importante e' che prima di ogni operazione ogni partecipante logga le decisioni prese in merito alle decisioni: in questo modo se un nodo dovesse morire per qualche motivo, al suo risveglio potrebbe subito in modo univoco stabilire cosa deve fare.
+
+E questo e' un tipo di guasto. Ma che succede se un nodo non risponde alla domanda commit/abort? Gli rimanda il messaggio, infatti e' necessario stabilire se tutti i nodi sono favorevoli.
+Invece per quanto riguarda l'invio della decisione, anche in questo caso il TM deve assicurarsi che tutti i nodi abbiano compreso, di conseguenza deve rinviare la decisione finche' non e' afferrata.
+
+Esistono vari paradigmi di comunicazione tra i nodi partecipanti, si rimanda alle immagini.
+
+\putimage{images/03-08.png}{Schema Centralizzato}{png:3-08}
+\putimage{images/03-09.png}{Schema Lineare}{png:3-09}
+\putimage{images/03-10.png}{Schema Distribuito}{png:3-10}
+\putimage{images/03-11.png}{Schema Distribuito 2}{png:3-11}
+
+Ora, cosa succede se un Transaction Manager muore? semplice, morto un Papa se ne fa un altro: un altro nodo e' eletto TM.
+Ora, se il guasto al TM e' risolto e si risveglia possono avvenire molte cose:
+
+\begin{itemize}
+  \item l'ultimo record e' \textit{prepare}: il guasto puo' aver bloccato alcuni RM, di conseguenza o si procede con un \textit{global-abort} e si rifa' da capo, oppure si ripete la fase di richiesta sperando di giungiere ad un \textit{global-commit}.
+  \item l'ultimo record e' \textit{global-commit}/\textit{global-abort}: il TM non ha idea di se tutti i RM hanno completato le operazioni quindi ripete la fase di invio della decisione.
+  \item l'ultimo record e' \textit{complete}: in questo caso non ha effetto.
+\end{itemize}
+
+Se invece e' il Resource Manaher a morire utilizza il log per sapere cosa fare. Se l'ultimo record e' \textit{ready} o chiede al TM cosa deve fare oppure sara' il TM a chiederglielo. Ad ogni modo si procede.
+
+\subsection{Ottimizzazioni}
+
+Si possono ridurre il numero di messaggi trasmessi tra i nodi e il numero di scitture nei log.
+
+Quando un RM sa che la propria transazione non contiene operazioni di scrittura, non deve influenzare l'esito finale della transazione, quindi risponde al \textit{prepare} con un \textit{read-only} ed esce dal protocollo.
+
+Un'altra possibilita' e' che il TM esca subito dalla transazione in seguito alla decisione di abort.
+In questo caso se il TM riceve una richiesta di remote recovery da parte di un RM che non sa come procedere in seguito a un guasto, e il TM non trova abort nel log, l'RM puo' chiedere solo in uno stato in cui non c'e' stato il commit. Quindi decise sempre per abort.
+
+\section{X/Opex DTP}
+
+E' uno standard "aperto" per l'implementazione di transazioni distribuite e blah blah blah.
+
+\putimage{images/03-12.png}{Architettura di X/Open DTP}{png:3-12}
+\putimage{images/03-13.png}{Subroutines X/Open DTP}{png:3-13}
