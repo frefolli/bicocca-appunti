@@ -91,3 +91,38 @@ Inoltre la possibilita' di avere ridondanza riduce i danni da guasto nei singoli
 Infine per quanto riguarda le \textbf{Prestazioni} la possibilita' di effettuare operazioni locali introduce la parallelizzazione di esse per quanto possibile ma anche la necessita' di coordinamento tra i nodi per effettuare transazioni globali (con potenzialmente aumento del traffico in rete).
 
 \section{Funzionalita' Specifiche dei DDBMS rispetto ai DBMS Centralizzati}
+
+Ogni server mantiene la capacita' di gestire applicazioni in modo indipendente ma coopera con gli altri server, e queste interazioni sono un carico aggiuntivo sul sistema complessivo.
+
+La rete e' l'elemento critico, quindi e' necessario distribuire i dati in modo che la maggior parte delle transazioni sia locale o si eviti l'invio di dati tra nodi.
+
+Rispetto ai DBMS Centralizzati abbiamo sia la trasmissione di query che di dati del DB, che di dati di controllo. Inoltre ci sono in piu' da gestire la frammentazione, la replicazione in modo da garantire la trasparenza ai nodi.
+
+Il query processor deve pianificare una strategia globale accanto a quelle locali e bisogna controllare la concorrenza durante le transazioni per evitare operazioni non consistenti. Inoltre si devono prevedere strategie di ripristino dei singoli nodi come parte della gestione di guasti globali.
+
+\subsection{Frammentazione, Replicazione, Trasparenza}
+
+La \paragraph{frammentazione} e' la possibilita' di allocare porzioni diverse del DB su nodi diversi
+
+Questa puo' essere sia verticale (sulle colonne), che orizzonale (sulle righe).
+
+Chiaramente durante la frammentazione e' necessario garantire la \textbf{Completezza} dei dati, la loro \textbf{Ricostruibilita'} e la \textbf{Disgiunzione} (ogni elemento e' in un solo frammento a meno di Replicazione).
+
+La \paragraph{replicazione} e' la possibilita' di allocare le stesse porzioni di DB su nodi diversi
+
+La \paragraph{trasparenza} rende possibile al sistema di accedere ai dati senza sapere dove sono allocati. Questa in particolare e' una caratteristica che di solito si ottiene solo pagando una certa cifra (altrimenti solitamente bisogna indirizzare tutto a mano).
+
+Questa e' solitamente di due tipi:
+
+\begin{itemize}
+  \item transparenza logica: indipendenza dell'applicazione da modifiche dello schema logico.
+  \item trasparenza fisica: indipendenza dell'applicazione da modifiche allo schema fisico.
+\end{itemize}
+
+A sua volta la trasparenza si divide in:
+
+\begin{itemize}
+  \item trasparenza di frammentazione: il sistema non sa che i dati sono frammentati.
+  \item trasparenza di allocazione: sa che e' frammentato ma non sa dove sono allocati.
+  \item trasparenza di linguaggio: e' possibile usare lo stesso linguaggio di query (SQL standard) a prescindere dalle interfacce dei nodi singoli.
+\end{itemize}

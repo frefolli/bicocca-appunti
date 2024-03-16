@@ -1,0 +1,60 @@
+\chapter{Richiamo sui DBMS Centralizzati}
+
+\section{DBMS}
+
+E' un sistema in grado di gestire collezioni di dati che siano di grandi dimensioni, persistenti, condivise ed affidabili (resistenti ai guasti).
+
+\subsection{Caratteristiche}
+
+Abbiamo un unico schema logico, una unica base di dati e un unico schema fisico, quindi nessuna forma di eterogeneita' contettuale o fisica, e nessuna forma di distribuzione.
+
+Inoltre abbiamo un unico linguaggio di interrogazione, un sistema di gestione e di accesso, una modalita' di ripristino e un amministratore dei dati.
+
+La persistenza richiede una gestione in memoria secondaria sogisticata in modo da archiviare ed accedere in modo efficiente una grande mole di dati.
+
+Inoltre richiede l'uso condiviso di risorse tra piu' applicazioni, e quindi la gestione della concorrenza di operazioni sulla stessa base di dati tramite meccanismi di autorizzazione e di controllo della concorrenza che garantiscano si' la sicurezza ma anche una ragionevole efficienza.
+
+Le interrogazioni devono essere ottimizzate il piu' possibile e i dati devono essere conservati anche in presenza di malfunzionamenti.
+
+\putimage{images/02-01.png}{Schema di un DBMS}{png:2-1}
+
+\section{Ottimizzazione delle Interrogazioni}
+
+Si trasforma il query tree (parsed SQL) in un query plan logico contenente operazioni di algebra relazionale sulle tabelle logiche dello schema e lo ottimizza rispetto al costo.
+
+\putimage{images/02-02.png}{Query Tree/Plan}{png:2-2}
+
+Visto che un query tree puo' essere trasformato in piu' Query Plan logici possibili, si sceglie quello computazionalmente migliore.
+Ad esempio, in genere conviene che le selezioni siano anticipate rispetto ai join, perche' in questo modo i join operano su tabelle di minore dimensione.
+
+La trasformazione e' effettuata usando proprieta' algebriche e stime dei costi delle operazioni accessibile tramite una tabella con delle statistiche.
+In generale il problema di ottimizzazione ha complessita' esponenziale, quindi si introducono delle approssimazioni (si ottimizza finche' si riesce in base a delle euristiche).
+
+\putimage{images/02-03.png}{Schema di Ottimizzazione}{png:2-3}
+
+\section{Transazioni}
+
+Una transazione e' una serie di istruzioni di lettura e scrittura sulla base di dati (eventualmente in un linguaggio di programmazione) il cui esito puo' essere \textbf{commit work} o \textbf{rollback work}; ovvero memorizza quanto fatto o dimentica tutto e vai avanti, non sono ammesse soluzioni intermedie.
+Un sistema transazionale (OLTP) e' in grado di definire ed eseguire le transazioni per conto di un certo numero di applicazioni concorrenti.
+
+\subsection{Proprieta' ACID}
+
+\paragraph{Atomicita'}: una transazione e' una unita' atomica di elaborazione, non puo' lasciare la base i dati in uno stato intermedio.
+
+\paragraph{Consistenza}: la transazione rispetta i vincoli di integrita', ovvero se lo stato iniziale e' corretto anche lo stato finale sara' corretto.
+
+\paragraph{Isolamento}: la transazione non risente degli effetti delle altre transazioni concorrenti (determinismo?).
+
+\paragraph{Durata} (Persistenza): un commit prsiste i dati anche in caso di quasti (necessario che il DBMS garantisca l'affidabilita').
+
+Le anomalie che possono avvenire durante piu' transazioni concorrenti:
+
+\begin{itemize}
+  \item \textbf{update loss}: una scrittura e' persa per colpa di una sovrascrittura
+  \item \textbf{dirty read}: una lettura di un dato scritto e non confermato (commit)
+  \item \textbf{unrepeatable read}: due letture di seguito restituiscono valori differenti
+  \item \textbf{ghost update}: \textit{non l'ho capito in realta'}
+\end{itemize}
+
+\putimage{images/02-04.png}{Foto di Maurino non spiegata, penso che sia un update loss (ha perso il posto in aereo)}{png:2-4}
+
