@@ -58,3 +58,10 @@ Le anomalie che possono avvenire durante piu' transazioni concorrenti:
 
 \putimage{images/02-04.png}{Foto di Maurino non spiegata, penso che sia un update loss (ha perso il posto in aereo)}{png:2-4}
 
+\subsection{Gestione della Concorrenza}
+
+Una sequenza di esecuzione di un insieme di transazioni e' detta \textbf{schedule}. Essa si dice seriale se una transazione termina prima che la successiva inizi.
+Una schedule e' serializzabile se l'esito della sua esecuzione e' lo stesso indipendentemente dall'ordine di esecuzione seriale delle transazioni in essa contenute.
+
+Per controllare la concorrenza e' necessaria la presenza di uno scheduler a cui si richiedono e si rilasciano i \textbf{lock}, le cui assegnazioni sono salvate nella lock table.
+Si aggiunge anche la regola \textbf{Two Phase Locking} (2PL), ovvero in ogni tutte le richieste di lock precedono tutti gli unlock.
