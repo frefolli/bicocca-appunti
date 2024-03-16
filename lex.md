@@ -27,4 +27,8 @@ La branch `master` e' aggiornata tramite un merge `dev` in `master` perche' cosi
 
 E' istituita la dicitura "SAF" per "Sicurezza e Affidabilita'"
 
+# 1 del 16/03/24
+
+Sono istituite la diciture TELE, ARCH e SCMT.
+
 # Discussioni in corso

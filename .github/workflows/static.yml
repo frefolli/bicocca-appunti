@@ -34,16 +34,13 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: |
-            MCOR/appunti.tex
-            TCOM/appunti.tex
+            TELE/appunti.tex
+            ARCH/appunti.tex
+            SCMT/appunti.tex
           work_in_root_file_dir: true
       - name: Create Static Dist Directory
-        run: | 
-          mkdir -p ./static/MCOR
-          mkdir -p ./static/TCOM
-          cp ./MCOR/appunti.pdf ./static/MCOR/appunti.pdf
-          cp ./TCOM/appunti.pdf ./static/TCOM/appunti.pdf
-          cp ./index.html ./static/index.html
+        run: |
+          ./static.sh TELE ARCH SCMT
       - name: Configure Pages
         uses: actions/configure-pages@v2
       - name: Zip and Upload Artifact
