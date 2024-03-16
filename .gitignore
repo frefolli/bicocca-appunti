@@ -9,3 +9,4 @@ server_pid.txt
 *.ilg
 *.pdf
 *.toc
+static
