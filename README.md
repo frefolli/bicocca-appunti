@@ -15,15 +15,15 @@ __Attenzione__: non tutti i pdf sono caricati, se si vuole visionare gli appunti
 | ROPR | 3 | 1 | Ricerca Operativa e Pianificazione delle Risorse | 1.0.7 |  | 22 |
 | APS | 3 | 1 | Ingegneria del Software | 1.0.2 |  | 29 |
 | SAF | 3 | 2 | Sicurezza e Affidabilita' | 1.0.0 |  | 30 |
-| ML | 4 | 1 | Machine Learning | 1.0.0 | 30 |
-| TCOM | 4 | 1 | Teoria della Computazione | 1.0.0 | 25 |
-| MCOR | 4 | 1 | Modelli della Concorrenza | 1.0.0 | 25 |
-| TELE | 4 | 2 | Sistemi e Servizi di Telecomunicazione | 1.0.0 | NaN |
-| ARCH | 4 | 2 | Architetture Dati | 1.0.0 | NaN |
-| SCMT | 4 | 2 | Sistemi Complessi: Modelli e Simulazioni | 1.0.0 | NaN |
-|  |  |  |  | 1.0.0 | NaN |
+| ML | 4 | 1 | Machine Learning | 1.0.0 |  | 30 |
+| TCOM | 4 | 1 | Teoria della Computazione | 1.0.0 |  | 25 |
+| MCOR | 4 | 1 | Modelli della Concorrenza | 1.0.0 |  | 25 |
+| TELE | 4 | 2 | Sistemi e Servizi di Telecomunicazione | 1.0.0 |  | NaN |
+| ARCH | 4 | 2 | Architetture Dati | 1.0.0 |  | NaN |
+| SCMT | 4 | 2 | Sistemi Complessi: Modelli e Simulazioni | 1.0.0 |  | NaN |
+|  |  |  |  | 1.0.0 |  | NaN |
 
-Nota bene: presto spostero' questa tabella in un glossario degli acronimi dei corsi, ma non adesso.
+Nota bene: presto o tardi spostero' questa tabella in un glossario degli acronimi dei corsi, ma non adesso.
 
 ## Dipendenze
 
