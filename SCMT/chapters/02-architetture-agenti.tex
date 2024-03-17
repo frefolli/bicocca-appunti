@@ -1,0 +1,161 @@
+\chapter{Architettura di un Agente}
+
+\section{Classificazione di Genesereth}
+
+Un agente puo' essere classificato in tre categorie secondo le loro "interiora" e le loro capacita'. Questa analisi era stata fatta considerando un singolo agente ma e' comunque valida con sistemi multi agente.
+
+\subsection{Tropistic}
+
+Questi agenti sono descrivibili come una tupla $<E, P, A, see, do, action>$:
+
+\begin{itemize}
+  \item E e' il set di stati dell'ambiente
+  \item P e' una partizione di E che rappresentazione una rilevante astrazione dell'ambiente dal punto di vista dell'agente
+  \item A e' il set di azioni
+  \item $see : E \rightarrow P$
+  \item $action : P \rightarrow A$
+  \item $do : A \times E \rightarrow E$
+\end{itemize}
+
+Questi agenti percepiscono l'ambiente, decidono un'azione e la attuano cambiando l'ambiente.
+
+\putimage{images/02-01.png}{Tropistic Agent}{png:2-1}
+
+\subsection{Hysteretic}
+
+Questi agenti sono descrivibili come una tupla $<I, E, P, A, i_0, see, internal, do, action>$:
+
+\begin{itemize}
+  \item I e' il set di stati dell'agente
+  \item E e' il set di stati dell'ambiente
+  \item P e' una partizione di E che rappresentazione una rilevante astrazione dell'ambiente dal punto di vista dell'agente
+  \item A e' il set di azioni
+  \item $see : E \rightarrow P$
+  \item $action : I \times P \rightarrow A$
+  \item $internal : I \times P \rightarrow I$
+  \item $do : A \times E \rightarrow E$
+\end{itemize}
+
+Questi agenti percepiscono l'ambiente, decidono un'azione e la attuano cambiando l'ambiente e il loro stato interno.
+
+\putimage{images/02-02.png}{Hysteretic Agent}{png:2-2}
+
+\subsection{Knowledge-level}
+
+Questi agenti sono descrivibili come una tupla $<D, E, P, A, d_0, see, database, do, action>$:
+
+\begin{itemize}
+  \item D e' il set di predicati
+  \item E e' il set di stati dell'ambiente
+  \item P e' una partizione di E che rappresentazione una rilevante astrazione dell'ambiente dal punto di vista dell'agente
+  \item A e' il set di azioni
+  \item $see : E \rightarrow P$
+  \item $action : D \times P \rightarrow A$
+  \item $database : D \times P \rightarrow D$
+  \item $do : A \times E \rightarrow E$
+\end{itemize}
+
+Questi agenti percepiscono l'ambiente, decidono un'azione e la attuano cambiando l'ambiente secondo le loro conoscenze che vengono man mano aggiornate.
+Simile ai Hysteretic ma qui abbiamo regole espresse in forma logica per le conoscenze.
+
+\putimage{images/02-03.png}{Knowledge-level Agent}{png:2-3}
+
+\section{Classificazione di Russel Norvig}
+
+Un agente puo' essere classificato in quattro categorie secondo la loro architettura interna.
+
+\subsection{Simple Reflex}
+
+Sono equivalenti agli agenti Tropistic.
+
+\putimage{images/02-04.png}{Simple Reflex Agent}{png:2-4}
+
+\subsection{Reflexive with Internal State}
+
+Sono equivalenti agli agenti Hysteretic.
+
+\putimage{images/02-05.png}{Reflexive Agent with Internal State}{png:2-5}
+
+\subsection{Goal-based}
+
+E' una specializzazione degli agenti Knowledge-level.
+
+Questi agenti hanno bisogno di un goal per sapere quali situazioni sono desiderabili, e le cose diventano difficili con lunghe sequenze di azioni richieste per trovare un goal.
+La differenza fondamentale rispetto ad agenti piu' semplici e' la capacita' di prendere in considerazione in futuro in modo esplicito e formale.
+Sono flessibili perche' puo' manipolare la base di conoscenza essendo essa rappresentata esplicitamente.
+
+\putimage{images/02-06.png}{Goal-based Agent}{png:2-6}
+
+\subsection{Utility-based}
+
+E' una specializzazione degli agenti Knowledge-level.
+Alcuni goal possono essere raggiunti in modi diversi (alcuni piu' uguali di altri).
+La Utility e' una funzione che descrive una misura di performance rispetto a questi metodi.
+Seleziona i goal in base alla probabilita' di successo e risolve i conflitti tra goal.
+
+\putimage{images/02-07.png}{Utility-based Agent}{png:2-7}
+
+\section{Altre Classificazioni}
+
+Possono essere classificati in base alla capacita' (deliberativi vs reattivi, possibilita' di imparare, mobili vs statici (obsoleta)), oppure in base al ruolo nel sistema (Cooperaivo, informativo, interfaccia).
+Chiaramente si possono crere sistemi eterogenei con agenti ibridi.
+
+\section{Esempi}
+
+\subsection{Reattivi - I Boids}
+
+Un modello per coordinare il movimento di elementi in modo che agiscano come un fluido o come uno stormo.
+Fondamentalmente il loro comportamento non e' guidato da un goal (formalmente vanno solo avanti) ma la decisione di virare e' presa in base ad alcune regole (anche in contrasto tra loro, quindi pesate).
+
+\putimage{images/02-08.png}{regole dei Boid}{png:2-8}
+
+\subsection{3APL}
+
+3APL e' un agente che utilizza una base di conoscenza e delle regole di derivazione logiche unite ad un goal globale per inferire le azioni da usare per risolvere problemi.
+Questo esempio prende in esame un ambiente statico, ma ci possono essere casi in cui l'ambiente e' modificabile o dinamico.
+
+\putimage{images/02-09.png}{schema 3APL}{png:2-9}
+
+\section{JADE}
+
+JADE e' uno "strumento abilitante" (cioe' un software per eseguire agenti) sviluppato da Telecom. Non prescrive un'architettura precisa ma solo uno schema molto generale e minimale. Quindi resta al programmatore decidere come modellare i suoi agent.
+Dispone solo una gerarchia di classi per modellare il comportamento e un modello di esecuzione degli agenti.
+
+\putimage{images/02-10.png}{"Architettura" JADE}{png:2-10}
+
+\section{Affinita' Divergenze fra il Compagno Oggetto e Noi}
+
+Un agente e' un oggetto con autonomia, pro-attivita' e abilita' sociale. Queste sono definizioni roboanti ma assolutamente labili, infatti non c'e' un'unica interpretazione di esse e quindi lasciano il tempo che trovano.
+Possiamo avere anche agenti ibridi in varie modalita', eccone due:
+
+\putimage{images/02-11.png}{Agenti Ibridi}{png:2-11}
+
+\subsection{Autonomia}
+
+La parola autonomia ha diversi significati come detto prima:
+
+\begin{itemize}
+  \item la capacita' di un agente di decidere le sue decisioni in termini di tempo, se rispondere una richiesta o senza uno stimolo esterno
+  \item la capacita' di controllare il proprio stato interno
+  \item la capacita' di prendere decisioni basate sulle proprie esperienze invece che su conoscenza hard-wired (= AGI?)
+\end{itemize}
+
+\section{Agenti che Imparano}
+
+Tutti gli agenti precedenti utilizzavano descrizioni preconfezionate per decidere che cosa fare, tutta via c'e' la possibilita' di creare agenti che imparano da soli sotto certe condizioni cosa fare.
+
+\putimage{images/02-12.png}{Learning Agent}{png:2-12}
+
+\subsection{Reinforcement Learning}
+
+Fondamentalmente un agente prende una decisione dato uno stimolo, e riceve un "dono" o una "penalita'" in base a se la decisione era buona o meno.
+Chiaramente si assume che tutti i goal possano essere rappresentati come la massimizzazione del reward cumulato.
+
+\putimage{images/02-13.png}{Schema}{png:2-13}
+
+I problemi centrali sono di due nature:
+
+\begin{itemize}
+  \item e' necessario formalizzare il tutto in termini matematici e artimentici.
+  \item l'agente deve forzatamente esplorare lo spazio degli stati per acquisire abbastanza esperienza da poter usare nel campo.
+\end{itemize}
