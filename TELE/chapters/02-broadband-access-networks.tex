@@ -1,0 +1,97 @@
+\chapter{Reti di Accesso a Banda Larga}
+
+Ci concentriamo sulle reti a banda larga, one small issue, "broadband" e' un termine ambiguo perche' una definizione univoca non esiste.
+Alcuni utilizzano anche "ultra-broadband" come gadgetbahn ma fondamentalmente non si sa cosa voglia dire di preciso.
+
+\putimage{images/02-01.png}{Dominio}{png:2-1}
+
+\paragraph{Tipologie}
+
+\begin{itemize}
+  \item Fixed Access Network: cablaggio fino alla casa dell'utente con varie soluzioni di rame, fibra o ibridi.
+  \item Fixed Wireless Access Network: cablaggio in fibra fino ad un Point of Presence e poi comunicazione radio fino alla casa dell'utente.
+  \item Satellite Access Network: cablaggio in fibra fino ad una tazione di terra e poi comunicazione radio satellitare fino alla stazione dell'utente.
+  \item Mobile Radio Access Network: cablaggio o collegamento radio fino alla stazione di prossimita' e poi comunicazione radio con un terminale mobile (accomoda la mobilita' dell'utente).
+\end{itemize}
+
+\section{Fixed Access Network}
+
+\subsection{Copper Access Network Infrastructure}
+
+Abbiamo un \textbf{distribution box} nell'edificio dell'utenza che evita la necessita' di cablare ogni singolo utente con le altre stazioni.
+
+Quindi un \textbf{distribution point}: un permutatore che colleziona i collegamenti con i distribution box e li indirizza in un unico collegamento fisico (piu' doppini comunque).
+Tipicamente ci sono solo al massimo due distribution point tra l'utenza e la centrale, ma e' possibile che ce ne siano di piu' cosi' come e' possibile (ma molto raro) che non ce ne siano.
+
+I collegamenti quindi terminano nel \textbf{Main Distribution Frame} che li allaccia alla rete a banda larga.
+
+Quindi il DSL Access Multiplexer (DSLAM) seleziona la porzione di banda dedicata alla commutazione di pacchetti e invia il traffico nell'IP router.
+Il DSLAM modula e demodula il segnale tramite un array di \textbf{Modulator\&Demodulator} (Modem) quindi e' necessario che anche l'utenza disponga di Modem.
+
+\putimage{images/02-02.png}{Architettura}{png:2-2}
+
+Quando le basse frequenze sono utilizzate per la commutazione di circuito per la telefonia e' necessario un Plain Old Telephone Service (POTS) Splitter (S), ovvero un filtro che permette di separare le bande dedicate.
+Oggi giorno la telefonia puo' avvenire o tramite il POTS (sempre piu' raro) o sempre piu' spesso tramite il VoIP.
+Chiaramente se si usa uno Splitter e' necessario che anche l'utente ne usi uno.
+
+La qualita' di una infrastruttura del genere dipende dalla distanza dei collegamenti (l'italia ha uno delle reti di accesso piu' corte, bene per la banda larga) e dalla qualita' di mezzi fisici e infrastruttura.
+Soluzioni a basso costo sfruttano l'infrastruttura di rame stesa per la telefonia per evitare di dover sprecare ulteriore materiale, ma chiaramente ha prestazioni peggiori (soluzione simile a quella della TV via Cavo di altri paesi).
+
+Questa soluzione viene utilizzata parzialmente per alcune forme di Digital Subscriber Line (xDSL).
+
+\subsection{xDSL}
+
+L'idea e' avere la maggior parte della banda possibile gia' posizionata sui doppini telefonici. C'e' pero' un tradeoff tra la banda disponibile e la lunghezza dei collegamenti: soluzioni piu' aggressive soffrono di piu' di attenuazione e interferenza sulle distanze medie e lunghe, quindi sono utilizzabili solo per distanze corte.
+
+\putimage{images/02-03.png}{xDSL}{png:2-3}
+
+\paragraph{VDSL2} usa uno schema FDD per frammentare in bande alternate i collegamenti uplink e downlink nella fascia 138 kHz - 35 MHz.
+
+\paragraph{G.fast} utilizza invece tutta la fascia 35 MHz - 212 MHz con il TDD similarmente a VSDL2 con la differenza che puo' sfruttare anche la fascia 138 kHz - 35 MHz se non e' utilizzata da ADSL2+ o VDSL2 (altrimenti con TDD si possono creare problemi di interferenze).
+
+\putimage{images/02-04.png}{Esempi}{png:2-4}
+
+\subsection{Vectoring}
+
+E' una tecnica utilizzata per eliminare il \textbf{crosstalk}, ovvero la mutua interferenza tra due doppini adiacenti, per migliorare la qualita' del segnale.
+Consiste nello stimare la quantita' $k_i$ di interferenza che il segnale $s_i$ ha sul segnale trasmesso $s_j$ e applicare una trasformazione lineare ai segnali trasmessi per eliminare il "rumore" dei singoli segnali.
+
+\putimage{images/02-05.png}{Esempio di Vectoring}{png:2-5}
+
+Il problema e' che questi valori devono essere stimati in fretta (abbiamo cambi repentini) su un grande numero di dati e quindi richiede grandi capacita' di processamento dei segnale.
+Spesso ha benefici limitati se coesistono sulla stessa rete di accesso piu' Internet Service Provider (ISP) che gestiscono le comunicazioni ("interferenze" involontarie?).
+
+\subsection{Fiber-Copper Access Network}
+
+Come detto precedentemente l'uso dei doppini e' limitato nella distanza rispetto alla banda a cui possono trasmettere. Per offrire prestazioni migliori e' necessario integrare soluzioni in fibra ottica per ridurre i doppini ed aumentare la qualita' del segnale.
+Ci sono diversi schemi per questo "Fiber-to-the-X" (FTTE, FTTC, FTTB) che hanno costi e vantaggi diversi (in termini di installazione).
+
+\subsection{Fiber to the Exchange}
+
+La fibra raggiunge il centro di sismistamento centrale della rete di accesso.
+
+\putimage{images/02-06.png}{FTTE}{png:2-6}
+
+\subsection{Fiber to the Cabinet}
+
+La fibra raggiunge il distribution point (nel Multi-Service Access Node (MSAN) deve essere installato un Mini DSLAM).
+
+\putimage{images/02-07.png}{FTTC}{png:2-7}
+
+\subsection{Fiber to the Builing}
+
+La fibra raggiunge il distribution box (anche qui e' necessario un MSAN).
+
+\putimage{images/02-08.png}{FTTB}{png:2-8}
+
+\subsection{xDSL + Fibra}
+
+L'integrazione della fibra permette di raggiungere prestazioni migliori a parita' di distanza (uso di FTTB/FFTC per migliorare le xDSL piu' aggressive).
+
+\putimage{images/02-09.png}{Recap}{png:2-9}
+
+\section{Fixed Wireless Access Network}
+
+\section{Satellite Access Network}
+
+\section{Mobile Radio Access Network}

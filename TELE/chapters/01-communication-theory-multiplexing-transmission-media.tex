@@ -1,0 +1,244 @@
+\chapter{Teoria della Comunicazione, Multiplexing e Mezzi di Transmissione}
+
+\section{Teoria della Comunicazione}
+
+Shannon e Weaver hanno proposto un modello che puo' essere adottato per le comunicazioni. Essenzialmente c'e' una sorgente che emette dei messaggi, che vengono codificati da un Trasmettitore (codifica + modulazione). Il Segnale e' trasmesso sul canale ed e' sogetto al rumore, quindi arriva al Ricevitore che lo decodifica (demodulazione + decodifica) e lo invia alla destinazione.
+
+Il rumore e' modellato come additivo.
+
+\putimage{images/01-01.png}{Schema di Shannon e Weaver (1948)}{png:1-1}
+
+\subsection{Canale}
+
+Ci interessiamo principalmente di comunicazioni digitali, ma e' importante conoscere come le informazioni sono ecodificate nel segnale per essere propagate nel mezzo fisico.
+
+Il canale di comunicazione e' un'astrazione che modella il mezzo e le fonti di rumore, distorsione e attenuazione.
+
+\putimage{images/01-02.png}{Canale di Trasmissione}{png:1-2}
+
+L'attenuazione e la distorsione sono modellate come "modifica" della forma del segnale, mentre il rumore e' additivo al segnale gia' distorto e attenuato. Esistono altri modi per modellare il rumore in modo piu' realistico.
+
+\putimage{images/01-03.png}{Distorsione e Attenuazione}{png:1-3}
+
+\subsection{Trasformata di Fourier}
+
+Il segnale puo' essere visto come una combinazione di infinite sinusoidi di diversa frequenza, ampiezza e fase (un po' come la serie di Taylor), la Trasformata di Fourier indica i valori di queste sinusoidi nelle varie frequenze.
+
+\putimage{images/01-04.png}{Trasformata di Fourier}{png:1-4}
+
+Il risultato e' una funzione nel dominio delle frequenze che indica quanto e' "forte" il segnale in una certa frequenza. La larghezza di questo grafico e' chiamato anche \textbf{banda} (bandwidth).
+
+\putimage{images/01-05.png}{Banda}{png:1-5}
+
+\subsection{Capacita' del Canale}
+
+La capacita' e' definita come il massimo bit rate in cui le informazioni possono essere trasmesse in modo affidabile (ovvero con bit error trascurabile).
+Shannon ha dimostrato che essa per un canale rumoroso e' $C = B \cdot log_2 (1 + \frac S N)$ bit/s. Dove $B$ e' la banda e $\frac S N$ e' il rapporto segnale/rumore.
+Quest'ultimo e' il vero e proprio limite di capacita' del canale a parita' di banda (con modulazione e codifica appropriate e' possibile avere prestazioni vicine al limite).
+
+\subsection{Modulazione}
+
+\subsubsection{Modulazione Analogica}
+
+E' la convrsione in alte frequenze di un segnale da modulare. E' eseguita cambiano l'ampiezza, la frequenza o la fase di una portante sinusoidale per accomodare l'informazione.
+
+\putimage{images/01-06.png}{Esempi di Modulazione}{png:1-6}
+
+\subsubsection{Modulazione  Digitale}
+
+E' l'assegnamento di forme d'onda a gruppi di bit che devono essere trasmessi per ottenere segnali robusti a distorsione e rumore.
+Ogni unita' e' chiamato "simbolo" ed e' trasmesso per un quanto di tempo. La quantita' di simboli che e' possibile trasmette in un secondo e' detta "baud rate".
+
+Schemi di modulazione che trasmettono piu' bit per simboli necessitano anche di rapporti segnale/rumore migliori.
+
+Come al solito la distinzione tra simboli diversi implifica avere livelli (A, A/2, -A/2, -A) che permettano di separare nettamente il segnale.
+Piu' livelli implicano la necessita' di un rapporto segnale/rumore migliore.
+
+Inoltre sarebbe meglio che due livelli consecutivi non abbiano associati due simboli con distanza di hamming superiore ad 1 per evitare che un errore di un livello porti a errori sui bit maggiori. (si veda esempio nella modulazione a 4 livelli "10" e "01").
+
+\putimage{images/01-07.png}{Esempi di Modulazione}{png:1-7}
+
+Un'altra possibilita' e' quella proprio di avere simboli che siano tagli di un'onda in fasi diverse. Un esempio e' QPSK che permette di avere 2 bit per simbolo.
+
+\putimage{images/01-08.png}{Quadrature Phase Shift Keying}{png:1-8}
+
+\section{Multiplexing e Accesso Multiplo}
+
+Il multiplexing e' l'insieme di tutte quelle tecniche atte a condividere la capacita' di un canale per combinare piu' segnali in uno solo. Questa puo' esse ottenuta partizionando risorse come frequenze, tempo e codici.
+Il demultiplexing, ca va sans dire, e' l'operazione inversa al multiplexing.
+
+\putimage{images/01-09.png}{Tassonomia del Multiplexing}{png:1-9}
+
+\subsection{Frequency Division Multiplexing}
+
+La banda del canale e' divisa per il numero di segnali da trasportare e un frammento e' assegnato a ciascuno. Il risultato e' una portante che trasporta piu' segnali contemporaneamente su frequenze diverse.
+Il Wavelength Division Multiplexing e' una forma di FDM utilizzata per la fibra ottica.
+
+\putimage{images/01-10.png}{Schema}{png:1-10}
+
+\subsection{Orthogonal Frequency Division Multiplexing}
+
+Anche qui la banda e' divisa ma stavolta in una quantita' grande di piccole bande che poi possono essere assegnate ai segnali da trasmettere.
+E' importante afferrare che questi assegnamenti possono essere discontinui in modo da non penalizzare troppo alcuni segnali se una parte della banda e' in un certo momento soggetta ad interferenza.
+Tipico di sistemi in cui la qualita' del segnale cambia molto dinamicamente (Wireleass domain per esempio).
+
+E' conosciuta anche come Discrete Multitone (DMT).
+
+\putimage{images/01-11.png}{Schema}{png:1-11}
+
+\subsection{Synchronous Time Division Multiplexing}
+
+Qui e' il tempo di trasmissione ad essere suddiviso in time slots e in ognuno di essi viene trasmesso un frame di uno dei segnali piu' o meno ciclicamente.
+I frame contengono l'informazione per la sincronizzazione (quando un nuovo frame inizia.
+Come nota, e' possibile ma complicato trasmettere piu' sorgenti con differenti bit rate.
+Synchronous Digital Hierarchy e' una infrastruttura di trasmissione ad alta velocita' basata su TDM per trasportare segnale (inclusa la banda larga).
+
+\putimage{images/01-12.png}{Schema}{png:1-12}
+
+\subsection{Asynchronous Time Division Multiplexing}
+
+Anche piu' si divide il tempo ma non e' costante (posso avere dei buchi).
+Questa variante e' piu' performante nelle comunicaizoni a commutazione di pacchetto che di circuito.
+I frame possono essere slotted (Asynchronous Transfer Mode) o unslotted (IP).
+Come nota, e' piu' semplice trasmettere piu' sorgenti con differenti bit rate rispetto a STDM.
+
+\putimage{images/01-13.png}{Schema}{png:1-13}
+
+\subsection{Statistical Multiplexing}
+
+ATDM da la possibilita' di adottare tecniche di adattamento della condivisione del segnale per ottimizzare l'uso di esso con traffico con picchi geerato da varie sorgenti.
+Utile quando la quantita' di traffico oscilla nel tempo.
+
+In base allo stato del canale posso decidere se trasmettere $N$ o $2N$ sorgenti per esempio, per garantire maggior uso possibile ma anche meno perdite possibili.
+
+\putimage{images/01-14.png}{Schema}{png:1-14}
+
+\subsection{Code Division Multiplexing}
+
+Ogni segnale $S_i$ e' moltiplicato per un codice $C_i$ e viene inviato. Quando piu' segnali codificati si sommano, il ricevitore e' in grado di distinguere i piu' segnali. Questo grazie al fatto che i codici sono ortogonali ($C_iC_j = 0 \forall i \neq= j$).
+
+\putimage{images/01-15.png}{Schema}{png:1-15}
+
+Per esempio se ho una stazione che deve trasmettere piu' segnali a 4 ricevitori distinti, puo' effettuare gli invii in questo modo per evitare che i segnali si sovrappongano e i ricevitori fraintendano.
+
+\putimage{images/01-16.png}{Esempio - Situazione}{png:1-16}
+
+\putimage{images/01-17.png}{Esempio - Trasmissione}{png:1-17}
+
+\putimage{images/01-18.png}{Esempio - Ricezione}{png:1-18}
+
+\section{Accesso Multiplo}
+
+E' un concetto simile al multiplexing: consente di condividere la capacita' di un canale concorrentemente tra sorgenti differenti.
+Utilizzati di frequente negli schemi wireless e in generale anche radio che sono "shared" per la loro natura.
+
+La differenza fondamentale rispetto al multiplexing e' che in questo caso abbiamo proprio sorgenti diverse che vogliono trasmettere ognuna un segnale, al contrario di esso dove avevamo una sorgente che doveva trasmettere piu' segnali contemporaneamente.
+
+\putimage{images/01-19.png}{Tassonomia di Accesso Multiplo}{png:1-19}
+
+\section{Mezzi di Trasmissione}
+
+Ci sono sia mezzi di trasmissione guidati (doppini e fibra ottica) che trasmissioni non guidate (onde radio).
+
+\section{Mezzi Guidati}
+
+\subsection{Doppini}
+
+Sono composti di fili di rame isolati avvitati tra loro per evitre le interferenze. Una coppia di cavi paralleli agirebbe come un'antenna, mentre avvitandoli si genera interferenza distruttiva che aiuta la propagazione affidabile di segnale.
+Spesso nello stesso cavo sono presenti piu' coppie avvitate: queste usano passi diversi di avvitamento per evitare il piu' possibile le interferenze.
+
+\putimage{images/01-20.png}{I Doppini Telefonici sono la base dell'infrastruttura che permette la telefonia e l'ADSL/VDSL}{png:1-20}
+
+\subsection{Fibra Ottica}
+
+I cavi in fibra ottica sono cavi molto fini di fibra di vetro che possono propagare luce quasi infrarossa con bassissima attenuazione.
+Il principio alla loro base e' la \textbf{total internal reflection}. Un sottile filo di vedro centrale e' rivestito da uno strato di vetro con basso indice refrattivo.
+La banda limite e' alta quindi dominano le infrastrutture di dorsale.
+
+\putimage{images/01-21.png}{Fibra Ottica}{png:1-21}
+
+Principalmente dobbiamo distinguere:
+
+\subsubsection{Fibre Multi Modali}
+
+Accomodano la propagazione di segnale con velocita' differenti ma questa dispersione limita il prodotto banda-distanza.
+Sono piu' facili da ottnere rispetto alle altre, ma si preferiscono comunque quelle piu' sottili perche' trasportano meglio il segnale.
+
+\putimage{images/01-22.png}{Fibra Ottica Multi Modale}{png:1-22}
+
+\subsubsection{Fibre Mono Modali}
+
+Evitano la dispersione di segnale e possono trasportare molta piu' banda a parita' di distanza, ma costano un po' in relazione a quanto devono essere sottili.
+
+\putimage{images/01-23.png}{Fibra Ottica Mono Modale}{png:1-23}
+
+\section{Radio}
+
+\putimage{images/01-24.png}{Spettro delle Onde Radio}{png:1-24}
+\putimage{images/01-25.png}{Quello che ci interessa}{png:1-25}
+
+Una frettolosa catalogazione delle comunicazioni radio di nostro interesse:
+
+\begin{itemize}
+  \item Wireless Local Area Networks (WLANs) and Fixed Wireless Access (FWA): utilizzano una banda 2.4 GHz – 5 GHz unlicensed (se vuoi evitare interferenze, ovvero che qualcuno trasmetta devi pagare); verso 5 GHz si iniziano ad avere problemi con pioggia e nebbia.
+  \item Mobile radio networks (2G, 3G, 4G, 5G): utilizzano la banda 800 MHz – 2.6 GHz; con poca energia e' possibile trasmettere un segnale decente a grandi distanze.
+  \item Satellite networks and 5G mobile radio network: utilizzano la banda 3 – 30 GHz: la banda disponibile e' ampia ma si risente come prima di pioggia e nebbia.
+\end{itemize}
+
+\subsection{Antenne}
+
+Le antenne possono irradiare energia nello spazio (trasmissione) e catturare energia dallo spazio (ricezione).
+In generale possono irradiare in modo uniforme in tutte le direzioni, oppure concentrato in alcune direzioni.
+
+\putimage{images/01-26.png}{Propagazione del Segnale con le Antenne}{png:1-26}
+
+\subsection{Antenne Direzionali}
+
+I terminali mobili solitamente utilizzano antenne omnidirezionali, per poter trasmettere indipendentemente dalla posizione della stazione piu' vicina.
+Invece le stazioni impiegano delle antenne direzionali, ovvero antenne che ricevono/trasmettono per un angolo variabile del piano (settore, sono chiamate anche antenne settoriali).
+I collegamenti punto-a-punto e le stazioni satellitari utilizzano antenne paraboliche che possono concentrare il segnale in una direzione.
+
+\putimage{images/01-27.png}{Antenne Direzionali}{png:1-27}
+
+\subsection{Caratteristiche del Canale}
+
+Le comunicazioni radio sono "broadcast" per loro natura, di solito si impiega una architettura centralizzata per coordinare le trasmissioni. Usualmente i terminali possono parlare solo con la stazione.
+
+\putimage{images/01-28.png}{Architettura Stazione}{png:1-28}
+
+\subsection{Impedimenti di Trasmissione Radio}
+
+Il segnale radio si attenua con il quadrato della distanza ed e' soggetto a variazioni di caratteristiche se incontra degli ostacoli.
+
+\putimage{images/01-29.png}{Ostacoli}{png:1-29}
+
+Approfondiamo due fenomeni di interferenza, generati data la natura di onde:
+
+\begin{itemize}
+  \item multi-path fading: un segnale, in seguito alla riflessione parziale o totale, giunge al ricevitore piu' volte con percorsi diversi.
+  \item shadow fading: il contatto con un oggetto grosso puo' ostacolare la ricezione del segnale.
+\end{itemize}
+
+\putimage{images/01-30.png}{Interferenze}{png:1-30}
+
+Per ovviare a questi problemi si agisce con il controllo di potenza (piu' energia per irradiare, drena la batteria dei ceullari) o tecniche di modulazione/coding viste precedentemente.
+
+Frequenze piu' alte soffrono di attenuazione maggiore in relazione alla distanza, quindi per coprire una vasta area sono necessarie piu' antenne.
+
+\putimage{images/01-31.png}{Copertura}{png:1-31}
+
+Per quanto riguarda l'nterazione della stazione con i terminali nei collegamenti Uplink e Downlink si nota che viene usato il Multiplexing nel caso di Downlink e Accesso Multiplo nel caso di Uplink.
+
+\putimage{images/01-32.png}{Uplink / Downlink}{png:1-32}
+
+Esiste anche la possibilita' di effettuare il cosiddetto Duplexing, ovvero l'uso di tecniche di multiplexing per accomodare entrami uplink e donwlink.
+Un esempio sono il TDM (suddifido gli slot tra i due versi) e il FDM (suddivido le frequenze tra i due versi).
+
+\putimage{images/01-33.png}{Duplexing}{png:1-33}
+
+\subsection{Multiple Input Multiple Output}
+
+I sistemi MIMO sfruttano la coesistenza di piu' antenne trasmettitrici per trasmettere lo stesso segnale a piu' antenne ricevitrici in modo da ridondare il segnale.
+Il Massive MIMO e' una tecnologia adottata nelle reti 5G basato sul MIMO.
+
+\putimage{images/01-34.png}{MIMO}{png:1-34}
