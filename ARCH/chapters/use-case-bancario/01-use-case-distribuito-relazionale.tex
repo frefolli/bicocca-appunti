@@ -38,15 +38,15 @@ Dopo di che possiamo anche immaginare di mantenere delle copie di alcuni frammen
 
 \section{Modelli Architetturali per DBMS}
 
-Un \paragraph{DBMS} Distribuito Eterogeneo Autonomo e' una federazione di DBMS che collaborano nel fornire servizi di accesso ai dati con livelli di trasparenza definiti.
+\paragraph{Un DBMS} Distribuito Eterogeneo Autonomo e' una federazione di DBMS che collaborano nel fornire servizi di accesso ai dati con livelli di trasparenza definiti.
 
 \putimage{images/01-04.png}{}{png:1-4}
 
-Per \paragraph{trasparenza} si intende la proprieta' di nascondere le diversita' tra basi di dati nei nodi del sistema riguardo alla distribuzione, all'eterogeneita' e all'autonomia dei nodi.
+\paragraph{Per trasparenza} si intende la proprieta' di nascondere le diversita' tra basi di dati nei nodi del sistema riguardo alla distribuzione, all'eterogeneita' e all'autonomia dei nodi.
 
 \subsection{Autonomia}
 
-Per \paragraph{autonomia} si intende il grado di indipendenza dei nodi che puo' assumere varie forme:
+\paragraph{Per autonomia} si intende il grado di indipendenza dei nodi che puo' assumere varie forme:
 
 \begin{itemize}
   \item \textbf{Di progetto}: ogni nodo adotta un proprio modello dei dati e sistema di gestione delle transazioni
@@ -54,15 +54,15 @@ Per \paragraph{autonomia} si intende il grado di indipendenza dei nodi che puo' 
   \item \textbf{Di esecuzione}: ogni nodo decide in che modo eseguire le transazioni che gli vengono sottoposte
 \end{itemize}
 
-In \paragraph{DBMS integrati} i dati sono logicamente centralizzati e abbiamo un unico data manager che esegue le transazioni applicative ed orchestra i data manager locali.
+\paragraph{In DBMS integrati} i dati sono logicamente centralizzati e abbiamo un unico data manager che esegue le transazioni applicative ed orchestra i data manager locali.
 
-Si parla di \paragraph{DBMS semi autonomi} quando ogni data manager e' autonomo ma partecipa a transazioni globali, una parte dei dati e' condivisa e si richiedono modifiche archietturali per formare una federazione.
+\paragraph{Si parla di DBMS semi autonomi} quando ogni data manager e' autonomo ma partecipa a transazioni globali, una parte dei dati e' condivisa e si richiedono modifiche archietturali per formare una federazione.
 
-Invece esistono \paragraph{DBMS totalmente autonomi} dove ognuno lavora in completa autonomia ed e' inconsapevole dell'esistenza di altri nodi.
+\paragraph{Invece esistono DBMS totalmente autonomi} dove ognuno lavora in completa autonomia ed e' inconsapevole dell'esistenza di altri nodi.
 
 \subsection{Distribuzione}
 
-La \paragraph{Distribuzione} fa riferimento alla distribuzione dei dati, dove possiamo avere architetture client/server con i dati nel server o distribuzioni peer-to-peer in cui non c'e' distinzione tra client/server e tutti i nodi del sistema sono DBMS equipollenti.
+\paragraph{La Distribuzione} fa riferimento alla distribuzione dei dati, dove possiamo avere architetture client/server con i dati nel server o distribuzioni peer-to-peer in cui non c'e' distinzione tra client/server e tutti i nodi del sistema sono DBMS equipollenti.
 
 \subsection{Eterogeneita'}
 
@@ -78,7 +78,7 @@ Per ciascuna funzione di un DBMS nei suoi nodi possiamo avere una gestione centr
 
 Nella progettazione di un DBMS Distribuito si introduce la fase di progettazione della distribuzione successiva alla progettazione concettuale e le progettazioni logico/fisica diventano locali ai nodi.
 
-Per quanto riguarda \paragraph{Portabilita' e Interoperabilita'} dei DBMS DEA queste sono facilitate dalla standardizzazione di protocolli e linguaggi ma comunque possono avere dei problemi (si pensi ai diversi dialetti adottati da alcuni DBMS ...).
+\paragraph{Per quanto riguarda Portabilita' e Interoperabilita'} dei DBMS DEA queste sono facilitate dalla standardizzazione di protocolli e linguaggi ma comunque possono avere dei problemi (si pensi ai diversi dialetti adottati da alcuni DBMS ...).
 
 \subsection{Vantaggi}
 
@@ -102,15 +102,15 @@ Il query processor deve pianificare una strategia globale accanto a quelle local
 
 \subsection{Frammentazione, Replicazione, Trasparenza}
 
-La \paragraph{frammentazione} e' la possibilita' di allocare porzioni diverse del DB su nodi diversi
+\paragraph{La frammentazione} e' la possibilita' di allocare porzioni diverse del DB su nodi diversi
 
 Questa puo' essere sia verticale (sulle colonne), che orizzonale (sulle righe).
 
 Chiaramente durante la frammentazione e' necessario garantire la \textbf{Completezza} dei dati, la loro \textbf{Ricostruibilita'} e la \textbf{Disgiunzione} (ogni elemento e' in un solo frammento a meno di Replicazione).
 
-La \paragraph{replicazione} e' la possibilita' di allocare le stesse porzioni di DB su nodi diversi
+\paragraph{La replicazione} e' la possibilita' di allocare le stesse porzioni di DB su nodi diversi
 
-La \paragraph{trasparenza} rende possibile al sistema di accedere ai dati senza sapere dove sono allocati. Questa in particolare e' una caratteristica che di solito si ottiene solo pagando una certa cifra (altrimenti solitamente bisogna indirizzare tutto a mano).
+\paragraph{La trasparenza} rende possibile al sistema di accedere ai dati senza sapere dove sono allocati. Questa in particolare e' una caratteristica che di solito si ottiene solo pagando una certa cifra (altrimenti solitamente bisogna indirizzare tutto a mano).
 
 Questa e' solitamente di due tipi:
 
