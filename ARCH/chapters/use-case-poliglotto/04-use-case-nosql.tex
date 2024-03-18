@@ -1,0 +1,126 @@
+\chapter{Use Case NOSQL}
+
+\section{Use Case - 1}
+
+L'obiettivo e' costruire un DB per memorizzare le risposte di un API in ambito crypto: date le API response si vuole costruire delle tabelle per gestirne i dati.
+
+\putimage{images/04-01.png}{Esempio di Risposta}{png:4-1}
+
+Si puo' pensare di costruire una tabella per ogni struttura di risposta, ma c'e' un problema, i dati possono essere strutturati:
+
+\putimage{images/04-02.png}{Esempio di Schema Strutturato}{png:4-2}
+
+Abbiamo bisogno di un modo per rappresentare un documento multi livello o strutturato senza esplosione delle tabelle, non possiamo creare una tabella per ogni possibile struttura diversa o per ogni array.
+
+\putimage{images/04-03.png}{Esplosione delle Entita'}{png:4-3}
+
+Qui si evidenzia il problma fondamentale delle applicazioni che lavorano su basi di dati: il collante tra il DB e l'applicazione, la configurazione.
+Esiste ORM come tanti altri paradigmi ma generalmente serve molta configurazione per mappare i dati da e al DB.
+
+\putimage{images/04-04.png}{Il Collante}{png:4-4}
+
+\section{Use Case - 2}
+
+Si vuole creare un nuovo social network perche' non ne esistono gia' troppi. Serve una basi di dati \textbf{relazionale} per memorizzare gli utenti e le relazioni \textit{segue} e \textit{seguito da}.
+
+\putimage{images/04-05.png}{Schema del DB}{png:4-5}
+
+A volte il problema non e' solo schematizzare i dati, ma anche interagirci ... gia' una query per trovare gli \textit{amici degli amici} e' "complessa", figuriamoci se dovessi andare avanti con gli \textit{amici degli amici degli amici degli amici} (se pensi che sia improbabile non hai lavorato sui piani di manutenzione e le configurazioni dei livelli).
+Il sistema potrebbe anche non reggere fisicamente a certi tipi di operazioni.
+
+\putimage{images/04-06.png}{Query di "Amici di Amici"}{png:4-6}
+
+\section{NoSQL}
+
+E' un insieme di modelli di rappresentazione dati + software di gestione che sperimentano soluzioni alternative a SQL.
+Sono schemaless (senza schema), i dati sono lo schema (durante l'inserimento la memorizzazione implica la sua struttura).
+
+Il vantaggio e' che i cambiamenti non sono onerosi, ma il problema e' che non si sa cosa contenga un database.
+Lo schema sono i dati stessi, e' necessario leggerli, non esiste un modo per sapere la loro struttura.
+
+C'e' l'assunzione di mondo aperto (TODO).
+Piu' semplice e' il modello piu' scala bene ed e' flessibile.
+
+\putimage{images/04-07.png}{Modelli NoSQL}{png:4-7}
+
+\subsection{Key-Value}
+
+Un esempio e' Redis. E' il modello piu' semplice che si possa immaginare: una tabella chiave valore.
+Spesso e' tutto in memory.
+
+\subsection{Wide Column}
+
+Un esempio e' Cassandra. Ogni riga ha dei campi e qualcosa di diverso, non specifico uno schema ma solo i dati che conosco su una certa riga.
+
+\putimage{images/04-08.png}{Esempio}{png:4-8}
+
+\subsection{Document Based}
+
+Un esempio e' CouchDB. E' un archivio di documenti (JSON per esempio). I documenti sono indirizzati nel DB tramite una chiave unica e si possono effettuare query di ricerca su essi.
+
+\putimage{images/04-09.png}{Esempio}{png:4-9}
+
+\subsection{Graph Based}
+
+Un esempio e' Neo4j.
+
+\putimage{images/04-10.png}{Esempio}{png:4-10}
+
+\subsection{Comfronto}
+
+Ogni modello ha i suoi pregi e i suoi difetti, per esempio un Grafo non puo' essere distribuito in modo orizzontale su piu' macchine mentre un Key Value non ha problemi.
+
+\putimage{images/04-11.png}{Complessita}{png:4-11}
+
+\putimage{images/04-12.png}{Dimensione e Gomplessita}{png:4-12}
+
+\section{Connettere i Dati}
+
+\subsection{Model Data}
+
+Il problema rimane come mettere insieme dati legati fra loro.
+
+\putimage{images/04-13.png}{Esempio Relazionale}{png:4-13}
+
+Nel modello documentale i dati possono essere innestati, anche quelli delle relazioni delle "entita'":
+
+\putimage{images/04-14.png}{Esempio JSON}{png:4-14}
+
+Il problema di un approccio del genere e' che l'unico modo per accedere ai dati delle relazioni sono costretto a passare per i singoli documenti.
+L'esempio di prima assume che si acceda sempre alle auto solo dopo alle persone.
+
+E' necessario progettare la base di dati in base al problema che si deve risolvere e per come li deve processare l'applicazione. (<<A basi di dati si insegnava il contrario, ci scusiamo>> - Maurino).
+
+\subsection{Model Comparison}
+
+Questi sono diversi modelli per rappresentare gli stessi dati. Non esiste un modello giusto o sbagliato, ne esiste solo un piu' corretto in base all'ambito e alle risorse del problema (e' appaltato al progettista l'onere della scelta).
+
+\putimage{images/04-15.png}{Esempio Relazionale}{png:4-15}
+
+\putimage{images/04-16.png}{Esempi NoSQL}{png:4-16}
+
+Diventa molto divertente lavorare con modelli ML su strutture a grafo o a documento. Il problema e' avere i dati nella forma d'uso, altrimenti e' necessario trasformarli o estrarre banche dati che possono introdurre errori (oversampling se porto i dati dell'entita' nella relazione per esempio).
+
+\section{Key Value}
+
+Il modello e' molto semplice, associo ad una chiave un valore (generalmente blob) accanto a cui posso salvare anche informazioni sul tipo del dato.
+
+\putimage{images/04-17.png}{Modello Key Value}{png:4-17}
+
+E' generalmente molto efficiente grazie all'uso delle HashTable e si presta alla distribuzione. Le operazioni sono le solite: aggiunta, cancellazione, ricerca.
+
+\subsection{Redis}
+
+Redis accomoda diversi tipi di dati: hashset, liste, code ... cosi' come i dati "primitivi" (stringhe, interi).
+
+\putimage{images/04-18.png}{Esempio di Record}{png:4-18}
+
+\putimage{images/04-19.png}{Modello di Redis}{png:4-19}
+
+\subsection{Wide Column}
+
+\subsection{BigTable}
+
+\subsection{HBase}
+
+\subsection{Cassandra}
