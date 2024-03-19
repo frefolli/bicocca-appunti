@@ -75,12 +75,14 @@ La fibra raggiunge il centro di sismistamento centrale della rete di accesso.
 \subsection{Fiber to the Cabinet}
 
 La fibra raggiunge il distribution point (nel Multi-Service Access Node (MSAN) deve essere installato un Mini DSLAM).
+Il Mini DSLAM deve essere alimentato in qualche modo dalla corrente elettrica: questo e' fatto con il Reverse Power Feeding (ovvero le porte del dopping alimentano il Mini DSLAM, come con i cavi USB ...).
 
 \putimage{images/02-07.png}{FTTC}{png:2-7}
 
 \subsection{Fiber to the Builing}
 
 La fibra raggiunge il distribution box (anche qui e' necessario un MSAN).
+Di solito questo non si fa: si collega la rete direttamente alla casa dell'utente (FTTH).
 
 \putimage{images/02-08.png}{FTTB}{png:2-8}
 
@@ -90,8 +92,82 @@ L'integrazione della fibra permette di raggiungere prestazioni migliori a parita
 
 \putimage{images/02-09.png}{Recap}{png:2-9}
 
+\subsection{Fiber to the Home}
+
+Due possibilita': Fibra punto a punto, Passive Optical Network.
+
+\begin{itemize}
+  \item P2P: A partire dalla centrale si porta una fibra singola a casa dell'utente per ognuno di essi. Soluzione tipica degli utienti business (perche' pagano ...). Linea dedicata a 1 Gbit/s per direzione. Mux/Demux avviene al Metropolitan Point of Presence per il traffico che arriva da piu' fibre.
+  \item PON: Una singola fibra fino a una catena di splitter che diramano in fibre ad albero. Ogni utente ha una fibra dal suo Optical Network Unit allo splitter piu' vicino. Dalla centrale (Optical Line Termination) al primo splitter passa un solo cavo in fibra. Si usa molto meno cavo che nella prima soluzione, ma la banda e' condivisa con gli altri utenti (non dedicata). Soluzione tipica degli utenti residenziali.
+\end{itemize}
+
+Tecnologia FTTH GPON: downstream avviene in broadcast, mentre l'upstream e' un TDMA governato dall'OLT.
+
+\putimage{images/02-09.png}{FTTH P2P}{png:2-9}
+\putimage{images/02-10.png}{FTTH PON}{png:2-10}
+
+\subsubsection{Monopoli}
+
+Si riporta l'architettura della rete di accesso installata da Open Fiber.
+
+Gli alberi passivi dei singoli operatori sono collegati ad un cabinet che poi e' collegato in ultima istanza alla casa. Questo ha il vantaggio di dover installare solo una volta l'infrastruttura di prossimita' e poter collegare tutti gli OLT che voglio al cabinet con costi inferiori.
+
+Si installa un PTE a casa dell'utente per cablare l'edificio alla sua costruzione e completare il collegamento solo quando l'utente decide di installare la fibra in casa.
+
+\putimage{images/02-11.png}{Esempio di Open Fiber, monopolista di quartiere}{png:2-11}
+
+La rete PON puo' essere utilizzata anche per semplificare l'installazione di una rete di accesso FTTB (meno costi, piu' modularita' se vuoi ...):
+
+\putimage{images/02-12.png}{FTTB con PON}{png:2-12}
+
+\subsection{Ok ma perche' non soluzioni di sola fibra?}
+
+Perche' costa, e i cablaggi in fibra sulle reti di accesso secondario (prossimita') costano generalmente molto rispetto alla rete primaria (vicina alla centrale), probabilmente per il contesto urbano.
+
 \section{Fixed Wireless Access Network}
 
+Fondamentalmente abbiamo il cablaggio in fibra fino ad una stazione radio e poi si usano le onde radio per trasmettere agli utenti finali. E' una soluzione tipica di ambienti montani o collinari stile Castell'Arquato dove e' oggettivamente difficile portare un altro genere di infrastruttura.
+Usata anche in zone con bassa densita' di urbanizzazione per questione di costi (sarebbe troppo costoso avere un'infrastruttura capillare per due utenti in croce).
+"Utile per ridurre le diseguaglianze tecnologiche", ovvero con un giro di parole connettere anche chi vive isolato dalla rete digitale.
+
+\putimage{images/02-13.png}{Architettur FWA}{png:2-13}
+
+Chiaramente gli utenti possono soffrire di interferenze date da ostacoli lungo la "linea" del segnale, oppure da un'estrema vicinanza/lontananza dalla stazione.
+In base a dove sono posizionati gli utenti e' necessario scegliere un tipo di antenna che trasmetta in linea retta, omnidirenzionale o settoriale.
+E' possibile nel caso di distanze ravvicinate di dotare l'utente di router indoor con costi di installazione bassissimi rispetto a quelli outdoor.
+La velocita' e' considerevole ma sicuramente inferiore a quelle a mezzo guidato moderne (> ~30 Mbit/s).
+
 \section{Satellite Access Network}
+
+Anche questa e' "un'ottima" soluzione per connettere le zone disabitate o isolate. La fibra arriva fino alla stazione di trasmissione satellitare. Il segnale e' trasmesso ai satelliti che lo fanno rimbalzare sulle antenne degli utenti a terra.
+C'e' la possibilita' di avere anche stazioni satellitari di terra in ricezione che poi inviano il segnale o tramite onde radio o tramite cablaggio nell'area servita.
+
+La latenza e' purtroppo un problema, e in certe condizioni puo' impedire la comunicazione real-time.
+
+\putimage{images/02-14.png}{Architettura SAN}{png:2-14}
+
+I satelliti possono essere:
+
+\begin{itemize}
+  \item Geostazionari (GEO): non utilizzati per comunicazioni real-time per via dell'alta latenza (> 500ms), ma e' comunque adatta alle trasmissioni TV, la velocita' orbitale e' uguale a quella di rotazione della terra quindi sono "a posizione fissa". Il problema e' che non si possono servire i poli perche' essi orbinano lungo il piano equatoriale.
+  \item Orbita Media (MEO): non e' utilizzato per le comunicazioni internet.
+  \item Orbita Bassa (LEO): hanno latenza piu' bassa (< 50ms) ma si muovono molto piu' velocemente di quelli Geostazionari quindi sono piu' difficili da gestire.
+\end{itemize}
+
+\subsection{GEO}
+
+Le trasmissioni satellitari (GEO, ndr) hanno un grande range di copertura per via della posizione elevata.
+La copertura puo' essere \textbf{Single Beam} (un'area e' servita da un singolo segnale) o \textbf{Multi Beam} (un'area e' servita da tante irradiazioni nelle sotto aree con frequenze diverse), quest'utlima permette di aumentare la larghezza di banda (?).
+
+Il downstream e' gestito con TDM e l'upstream con TDMA o CDMA.
+
+\putimage{images/02-15.png}{Single/Multi Beam}{png:2-15}
+
+\subsection{LEO}
+
+I satelliti sono piu' leggeri e necessitano di una rete fitta di stazioni di terra sul globo (ad oggi nonostante vari claims, nessuno lo ha fatto, forse per fortuna aggiungerei).
+Per servire tutte le zone e' necessaria anche una grandissima quantita' di satelliti in orbita che ad oggi nessun operatore garantisce (ancora, nonostante vari claims), ma hanno comunque riempito l'orbita di spazzatura.
+Il terminal dell'utente tenta di connettersi al satellite piu' vicino e si risintonizza con un altro quando quello finisce fuori dal campo visibile.
+In futuro si potrebbe fare \textit{satellite routing}.
 
 \section{Mobile Radio Access Network}
