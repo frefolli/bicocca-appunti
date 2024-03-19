@@ -1,0 +1,57 @@
+\chapter{Wireless Area Network}
+
+E' una soluzione di rete dedicata piu' costosa di una generalizzata, utilizzata per collegare entita' di tipo business.
+Si chiama \textit{wide} perche' e' generalmente geograficamente estesa.
+
+\putimage{images/03-01.png}{WAN}{png:3-1}
+
+\subsection{Physical WAN}
+
+L'organizzazione che deve far uso di una rete dedicata possiede e gestisce fisicamente un'infrastruttura che collega piu' entita' o sottoentita'.
+E' la soluzione piu' costosa in termini di risorse e denaro, ma da cui si ottiene in ritorno una larga banda e buonissime prestazioni.
+E' possibile noleggiare pezzi di infrastruttura di ISP che non sono utilizzati (dark fibers).
+
+\putimage{images/03-02.png}{P. WAN}{png:3-2}
+
+\subsection{Leased WAN}
+
+L'organizzazione acquista con un contratto il servizio di circuito al gestore della rete con alcuni tipi di garanzie.
+Costa meno ma si ha meno controllo sull'infrastruttura.
+
+\putimage{images/03-03.png}{L. WAN}{png:3-3}
+
+\subsection{Multiprotocol Label Switching WAN}
+
+E' una soluzione meno costosa che permette ad un'organizzazione di acquistare con un contratto un servizio di mesh tra alcune entita'.
+
+\putimage{images/03-04.png}{M.L.S. WAN}{png:3-4}
+
+\section{Multiprotocol Label Switching}
+
+MPLS da la possibilita' di creare delle linee virtuali tra Provider Edge Router per connettere le sottoreti mesh.
+Le linee possono essere dinamicamente gestite ed ottimizzate (flessibilita').
+
+\putimage{images/03-05.png}{MPLS}{png:3-5}
+
+\subsection{Label Swapping Forwarding}
+
+Un pacchetto IP viene incapsulato in un pacchetto MPLS, e questo header (\textit{label}) viene utilizzata per fare il routing virtuale all'interno del circuito.
+Gli indirizzi MPLS sono locali alla rete MPLS, e i pacchetti possono essere incapsulati piu' volte.
+
+\putimage{images/03-06.png}{MPLS Packet}{png:3-6}
+
+Durante il routing le label vengono sostituite al transito per accomodare il flusso di dati.
+
+\putimage{images/03-07.png}{MPLS Routing}{png:3-7}
+
+Il Label Edge Router aggancia o disaggancia l'header MPLS rilasciando il pacchatto IP nella destinazione.
+
+\putimage{images/03-08.png}{Label Edge Router}{png:3-8}
+
+\subsection{Confronto rispetto a Destination-Oriented}
+
+In IP il forwarding non dipende dalla sorgente del flusso ma solo dalla destinazione, mentre in MPLS il focus e' il circuito dedicato ad una certa sorgente che viaggia per una certa destinazione.
+
+\putimage{images/03-09.png}{IP}{png:3-9}
+
+\putimage{images/03-10.png}{MPLS}{png:3-10}
