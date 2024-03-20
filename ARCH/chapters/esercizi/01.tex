@@ -1,0 +1,90 @@
+\chapter{20/03}
+
+\section{1}
+
+Si consideri la seguente base di dati:
+
+\begin{itemize}
+  \item Production(SerialNumber, PartType, Model, Quantity, Machine)
+  \item Pickup(SerialNumber, Lot, Client, SalesPerson, Amount)
+  \item Client(ClientID, Name, City, Address)
+  \item SalesPerson(SalesID, Name, City, Address)
+\end{itemize}
+
+Inoltre:
+\begin{itemize}
+  \item Si assumano 4 production centers (Dublin, San Jose, Zurichm Taiwan), e tre punti vendita (San Jose, Zurich, Taiwan).
+  \item Ogni production center e' responsabile per una parte: Cable (Dublin), CPU (San Jose), Keyboard (Zurich), Screen (Taiwan).
+  \item Si supponga che i clienti di X siano serviti solo dalle persone del reparto vendite di X. (assumi che Zurich serva anche Dublin).
+  \item Assumi che ogni area geografica abbia il suo database.
+\end{itemize}
+
+Crea una frammentazione orizzontale per le tabelle.
+
+\putimage{images/e01-01.png}{}{png:e1-1}
+
+\subsection{Soluzione}
+
+Se ho gia' creato un frammento potrei riutilizzarlo in un'altra query ma qui assumiamo che ogni query veda solo lo schema globale.
+
+Frammento Production:
+\begin{itemize}
+  \item Production\_1 = $\sigma _ {PartType = CPU} (Production)$
+  \item Production\_2 = $\sigma _ {PartType = KEYBOARD} (Production)$
+  \item Production\_3 = $\sigma _ {PartType = SCREEN} (Production)$
+  \item Production\_4 = $\sigma _ {PartType = CABLE} (Production)$
+\end{itemize}
+
+Frammento Pickup:
+\begin{itemize}
+  \item Pickup\_1 = $\pi _ {*Pickup} (Pickup \triangleright \triangleleft _ {Pr.SerialNumber = Pi.SerialNumber} (\sigma _ {PartType = CPU} (Production)))$
+  \item Pickup\_2 = $\pi _ {*Pickup} (Pickup \triangleright \triangleleft _ {Pr.SerialNumber = Pi.SerialNumber} (\sigma _ {PartType = KEYBOARD} (Production)))$
+  \item Pickup\_3 = $\pi _ {*Pickup} (Pickup \triangleright \triangleleft _ {Pr.SerialNumber = Pi.SerialNumber} (\sigma _ {PartType = SCREEN} (Production)))$
+  \item Pickup\_4 = $\pi _ {*Pickup} (Pickup \triangleright \triangleleft _ {Pr.SerialNumber = Pi.SerialNumber} (\sigma _ {PartType = CABLE} (Production)))$
+\end{itemize}
+
+Frammento Client:
+\begin{itemize}
+  \item Client\_1 = $\sigma _ {City = San Jose} (Client)$
+  \item Client\_2 = $\sigma _ {City = Zurich or City = Dublin} (Client)$
+  \item Client\_3 = $\sigma _ {City = Taiwan} (Client)$
+\end{itemize}
+
+
+Per qualche ragione non esistendo una sede di Dublin ci sono comunque SalesPerson con City = Dublin, quindi le devo assegnare a Zurich. Frammento SalesPerson:
+\begin{itemize}
+  \item SalesPerson\_1 = $\sigma _ {City = San Jose} (SalesPerson)$
+  \item SalesPerson\_2 = $\sigma _ {City = Zurich or City = Dublin} (SalesPerson)$
+  \item SalesPerson\_3 = $\sigma _ {City = Taiwan} (SalesPerson)$
+\end{itemize}
+
+\section{2}
+
+\begin{itemize}
+  \item 1) Determine the available quantity of the product 77y6878
+  \item 2) Determine the client IDs who have bought a lot from the retailer Wong, who has an office in Taiwan
+  \item 3) Determine the machines used for the production of the parts type Keyboard sold to the client Brown (only one is present)
+  \item 4) Modify the address of the retailer Brown (only one is present), who is moving form \textit{27 Church St.} in Dublin to \textit{43 Park Hoi St.} in Taiwan
+  \item 5) Calculate the sum of amounts of the orders received in San Josè, Zurich and Taiwan (note that the aggregate functions are also distributable)
+\end{itemize}
+
+\subsection{Soluzione}
+
+\paragraph{1}
+
+\begin{itemize}
+  \item SELECT Quantity FROM Production WHERE SerialNumber = 77y6878
+  \item (SELECT Quantity FROM Production\_1 WHERE SerialNumber = 77y6878) UNION (SELECT Quantity FROM Production\_2 WHERE SerialNumber = 77y6878) UNION (SELECT Quantity FROM Production\_3 WHERE SerialNumber = 77y6878) UNION (SELECT Quantity FROM Production\_4 WHERE SerialNumber = 77y6878)
+  \item (SELECT Quantity FROM Production\_1@Server1 WHERE SerialNumber = 77y6878) UNION (SELECT Quantity FROM Production\_2@Server2 WHERE SerialNumber = 77y6878) UNION (SELECT Quantity FROM Production\_3@Server3 WHERE SerialNumber = 77y6878) UNION (SELECT Quantity FROM Production\_4@Server4 WHERE SerialNumber = 77y6878)
+\end{itemize}
+
+\paragraph{2}
+\begin{itemize}
+  \item SELECT UNIQUE Client FROM Pickup\_3 JOIN SalesPerson\_3 ON Pickup\_3.SalesPerson = SalesPerson\_3.SalesID WHERE SalesPerson\_3.Name = Wong GROUP BY (Client) HAVING COUNT(*) > 10
+\end{itemize}
+
+\paragraph{3}
+
+\paragraph{4}
+
+\paragraph{5}
