@@ -1,0 +1,45 @@
+\chapter{Virtual Private Network}
+
+Le VPN sono reti private virtuali estese dal punto di vista geografico ma che si implementano su un'infrastruttura pubblica anzinche' privata.
+
+In alternativa e' possibile che siano implementate come livello aggiuntivo al MPLS di un ISP.
+
+\putimage{images/04-01.png}{VPN /1}{png:4-1}
+
+\begin{itemize}
+    \item \textbf{Trusted VPN}: sono tipicamente gestite dagli ISP, i quali garantiscono eventualmente requisiti di servizio (quality of service) ma non si occupano di nessun meccanismo di sicurezza particolare.
+    \item \textbf{Secure VPN}: offerte dai VPN providers o configurate da aziende e istituzioni, le quali implementano protocolli di cifratura per la sicurezza delle trasmissioni (ma non garantiscono livelli di servizio).
+    \item \textbf{Hybrid VPN}: una soluzione ibrida gestita dagli ISP.
+\end{itemize}
+
+\putimage{images/04-02.png}{VPN /2}{png:4-2}
+
+\section{MPLS VPN}
+
+La rete MPLS si comporta come un'infrastruttura di Switch, pertanto trasporta direttamente i frame Ethernet. I cavi tra gli switch virtuali sono detti "pseudowires". Si adotta un meccanismo \textit{L2 learning \& forwarding} per instradare i pacchetti come nel livello collegamento.
+
+E' vantaggioso per connettere i Datacenter.
+
+\putimage{images/04-03.png}{VPN on top of MPLS}{png:4-3}
+
+\section{IP Tunneling}
+
+I pacchetti sono incapsulati (ed eventualmente cifrati) all'interno di ulteriori pacchetti IP e viaggiano in maniera trasparente sulla rete.
+
+Questa modalita' di esercizio e' compatibile con la creazione di reti virtuali (per esempio quella usata durante le gare della cyberchallenge) per fornire accesso "simil-locale" a nodi geograficamente separati.
+
+Chiaramente rispetto ad MPLS questo schema e' meno efficiente e flessibile ma e' un tradeoff col fatto che non richiede infrastrutture particolari e puo' essere implementato direttamente sul il livello di rete IP.
+
+\putimage{images/04-04.png}{VPN by IP T.}{png:4-4}
+
+\section{Virtual Local Area Networks}
+
+Sono reti virtuali create per dividere logicamente porzioni di una rete come se fossero "stanze". E' il meccanismo tipico di aziende, istituzioni ed edifici sensibili che richiedono separazione netta del traffico tra terminali per evitare problemi di sicurezza. Sono facili da riconfigurare.
+
+\putimage{images/04-05.png}{VLAN}{png:4-5}
+
+Questa e' implementata in Ethernet tramite l'aggiunta di 4 byte per segnalare priorita' del traffico e VLAN di appartenenza.
+
+\putimage{images/04-06.png}{Ethernet VLAN}{png:4-6}
+
+Dal punto di vista dell'infrastruttura e' richiesto che gli switch siano VLAN-Aware, mentre i terminali possono non esserlo e in quel caso gli switch appenderanno i famosi 4 byte per loro nelle trame ethernet.

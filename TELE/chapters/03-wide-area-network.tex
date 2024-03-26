@@ -55,3 +55,58 @@ In IP il forwarding non dipende dalla sorgente del flusso ma solo dalla destinaz
 \putimage{images/03-09.png}{IP}{png:3-9}
 
 \putimage{images/03-10.png}{MPLS}{png:3-10}
+
+\subsection{Creazione delle Rotte}
+
+La creazione delle rotte in MPLS puo' avvenire o manualmente o in modo automatico tramite un layer di controllo simile per certi versi a quello del livello di Rete dello stack ISO/OSI.
+
+\putimage{images/03-11.png}{MPLS Control Plane}{png:3-11}
+
+Il routing dei pacchetti di controllo avviene normalmente come in IP.
+
+\subsection{Traffic Engineering Database}
+
+E' un database che contiene informazioni circa la topologia dell'infrastruttura, i dati di carico, le limitazioni di banda ... etc e i dati amministrativi con le configurazioni dei clienti. E' utilizzato in MPLS per stabilire le rotte in maniera statica ("offline") o dinamica ("online").
+
+\putimage{images/03-12.png}{MPLS + TED}{png:3-12}
+
+\subsection{Protocolli di Segnalazione}
+
+Un meccanismo di segnalazione e stabilimento delle rotte e' necessario per coordinare i nodi nella distribuzione delle label, riservare/liberare risorse e prevenire i loop.
+
+\subsubsection{Label Distribution Protocol}
+
+Questo e' un protocollo molto basilare che segue il routing dettato dai protocolli IGP.
+Non e' possibile specificare le rotte da seguire (ne' fa uso del TED) e funziona "hop-by-hop" ovvero ogni nodo del percorso agisce autonomamente nella distribuzione delle label.
+Ogni nodo invia la richiesta al nodo successivo, il quale risponde con la label da utilizzare per l'instradamento nel percorso "riservato".
+
+\putimage{images/03-13.png}{LDP /1}{png:3-13}
+\putimage{images/03-14.png}{LDP /2}{png:3-14}
+
+\subsubsection{Constrained LDP Routing}
+
+In questa variante di LDP abbiamo la possibilita' di specificare esplicitamente le rotte da instaurare nodo per nodo.
+Anche qua pero' il funzionamento e' "hop-by-hop".
+
+\putimage{images/03-15.png}{C. LDP R.}{png:3-15}
+
+
+\subsubsection{Resource Reservation Protocol}
+
+La differenza fondamentale rispetto agli altri due e' che in questo caso non sono i singoli nodi a stabilire le label: Il nodo sorgente invia una richiesta di path (con percorso esplicito) al destinatario, il quale procede lui a calcolare le label da distribuire e poi le assegna tramite una risposta che fluisce fino al mittente.
+
+Un'altra particolarita' di questo protocollo e' che puo' fare uso del TED (in questo caso si parla di RSVP-TE).
+In questo modo si puo' distribuire il carico del flusso in modo equo o intelligente lungo la topologia della rete.
+
+
+\putimage{images/03-16.png}{RSVP}{png:3-16}
+
+Nel caso di esempio IP avrebbe mandato tutti i flussi nel percorso piu' veloce, con evidente overload rispetto alla capacita' del canale (quindi avremmo avuto perdite o rallentamenti). Invece RSVP-TE divide il flusso in base allo stato della rete.
+
+\putimage{images/03-17.png}{RSVP-TE /1}{png:3-17}
+
+RSVP-TE puo' anche decidere di fare \textit{Protection Switching}, ovvero riservare una porzione di rete alle emergenze, in modo da essere pronto a switchare l'assegnamento delle rotte per perdere meno dati possibile. Il problema di questo schema e' che occorre bilanciare la quantita' di risorse riservate nella rete per evitare di avere o un throughput troppo basso oppure una bassa capacita' di recupero (esistono schemi 1-N cosi' come 1-1).
+
+Questo tipo di recovery e' molto piu' veloce rispetto a quello dei protocolli IP perche' coinvolge solo una ristretta cerchia di nodi che devono cambiare una label in modo dinamico, non e' richiesta la riconfigurazione di tutta la rete ...
+
+\putimage{images/03-18.png}{RSVP-TE /2}{png:3-18}
