@@ -9,3 +9,160 @@ Tutti i device tradizionali includono un piano dati (che si occupa del movimento
 Il primo tipo di operazioni deve essere velocissimo per favorire il flusso di dati, mentre il secondo puo' essere piu' lento ma comunque in tempi ragionevoli per garantire una risposta adeguata del sistema (di solito sono operazioni complesse che richiedono coordinamento tra nodi).
 
 Entrambi i piani prevedono lo scambio di messaggi, ma nel primo caso sono pacchetti dati, nel secondo di pacchetti di controllo.
+
+\section{Forwarding/Routing Devices}
+
+\subsection{Router}
+
+Il piano di controllo del router aggiorna la tabella di routing (IP $\rightarrow$ Interfaccia di uscita) eseguendo protocolli di instradamento distribuiti (BGP, OSPF ...), e calcolando il percorso migliore per raggiungere ogni destinazione.
+
+Quando un pacchetto dati arriva nel piano dati, si cerca una regola nella tabella di routing (longest prefix wins) e si instrada il pacchetto sulla interfaccia di uscita corrispondente. Se nessuna regola e' trovata, il pacchetto viene scartato.
+
+In piu' possono essere effettuate anche operazioni sui metadati (decremento del TTL).
+
+\putimage{images/05-02.png}{Control/Data Plane}{png:5-2}
+
+Nel dettaglio l'architettura del Router si compone anche di un'infrastruttura di instradamento ad alte prestazioni (\textit{Switching Frabric}) e di algoritmi di scheduling e code per inviare i pacchetti nelle interfacce.
+
+\putimage{images/05-03.png}{Architettura del Router}{png:5-3}
+
+La scelta della regola corretta nella tabella di routing si basa sul Longest Prefix, come detto prima, ma anche su preferenze rispetto al protocollo che le ha generate, cosi' come le metriche sulla distanza e un algoritmo di distribuzione del carico sulle interfacce.
+
+\putimage{images/05-04.png}{Forwarding Process}{png:5-4}
+
+\subsection{Switch}
+
+Quando un pacchetto arriva nel piano dati, si cerca una regola nella tabella di forwaring (MAC $\rightarrow$ Interfaccia di uscita). Se esiste si invia il pacchetto in quella uscita, altrimenti si esegue il \texit{Flooding}, ovvero si invia il pacchetto in broadcast, in tutte le uscite.
+
+\putimage{images/05-05.png}{Control/Data Plane}{png:5-5}
+
+Il Flooding e' pericoloso perche' si rischia di incorrere in cicli lungo la rete di invio dei suddetti pacchetti. Per risolvere questo problema il piano di controllo fa uso del RSPTP, che riduce la topologia logica della rete ad un albero di switch (chiudendo alcune porte nei collegamenti tra switch al flooding).
+
+Oltre a RSTP come visto in precedenza, il piano di controllo fa uso di algoritmi L2 Learning \& Forwarding per riempire la tabella di forwarding.
+
+\putimage{images/05-06.png}{Rapid Spanning Tree Protocol}{png:5-6}
+
+Anche qui l'architettura ha uno Switching Fabric e algoritmi di scheduling. Le similarita' con il router non sono casuale, sono le basi per il SDN.
+
+\putimage{images/05-07.png}{Architettura dello Switch}{png:5-7}
+
+\section{Middleboxes}
+
+\subsection{Firewall}
+
+Il firewall e' un dispositivo in linea, ovvero riceve ogni pacchetto e lo inoltra lui stesso nella sottorete di destinazione (e pertanto richiede hardware dedicato ad alte prestazioni). Di default scarta i pacchetti, ma puo' essere istruito con regole (o \texit{policy}) per accettare, scartare (notificando il mittente), rigettare (non notificandolo), loggare le informazioni sul pacchetto.
+
+Una regola tipo e' qualcosa del genere: \texit{set policy id <#> from <zonein> to <zoneout> <addin> <addout> <protocol/port> <action>}.
+
+Il firewall e' anche un dispositivo stateful, ovvero tiene traccia delle richieste e delle connessioni, quindi per esempio accetta SYNACK solo da porte TCP per cui si e' inviato SYN.
+
+\putimage{images/05-08.png}{Firewall}{png:5-8}
+
+\subsection{Intrusion Detection System}
+
+L'IDS e' un dispositivo non in linea che riceve una copia di tutti i pacchetti che arrivano nella sottorete ed effettua operazioni di controllo complesse (anche molto costose) che permettono di individuare efficaciemente le intrusioni. Se ne rileva una notifica allo switch le azioni da eseguire per determinati pacchetti successivi a quelli che ha letto (non ha controllo su quanto passato prima).
+
+\putimage{images/05-09.png}{IDS}{png:5-9}
+
+Spesso e' configurabile a regole come il Firewall.
+
+\putimage{images/05-12.png}{Regole di Snort}{png:5-12}
+
+\subsection{Anti-DDOS}
+
+Questi sistemi cercano di filtrare le richieste in modo da scartare eventuali flussi malevoli che cercano di effettuare DDOS. Puo' essere implementato come meccanismo dall'ISP (dietro pagamento) o applicato da una rete cloud dedicata che analizza e pulisce il traffico.
+
+\putimage{images/05-10.png}{Anti-DDOS}{png:5-10}
+
+\subsection{Load Balancer}
+
+Il Load Balancer risolve un problema tipico di chi distribuisce contenuti a milioni di utenti: bilanciare le richieste sui server che provvedono ad esse per evitare overload.
+
+Esistono soluzioni:
+\begin{itemize}
+    \item Network based: CDN, Caching, DNS load balancing
+    \item Application-based: reverse proxy
+    \item \textbf{Hardware-based}: Load balance middleboxes
+\end{itemize}
+
+In quest'ultimo troviamo un hardware dedicato che divide le richieste sui server disponibili con algoritmi di bilanciamento rigidi (Round Robin) o adattivi in base ai tempi di risposta o ai livelli di carico dei server.
+
+Inoltre si deve anche preoccupare di mantenere le sessioni, ovvero fare in modo che le richieste di una sessione vadano tutte allo stesso server. La cosa non e' banale e discriminare solo in base all'IP spesso non basta (posso avere tanti nodi che inviano traffico sotto lo stesso indirizzo pubblico), si ricorre quindi per esempio ai cookie.
+
+\putimage{images/05-11.png}{Load Balancer}{png:5-11}
+
+\section{Software Defined Networking}
+
+Molti dispositivi di rete visti in questa sezione avevano la medesima struttura: un piano di controllo che esegue algoritmi per aggiornare una serie di regole, un piano dati che esegue le suddette regole ed instrada i pacchetti con uno Switching Fabric.
+
+\putimage{images/05-12.png}{Coupled}{png:5-12}
+
+L'idea quindi e' di generalizzare questo modello disaccoppiando fisicamente, quindi non solo logicamente, questi due piani. L'infrastruttura di rete quindi diventa "programmabile", con un \textbf{SDN controller} centrale che applica gli algoritmi necessari e conosce la topologia della rete, con delle Southbound Interfaces (SBI) che implementano i collegamenti tra gli "switch" del SDN e il controller, delle Northbound Interfaces (NBI) che impementano il collegamento tra il controller e i servizi di rete. Infine abbiamo gli switch che applicano le regole suddette con paradigma \texit{match + action}.
+
+\putimage{images/05-13.png}{Decoupled}{png:5-13}
+
+
+\subsection{Protocollo OpenFlow}
+
+OpenFlow e' un protocollo per realizzare SDN.
+
+Abbiamo degli "Switch" (termine strano visto che operano dal livello 2 al 4, per la gioia degli inventori dello stack ISO/OSI e dei relativi studenti), che possiedono una \textit{pipeline} di \textbf{Flow Table} (almeno una, le quali definiscono le regole di azione), una Group Table (gestisce le comunicazioni multicast, comprese le istruzioni di flooding) e una Meter Table (mantiene delle statistiche sullo switch).
+
+I \textbf{Channel} permettono ai Controller di aggiornare le Flow Table.
+
+\putimage{images/05-14.png}{Architettura OpenFlow}{png:5-14}
+
+\subsubsection{Flow Table}
+
+Le Flow Table sono attraversate in ordine crescente e possono eseguire azioni condizionate da \textbf{metadata} (compreso l'aggiornamento dei suddetti metadati).
+
+\putimage{images/05-15.png}{Pipeline delle Flow Table}{png:5-15}
+
+Un esempio di Flow Table:
+
+\putimage{images/05-16.png}{Regole delle Flow Table}{png:5-16}
+
+Si riportano solo alcuni campi, ma quelli disponibili (in base alla versione della specifica) sono veramente tanti.
+
+\putimage{images/05-17.png}{Altri campi delle Flow Table}{png:5-17}
+
+Lo stesso si puo' dire con le azioni e le istruzioni che possono essere accoppiate nel campo \textit{Action} delle Flow Table.
+
+\putimage{images/05-18.png}{Azioni/Istruzioni delle Flow Table}{png:5-18}
+
+\subsubsection{Configurazione}
+
+Le Flow Table possono essere istanziate dal Controller quando si accendono gli switch e poi piu' modificare (\textbf{Proactive Conf.}) oppure l'opposto, venire popolate durante l'esecuzione della rete partendo da vuote (\textbf{Reactive Conf.}).
+
+\putimage{images/05-19.png}{Configurazione Reattiva}{png:5-19}
+
+Tipicamente quello che accade e' una situazione mista.
+
+\subsection{SDN + SWAN}
+
+Quello che posso ottenere applicando i principi di SDN alle reti WAN e' che posso pagare per avere piu' servizi in parallelo e poi utilizzare un controller che modula i collegamenti tra Customer Premises Equipment (\texit{CPE}) in base alle prestazioni o all'uso che voglio fare di suddettere reti (per esempio minimizzare l'uso di MPLS che costa un pacco).
+
+\putimage{images/05-20.png}{SD-WAN}{png:5-20}
+
+\subsection{Data Plane Programming}
+
+Il problema di OpenFlow e di tutte le soluzioni hardware based e' che se devo cambiare, aggiungere o togliere cambi devo modificare anche il pezzo di hardware che lo esegue. Si puo' fare un passo avanti a SDN per ottenere un'interfaccia completamente programmabile graize ai protocolli \textbf{PSA} e \textbf{PISA}.
+
+Chiaro che soluzioni con hardware dedicato sono piu' performanti, ma non e' il punto del discorso.
+
+\putimage{images/05-21.png}{Si, PISA}{png:5-21}
+
+Fondamentalmente posso personalizzare il parser di pacchetti tramite un domain specific language (P4) e un compilatore per ottenere un parser programmato ad hoc molto flessibile.
+
+\putimage{images/05-22.png}{P4}{png:5-22}
+
+\subsection{In-Band Network Telemetry}
+
+Un'esempio di applicazione di DPP e' proprio questo.
+Fondamentalmente durante le operazioni di rete tengo traccia programmaticamente le operazioni svolte per tracciare delle metriche sull'uso degli switch e dei dispositivi di rete.
+
+\putimage{images/05-23.png}{IBNT}{png:5-23}
+
+\section{Network Function Virtualization}
+
+TODO:
