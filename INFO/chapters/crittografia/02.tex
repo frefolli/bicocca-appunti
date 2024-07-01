@@ -1,0 +1,88 @@
+\chapter{AES e DES}
+
+\section{DES}
+
+DES \`e il primo crittosistema standard. Utilizza una chiave da 56 bit, interleaved con un bit di non parit\`a in terminazione ad ogni byte, ma noi consideriamo solo i 56 bits.
+
+\paragraph{Generazione delle Chiavi}
+
+Alla chiave originale viene applicata una permutazione e si divide il blocco di bit in due blocchi da 28 bit ciascuno $C_0, D_0$.
+
+A partire da questi si ricavano ad ogni iterazione $C_n, D_n$ da $C_{n-1}, D_{n-1}$ tramite uno shift a sinistra seguendo una tabella che indica 1 o 2 shift in base all'iterazione.
+
+La chiave dell'i-esima iterazione $K_i$ \`e ottenuta tramite una permutazione che seleziona 48 bit a partire dalla concatenazione $C_iD_i$
+
+\paragraph{Cifratura}
+
+Il messaggio \`e diviso in blocchi da 64 bits ciascuno, e ogni blocco viene permutato e splittato in due blocchi da 32 bits $L_0, R_0$.
+Ad ogni iterazione si calcolano $L_n = R_{n-1}$ e $R_{n} - L_{n-1} \xor f(R_{n-1}, K_n)$. Alla fine si applica l'inverso della permutazione iniziale.
+
+La decifrazione segue i passi al contrario.
+
+\paragraph{Funzione $f$}
+
+Il blocco da 32 bits in ingresso \`e espanso a 48 bit secondo una matrice di permutazione e viene xorato con la chiave. Il risultato viene diviso in blocchi da 6 bit e ogni blocco viene trasformato in un blocco di 4 bit tramite delle S-boxes. Il valore da sostituire viene triangolato tramite $x, y$ che sono rispettivamente \textit{primo e ultimo bit}, e i 4 bit interni.
+
+\pragragraph{Pregi e Difetti}
+
+\`E molto veloce (implementato con hardware dedicato per via delle operazioni sui singoli bit) e opera con permutazioni per introdurre non linearit\`a. La versione corrente resiste alla crittoanalisi lineare e differenziale.
+
+Ma ha una sicurezza di soli 56 bits e negli anni 90 gi\`a era stata costruita una macchina per romperlo. Non \`e pi\`u considerato sicuro.
+
+Poi ci sono altri problemi, come chiavi omomorfiche o complementari che permettono di ricostruire il messaggio originale o lo mantengono intatto. (vedi 3DES).
+
+\paragraph{3DES}
+
+Per aumentare la sicurezza del DES si \`e pensato di concatenarlo 3 volte cifrando/decifrando (alternatamente) 3 volte il messaggio con 1, 2 o 3 chiavi diverse in base allo schema. Ma la sicurezza in termini di bit non supera i 112.
+
+\section{AES}
+
+AES \`e la seconda generazione di crittosistemi standard pensato per essere pi\`u robusto e versatile (utilizza chiavi da 128 fino a 256 bits) e per essere pi\`u efficiente, specie quando implementato come software (opera su byte invece che su bits).
+
+Noi analizziamo l'AES-128.
+
+\paragraph{State}
+
+L'algoritmo mantiene uno state di 128 bits (16 bytes) che inizialmente contiene il messaggio originale e alla fine contiene il messaggio cifrato. Questo stato \`e rappresentato come matrice e si fanno operazioni su questa rappresentazione come rotazioni e shifting.
+
+\paragraph{Operazioni}
+
+\begin{itemize}
+  \item State = m
+  \item AddRoundKey
+  \begin{itemize}
+  \item SubBytes
+  \item ShiftRows
+  \item MixColumns
+  \item AddRoundKey
+  \end{itemize}
+  \item SubBytes
+  \item ShiftRows
+  \item MixColumns
+\end{itemize}
+
+\subparagraph{AddRoundKey}
+
+Computa lo xor tra lo state e la chiave derivata.
+
+\subparagraph{SubBytes}
+
+Applica una trasformazione non lineare invertibile, che corrisponde all'inverso nel campo polinomiale $GF(2^8)$ sul polinomio irriducibile $x^8+x^4+x^3+x+1$.
+
+Questo \`e equivalente ad utilizzare ancora una volta delle S-boxes che precalcolano il risultato.
+
+\subparagraph{ShiftRows}
+
+\`E una rotazione verso sinistra delle righe di 0, 1, 2 o 3 posizioni in base all'indice della riga.
+
+\subparagraph{MixColumns}
+
+Moltiplica lo state per una matrice invertibile nel campo $GF(2^8)$.
+
+\paragraph{Chiavi Derivate}
+
+Si necessita di 11 chiavi. Si inizializza un array di 10 word a 4 bytes con alcune costanti. Quindi si applicano rotazioni a sinistra all'interno della word e sostituzioni dei byte nella word con SubBytes.
+
+\paragraph{Sicurezza}
+
+AES adotta la strategia \textit{wide trail} che rende le crittoanalisi lineari e differenziali difficili da applicare. L'unica parte non lineare sono le S-box.
