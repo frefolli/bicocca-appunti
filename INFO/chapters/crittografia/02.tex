@@ -15,7 +15,7 @@ La chiave dell'i-esima iterazione $K_i$ \`e ottenuta tramite una permutazione ch
 \paragraph{Cifratura}
 
 Il messaggio \`e diviso in blocchi da 64 bits ciascuno, e ogni blocco viene permutato e splittato in due blocchi da 32 bits $L_0, R_0$.
-Ad ogni iterazione si calcolano $L_n = R_{n-1}$ e $R_{n} - L_{n-1} \xor f(R_{n-1}, K_n)$. Alla fine si applica l'inverso della permutazione iniziale.
+Ad ogni iterazione si calcolano $L_n = R_{n-1}$ e $R_{n} - L_{n-1} \oplus f(R_{n-1}, K_n)$. Alla fine si applica l'inverso della permutazione iniziale.
 
 La decifrazione segue i passi al contrario.
 
@@ -23,7 +23,7 @@ La decifrazione segue i passi al contrario.
 
 Il blocco da 32 bits in ingresso \`e espanso a 48 bit secondo una matrice di permutazione e viene xorato con la chiave. Il risultato viene diviso in blocchi da 6 bit e ogni blocco viene trasformato in un blocco di 4 bit tramite delle S-boxes. Il valore da sostituire viene triangolato tramite $x, y$ che sono rispettivamente \textit{primo e ultimo bit}, e i 4 bit interni.
 
-\pragragraph{Pregi e Difetti}
+\paragraph{Pregi e Difetti}
 
 \`E molto veloce (implementato con hardware dedicato per via delle operazioni sui singoli bit) e opera con permutazioni per introdurre non linearit\`a. La versione corrente resiste alla crittoanalisi lineare e differenziale.
 
