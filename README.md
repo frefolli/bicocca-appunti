@@ -18,9 +18,9 @@ __Attenzione__: non tutti i pdf sono caricati, se si vuole visionare gli appunti
 | ML | 4 | 1 | Machine Learning | 1.0.0 |  | 30 |
 | TCOM | 4 | 1 | Teoria della Computazione | 1.0.0 |  | 25 |
 | MCOR | 4 | 1 | Modelli della Concorrenza | 1.0.0 |  | 25 |
-| TELE | 4 | 2 | Sistemi e Servizi di Telecomunicazione | 1.0.0 |  | NaN |
-| ARCH | 4 | 2 | Architetture Dati | 1.0.0 |  | NaN |
-| SCMT | 4 | 2 | Sistemi Complessi: Modelli e Simulazioni | 1.0.0 |  | NaN |
+| TELE | 4 | 2 | Sistemi e Servizi di Telecomunicazione | 1.0.0 |  | 29 |
+| ARCH | 4 | 2 | Architetture Dati | 1.0.0 |  | 30L |
+| SCMT | 4 | 2 | Sistemi Complessi: Modelli e Simulazioni | 1.0.0 |  | 30L |
 |  |  |  |  | 1.0.0 |  | NaN |
 
 Nota bene: presto o tardi spostero' questa tabella in un glossario degli acronimi dei corsi, ma non adesso.
