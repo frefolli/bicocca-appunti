@@ -1,4 +1,4 @@
-@all: TELE/Makefile ARCH/Makefile SCMT/Makefile #MCOR/Makefile TCOM/Makefile APAL/Makefile BIOINF/Makefile ROPR/Makefile ROPR/assignments/Makefile APS/Makefile SAF/Makefile
+@all: ADS/Makefile #TELE/Makefile ARCH/Makefile SCMT/Makefile MCOR/Makefile TCOM/Makefile APAL/Makefile BIOINF/Makefile ROPR/Makefile ROPR/assignments/Makefile APS/Makefile SAF/Makefile
 	# make -C APAL
 	# make -C BIOINF
 	# make -C ROPR
@@ -7,9 +7,10 @@
 	# make -C SAF
 	# make -C MCOR
 	# make -C TCOM
-	make -C TELE
-	make -C ARCH
-	make -C SCMT
+	# make -C TELE
+	# make -C ARCH
+	# make -C SCMT
+	make -C ADS
 
 APAL/Makefile: skel/Makefile
 	cp skel/Makefile APAL/Makefile
@@ -43,6 +44,9 @@ ARCH/Makefile: skel/Makefile
 
 SCMT/Makefile: skel/Makefile
 	cp skel/Makefile SCMT/Makefile
+
+ADS/Makefile: skel/Makefile
+	cp skel/Makefile ADS/Makefile
 
 clean:
 	./clean.sh

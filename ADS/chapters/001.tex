@@ -1,0 +1,111 @@
+\chapter{Architetture del Software}
+
+\section{Definizioni}
+
+Ci sono diverse definizioni di Architettura del Software, tutte ugualmente valide, ma noi ci concentriamo su alcune:
+
+\paragraph{Perry \& Wolf 1992}
+L'Architettura ha a che fare con la selezione degli elementi architetturali, le loro interazioni, i loro vincoli necessari a disporre un framework che soddisfi i requisiti del sistema (funzionali e non).
+
+\paragraph{Garlan \& Shaw}
+L'architettura del software \`e un livello di design che va oltre gli algoritmi e le strutture della computazione; si specifica la struttura del sistema ad alto livello.
+
+\paragraph{Garlan \& Shaw 1996}
+L'architettura di un ssitema software definisce il sistema in termini di componenti computazionali e le loro interazioni in modo da soddisfare i requisiti del sistema.
+
+\paragraph{IEEE 1420-2100}
+L'architettura del software \`e l'organizzazione del sistema, strutturato nei suoi componenti, nella sue relazioni tra questi e l'ambiente e i principi che governano il design e l'evoluzione del sistema.
+
+E ci interessa questa definizione:
+
+\paragraph{Clemens \& al. 2010}
+L'architettura del software di un sistema \`e l'insieme delle strutture necessarie a ragionare sul sistema che comprendono: elementi <software>, relazioni e propriet\`a.
+
+\section{Elementi}
+
+Una struttura include o definisce elementi. Un elemento architetturale \`e una parte fondamentale che costituisce il sistema: che impatta sulla design e sulle qualit\`a chiave del sistema.
+Es: un algoritmo di ordinamento di dati estratti da query non \`e un elemento, ma la struttura che si sceglie per immagazzinare o organizzare i dati \`e un \textbf{elemento architetturale}.
+
+Gli elementi possono essere \textbf{software} (moduli, processi, servizi ...) o \textbf{non software} (unit\`a fisiche di storage, unit\`a di dispiegamento, squadra di sviluppo ...).
+
+\paragraph{Elementi Software}
+
+\`E importante definire bene quali sono le \textbf{responsabilit\`a}, il \textbf{livello di qualit\`a} e le \textbf{interfacce} (cosa offre e di cosa necessit\`a) di un elemento software. Si dice che cosa ad alto livello quel componente fa, ma non come viene sviluppato o implementato.
+
+\section{Strutture}
+
+Un'architettura contiene moltemplici (tipi di) strutture: struttura statica (struttura), dinamica (flusso), di dispiegamento, di sviluppo ... con vari punti di vista perch\`e ognuna ha l'obiettivo di catturare i requisiti e le necessit\`a degli stakeholders.
+Ogni struttura definisce solo un sottoinsieme delle informazioni e pu\`o contenere relazioni con componenti di altre strutture.
+
+\subsection{Categorie}
+
+\paragraph{strutture di moduli}
+
+Partizionano il sistema in moduli (architettura logica)...
+
+\paragraph{componenti-e-connettore}
+
+Si concentrano sulle relazioni a runtime tra i componenti del sistema.
+
+\paragraph{allocazione}
+
+Descrivono la mappatura della struttura del software all'ambiente in cui esiste, si sviluppa ed esegue.
+
+\subsection{Relazioni e Propriet\`a}
+
+Le relazioni possono essere tra componenti di strutture diverse o nella stessa struttura.
+Le propriet\`a degli elementi descrivono il suo comportamento o la qualit\`a delle sue azioni.
+Sono assunzioni che possono essere fatte su ogni elemento dal punto di vista degli altri elementi.
+
+\subsection{Dettaglio}
+
+L'architettura del software descrive come le propriet\`a dei singoli componenti determinano le propriet\`a ad alto livello del sistema.
+
+Nei diagrammi non si vuole modellare se non il caso normale, c'\`e una vista apposita per le eccezioni. Di norma i casi anomali non devono essere modellati nelle strutture generali. La vista delle eccezioni pu\`o essere fondamentale per definire dei comportamenti di sistemi critici dove \`e necessario prevedere un comportamento di emergenza del sistema (esempio SPID).
+
+Si omettono tutti i dettagli di implementazione. Sono documenti di \textbf{astrazione}.
+
+\subsection{Stakeholders}
+
+Utenti, gruppi, soggetti, entit\`a che hanno interessi nel sistema sviluppato. Anche il programmatore, anche i manutentori, anche i tester. Letteralmente chiunque, anche chi disegna l'architettura del software. Se ho tanti punti di vista (gli stakeholder di norma hanno il proprio) allora avr\`o tante strutture (numero indefinito). Loro definiscono le necessit\`a e le condizioni di vittoria.
+
+Un interesse (concern) \`e definito come un requisito, un obiettivo, un vincolo, un'intenzione o un'aspirazione dello stakeholder per il sistema. \`E una definizione molto larga. L'architettura deve concentrarsi sugli interessi pi\`u significativi e astratti.
+
+Un requisito che ha un impatto significativo nell'architettura del software e sugli attributi di qualit\`a del sistema \`e definito \textbf{Requisito Architetturalmente Significativo}.
+
+Esistono informazioni aggiuntive di cui bisogna tenere nota e che sono specificate a parte.
+
+I requisiti, i vincoli, le assunzioni vanno documentate. Le scelte architetturali vanno giustificate e spiegate.
+Supporta la comunicazione con gli Stakeholders e aiuta lo sviluppo.
+
+L'architetto identifica gli stakeholder e capisce i loro interessi, prende decisioni o aiuta a prendere decisioni, pretende cambiamenti e trova buoni compromessi.
+
+\`E necessario coordinare le squadre che sviluppano, mantengono o testano il sistema perch\`e ognuna \`e responsabile di una piccola parte del sistema ed \`e necessario fare in modo che si parlino per tenere le dipendenze tra moduli, componenti e parti assegnate.
+
+\paragraph{Legge di Conway}
+
+La struttura dei progetti ricalca la struttura organizzativa di chi lo sviluppa.
+
+\section{Cosa rende una architettura "buona"}
+
+Non esiste. Esistono solo compromessi. Un'architettura deve aderire a vincoli, interessi e intenti degli stakeholders.
+Esistono poi delle "regole" su come si struttura l'architettura del software: 
+
+\begin{itemize}
+  \item L'architetto dovrebbe essere uno solo, o un gruppo molto ristretto.
+  \item l'architetto dovrebbe basare l'architettura su una lista di requisiti (funzionali, non funzionali) ordinata secondo le priorit\`a.
+  \item l'architettura dovrebbe essere ben documentata, altrimenti i cambiamenti e la gestione delle emergenze sono lunghe e costose.
+  \item l'architettura dovrebbe essere valutata costantemente e se possibile da soggetti esterni.
+  \item fare l'architettura in modo incrementale in modo da riparare rapidamente agli errori.
+\end{itemize}
+
+\begin{itemize}
+  \item Ogni elemento deve essere definito in modo chiaro, ma nascondento le informazioni non importati o suscettibili.
+  \item Usare pattern e strategie per raggiungere gli obiettivi di qualita' imposti.
+  \item Bisogna evitare di dipendere da determinate versioni o funzionalita' di tecnologie (sistema operativo, API, librerie).
+  \item I moduli che consumano dati devono essere diversi da quelli che li producono.
+  \item Non aspettarsi corrispondenze uno-a-uno tra moduli e componenti.
+  \item [...]
+  \item [...]
+  \item [...]
+\end{itemize}
