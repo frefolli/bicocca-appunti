@@ -1,1 +1,62 @@
 \chapter{Introduzione}
+
+\section{Introduction}
+
+\paragraph{Predictive Text Analysis} a computer program that automatically recognize or detect \textbf{a particular concept} within a text.
+
+\paragraph{Explorative Text Analysis} a computer program that discovers \textbf{patterns or useful trends} in a collection of texts.
+
+\paragraph{Opinion Mining} a program that detects wheter an opinionated text expresses a positive or negative opinion over an argument.
+
+\paragraph{Sentiment Analysis} a program that detects emotional state of the author of a text.
+
+\paragraph{Bias Detection} a program that detects whether the author of a text favors a specific viewpoint.
+
+\paragraph{Information Extraction} detects that some words refer to a specific entity within a text.
+
+\paragraph{Relation Learning} detects that some relation instates between two entities in a text.
+
+\paragraph{Text-driven Forecasting} monitors incoming text (as stream) making predictions about events or properties.
+
+\paragraph{Temporal Summarization} summaries a stream of text.
+
+\paragraph{Structured Text} formal languages often are structured an some semantic relevance can be extracted with this structure (abstract of a text).
+
+\section{Basic Text Processing}
+
+\paragraph{Document} unit of textual resource which may have a structure (logical or physical, or whatever), some medias, and some metadata.
+
+\paragraph{Descriptive Metadata} related to the document as unit.
+
+\paragraph{Semantic Metadata} related to the content of the document.
+
+\subsection{Text Pre-Processing}
+
+\paragraph{How to represent a text?} tokenization (and lemmization) of text. The units of informations should be words, since sentences or whole documents don't offer sufficient granularity in order to extract meaningful entities and relations. Words are the basic "features" of the text (leads to Word Embedding).
+
+\paragraph{Tokenization} splitting a stream of characters into unit of information (lexing rules strictly depends on the language, pictograms != wordlings != soundcarriers).
+Each token is a candidate for being a meaningful terms (index, key ...).
+
+\paragraph{Normalization} establishing rules in order to have the same notation for the same entity (ex: U.s.A -> USA).
+
+\paragraph{Stemming} reducing variations of words into the same form (ex: authorization -> authorize), but is optional.
+
+\paragraph{Noise removal} erasing useless or noisy words (ex: conjuctions, articles, prepositions, punctuation), optional.
+It may be an advantage when dealing with the implementation of a search engines (reduces the size of the language of keys).
+
+\paragraph{Types and Tokens} just as in lexers, the type is an abstract kind of token, while the latter is just an instance of a type.
+
+The \textit{vocabulary} is constructed on the corpora, it's useless to use a huge vocabulary from the entire language X.
+
+\paragraph{Heaps/Herdan's law} $|V| = kN^\beta$, where $0.67 < \beta < 0.75$.
+
+\paragraph{Corpora} words are part of a context which is the corpus (further the corpora), and has an author, a time/space location, a target language/audience, a function. A document may be written in more than one language/slang. with or without interjection.
+
+\paragraph{Segmentation of Sentences} identification of boundaries of sentences and text with punctuation.
+
+\paragraph{Clitic} a word that is represented with punctuation and other symbols (ex: \textit{we're} contains implicit \text{are}).
+
+\paragraph{Language issues} in complex languages like German, as well as when using pictograms, dividing words with a compound splitter is useful.
+Some languages also don't use space or punctuation as separation of words or sentences. Unaccurate splitting may end changing the meaning of the sentences.
+
+
