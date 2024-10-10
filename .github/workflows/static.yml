@@ -39,7 +39,7 @@ jobs:
           work_in_root_file_dir: true
       - name: Create Static Dist Directory
         run: |
-          ./static.sh ADS REV
+          ./static.sh ADS REV IR CC
       - name: Configure Pages
         uses: actions/configure-pages@v2
       - name: Zip and Upload Artifact
