@@ -1,4 +1,4 @@
-\chapter{Introduzione}
+\chapter{Introduction to Information Retrieval}
 
 \section{Introduction}
 
@@ -6,7 +6,7 @@
 
 \paragraph{Explorative Text Analysis} a computer program that discovers \textbf{patterns or useful trends} in a collection of texts.
 
-\paragraph{Opinion Mining} a program that detects wheter an opinionated text expresses a positive or negative opinion over an argument.
+\paragraph{Opinion Mining} a program that detects whether an opinionated text expresses a positive or negative opinion over an argument.
 
 \paragraph{Sentiment Analysis} a program that detects emotional state of the author of a text.
 
@@ -20,15 +20,15 @@
 
 \paragraph{Temporal Summarization} summaries a stream of text.
 
-\paragraph{Structured Text} formal languages often are structured an some semantic relevance can be extracted with this structure (abstract of a text).
+\paragraph{Structured Text} Formal languages often have a structure which has some semantic relevance and meaningful data can be extracted within this structure (the abstract field of a paper).
 
 \section{Basic Text Processing}
 
-\paragraph{Document} unit of textual resource which may have a structure (logical or physical, or whatever), some medias, and some metadata.
+\paragraph{Document} The unit of textual resource is the \textbf{word} which may have a structure (logical or physical, or whatever), some medias, and some metadata.
 
-\paragraph{Descriptive Metadata} related to the document as unit.
+\paragraph{Descriptive Metadata} Is related to the document as unit (TODO: example).
 
-\paragraph{Semantic Metadata} related to the content of the document.
+\paragraph{Semantic Metadata} Is related to the content of the document (TODO: example).
 
 \subsection{Text Pre-Processing}
 
@@ -41,22 +41,32 @@ Each token is a candidate for being a meaningful terms (index, key ...).
 
 \paragraph{Stemming} reducing variations of words into the same form (ex: authorization -> authorize), but is optional.
 
-\paragraph{Noise removal} erasing useless or noisy words (ex: conjuctions, articles, prepositions, punctuation), optional.
+\paragraph{Noise removal} erasing useless or noisy words (ex: conjunctions, articles, prepositions, punctuation), optional.
 It may be an advantage when dealing with the implementation of a search engines (reduces the size of the language of keys).
 
 \paragraph{Types and Tokens} just as in lexers, the type is an abstract kind of token, while the latter is just an instance of a type.
 
 The \textit{vocabulary} is constructed on the corpora, it's useless to use a huge vocabulary from the entire language X.
 
-\paragraph{Heaps/Herdan's law} $|V| = kN^\beta$, where $0.67 < \beta < 0.75$.
+\paragraph{Heaps/Herdan's law} There's a general empiric law for size of vocabulary $|V| = kN^\beta$, where $0.67 < \beta < 0.75$, and $N$ is the number of words in the text.
 
-\paragraph{Corpora} words are part of a context which is the corpus (further the corpora), and has an author, a time/space location, a target language/audience, a function. A document may be written in more than one language/slang. with or without interjection.
+\paragraph{Corpora} words are part of a context which is the corpus (further the corpora), and has an author, a time/space location, a target language/audience, a function. A document may be written in more than one language/slang. with or without junctions.
 
 \paragraph{Segmentation of Sentences} identification of boundaries of sentences and text with punctuation.
 
 \paragraph{Clitic} a word that is represented with punctuation and other symbols (ex: \textit{we're} contains implicit \text{are}).
 
 \paragraph{Language issues} in complex languages like German, as well as when using pictograms, dividing words with a compound splitter is useful.
-Some languages also don't use space or punctuation as separation of words or sentences. Unaccurate splitting may end changing the meaning of the sentences.
+Some languages also don't use space or punctuation as separation of words or sentences. Inaccurate splitting may end changing the meaning of the sentences.
 
+\subsection{Word Tokenization}
 
+\paragraph{Alternative tokenization methods}
+\begin{itemize}
+  \item Byte Pair Encoding
+  \item Unigram language modeling tokenization
+  \item WordPiece
+\end{itemize}
+
+All of these are statistical methods and have a \textbf{token learner} which learns the vocabulary from the data, and the \textbf{token segmenter} which applies this vocabulary to a random stream of text.
+Also regular expressions could be used to lex tokens, as done with compilers.
