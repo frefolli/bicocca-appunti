@@ -14,4 +14,14 @@ Of course it comes with the cost of space and parametricity.
 
 \paragraph{Statistics}
 
-The \textit{Zipf's law} says that the product of frequency $f(W)$ and rank order $r(w)$ of words is somewhat constant. So one could write $f(w) = \frac 1 {r(w)} = \frac K {f(w)}$ for some arbitrary $K$ constant value.
+The \textit{Zipf's law} says that the product of frequency $f(W)$ and rank order $r(w)$ of words is somewhat constant.
+So one could write $f(w) = \frac 1 {r(w)} = \frac K {f(w)}$ for some arbitrary $K$ constant value.
+Words with most occurrences usually are stop words or meaningless interjections.
+Also is possible that some words appear too often and don't offer advantages when used as indices, while also extremely rare words usage could be very limited (depending from the context and frequency they may be removed).
+However erasing non-informative and useless words is optional.
+
+\paragraph{Luhn's Analysis}
+
+Each word is associated to a weight, where very rare/frequent words have very low weight (and could be eliminated).
+Word occurrences may be normalized by dividing the counter by the total number of words in a document or by the maximum counter for that word in the collection.
+Another weight could be driven by $log(\frac N {df_t})$, the logarithm of $N$ (the number of documents) and $df_t$ the number of documents in which a word appears, so that when a word is extremely common, the value reaches $0$.
