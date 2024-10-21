@@ -9,4 +9,9 @@ server_pid.txt
 *.ilg
 *.pdf
 *.toc
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*-blx.bib
 static

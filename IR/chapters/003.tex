@@ -5,13 +5,20 @@
 \paragraph{POS}
 
 Marking words in a text with the role in that sentence / text (ex: "chasing" -> "Verb", is" -> "auxiliary").
-(TODO: Open/Closed class of words)
+<<Word classes may be classified as open or closed: open classes (typically including nouns, verbs and adjectives) acquire new members constantly, while closed classes (such as pronouns and conjunctions) acquire new members infrequently, if at all>> \cite{enwiki:1251632448}.
+
 We need a reference for tagging: Penn Treebank has a set of tags which annotate a corpus.
 The may be some ambiguity within a tense due to context which influences the meaning and role of a term.
 Well, many words can only be assigned to only one TAG, others have a most-probable TAG which is by far the best.
 There may be also correlations between a term being a TAG and another TAG/word appearing nearby.
 Ambiguity is thus solved with probability and statistics.
 
-\paragraph{NER}
+\section{Statistical Language Model}
 
-\paragraph{}
+A Language Model is a kind of representation for a text (based on probability distributions) by modelling a sequence of words as an event and assigning a probability to it. If such model is used to generate new data from a collection, then it's called also Generative Model.
+The probability for a sentence is $P(Ws) = P(w_1,w_2...w_n)$ and the probability of an upcoming word (Prediction) is $P(w_{n+1}|w_1,w_2...w_n)$. A model which computes such probabilities is thus called \emph{Language Model}.
+An \emph{N-gram} is a tuple $(w_n, (w_1, w_2 ... w_{n-1}))$ where i compute probabilities as $P(w_n|w_1, w_2 ... w_{n-1})$.
+A Language Model is \emph{well-formed} over an alphabet $Sigma$ iff $\Sigma P(S) = 1$ with $S \in \Sigma^{*}$.
+With the \emph{chain rule} we apply $P(w_n|w_1, w_2 ... w_{n-1}) = P(w_n|w_{n-1}, w_{n-2}) * P(w_{n-1}|w_{n-2},w_{w-3})) ... etc$.
+
+When using a Language Model, a different model is used for each document.

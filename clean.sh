@@ -15,7 +15,7 @@ function cleanFolder() {
     done
 }
 
-BLACKLIST=$BLACKLIST" *.aux *.dvi *.idx *.out *.log *.ind *.ilg"
+BLACKLIST=$BLACKLIST" *.aux *.dvi *.idx *.out *.log *.ind *.ilg *.bbl *.blg *.bcf *.run.xml *-blx.bib"
 export BLACKLIST
 
 function job() {
