@@ -1,0 +1,30 @@
+\chapter{IR Models}
+
+The role of an IR system is to assess \textbf{relevance} (topical).
+There isn't a single model used in practice, but a mixture of more models.
+
+\section{Boolean Model}
+
+It is based on set theory.
+A document is formally represented as a set of index terms and binary weights are associated with those index terms: $R(d_j) = { t_j | w_{ij} == 1 | \forall wij \in {0,1}}$.
+
+A query is formally represented as a Boolean expression on terms.
+\begin{itemize}
+  \item AND is Set Intersection
+  \item OR is Set Union
+  \item NOT is Set Difference
+  \item ADJ/NEAR is a Context search
+\end{itemize}
+The matching mechanism applies set operations.
+Relevance is modeled as a binary property of documents (Retrieval Status Value either 0 or 1).
+
+When performing exact matching, the representation is inverted ($R(d_1) = {t_1, t_2, t_3} \rightarrow R(t_1) = {d_1, d_2}$) so that i can apply set operations on $R(t_j)$ values.
+
+Queries are performed with Lazy Evaluation (TODO: recursive and dynamic bottom-up matching algorithm).
+
+\section{Vector Space Model}
+
+It's based on n-dimensional vector space (where n is the size of the  vocabulary).
+I assume linear independence of terms to simplify computation.
+A document is a linear combination of the terms which appear: $d_j = \Sigma ^{N} _{i = 1} w_{ij} * t_i$.
+Without the assumption of term independence, the cosine similarity of terms should be computed.
