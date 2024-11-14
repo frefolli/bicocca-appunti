@@ -22,3 +22,8 @@ A Language Model is \emph{well-formed} over an alphabet $Sigma$ iff $\Sigma P(S)
 With the \emph{chain rule} we apply $P(w_n|w_1, w_2 ... w_{n-1}) = P(w_n|w_{n-1}, w_{n-2}) * P(w_{n-1}|w_{n-2},w_{w-3})) ... etc$.
 
 When using a Language Model, a different model is used for each document.
+
+\paragraph{Smoothing} Is a technique in which all the probabilities of words seen in the document are lowered by some amount in order to create a difference from the total probability of the words and $1$. This difference is reassigned (equally divided) to the words which didn't appeared. In such a way there aren't $P(W) = 0$ for any word $W$ (preventing zero denominator in the maximum likelihood estimation formula $P(w_i | w_{i-1}) = \frac {count(w_{i-1}, w_i)} {count(w_{i-1})}$).
+
+\paragraph{Perplexity} is the multiplicative inverse of the probability given by a language model on a test set which has not been seen before. It's useful to evaluate multiple language models. A language model which is less surprised (perplexed) is the one which is more accurate. In the formula there is a normalization factor (which applies the root-by-N) where N is the number of words.
+For obvious reasons, n-grams with more N are the ones with less perplexity.
