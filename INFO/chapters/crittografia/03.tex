@@ -1,0 +1,59 @@
+\chapter{Crittosistemi Simmetrici}
+
+\section{Modi di Operazione}
+
+\subsection{Electronic CodeBook}
+
+\`E lo schema pi\`u semplice e meno sicuro: ogni blocco viene cifrato sempre allo stesso modo con la stessa chiave.
+
+\putimage{images/crittografia/03-01.png}{Schema}{png:03-01}
+
+\subsection{Cipher Block Chaining}
+
+Il blocco cifrato precedente \`e xorato con il blocco in chiaro successivo prima della cifratura.
+
+\putimage{images/crittografia/03-02.png}{Schema}{png:03-02}
+
+\subsection{Output FeedBack}
+
+Si tiene un generatore di segreti che a partire da uno stato comune genera le chiavi con cui cifrare i blocchi. Nel caso in considerazione la chiave \`e generata tramite la cifratura ricorsiva delle chiavi dello stream, le quali vengono usate in xor con il blocco in chiaro per produrre il blocco cifrato.
+
+\putimage{images/crittografia/03-03.png}{Schema}{png:03-03}
+
+\subsection{Cipher FeedBack}
+
+L'idea \`e simile alle precedenti, ma in questo caso le chiavi sono generate cifrando i blocchi cifrati precedenti e producendo i nuovi con uno xor come prima.
+
+\putimage{images/crittografia/03-04.png}{Schema}{png:03-04}
+
+Una variante di questo schema prevede di usare una rotazione a sinistra di S bits e poi di selezionarli con una permutazione dopo la cifratura di questo stream.
+
+\subsection{Counter Mode}
+
+Pu\`o essere visto come una variante di OFB visto che in questo caso il segreto cifrato per ottenere le chiavi \`e ottenuto a sua volta tramite un contatore che parte da uno stato comune.
+
+\putimage{images/crittografia/03-05.png}{Schema}{png:03-05}
+
+\subsection{Alcune Considerazioni}
+
+Per via della loro natura non sequenziale o para sequenziale, gli schemi $ECB, OFB, CTR$ possono essere implementati con cifrature sui blocchi in parallelo.
+Sempre per questa ragione se un blocco viene corrotto durante la comunicazione e quelli seguenti sono intatti non ho problemi a leggerli.
+
+\section{Confusione e Diffusione}
+
+\paragraph{Confusione}
+
+Le modifiche interne al messaggio, allo stato o alla chiave manipolati devono essere imprevedibili. Questo \`e realizzato tramite delle sostituzioni complesse.
+
+\paragraph{Diffusione}
+
+Per rendere difficile fare analisi statistica di un crittosistema si distribuisce il peso dei simboli del messaggio in modo che ognuno di essi influisca in qualche molto su molti simboli dell'output. Questo \`e spesso ottenuto tramite delle permutazioni (possibilmente non lineari, ex: AES, DES).
+
+\section{Rete di Sostituzioni e Permutazioni}
+
+Shannon ha dato un modello di sistema ideale per adottare Conf. e Diff. Di base abbiamo una sequenza di iterazioni in cui si cifra il buffer con la chiave dell'iterazione, poi si applicano delle sostituzioni su sotto porzioni, quindi si permuta il risultato totale. La prima e l'ultima operazione di una SPN \`e costituita dalla cifratura con la chiave per rendere difficile fin da subito la crittoanalisi.
+
+\putimage{images/crittografia/03-06.png}{Schema}{png:03-06}
+
+\section{Rete di Feistel}
+

@@ -1,0 +1,138 @@
+\chapter{Introduzione alla crittografia}
+
+\section{Introduzione}
+
+La \textbf{crittografia} \`e lo studio di quelle tecniche atte a immagazzinare, processare, trasmettere e in generale proteggere un'informazione su un canale non sicuro. Comprende sia tecniche per nascondere la natura del messaggio che tecniche per proteggerlo da modifiche.
+
+Non va confusa con la \textit{steganografia}, che invece \`e un insieme di tecniche per nascondere il messaggio in altri media.
+
+La crittografia studia sia le implementazione di crittosistemi a fini di proteggere le comunicazioni, sia le loro vulnerabilit\`a per sfruttarle o per rafforzare i suddetti sistemi.
+
+\putimage{images/crittografia/01-01.png}{Modello di Comunicazione}{png:01-01}
+
+In Figura \ref{png:01-01} \`e riportato una rappresentazione del dominio. Alice vuole inviare un messaggio segreto a Bob e per evitare che Eve lo intercetti lo cifra (\`e necessario che Bob conosca un algoritmo per decifrare il messaggio). Eve pu\`o essere semanticamente sia un malintenzionato che un agente della Polizia Postale, quindi \`e uno schema molto generale.
+
+Le capacit\`a di Eve possono variare in base alle assunzioni che si fanno: pu\`o scrivere e/o leggere, magari nessuno dei due, e tendenzialmente dispone di capacit\`a di computazione arbitraria (generalmente si assume che disponga di una Macchina di Turing Probabilistica).
+
+\paragraph{Kerkhoff's principles}
+
+Alice e Bob utilizzano due funzioni $E, D$ per cifrare, decifrare ma la segretezza del sistema non dovrebbe risiedere nelle funzioni in se ma in una quantit\`a di informazione chiamata \textbf{chiave}. Ovvero visto che cambiare chiave \`e pi\`u semplice che cambiare algoritmi la variabilit\`a della cifratura deve risiedere nella variabilit\`a della chiave.
+
+Definiamo quindi un crittosistema come una tupla $CS = (PT, CT, K, E, D)$.
+
+\begin{itemize}
+  \item PT \`e lo spazio dei messaggi in chiaro
+  \item CT \`e lo spazio dei messaggi cifrati
+  \item K \`e lo spazio delle chiavi
+  \item $E : PT \times K \rightarrow CT$ \`e la funzione di cifratura
+  \item $D : CT \times K \rightarrow PT$ \`e la funzione di decifratura
+\end{itemize}
+
+\paragraph{Alcune considerazioni}
+
+Lo spazio delle chiavi deve essere abbastanza grande da impedire in pratica un attacco bruteforce. Deve essere \textbf{semplice} (tempo polinomiale da una DTM) costruire un messaggio cifrato e \textbf{estremamente difficile} (tempo non polinomiale da una DTM) effettuare l'operazione inversa senza conoscere la chiave.
+
+\paragraph{Tipi di Attacchi}
+
+In generale distinguiamo tra queste categorie in base alle capacit\`a di Eve:
+
+\begin{itemize}
+  \item \textbf{ciphertext only}: Eve conosce solo $c$ e vuole computare il messaggio $m$.
+  \item \textbf{known plaintext}: Eve anche alcune coppie $(m, c)$.
+  \item \textbf{chosen plaintext}: Eve ha accesso alla cifratura di messaggi.
+  \item \textbf{chosen ciphertext}: Eve ha accesso alla decifratura di messaggi.
+\end{itemize}
+
+Inoltre un crittosistema pu\`o essere considerato \textbf{parzialmente rotto} se possiamo porre alcuni limiti ai possibili valori della chiave riducendo lo spazio su cui fare il bruteforce; \textbf{completamente rotto} se possiamo ricavare direttamente $m$ e/o $k$ in modo arbitrario.
+
+\paragraph{Simmetria e Asimmetria}
+
+Nel contesto della crittografia in essere consideriamo \textbf{simmetrico} un crittosistema in cui la chiave di cifratura \`e uguale a quella di decifratura, \textbf{asimmetrico} il contrario. Una definizione pi\`u precisa vuole che la chiave di decifratura sia facile da ottenere a partire dalla chiave di cifratura.
+
+Nei crittosistemi che non dipendono da una chiave esplicita di solito si considera la \textit{chiave} come la funzione di cifratura/decifratura e vice versa.
+
+\section{Cifrari a Sostituzione}
+
+Un cifrario a sostituzione prevedere la sostituzione (sorpreso?) di una o pi\`u lettere con un altro set di lettere sulla base di una chiave $K$.
+
+Sono detti \textbf{monoalfabetici} i sistemi che cifrano una lettera del messaggio sempre con la stessa lettera del messaggio cifrato.
+
+\subsection{Cifrario di Cesare}
+
+\`E un cifrario simmetrico a sostituzione monoalfabetica dove presa una chiave $K \in [0, |\Sigma|]$ si shifta a sinistra (o a destra) ogni simbolo del messaggio. \`E celebre la versione con $K = 3$.
+
+% TODO: aggiungi esempio.
+
+\paragraph{Problemi}
+
+Come si \`e intuito il problema principale \`e lo spazio delle chiavi troppo piccolo che rendere possibile un attacco bruteforse.
+
+\paragraph{Osservazioni}
+
+Essendo un cifrario lineare monadico, le operazioni sono commutative e simmetriche.
+
+\subsection{Crittanalisi dei Sistemi Monoalfabetici}
+
+In generale questi sistemi sono molto vulnerabili, specie se il messaggio che si deve de/cifrare appartiene al linguaggio naturale (e in generale a qualche linguaggio strutturato). Nel primo caso spesso si utilizzano le frequenze delle lettere che variano di lingua in lingua e che permettono di ricavare facilmente spesso la chiave tramite l'assunzione che nei sistemi monoalfabetici i simboli associati alle lettere con maggior frequenza si ripetono a loro volta con maggior frequenza.
+
+\paragraph{Contrattacco}
+
+A volte si inseriscono delle lettere a bassa frequenza nel messaggio in modo strutturato per creare rumore. Pi\`u efficace \`e invece il fatto di associare alle lettere pi\`u simboli e scegliere randomicamente quale usare a runtime. Esempio: la lettera E ha 12\% di frequenza? bene, allora scelgo 12 simboli dall'alfabeto CT e li associo ad E. La scelta del simbolo da usare pu\`o anche essere non casuale per interferire con le frequenze dei simboli.
+
+\subsection{Cifrario di Hill}
+
+\`E un crittosistema polialfabetico che sfrutta l'algebra lineare per cifrare un messaggio. La chiave \`e una matrice $M$ che viene moltiplicata ad un messaggio disposto in forma matriciale. Chiaramente la chiave di decifrazione \`e $M^{-1}$
+\`E il primo crittosistema lineare a blocchi che vedremo.
+
+\putimage{images/crittografia/01-02.png}{Esempio}{png:01-02}
+
+\paragraph{Problemi}
+
+Per cominciare creare una chiave non \`e semplicissimo perch\`e ci si deve limitare all'uso di matrici invertibili (per ovvie ragioni).
+
+Inoltre essendo un sistema lineare potrei creare una permutazione che invalida il messaggio o lo altera in qualche modo.
+
+\subsection{Cifrario di Playfair}
+
+La chiave \`e costruita prendendo le lettere dell'alfabeto e disponendole in una matrice 5x5 in modo casuale.
+
+\putimage{images/crittografia/01-03.png}{Esempio}{png:01-03}
+
+Quindi la cifratura avviene dividendo il messaggio in blocchi da due lettere(senza blocchi con due lettere uguali) e se le due lettere sono nella stessa riga nella chiave allora esse vengono shiftate verso destra (sempre nella chiave). Se sono nella stessa colonna vengono mosse verso il basso.
+Altrimenti visto che formano un rettangono di cui sono gli angoli, si considerano gli altri due angoli e sostituiscono con quelli.
+
+La decifratura avviene eseguendo le operazioni senso opposto.
+
+\paragraph{Problemi}
+
+A parte il fatto che la chiave ha una struttura regolare ed \`e corta, quindi \`e piuttosto semplice da indovinare, il problema principale consiste nel fatto che ogni blocco viene cifrato sempre nello stesso modo nel messaggio. Lasciando quindi spazio ad attacchi sulle frequenze su digrammi.
+
+\subsection{Cifrario di Vigenere}
+
+\`E un cifrario di Cesare con una chiave di lunghezza $|K| > 1$, eventualmente lunga quanto il plaintext (ma pu\`o essere ripetuta ciclicamente per poter cifrare tutto).
+
+\paragraph{Problemi}
+
+\`E gi\`a pi\`u robusto ma si possono fare delle assunzioni grazie al fatto che se la chiave \`e pi\`u corta del messaggio allora pi\`u lettere saranno cifrate con la stessa chiave. Una volta indovinata la lunghezza della chiave si pu\`o sfruttare questa assunzione per fare un attacco basato su frequenze.
+
+Per trovare la lunghezza della chiave si pu\`o usare il metodo di Kasisky che consiste nel notare ripetizioni di sequenze di lettere nel ciphertext e usare le distanze relative per identificare i possibili candidati per la lunghezza della chiave.
+
+\putimage{images/crittografia/01-04.png}{Tabella di Appoggio}{png:01-04}
+
+\subsection{Macchina Enigma}
+
+\`E una macchina dotata di rotori che applicano sequenzialmente una sostituzione monoalfabetica. Dopo aver cifrato ogni lettera del messaggio i rotori compiono uno scatto di una posizione come un orologio, rendendolo complessivamente polialfabetico. La chiave \`e la posizione iniziale dei rotori.
+
+La decifrazione avviene ponendo la stessa posizione iniziale e grazie ad un riflettore posto alla fine dell'ultimo rotore.
+
+\putimage{images/crittografia/01-05.png}{Struttura}{png:01-05}
+
+\paragraph{Problemi}
+
+Il sistema \`e molto robusto e la tecnica di Kasisky non pu\`o essere applicata essendo il ciphertext un prodotto di sostituzioni polialfabetiche.
+
+Prima dei rotori c'\`e anche una plugboard che effettua una ulteriore sostituzione, ma l'effetto pu\`o essere annullato usando due macchine enigma in serie.
+
+Alla fine il sistema \`e stato rotto costruendo pi\`u copie della macchina enigma in parallelo che effettuano un attacco bruteforce su un sottospazio delle chiavi.
+
+Un ulteriore limite alle chiavi \`e il fatto che $c \ne m$ by design.

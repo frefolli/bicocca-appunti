@@ -26,6 +26,10 @@ function job() {
     cleanFolder SAF
     cleanFolder MCOR
     cleanFolder TCOM
+    cleanFolder TELE
+    cleanFolder ARCH
+    cleanFolder SCMT
+    cleanFolder INFO
 }
 
 function handler() {
