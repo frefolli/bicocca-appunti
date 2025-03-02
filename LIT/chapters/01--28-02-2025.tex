@@ -2,39 +2,37 @@
 
 \section{Stutture Dati}
 
-- alberi, grafi, pile, code
+Le strutture dati utilizzate sono gli alberi, i grafi, le pile, le code.
 
 \section{Algoritmi}
 
-- visite, backtracking
-
 \subsection{Visita Pre}
 
-Sintesi => $attr(child) = compute(attr(root))$
+E' un processo di ereditarieta' => $attr(child) = compute(attr(root))$.
 
-```
+\begin{lstlisting}[language=Python]
 def preorder(tree, visit):
   root, children = tree
   visit(root)
   for child in children:
     preorder(child, visit)
-```
+\end{lstlisting}
 
 \subsection{Visita Post}
 
-Sintesi => $attr(root) = sum([attr(child) for child in children])$
+E' un processo di sintesi => $attr(root) = sum([attr(child) for child in children])$.
 
-```
+\begin{lstlisting}[language=Python]
 def postorder(tree, visit):
   root, children = tree
   for child in children:
     preorder(child, visit)
   visit(root)
-```
+\end{lstlisting}
 
 \subsection{Visita Level}
 
-```
+\begin{lstlisting}[language=Python]
 def levelorder(tree, visit):
   Q = Queue([])
 
@@ -45,7 +43,7 @@ def levelorder(tree, visit):
     visit(root)
     for child in children:
       Q.enqueue(child)
-```
+\end{lstlisting}
 
 \section{Grafi}
 
@@ -53,7 +51,7 @@ Diagramma di ASSE
 
 \subsection{Depth First}
 
-```
+\begin{lstlisting}[language=Python]
 def depthfirst(adiacency, start, visit):
   S = Set({})
   def recursive(src):
@@ -62,11 +60,11 @@ def depthfirst(adiacency, start, visit):
     for dst in adiacency[src]:
       if dst not S:
         recursive(dst)
-```
+\end{lstlisting}
 
 \subsection{Breadth First}
 
-```
+\begin{lstlisting}[language=Python]
 def breadthfirst(adiacency, start, visit):
   S = Set({})
   Q = Queue({start})
@@ -77,13 +75,13 @@ def breadthfirst(adiacency, start, visit):
     for dst in adiacency[src]:
       if dst not S:
         Q.enqueue(dst)
-```
+\end{lstlisting}
 
 \subsection{BackTracking}
 
 Abilita' di rendersi conto che il percorso in profondita' non e' ottimale e quindi tornare sui miei passi per processare altri percorsi.
 
-```
+\begin{lstlisting}[language=Python]
 def backtrack(candidate):
   if reject(candidate):
     return
@@ -93,4 +91,4 @@ def backtrack(candidate):
   while s:
     backtrack(s)
     s = next(candidate)
-```
+\end{lstlisting}
