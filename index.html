@@ -5,27 +5,34 @@
     </head>
     <script>
         var corsi = [
-          "APAL",
-          "BIOINF",
-          "ROPR",
-          "ROPR/assignments/1",
-          "ROPR/assignments/2",
-          "ROPR/assignments/3",
-          "APS",
-          "SAF",
-          "ML",
-          "TCOM",
-          "MCOR",
-          "TELE",
-          "INFO",
-          "ARCH",
-          "SCMT",
-          "ADS",
-          "REV",
-          "CC",
-          "IR",
-          "SDL",
-          "LIT",
+          "APAL/appunti.pdf",
+          "BIOINF/appunti.pdf",
+          "ROPR/appunti.pdf",
+          "ROPR/assignments/1/appunti.pdf",
+          "ROPR/assignments/2/appunti.pdf",
+          "ROPR/assignments/3/appunti.pdf",
+          "APS/appunti.pdf",
+          "SAF/appunti.pdf",
+          "ML/appunti.pdf",
+          "TCOM/appunti.pdf",
+          "MCOR/appunti.pdf",
+          "TELE/appunti.pdf",
+          "INFO/appunti.pdf",
+          "ARCH/appunti.pdf",
+          "SCMT/appunti.pdf",
+          "ADS/appunti.pdf",
+          "ADS/project/main.pdf",
+          "ADS/deployability/report.pdf",
+          "REV/appunti.pdf",
+          "REV/project/report.pdf",
+          "REV/project/slides.pdf",
+          "REV/assignments/codescene/slides.pdf",
+          "REV/assignments/detecting-duplicated-code/slides.pdf",
+          "REV/assignments/transform-conditionals-to-polymorphism/slides.pdf",
+          "CC/appunti.pdf",
+          "IR/appunti.pdf",
+          "SDL/appunti.pdf",
+          "LIT/appunti.pdf",
         ];
 
         let loadLinks = () => {
@@ -35,8 +42,8 @@
                 corsi.forEach((el) => {
                     let li = document.createElement("li");
                     let a = document.createElement("a");
-                    a.setAttribute("href", `${el}/appunti.pdf`);
-                    a.innerText = `/${el}/appunti.pdf`;
+                    a.setAttribute("href", `${el}`);
+                    a.innerText = `/${el}`;
                     li.appendChild(a);
                     ol.appendChild(li);
                 })

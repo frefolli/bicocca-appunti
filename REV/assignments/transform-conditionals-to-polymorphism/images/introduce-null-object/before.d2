@@ -1,0 +1,23 @@
+direction: right
+cl: Client {
+  shape: class
+  m: () -> ()
+}
+ob: Object {
+  shape: class
+  doit: () -> ()
+}
+cl_note: |`java
+  void m() {
+    ...
+    a: Object
+    if (a == null) {
+      // stuff
+    } else {
+      a.doit();
+    }
+    ...
+  }
+`|
+cl_note -- cl.m
+cl -- ob

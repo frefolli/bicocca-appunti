@@ -1,0 +1,125 @@
+\documentclass{beamer}
+\usepackage{graphicx}
+
+\usetheme{Boadilla}
+\usecolortheme{default}
+
+\title{Detecting Duplicated Code}
+\subtitle{Software Evolution and Reverse Engineering}
+\author{Refolli~F.~865955}
+%\logo{\includegraphics[height=1cm]{logo_unimib.pdf}}
+
+\newcommand{\putimage}[2] {
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=#2\linewidth]{#1}
+	\end{figure}
+}
+
+\newcommand{\putimagecouple}[4] {
+  \begin{figure}[!htb]
+    \centering
+    \begin{minipage}{0.45\linewidth}
+      \centering
+      \includegraphics[width=\linewidth]{#1}
+      \caption{#2}
+    \end{minipage}
+    \hspace{0.25cm}
+    \begin{minipage}{0.45\linewidth}
+      \centering
+      \includegraphics[width=\linewidth]{#3}
+      \caption{#4}
+    \end{minipage}
+  \end{figure}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\centering
+\Huge
+Why?
+\end{frame}
+
+\begin{frame}
+\frametitle{The magic of RPM Macros}
+  \putimage{images/packer-spec.png}{0.80}
+\end{frame}
+
+\begin{frame}
+\frametitle{make\_install macro}
+  \putimage{images/make-install-macro.png}{0.99}
+\end{frame}
+
+\begin{frame}
+\frametitle{makeinstall macro}
+  \putimage{images/makeinstall-macro.png}{0.99}
+\end{frame}
+
+\begin{frame}
+\frametitle{Overview of the Cluster}
+  \putimage{images/cluster.png}{0.85}
+\end{frame}
+
+\begin{frame}
+\frametitle{Compare Code Mechanically}
+  \putimage{images/mechanical-compare-process.png}{0.99}
+\end{frame}
+
+\begin{frame}
+\frametitle{Example of Normalization}
+  \putimagecouple{images/before-normalization.png}{Before}{images/after-normalization.png}{After}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dupdec: a duplicate code detection tool}
+  \putimage{images/dupdec-py-help.png}{0.99}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dupdec: self-audit}
+  \putimage{images/result-of-mechanical-on-dupdec.png}{0.99}
+\end{frame}
+
+\begin{frame}
+\frametitle{What has dupdec found?}
+  \putimage{images/duplicate-detected.png}{0.99}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dotplot almanac}
+  \putimage{images/dotplot-almanac.png}{0.99}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dupdec: self-dotplot}
+  \putimage{images/result-of-dotplot-on-dupdec.png}{0.90}
+\end{frame}
+
+\begin{frame}
+\frametitle{Tradeoffs}
+  \begin{itemize}
+    \item Pros
+      \begin{itemize}
+        \item Simple process
+        \item Mostly language independent
+        \item Graphical visualizations ease first approach to unknown code
+      \end{itemize}
+    \item Cons
+      \begin{itemize}
+        \item Scaling issues, optimizations required (sparse matrices, smart filters ... etc)
+        \item Possible information overload
+        \item Dotplots can be misleading if not followed by an in depth code exploration
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering
+\Huge
+The End
+\end{frame}
+
+\end{document}

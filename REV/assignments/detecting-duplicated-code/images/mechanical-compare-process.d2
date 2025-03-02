@@ -1,0 +1,39 @@
+direction: right
+
+nc: Normalize Code {
+  direction: down
+  remove spaces
+  remove comments
+  remove string literals
+}
+
+oo: Filters {
+  direction: down
+  pl: Prune Lines {
+    direction: down
+    trivial chars
+    keywords
+    empty
+  }
+
+  ls: Limit Search {
+    direction: down
+    at least length K
+    at least longer than the mean
+  }
+}
+
+hl: Hash Lines {
+  direction: down
+  simple round function
+  sha256, md5, etc
+  length of the lines
+}
+
+cl: Compare Lines {
+  direction: down
+  by hash value
+  all-in
+}
+
+nc -> oo -> hl -> cl

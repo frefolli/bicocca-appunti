@@ -1,0 +1,208 @@
+\documentclass[a4paper,11pt,oneside, table]{article}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{setspace}
+\usepackage{imakeidx}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{csquotes}
+\usepackage{caption}
+\captionsetup[table]{labelfont=it}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=magenta,      
+  urlcolor=cyan,
+  pdftitle={Architettura del Software},
+  pdfpagemode=FullScreen,
+}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\newtheorem{nota}{Nota}
+
+\usepackage[english]{babel}
+\usepackage[
+  backend=bibtex,
+  style=numeric,
+  sorting=ydnt
+]{biblatex}
+\addbibresource{quotes.bib}
+\makeindex
+
+\newcommand{\putimage}[4] {
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width={#4}\linewidth]{#1}
+    \caption{#2}\label{#3}
+  \end{figure}
+}
+
+\newcommand{\putsubimage}[5] {
+  \begin{minipage}{{#4}\linewidth}
+    \centering
+    \includegraphics[width={#5}\linewidth]{#1}
+    \caption{#2}\label{#3}
+  \end{minipage}
+}
+
+\newcommand{\putimagecouple}[2] {
+  \begin{figure}[!htb]
+    \centering
+    #1
+    \hspace{0.5cm}
+    #2
+  \end{figure}
+}
+
+\newcommand{\putimagetriple}[3] {
+  \begin{figure}[!htb]
+    \centering
+    #1
+    #2
+    #3
+  \end{figure}
+}
+
+\newcommand{\putimagequadruple}[4] {
+  \begin{figure}[!htb]
+    \centering
+    #1
+    \hspace{0.5cm}
+    #2
+    \linebreak
+    #3
+    \hspace{0.5cm}
+    #4
+  \end{figure}
+}
+
+\begin{document}
+  %\begin{titlepage}
+  \noindent
+  \begin{minipage}[t]{0.19\textwidth}
+    \vspace{-4mm}{\includegraphics[scale=1.15]{logo_unimib.pdf}}
+  \end{minipage}
+  \begin{minipage}[t]{0.81\textwidth}
+    {
+      \setstretch{1.42}
+      {\textsc{University of Milano Bicocca}} \\
+      \textbf{School of Science} \\
+      \textbf{Department of Informatics, System and Communication} \\
+      \textbf{Master Degree in Computer Science} \\
+      \par
+    }
+  \end{minipage}
+  %\vspace{40mm}
+  \begin{center}
+    {\LARGE{
+      \setstretch{1.2}
+      \textbf{Riassunto di "Deployability"} \\
+      \textbf{Architettura del Software}
+      \par
+    }}
+  \end{center}
+  %\vspace{50mm}
+  %\vspace{15mm}
+  \begin{center}
+    \large{Refolli Francesco} \large{865955}
+  \end{center}
+  %\restoregeometry
+  %\end{titlepage}
+
+  %\tableofcontents
+  \renewcommand{\baselinestretch}{1.5}
+
+  \section{Il \textit{Deployment}}
+
+  Il \textbf{deployment} nel settore dello sviluppo software \`e il processo di distribuzione del software o di sue modifiche. Il processo assume il nome di \textit{continuous deployment} se \`e completamente automatizzato o di \textit{continuous delivery} se necessita dell'intervento umano per scatenare alcune azioni. Per velocizzare il processo si utilizza una sequenze di azioni e strumenti (\textit{pipeline}) che processano il software in vario modo per testarlo, verificare alcune caratteristiche o costruire artefatti utili alla distribuzione. La pipeline muove una versione di un modulo del software sequenzialmente in diversi ambienti:
+
+  \begin{itemize}
+    \item Un ambiente di \textit{development} dove avviene la scrittura di codice e dove vengono svolti unit tests sui suoi componenti.
+    \item Un ambiente di \textit{intergration} dove viene testato end-to-end insieme al resto del sistema.
+    \item Un ambiente di \textit{staging} dove viene ulteriormente valutato in termini di sicurezza, performance o conformit\`a alle regolamentazioni.
+    \item Un ambiente di \textit{production} dove il software \`e dispiegato per essere usato e monitorato.
+  \end{itemize}
+
+  Una pipeline ben costruita permette di avere cicli di breve durata, tracciabilit\`a completa in caso di errori (tramite artefatti o metadati) e idempotenza nelle azioni se ripetute tramite gli stessi input (cosa non scontata se esistono fattori ambientali non-deterministici come dipendenza da versioni "latest" o dati di contesto in file o basi di dati).
+
+  Spesso emerge la necessit\`a di implementare meccanismi per includere o escludere features dalle istanze in modo dinamico (o statico) e di compatibilit\`a con le versioni precedenti del prodotto. Queste sono scelte architetturali e possono avere un impatto sulla qualit\`a della soluzione e sulla sua \textit{deployability}.
+
+  \subsection{La \textit{Deployability}}
+
+  Il termine \textit{deployability} indica che il deployment di un software \`e un processo dal prevedibile impegno in termini di risorse, tempo e costo. Inoltre in caso di problemi deve essere sempre possibile effettuare il rollback alla versione precedente per limitare i danni e riportare la versione problematica in sede di sviluppo.
+
+  Si tratta chiaramente di una propriet\`a molto discrezionale siccome si possono valutare numerosi aspetti: il \textbf{meccanismo} di \textit{raggiungimento} e \textit{aggiornamento} delle versioni \footnote{Include il medium, ex: DVD, USB, Internet, ...}, la \textbf{granularit\`a} di modifica \footnote{Pu\`o essere importante poter sostituire dei moduli senza portare down l'intero applicativo}, il tipo di packaging scelto \footnote{Syspackage, archivio, plugin, flatpak, container ...} e l'efficienza del processo. La valutazione di questi aspetti non \`e per forza univoca e in base alle circostanze determinate soluzioni possono risultare pi\`u vantaggiose di altre \footnote{Ex: se i container sono comodi per dispiegare applicazioni headless, non si pu\`o dire lo stesso di applicazioni grafiche}.
+
+  \section{Tattiche}
+
+  \subsection{Gestione della Pipeline di Deployment}
+
+  \paragraph{Scale rollouts}
+
+  Restringere l'aggiornamento di versione ad un gruppo controllato di utenti e poi allargare gradualmente la platea di utenza servita dalla nuova versione, permette di monitorare le modifiche minimizzando i possibili danni in caso di guasto.
+
+  \paragraph{Rollback}
+
+  In caso di malfunzionamenti \`e possibile ripristinare la versione precedente nelle istanze aggiornate o ricrearle direttamente.
+
+  \paragraph{Script deployment commands}
+
+  \`E assolutamente necessario automatizzare tutti i processi tediosi. Questo include anche le azioni di deployment, che possono andare dalla pacchettizzazione, al trasferminento e all'installazione delle nuove versioni di un software.
+
+  \subsection{Gestione del Sistema in Deployment}
+
+  \paragraph{Manage service interactions}
+
+  Si intercede nelle richieste per mitigare le incompatibilit\`a dovute a cambiamenti di interfacce, dando la possibilit\`a di dispiegare multiple versioni di un servizio contemporaneamente e mascherarle dietro ad un load balancer. Questo impedisce ai client che utilizzano una certa versione delle interfacce di essere serviti per errore da versioni diverse da quella supportata.
+
+  \paragraph{Package dependencies}
+
+  \`E possibile pacchettizare il software in modo da far contenere alla distribuzione le sue dipendenze \footnote{Chiaramente questi pacchetti saranno pi\`u pesanti}. \`E l'approccio che seguono i \textit{Container}, ma anche tecnologie meno sofisticate come Flatpak, AppImage, Snap ... \cite{cichocki2023comparative}. Esistono poi tecnologie come Nix \cite{dolstra2004nix} e Guix \cite{courtes2013functional}, dove il sistema operativo gestisce le dipendenze dei pacchetti in modo da isolare gli applicativi e mantenere diverse versioni delle stesse librerie contemporaneamente, servendo ad ogni pacchetto le dipendenze giuste.
+
+  \paragraph{Feature toggles}
+
+  Come detto precedentemente, in base al tipo di features che si vogliono introdurre e ai bisogni di personalizzazione \footnote{Caso delle applicazione multi-tenant}, si pu\`o rendere necessario un meccanismo di selezione delle opzioni per una istanza \footnote{Eventualmente replicabile come file di configurazione o simili} in modo da ritardare o anticipare l'introduzione di una miglioria d'impatto per il cliente o per il sistema \footnote{Ex: una nuova versione del calcolo delle scadenze o dell'importazione dati}. Questo meccanismo pu\`o essere utile per implementare strategie di rollout incrementale.
+
+  \section{Patterns}
+
+  \subsection{Microservizi}
+
+  L'architettura di un sistema a microservizi prevede la divisione delle responsabilit\`a in una collezione di servizi di dimensione ridotta \footnote{Sufficientemente piccoli da essere gestiti efficacemente da un singolo team interfunzionale}. Questa organizzazione richiede l'uso di meccanismi di \textit{service discovery} per consentire le comunicazioni \footnote{Non esistono scorciatoie: n\`e memoria condivisa, n\`e collegamenti diretti, solo richieste via rete}.
+
+  Lo sviluppo di un microservizio (al netto delle necessit\`a di comunicazione) \`e indipendente dagli altri ed essendo gestibili da squadre distinte, si riduce il tempo necessario per implementare una feature e rilasciarla. Essendo di fatto pacchetti software distinti, possono essere scalati e rimpiazzanti in modo indipendente l'uno dall'altro se non presentano interfacce in comune. In caso contrario sar\`a necessario porre attenzione alla compatibilit\`a tra le versioni \footnote{Si pu\`o usare un Adapter o dispiegare multiple versioni esplicitamente interrogabili} e coordinare i rilasci in modo da non generare inconsistenze. Queste verifiche possono - e dovrebbero - essere automatizzate per ridurre il margine di errore. Infine, a differenza di applicativi monolitici, la comunicazione tra servizi introduce un overhead significativo dovuto alla natura del sistema in oggetto \footnote{\`E pur sempre un sistema distribuito} e in base al partizionamento di dati e alla computazione pu\`o risultare necessario gestire complesse transazioni distribuite.
+
+  \subsection{Sostituzione completa dei Servizi}
+
+  La sostituzione \`e \textit{completa} se la migrazione alla nuova versione del sistema ha impatto su tutta l'utenza.
+
+  \paragraph{Blue/Green}
+
+  Per migrare un sistema di N istanze ad una nuova versione con questo metodo \`e necessario creare N nuove istanze con a bordo la nuova versione dell'applicativo. Dopo aver monitorato l'operazione del nuovo sistema e aver verificato che non ci sono problemi significativi, si pu\`o scartare le vecchie istanze, tenere quelle nuove e ricominciare da capo il processo. Ora, raddoppiare le istanze in esecuzione pu\`o essere o non essere un problema in base al piano di spesa dell'unit\`a di business, e in generale risulta assai vantaggioso se queste istanze sono VM/container piuttosto che installazioni on-premise \footnote{Per ovvie ragioni}. Un punto che rimane in sospeso \`e il limite di questo approccio: se creo N nuove istanze per ogni nuova versione e rilascio una nuova versione frequentemente, o avr\`o dei cicli di aggiornamento molto lenti, o dovr\`o utilizzare un numero eccessivo di istanze.
+
+  \paragraph{Rolling upgrade}
+
+  Invece di creare subito tutte le istanze nuove ne rimpiazzo una vecchia alla volta. In questo modo minimizzo il numero di istanze da eseguire ma non si ha uno schieramento completo di istanze da sostituire a quelle nuove se quest'ultime dovessero manifestare dei problemi. In entrambi i casi \`e vitale mantenere la consistenza tra le interfacce per evitare che i client vadano in blocco in maniera imprevedibile.
+
+  \subsection{Sostituzione parziale dei Servizi}
+
+  La sostituzione \`e \textit{parziale} se la migrazione alla nuova versione del sistema ha impatto su un ristretto sottoinsieme dell'utenza ai fini di valutare la sua accettabilit\`a.
+
+  \paragraph{Canary Testing}
+
+  Nel \textit{canary testing} si da accesso ad un piccolo gruppo di utenti la nuova versione in modo da testarla nel mondo reale minimizzando i danni e ricevendo un primo feedback sui miglioramenti introdotti. Successivamente le modifiche vengono allargate al resto dell'utenza. Se questo evento riguarda specifici utenti, allora questi devono essere identificati (il che, a seconda delle scelte architetturali, pu\`o essere un problema).
+
+  \paragraph{A/B Testing}
+
+  Nel \textit{A/B testing} un significativo gruppo di utenti viene partizionato ed esposto a N versioni alternative di un aggiornamento ai fini di trovare quella di maggior impatto. Quindi l'alternativa "vincente" viene selezionata e portata nell'\textit{upstream} e il ciclo ricomincia. Anche in questo caso serve un meccanismo per partizionare l'utenza e servire la versione corretta. In entrambi i casi \`e necessario identificare una serie di metriche \footnote{Preferibilmente oggettive e misurabili} per valutare la qualit\`a percepita di una alternativa e quindi prendere una decisione.
+
+  \printbibliography[title={Bibliografia}]
+  \printindex
+\end{document}

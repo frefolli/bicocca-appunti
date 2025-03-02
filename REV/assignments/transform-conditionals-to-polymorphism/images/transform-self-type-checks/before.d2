@@ -1,0 +1,23 @@
+direction: right
+
+cl: Client {
+  shape: class
+}
+a: A {
+  shape: class
+  m: () -> ()
+  kind: enum
+}
+a_note: |`java
+  void m() {
+    ...
+    switch (this.kind) {
+      case B: this.x(); break;
+      case C: this.y(); break;
+      case D: this.z(); break;
+    }
+    ...
+  }
+`|
+a_note -- a.m
+cl -- a

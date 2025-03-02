@@ -1,0 +1,363 @@
+\documentclass{beamer}
+\usepackage{graphicx}
+
+\usetheme{Boadilla}
+\usecolortheme{default}
+
+\title{CodeScene.io}
+\subtitle{Software Evolution and Reverse Engineering}
+\author{Refolli~F.~865955}
+%\logo{\includegraphics[height=1cm]{logo_unimib.pdf}}
+
+\newcommand{\putimage}[2] {
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=#2\linewidth]{#1}
+\end{figure}
+}
+
+\newcommand{\putimagecouple}[4] {
+\begin{figure}[!htb]
+  \centering
+  \begin{minipage}{0.45\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{#1}
+    \caption{#2}
+  \end{minipage}
+  \hspace{0.25cm}
+  \begin{minipage}{0.45\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{#3}
+    \caption{#4}
+  \end{minipage}
+\end{figure}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\section{A journey inside CodeScene}
+
+\begin{frame}
+  \frametitle{Projects Overview}
+  \putimage{img/projects-1.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Projects Overview}
+  \putimage{img/projects-2.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Projects Overview}
+  \putimage{img/projects-3.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Dashboard}
+  \putimage{img/spotbugs-dashboard-1.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Scope}
+  \putimage{img/spotbugs-scope-1.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Scope}
+  \putimage{img/spotbugs-scope-2.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Scope}
+  \putimage{img/spotbugs-scope-3.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Scope}
+  \putimage{img/spotbugs-scope-4.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Hotspots}
+  \putimage{img/spotbugs-hotspots-1.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Hotspots}
+  \putimage{img/spotbugs-hotspots-2.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Hotspots}
+  \putimage{img/spotbugs-hotspots-3.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Hotspots}
+  \putimage{img/spotbugs-hotspots-4.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Hotspots}
+  \putimage{img/spotbugs-hotspots-5.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Hotspots / Code Health}
+  \putimage{img/spotbugs-hotspot-codehealth-1.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Hotspots / Code Health}
+  \putimage{img/spotbugs-hotspot-codehealth-2.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Hotspots / Code Health}
+  \putimage{img/spotbugs-hotspot-codehealth-3.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Hotspots / Code Health}
+  \putimage{img/spotbugs-hotspot-codehealth-4.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Hotspots / Code Health}
+  \putimage{img/spotbugs-hotspot-codehealth-5.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Hotspots / Code Health}
+  \putimage{img/spotbugs-hotspot-codehealth-6.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Hotspots / Change coupling}
+  \putimage{img/spotbugs-hotspot-change-coupling-1.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Architecture / Recover}
+  \putimage{img/spotbugs-architecture-1.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Architecture / Recover}
+  \putimage{img/spotbugs-architecture-2.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Architecture / Recover}
+  \putimage{img/spotbugs-architecture-3.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Architecture / Overview}
+  \putimage{img/spotbugs-architecture-4.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Architecture / Details}
+  \putimage{img/spotbugs-architecture-5.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Architecture / Hotspots}
+  \putimage{img/spotbugs-architecture-6.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Architecture / Costs}
+  \putimage{img/spotbugs-architecture-7.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Architecture / Code Health}
+  \putimage{img/spotbugs-architecture-8.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Brewday / Teams}
+  \putimage{img/brewday-teams-1.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Brewday / Teams}
+  \putimage{img/brewday-teams-2.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Brewday / Teams}
+  \putimage{img/brewday-teams-3.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Brewday / Teams}
+  \putimage{img/brewday-teams-4.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Brewday / Teams}
+  \putimage{img/brewday-teams-5.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Brewday / Teams}
+  \putimage{img/brewday-teams-6.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Brewday / Teams}
+  \putimage{img/brewday-teams-7.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Brewday / Simulations / Layoffs}
+  \putimage{img/brewday-layoffs-1.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Brewday / Simulations / Layoffs}
+  \putimage{img/brewday-layoffs-2.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Brewday / Simulations / Layoffs}
+  \putimage{img/brewday-layoffs-3.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Brewday / Simulations / Layoffs}
+  \putimage{img/brewday-layoffs-4.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Simulations / Layoffs}
+  \putimage{img/spotbugs-layoffs-1.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spotbugs / Simulations / Layoffs}
+  \putimage{img/spotbugs-layoffs-2.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Projects Report}
+  \putimage{img/spotbugs-report-1.png}{0.99}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Projects Report}
+  \putimage{img/spotbugs-report-2.png}{0.99}
+\end{frame}
+
+\section{Summary}
+
+\begin{frame}
+  \frametitle{Summary \#1}
+  Is the tool useful in terms of understanding the code, design, or /and architecture? Does it allow you to reconstruct the software architecture of a system?
+  \begin{enumerate}
+    \item "Usefulness" is always a matter of case to case evaluation. It certainly highlights worst files or functions in the code base, but that is counterbalanced with interface limitations.
+    \item Kind of, it enables a structural (as in directory-file) view over code, but definition of components is left to the user, so a certain degree of knowledge is needed.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary \#2}
+  Does it allow to identify anomalies at the code level (code smells)? At the level of design or architecture (design and architectural smell)? If so, which ones?
+  \begin{enumerate}
+    \item Yes, it identifies code-level/file-level code smells (or sort of).
+    \item Information leaked about architecture is only in the form of computation on top of files (these are components) and change coupling.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary \#3}
+  Does it allow you to identify the most critical problems and then prioritize them (ranking)? Or to define thresholds for critical metrics? Does it allow you to change the metric thresholds?
+  \begin{enumerate}
+    \item Yes, it lists files or functions by Code Health (which is the metric).
+    \item That said, other metrics are usually only filters (such as commit threshold).
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary \#4}
+  Is the tool able to detect the duplicate code?
+  \begin{enumerate}
+    \item No.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary \#5}
+  Is the tool able to detect cyclical dependency? At the package and class level?
+  \begin{enumerate}
+    \item No, it doesn't elaborate dependencies.
+    \item It could be inferred from change coupling but it's an edge case and it's left to the user.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary \#6}
+  Is the tool able to compute a technical debt index? Which one (s)?
+\begin{enumerate}
+  \item It computes Code Health as sum of some metrics about LoC and smells.
+  \item It computes also the Cost of maintenance which is estimated with number of commits containing bugs or fixes (requires labelled data!).
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary \#7}
+  Does the tool provide quality gates?
+  \begin{enumerate}
+    \item No, but it can be used in CI (the site says so but I haven't tested it).
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary \#8}
+  Does the tool allow you to evaluate the history of a project? Does it provide analysis on the history of a project? Trend analysis?
+  \begin{enumerate}
+    \item Yes, the analysis is carried out on the whole commit history of the project, and sliding windows can be customized to analyze only a part of it or in chunks.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary \#9}
+  Does it provide support for refactoring issues? Refactoring actions
+  \begin{enumerate}
+    \item No, it only serves an indicator of coupling/proximity for functions (which can be useful or not depending on the situation).
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary \#10}
+  Are reports generated automatically? Is it useful for Continuous integration?
+  \begin{enumerate}
+    \item Yes, it can generate two reports automatically, however they contain only summary data about a project or all projects.
+    \item Again, usefulness isn't absolute, and i tend for a No.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary \#11}
+  Which are the main advantages and disadvantages?
+  What is missing by the tool in your opinion?
+  \begin{enumerate}
+    \item It highlights hotspots, it allows to prioritize files by code health and evaluate risk of knowledge islands.
+    \item But it totally lacks construct semantics integration.
+    \item Architectural Component definition process is tedious and for most projects with regular structure it could be inferred automatically (with construct semantics or file structure).
+    \item I "can" see this product used along with SonarQube, definitely not replacing it at all.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \centering
+  \frametitle{The End (QA?)}
+  \putimage{img/the-end.png}{0.50}
+\end{frame}
+
+\end{document}

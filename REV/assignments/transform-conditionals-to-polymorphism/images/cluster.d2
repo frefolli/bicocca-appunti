@@ -1,0 +1,20 @@
+
+tctp: Transform Conditionals to Polymorphism {style: {fill: lightblue}}
+
+tcir: Transform Conditionals into Registration {style: {fill: lightgreen}}
+
+tctc: Transform Client Type Checks {style: {fill: white}}
+ino: Introduce Null Object {style: {fill: white}}
+
+tstc: Transform Self Type Checks {style: {fill: '#ff7f8a'}}
+fos1: Factor Out Strategy {style: {fill: '#ff7f8a'}}
+fos2: Factor Out State {style: {fill: '#ff7f8a'}}
+
+tctp -> tcir: test external attribute
+
+tctp -> tctc: test provider type
+tctc -> ino: test null values
+
+tctp -> tstc: test self type
+tstc -> fos1: test object state
+tstc -> fos2: test object state

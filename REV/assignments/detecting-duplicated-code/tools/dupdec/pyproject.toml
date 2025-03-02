@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dupdec"
+version = "1.0.0-beta"
+license-files = { paths = ["LICENSE"] }
+authors = [
+  { name="Refolli Francesco", email="frefolli@campus.unimib.it" },
+  { name="Terzi Telemaco", email="tezze.terzi01@google.com" }
+]
+description = "Detect duplicate code via Mechanical Comparison and Dotplotting"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  'Levenshtein',
+  'scipy',
+  'numpy',
+  'pyyaml'
+]
+
+[project.urls]
+"Homepage" = "https://github.com/frefolli/re-rengineering-patterns-presentation"
+"Bug Tracker" = "https://github.com/frefolli/re-rengineering-patterns-presentation/issues"
+
+[project.scripts]
+dupdec = "dupdec.__main__:main"
+
+[tool.hatch.build]
+include = [
+  "dupdec/*.py",
+]
+

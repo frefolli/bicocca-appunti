@@ -1,0 +1,46 @@
+direction: right
+A: {
+  shape: class
+  state: State
+  request: () -> ()
+}
+State: {
+  shape: class
+  handleRequest: () -> ()
+  nextState: () -> State
+}
+A -- State
+StateA: {
+  shape: class
+  handleRequest: () -> ()
+  nextState: () -> State
+}
+StateA -> State
+StateB: {
+  shape: class
+  handleRequest: () -> ()
+  nextState: () -> State
+}
+StateB -> State
+StateC: {
+  shape: class
+  handleRequest: () -> ()
+  nextState: () -> State
+}
+StateC -> State
+A_note: |`java
+  State request() {
+    ...
+    state.handleRequest();
+    state = state.nextState();
+    ...
+  }
+`|
+A_note -- A.request
+statea_note: |`java
+  State nextState() {
+    return new StateC();
+  }
+`|
+statea_note -- StateA.nextState
+

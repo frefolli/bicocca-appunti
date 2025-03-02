@@ -1,0 +1,71 @@
+direction: right
+
+cl: Client {
+  shape: class
+  a: A
+  m: () -> ()
+}
+a: A {
+  shape: class
+  init: () -> ()
+  doit: () -> ()
+}
+b: B {
+  shape: class
+  doit: () -> ()
+  x: () -> ()
+}
+c: C {
+  shape: class
+  init: () -> ()
+  doit: () -> ()
+  y: () -> ()
+}
+d: D {
+  shape: class
+  doit: () -> ()
+  z: () -> ()
+}
+
+cl -- a
+a <- b
+a <- c
+a <- d
+
+cl_note: |`java
+  void m() {
+    ...
+    a.doit();
+    ...
+  }
+`|
+cl_note -- cl.m
+
+b_note: |`java
+  void doit() {
+    ...
+    this.init();
+    this.x();
+    ...
+  }
+`|
+b_note -- b.doit
+
+c_note: |`java
+  void doit() {
+    ...
+    this.init();
+    this.y();
+    ...
+  }
+`|
+c_note -- c.doit
+
+d_note: |`java
+  void doit() {
+    ...
+    this.z();
+    ...
+  }
+`|
+d_note -- d.doit

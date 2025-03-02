@@ -1,0 +1,35 @@
+direction: right
+A: {
+  shape: class
+  strategy: Strategy
+  operation: () -> ()
+}
+A_note: |`java
+  void operation() {
+    ...
+    strategy.handleOperation();
+    ...
+  }
+`|
+A_note <- A.operation
+
+Strategy: {
+  shape: class
+  handleOperation: () -> ()
+}
+A -- Strategy
+StrategyA: {
+  shape: class
+  handleOperation: () -> ()
+}
+StrategyB: {
+  shape: class
+  handleOperation: () -> ()
+}
+StrategyC: {
+  shape: class
+  handleOperation: () -> ()
+}
+Strategy <- StrategyA
+Strategy <- StrategyB
+Strategy <- StrategyC

@@ -1,0 +1,45 @@
+direction: right
+
+cl: Client {
+  shape: class
+  a: A
+  m: () -> ()
+}
+a: A {
+  shape: class
+  init: () -> ()
+}
+b: B {
+  shape: class
+  x: () -> ()
+}
+c: C {
+  shape: class
+  init: () -> ()
+  y: () -> ()
+}
+d: D {
+  shape: class
+  z: () -> ()
+}
+
+cl -- a
+cl -- b
+cl -- c
+cl -- d
+a <- b
+a <- c
+a <- d
+
+cl_note: |`java
+  void m() {
+    ...
+    switch (a.class) {
+      case B: a.init(); ((B) a).x(); break;
+      case C: ((C) a).init(); ((C) a).y(); break;
+      case D: ((D) a).z(); break;
+    }
+    ...
+  }
+`|
+cl_note -- cl.m

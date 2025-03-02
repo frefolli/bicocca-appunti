@@ -1,0 +1,38 @@
+tc: Tool Client {
+  shape: class
+  Read: (Path) -> File
+}
+fr: FileReader {
+  shape: class
+  OpenFile: (Path) -> File
+}
+json_reader: JSONReader {
+  shape: class
+  OpenFile: (Path) -> File
+}
+yaml_reader: YAMLReader {
+  shape: class
+  OpenFile: (Path) -> File
+}
+fr -- json_reader
+fr -- yaml_reader
+tc -- fr
+
+fr_note: |`java
+  File OpenFile(Path) {
+    ...
+    case "json":
+      return JSONReader.OpenFile(path);
+    case "yml":
+      return YAMLReader.OpenFile(path);
+    ...
+  }
+`|
+fr_note -- fr.OpenFile
+
+tc_note: |`java
+  File Read(Path) {
+    return FileReader.OpenFile(Path);
+  }
+`|
+tc_note -- tc.OpenFile

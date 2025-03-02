@@ -1,0 +1,479 @@
+\documentclass[a4paper,11pt,oneside, table]{article}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{setspace}
+\usepackage{imakeidx}
+\usepackage[section]{placeins}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{csquotes}
+\usepackage{caption}
+\captionsetup[table]{labelfont=it}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=magenta,      
+  urlcolor=cyan,
+  pdftitle={Report},
+  pdfpagemode=FullScreen,
+}
+
+\usepackage{listings}
+\usepackage{listings-json}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\newtheorem{nota}{Nota}
+
+\usepackage[italian]{babel}
+\usepackage[
+  backend=bibtex,
+  style=numeric,
+  sorting=ydnt
+]{biblatex}
+\addbibresource{quotes.bib}
+\makeindex
+
+\newcommand{\putimage}[4] {
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width={#4}\linewidth]{#1}
+    \caption{#2}\label{#3}
+  \end{figure}
+}
+
+\newcommand{\putsubimage}[5] {
+  \begin{minipage}{{#4}\linewidth}
+    \centering
+    \includegraphics[width={#5}\linewidth]{#1}
+    \caption{#2}\label{#3}
+  \end{minipage}
+}
+
+\newcommand{\putimagecouple}[2] {
+  \begin{figure}[!htb]
+    \centering
+    #1
+    \hspace{0.5cm}
+    #2
+  \end{figure}
+}
+
+\newcommand{\putimagequadruple}[4] {
+  \begin{figure}[!htb]
+    \centering
+    #1
+    \hspace{0.5cm}
+    #2
+    \linebreak
+    #3
+    \hspace{0.5cm}
+    #4
+  \end{figure}
+}
+
+\begin{document}
+\begin{titlepage}
+  \noindent
+  \begin{minipage}[t]{0.19\textwidth}
+    \vspace{-4mm}{\includegraphics[scale=1.15]{logo_unimib.pdf}}
+  \end{minipage}
+  \begin{minipage}[t]{0.81\textwidth}
+    {
+      \setstretch{1.42}
+      {\textsc{Università degli Studi di Milano - Bicocca}} \\
+      \textbf{Scuola di Scienze} \\
+      \textbf{Dipartimento di Informatica, Sistemistica e Comunicazione} \\
+      \textbf{Corso di laurea magistrale in Informatica} \\
+      \par
+    }
+  \end{minipage}
+  \vspace{40mm}
+  \begin{center}
+    {\LARGE{
+      \setstretch{1.2}
+      \textbf{Relazione di Evolution of Software Systems and Reverse Engineering \\
+      Analisi di correlazione tra Architectural Smells}
+      \par
+    }}
+  \end{center}
+
+  \vspace{50mm}
+
+  \vspace{15mm}
+
+  \begin{flushright}
+    {\large \textbf{Relazione di:}} \\
+    \large{Refolli Francesco} \large{865955} \\
+  \end{flushright}
+
+  \vspace{40mm}
+  \begin{center}
+    {\large{\bf Anno Accademico 2024-2025}}
+  \end{center}
+  \restoregeometry
+\end{titlepage}
+
+\printindex
+\tableofcontents
+\renewcommand{\baselinestretch}{1.5}
+
+\section{Introduzione}
+
+Lo scopo del progetto \`e analizzare diversi progetti con Arcan \cite{fontana2017arcan} per estrarre gli Architectural Smells e analizzare i dati di co-occorrenza nella stessa versione e nel tempo per rilevare correlazioni tra gli smells. Per fare questo mi sono servito di una Pipeline \cite{pipelineRepo} (Figura \ref{png:pipeline}) creata ad hoc in grado di scaricare ed analizzare i progetti e i loro sottoprodotti in modo completamente automatico. Volendo testare la pipeline anche su progetti non Java, per verificare l'attendibilit\`a dell'analisi, il Job di importazione repository, oltre a scaricarli, ne analizza il contenuto per identificare il linguaggio di programmazione con cui impostare l'analisi di Arcan (che lo richiede strettamente). Con tre richieste in sequenza si provoca l'importazione dei progetti designati nel documento YAML in ingresso, l'analisi con Arcan e la successiva analisi dei dati degli smell per rilevare le correlazioni. I prodotti delle analisi sono quindi scaricabili dall'interfaccia grafica che dispone anche di un sistema di code per notificare all'utente quando l'analisi \`e terminana. Si mette in evidenza che \`e stato possibile analizzare solo un sottoinsieme (hubLikeDep, cyclicDep, unstableDep, godComponent, deepHierarchy) degli smell riconosciuti da Arcan in quanto l'analisi degli altri smells (wideHierarchy, cyclicHierarchy) impiega troppo tempo, memoria o il processo non termina
+\footnote{
+  Da qui in poi gli smells verranno chiamati per acronimo per brevit\`a.
+  hubLikeDep = HD; cyclicDep = CD; unstableDep = UD; godComponent = GC; deepHierarchy = DH.
+}
+.
+
+\putimage{images/pipeline.png}{La Pipeline per l'Analisi}{png:pipeline}{1}
+
+I progetti analizzati si dividono nel gruppo di controllo (Tabella \ref{tbl:gruppo-di-controllo}) e nel gruppo di analisi (Tabelle \ref{tbl:gruppo-analisi-semplice-1} e \ref{tbl:gruppo-analisi-semplice-2}). Conosco molto bene i progetti del gruppo di controllo e di conseguenza \`e facile verificare la qualit\`a dell'analisi di Arcan, e di conseguenza verificare l'attendibilit\`a di una conseguente analisi dei sottoprodotti. \`E inoltre utile per verificare il funzionamento della pipeline senza ricorrere a progetti eccessivamente complessi o presanti. Siccome l'analisi di Arcan \`e molto pesante, l'analisi \textit{sequenziale} sulle versioni storiche (cadenzate con intervalli di 6 mesi) \`e stata effettuata su un sottoinsieme dei progetti (Tabella \ref{tbl:gruppo-analisi-sequenziale}), mentre l'analisi \textit{semplice} \`e effettuata sull'ultima versione di tutti i progetti.
+
+\begin{table}
+  \captionof{table}{Progetti nel Gruppo di Controllo}
+  \label{tbl:gruppo-di-controllo}
+  \resizebox{\linewidth}{!}{
+    \begin{tabular}{|l|l|l|l|c|}
+      \hline
+      \textbf{Owner} & \textbf{Project} & \textbf{Branch} & \textbf{Language} & \textbf{LoC} \\ \hline
+      \hline
+      frefolli & lartc & master & CPP & 6 K \\ \hline
+      frefolli & stardock & master & CPP & 552 \\ \hline
+      frefolli & packer & master & CPP & 1 K \\ \hline
+      frefolli & arcan-pipeline & master & CPP & 14 K \\ \hline
+      ilpincy & argos3 & master & CPP & 148 K \\ \hline
+    \end{tabular}
+  }
+\end{table}
+
+\begin{table}
+  \captionof{table}{Progetti nel Gruppo di Analisi Semplice (1)}
+  \label{tbl:gruppo-analisi-semplice-1}
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{|l|l|l|l|c|}
+      \hline
+      \textbf{Owner} & \textbf{Project} & \textbf{Branch} & \textbf{Language} & \textbf{LoC} \\ \hline
+      \hline
+      alibaba & druid & master & JAVA & 413 K \\ \hline
+      alibaba & fastjson2 & main & JAVA & 419 K \\ \hline
+      alibaba & jetcache & master & JAVA & 19 K \\ \hline
+      alibaba & canal & master & JAVA & 91 K \\ \hline
+      alibaba & nacos & develop & JAVA & 200 K \\ \hline
+      alibaba & QLExpress & master & JAVA & 14 K \\ \hline
+      apache & activemq & main & JAVA & 438 K \\ \hline
+      apache & jena & main & JAVA & 676 K \\ \hline
+      apache & jackrabbit & trunk & JAVA & 332 K \\ \hline
+      apache & archiva & master & JAVA & 145 K \\ \hline
+      apache & geode & develop & JAVA & 1.404 M \\ \hline
+      apache & karaf & main & JAVA & 129 K \\ \hline
+      apache & phoenix & master & JAVA & 463 K \\ \hline
+      apache & solr & main & JAVA & 729 K \\ \hline
+      apache & rocketmq & develop & JAVA & 247 K \\ \hline
+      apache & jmeter & master & JAVA & 163 K \\ \hline
+      apache & shenyu & master & JAVA & 179 K \\ \hline
+      apache & lucene & main & JAVA & 875 K \\ \hline
+      apache & groovy & master & JAVA & 202 K \\ \hline
+      apache & maven & master & JAVA & 175 K \\ \hline
+      apache & ant & master & JAVA & 146 K \\ \hline
+      apache & kafka & trunk & JAVA & 822 K \\ \hline
+      apache & paimon & master & JAVA & 320 K \\ \hline
+      apache & ranger & master & JAVA & 351 K \\ \hline
+      apache & calcite & main & JAVA & 443 K \\ \hline
+      apache & commons-bcel & master & JAVA & 46 K \\ \hline
+      apache & commons-beanutils & master & JAVA & 25 K \\ \hline
+      apache & commons-bsf & master & JAVA & 6 K \\ \hline
+      apache & commons-chain & master & JAVA & 9 K \\ \hline
+      apache & commons-cli & master & JAVA & 11 K \\ \hline
+      apache & commons-codec & master & JAVA & 24 K \\ \hline
+      apache & commons-collections & master & JAVA & 72 K \\ \hline
+      apache & commons-compress & master & JAVA & 73 K \\ \hline
+      apache & commons-configuration & master & JAVA & 51 K \\ \hline
+      apache & commons-crypto & master & JAVA & 7 K \\ \hline
+      apache & commons-csv & master & JAVA & 9 K \\ \hline
+      \end{tabular}
+    }
+  \end{table}
+
+\begin{table}
+  \captionof{table}{Progetti nel Gruppo di Analisi Semplice (2)}
+  \label{tbl:gruppo-analisi-semplice-2}
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{|l|l|l|l|c|}
+      \hline
+      \textbf{Owner} & \textbf{Project} & \textbf{Branch} & \textbf{Language} & \textbf{LoC} \\ \hline
+      \hline
+      apache & commons-dbcp & master & JAVA & 31 K \\ \hline
+      apache & commons-dbutils & master & JAVA & 7 K \\ \hline
+      apache & commons-digester & master & JAVA & 20 K \\ \hline
+      apache & commons-email & master & JAVA & 10 K \\ \hline
+      apache & commons-exec & master & JAVA & 3 K \\ \hline
+      apache & commons-fileupload & master & JAVA & 6 K \\ \hline
+      apache & commons-functor & master & JAVA & 21 K \\ \hline
+      apache & commons-geometry & master & JAVA & 74 K \\ \hline
+      apache & commons-graph & master & JAVA & 10 K \\ \hline
+      apache & commons-imaging & master & JAVA & 42 K \\ \hline
+      apache & commons-io & master & JAVA & 55 K \\ \hline
+      apache & commons-jci & master & JAVA & 4 K \\ \hline
+      apache & commons-jcs & master & JAVA & 53 K \\ \hline
+      apache & commons-jelly & master & JAVA & 31 K \\ \hline
+      apache & commons-jexl & master & JAVA & 39 K \\ \hline
+      apache & commons-jxpath & master & JAVA & 26 K \\ \hline
+      apache & commons-lang & master & JAVA & 96 K \\ \hline
+      apache & commons-logging & master & JAVA & 6 K \\ \hline
+      apache & commons-math & master & JAVA & 148 K \\ \hline
+      apache & commons-net & master & JAVA & 26 K \\ \hline
+      apache & commons-numbers & master & JAVA & 59 K \\ \hline
+      apache & commons-ognl & master & JAVA & 20 K \\ \hline
+      apache & commons-pool & master & JAVA & 16 K \\ \hline
+      apache & commons-proxy & master & JAVA & 6 K \\ \hline
+      apache & commons-rdf & master & JAVA & 8 K \\ \hline
+      apache & commons-release-plugin & master & JAVA & 1 K \\ \hline
+      apache & commons-rng & master & JAVA & 49 K \\ \hline
+      apache & commons-scxml & master & JAVA & 14 K \\ \hline
+      apache & commons-signing & master & JAVA & 302 \\ \hline
+      apache & commons-statistics & master & JAVA & 40 K \\ \hline
+      apache & commons-testing & master & JAVA & 584 \\ \hline
+      apache & commons-text & master & JAVA & 27 K \\ \hline
+      apache & commons-validator & master & JAVA & 16 K \\ \hline
+      apache & commons-vfs & master & JAVA & 37 K \\ \hline
+      apache & commons-weaver & master & JAVA & 5 K \\ \hline
+    \end{tabular}
+    }
+  \end{table}
+
+  \begin{table}
+    \captionof{table}{Progetti nel Gruppo di Analisi Sequenziale}
+    \label{tbl:gruppo-analisi-sequenziale}
+    \resizebox{\linewidth}{!}{
+      \begin{tabular}{|l|l|l|l|c|}
+        \hline
+        \textbf{Owner} & \textbf{Project} & \textbf{Branch} & \textbf{Language} & \textbf{LoC} \\ \hline
+        \hline
+        alibaba & nacos & develop & JAVA & 200 K \\ \hline
+        apache & ant & master & JAVA & 146 K \\ \hline
+        apache & calcite & main & JAVA & 443 K \\ \hline
+        apache & maven & master & JAVA & 175 K \\ \hline
+        apache & jmeter & master & JAVA & 163 K \\ \hline
+      \end{tabular}
+    }
+  \end{table}
+
+  \section{Analisi semplice}
+
+  Dopo aver analizzato con la pipeline i progetti del gruppo di analisi semplice (Tabelle \ref{tbl:gruppo-analisi-semplice-1} e \ref{tbl:gruppo-analisi-semplice-2}), ci si trova con una matrice di co-occorrenza per ogni progetto in formato JSON, come nel Listato \ref{lst:esempio-analisi-semplice}. Per ogni tipo di smell si contano le occorrenze (nei componenti) e si controlla nel luogo di occorrenza (nel componente) quante volte appare insieme ad un altro tipo di smell. Quindi i dati sono stati aggregati per co-occorrenza (\textit{smellA-smellB}) e tramite una media delle percentuali di co-occorrenza nei vari progetti (media pesata sul numero di occorrenze in modo da premiare le coppie di smell che co-occorrono molte volte nello stesso progetto e per non dare eccessivo peso alle potenziali fluttuazioni statistiche). La Figura \ref{png:heatmap-simple-analysis} contiene una heatmap che riassume i risultati dell'analisi di correlazione.
+
+  \begin{lstlisting}[language=json, caption={Esempio di JSON di analisi semplice del progetto apache/commons-validator}, label={lst:esempio-analisi-semplice}]
+  {"cyclicDep" : 
+    {"cooccurrence" : 
+      {"hublikeDep" : 
+        {"absolute" : 1,
+         "percentage" : 0.045454545454545456}},
+     "count" : 22},
+   "hublikeDep" : 
+    {"cooccurrence" : 
+      {"cyclicDep" : 
+        {"absolute" : 1,
+         "percentage" : 0.5}},
+     "count" : 2}}
+  \end{lstlisting}
+
+  \putimage{images/heatmap-simple-analysis.png}{Heatmap di correlazione riassuntiva dei progetti del gruppo di analisi semplice}{png:heatmap-simple-analysis}{0.5}
+
+  \paragraph{Osservazioni}
+  Si osserva che l'apparizione degli smell UD, GC, DH \`e fortemente correlata alla presenza di uno smell di tipo CD. Inoltre si nota anche una molto debole correlazione tra GC e UD.
+
+  \paragraph{Conferma con test d'ipotesi}
+
+  Siccome sono emerse delle correlazioni empiriche, sono stati eseguiti dei test d'ipotesi per confermare questi risultati. Un $t$-test \cite{sun2020microbiome} sulla media ($H_0: \mu >= 0$, $H_1: \mu < 0$) ha confermato e validato le informazioni emerse con p-value molto basso \cite{head2015extent}. Si riporta per ridondanza anche questo dato.
+
+  \begin{itemize}
+    \item $UD \rightarrow CD$, con p-value 5.343893978079183e-18
+    \item $GC \rightarrow CD$, con p-value 2.46097200582896e-19
+    \item $DH \rightarrow CD$, con p-value 0.0002714398470104095
+  \end{itemize}
+
+  \section{Analisi sequenziale}
+
+  I progetti del gruppo di analisi sequenziale (Tabella \ref{tbl:gruppo-analisi-sequenziale}) sono stati analizzati una volta per ogni loro versione, il cui risultato sono gli smell associati a ciascun componente in ogni versione. Sono stati eseguiti a questo punto diversi tipi di analisi processando questi dati sequenziali.
+
+  \subsection{Un p\`o di definizioni}
+
+  \paragraph{$I_{c,v}$}
+  Per ogni componente $C$ il suo stato istantaneo $I_{c,v}$ \`e espresso dal vettore $<CD,HD,GC,DH,UD>$ dove ciascun elemento $x \in AS$ assume il valore $x = 1$ sse quello smell \`e presente nel documento nella versione $V$. Ovvero lo stato esprime la presenza istantanea.
+
+  \paragraph{$D_{c,v}$}
+  Per ogni componente $C$ il suo stato differenziale $D_{c,v}$ \`e espresso dal vettore $<CD,HD,GC,DH,UD>$ dove ciascun elemento $x \in AS$ assume il valore $x = 1$ sse quello smell \`e presente nel documento nella versione $V$ in una quantit\`a superiore rispetto alla versione $V-1$, vice versa $x=-1$ sse \`e presente in una quantit\`a inferiore. Ovvero lo stato esprime la direzione della differenza.
+
+  \subsection{Co-occorrenza istantanea}
+  Utilizzando gli stati istantanei $I_{c,v}$ si effettua un sondaggio statistico della proposizione $AS_{a} \rightarrow AS_{b}$, ovvero lo smell $A$ implica lo smell $B$. Ovvero risponde al quesito: \`e vero che quando lo smell $A$ \`e presente allora anche lo smell $B$ \`e presente? Gli stati in cui nessuno dei due smell appare sono state escluse dal conteggio perch\`e viziano i risultati facendo figurare gli smell che appaiono molto raramente come correlati.
+
+  Nella Figura \ref{png:instants} sono riportate le probabilit\`a che $AS_{a} \rightarrow AS_{b}$ per ogni coppia di smell diversi (Nota: $AS_{a}$ nelle colonne, $AS_{b}$ nelle righe).
+  
+  \putimage{images/instants.png}{}{png:instants}{0.5}
+
+  \paragraph{Osservazioni}
+  Oltre alla fortissima correlazione istantanea tra CD e gli altri smells (ovvero CD \`e molto spesso presente quando gli altri smells sono presenti), si nota anche che altri gruppi di smells risultano cooccorrenti. In particolare:
+
+  \begin{itemize}
+    \item Quando c'e' GC molto spesso ci sono HD e UD
+    \item Quando c'e' DH molto spesso ci sono HD e UD
+  \end{itemize}
+
+  \paragraph{Conferma con test d'ipotesi}
+
+  Siccome sono emerse delle correlazioni empiriche, sono stati eseguiti dei test d'ipotesi per confermare questi risultati. Un $t$-test \cite{sun2020microbiome} sulla media ($H_0: \mu >= 0$, $H_1: \mu < 0$) ha confermato e validato le informazioni emerse con p-value molto basso \cite{head2015extent}. Si riporta per ridondanza anche questo dato.
+
+  \begin{itemize}
+    \item $CD \rightarrow DH$, con p-value 0.0
+    \item $CD \rightarrow GC$, con p-value 0.0
+    \item $CD \rightarrow HD$, con p-value 0.0
+    \item $CD \rightarrow UD$, con p-value 0.0
+    \item $GC \rightarrow DH$, con p-value 1.435256286842854e-06
+    \item $HD \rightarrow DH$, con p-value 4.734253100288627e-255
+    \item $HD \rightarrow GC$, con p-value 4.256981210065098e-230
+    \item $HD \rightarrow UD$, con p-value 5.489034077245229e-37
+    \item $UD \rightarrow DH$, con p-value 3.901546614793626e-133
+  \end{itemize}
+
+  \subsection{Co-occorrenza incrementale}
+  Utilizzando gli stati differenziali $D_{c,v}$ si effettua un sondaggio statistico della proposizione $AS_{a} \rightarrow AS_{b}$, ovvero lo smell $A$ implica lo smell $B$. Ovvero risponde al quesito: \`e vero che quando lo smell $A$ incrementa allora anche lo smell $B$ incrementa? (e vice versa: \`e vero che quando lo smell $A$ decrementa allora anche lo smell $B$ decrementa?). La transizioni in cui nessuno dei due smell cambia di stato (ex: $00 \rightarrow 00$) sono state escluse dal conteggio perch\`e viziano i risultati facendo figurare gli smell che appaiono molto raramente come correlati.
+
+  Nella Figure \ref{png:increments} e \ref{png:decrements} sono riportate le probabilit\`a che $AS_{a} \rightarrow AS_{b}$ per ogni coppia di smell diversi (Nota: $AS_{a}$ nelle colonne, $AS_{b}$ nelle righe).
+  
+  \putimagecouple
+  {\putsubimage{images/increments.png}{}{png:increments}{0.45}{1}}
+  {\putsubimage{images/decrements.png}{}{png:decrements}{0.45}{1}}
+
+  \paragraph{Osservazioni}
+  Oltre alla fortissima correlazione differenziale tra CD e gli altri smells (ovvero CD \`e molto spesso in aumento/diminuzione quando gli altri smells sono in aumento/diminuzione), si nota anche che gli incrementi/decrementi degli altri tipi di smells (DH, GC, HD, UD) sono tra loro fortemente correlati.
+
+  \paragraph{Conferma con test d'ipotesi}
+
+  Siccome sono emerse delle correlazioni empiriche, sono stati eseguiti dei test d'ipotesi per confermare questi risultati. Un $t$-test \cite{sun2020microbiome} sulla media ($H_0: \mu >= 0$, $H_1: \mu < 0$) ha confermato e validato le informazioni emerse con p-value molto basso \cite{head2015extent}. Si riporta per ridondanza anche questo dato.
+
+  \subparagraph{incrementi}
+  \begin{itemize}
+    \item $CD \rightarrow DH$, con p-value 0.0
+    \item $CD \rightarrow GC$, con p-value 0.0
+    \item $CD \rightarrow HD$, con p-value 0.0
+    \item $CD \rightarrow UD$, con p-value 0.0
+    \item $GC \rightarrow DH$, con p-value 0.0006597639058512969
+    \item $HD \rightarrow DH$, con p-value 3.5275628507291554e-83
+    \item $HD \rightarrow GC$, con p-value 4.611684131720051e-72
+    \item $HD \rightarrow UD$, con p-value 3.193730087158467e-25
+    \item $UD \rightarrow DH$, con p-value 1.8998519322958519e-31
+    \item $UD \rightarrow GC$, con p-value 1.6012390509547418e-22
+  \end{itemize}
+
+  \subparagraph{decrementi}
+  \begin{itemize}
+    \item $CD \rightarrow DH$, con p-value 0.0
+    \item $CD \rightarrow GC$, con p-value 0.0
+    \item $CD \rightarrow HD$, con p-value 0.0
+    \item $CD \rightarrow UD$, con p-value 0.0
+    \item $GC \rightarrow DH$, con p-value 0.0010106968491028834
+    \item $HD \rightarrow DH$, con p-value 4.385944110852566e-82
+    \item $HD \rightarrow GC$, con p-value 7.16476232040879e-72
+    \item $HD \rightarrow UD$, con p-value 2.4581552135851697e-25
+    \item $UD \rightarrow DH$, con p-value 1.404439800557754e-30
+    \item $UD \rightarrow GC$, con p-value 3.83035233087132e-22
+  \end{itemize}
+
+  \subsection{Dipendenza in transizione}
+  Utilizzando gli stati istantanei $I_{c,v}$ si effettua un sondaggio statistico sui tipi di transizioni (nel passaggio di versione) a coppie di smells. La transizioni in cui nessuno dei due smell cambia di stato (ex: $00 \rightarrow 00$) sono state escluse dal conteggio perch\`e viziano i risultati facendo figurare gli smell che appaiono molto raramente come correlati.
+
+  \subsubsection{coordinamento}
+  La transizione indica che gli smell cambiano di stato allo stesso modo nello stesso istante ($00 \rightarrow 11 \lor 11 \rightarrow 00$). Riportato in Figura \ref{png:dependencies-coordination}.
+  \putimage{images/dependencies-coordination.png}{Heatmap sulle relazioni di coordinamento}{png:dependencies-coordination}{0.5}
+
+  \paragraph{Osservazioni}
+  Non emergono correlazioni significative.
+  
+  \subsubsection{alternativa}
+  La transizione indica che gli smell non possono coesistere, se appare uno scompare l'altro - indica anche successione stretta - ($10 \rightarrow 01$). Riportato in Figura \ref{png:dependencies-alternate}.
+  \putimage{images/dependencies-alternate.png}{Heatmap sulle relazioni di alternativit\`a}{png:dependencies-alternate}{0.5}
+
+  \paragraph{Osservazioni}
+  Non emergono correlazioni significative.
+  
+  \subsubsection{precedenza}
+  La transizione indica che la comparsa di uno smell \`e subordinata temporalmente alla presenza di un'altro ($01 \rightarrow 11$). Riportato in Figura \ref{png:dependencies-precedence}.
+  \putimage{images/dependencies-precedence.png}{Heatmap sulle relazioni di precedenza}{png:dependencies-precedence}{0.5}
+
+  \paragraph{Osservazioni}
+  Non emergono correlazioni significative, oltre al fatto che spesso gli smell di tipo CD sono gi\`a presenti quando gli altri tipi minori di smell compaiono.
+  
+  \subsubsection{successione}
+  La transizione indica che lo smell sopravvive temporalmente alla scoparsa di un altro smell ($11 \rightarrow 10$). Questa transizione pu\`o essere vista come il complementare della \textit{precedenza} e pu\`o indicare un possibile legame di dipendenza tra smells. Riportato in Figura \ref{png:dependencies-succession}.
+  \putimage{images/dependencies-succession.png}{Heatmap sulle relazioni di successione}{png:dependencies-succession}{0.5}
+
+  \paragraph{Osservazioni}
+  Non emergono correlazioni significative, oltre al fatto che spesso gli smell di tipo CD rimangono presenti quando gli altri tipi minori di smell scompaiono.
+
+  \section{Validazione}
+
+  \subsection{Rappresentanza del campione}
+
+  Nelle Figure \ref{png:simple-analysis-locs}, \ref{png:sequential-analysis-locs} e \ref{png:control-group-locs} sono riportati i grafici di distribuzione delle grandenze dei progetti analizzati: i progetti selezionati (con particolare riferimento ai due gruppi di analisi) sono un campione che ben rappresenta la popolazione, data la variet\`a delle lunghezze e dato il fatto che provengono da due collezioni di software libero rilevante nel settore \footnote{\href{https://github.com/alibaba/}{Alibaba}} \footnote{\href{https://github.com/apache/}{Apache}}.
+
+  \putimagecouple
+  {\putsubimage{images/simple-analysis-locs.png}{Distribuzione delle lunghezze (in Milioni di LoC) dei progetti del gruppo di semplice}{png:simple-analysis-locs}{0.45}{1}}
+  {\putsubimage{images/sequential-analysis-locs.png}{Distribuzione delle lunghezze dei progetti del gruppo di analisi sequenziale}{png:sequential-analysis-locs}{0.45}{1}}
+  \putimage{images/control-group-locs.png}{Distribuzione delle lunghezze dei progetti del gruppo di controllo}{png:control-group-locs}{0.5}
+
+  \subsection{Il fattore Arcan}
+
+  Analizzando i progetti ho identificato un pattern significativo. Si riportano nelle Figure \ref{png:smells-big} e \ref{png:smells-small} i grafici a torta rappresentanti le quote di smells riconosciuti nei progetti del gruppo di analisi semplice. Come si pu\`o notare, gli smells riconosciuti da Arcan sono estremamente sbilanciati verso le dipendenze cicliche \footnote{si noti che questi numeri rispecchiano il numero di smells distinti, non il numero di partecipazioni!}, il che fa sorgere il legittimo dubbio che l'analisi di Arcan possa essere inesatta.
+
+  \putimagecouple
+  {\putsubimage{images/smells-big.png}{Grafico a torta con le quote di smells riconosciuti nel gruppo di analisi semplice (Vista macroscopica)}{png:smells-big}{0.45}{1}}
+  {\putsubimage{images/smells-small.png}{Grafico a torta con le quote di smells riconosciuti nel gruppo di analisi semplice (Vista in dettaglio della quota 'Altri')}{png:smells-small}{0.45}{1}}
+
+  Ebbene il gruppo di controllo \`e stato pensato propri\`o per dipanare questo dubbio. Tali progetti sono stati scelti tutti in virt\`u del fatto che sono stati da me sviluppati o mantenuti di recente, per cui risulta facile verificare la presenza effettiva degli smells rilevati da Arcan. Si prenda come esempio il compilatore LartC \cite{lartcRepo} (C++). L'analisi di Arcan ha restituito gli smells elencati nella Tabella \ref{tbl:lartc-smells}. Con una rapida verifica (a colpo sicuro) si \`e rilevato che le dipendenze cicliche segnalate non sono in realt\`a presenti nel codice. Sorge quindi il legittimo dubbio che buona parte degli smells di tipo cyclicDependency siano in realt\`a inattendibili (il che spiegherebbe la precedentemente discussa implicazione degli altri smell verso CD) \footnote{Anche altri smells sono fuorvianti o borderline, ma non \`e questo il punto che si cerca di trasmettere}.
+
+  \begin{table}
+    \captionof{table}{Smells rilevati in LartC}
+    \label{tbl:lartc-smells}
+    \resizebox{\linewidth}{!}{
+      \begin{tabular}{|l|c|l|c|}
+        \hline
+        \textbf{smellType} & \textbf{smellId} & \textbf{component} & \textbf{componentId} \\ \hline
+        \hline
+        cyclicDep & 3650 & variants.cc & 175 \\ \hline
+        cyclicDep & 3650 & internal\_errors.cc & 625 \\ \hline
+        cyclicDep & 3658 & frefolli\_lartc.git.src.lartc.ast & 731 \\ \hline
+        cyclicDep & 3658 & frefolli\_lartc.git.src.lartc & 583 \\ \hline
+        cyclicDep & 3658 & frefolli\_lartc.git.src.lartc.ast.declaration & 107 \\ \hline
+        hubLikeDep & 3667 & expression.cc & 1158 \\ \hline
+        hubLikeDep & 3690 & file\_db.cc & 1179 \\ \hline
+      \end{tabular}
+    }
+  \end{table}
+
+  \subsection{Strumenti logico-matematici}
+
+  Nell'analisi degli smells sono stati usati concetti quali \textit{istantanea} o \textit{differenziale} di stato di componente, il concetto di \textit{transizione} e di \textit{implicazione}, sufficientemente semplici da spiegare e giustificare. In particolare le implicazioni sugli incrementi sono state equiparate a quelle sulle istantanee tramite la riduzione a forma comune booleana disgiunta in incrementi positivi e negativi. Tutte le correlazioni significative sono state accompagnate da test d'ipotesi (\textit{t-test} \cite{sun2020microbiome}) per verificarne l'attendibilit\`a usando un p-value di soglia molto basso \cite{head2015extent} per evitare falsi positivi.
+
+  \section{Conclusione}
+
+  \paragraph{Riassunto}
+  Sono stati analizzati con Arcan 70+ progetti alla ricerca di correlazioni o co-occorrenza tra architectural smells. Delle correlazioni emerse empiricamente, al netto dei problemi di Arcan e dei test d'ipotesi condotti, le uniche considerabili attendibili coinvolgono gli smells hublikeDependency, godComponent, deepHierarchy e unstableDependency.
+
+  \paragraph{Interpretazione}
+  I risultati dell'analisi sono spiegabili considerando le caratteristiche degli smell coinvolti.
+  Un God Component \`e probabilmente anche un Hublike Dependency e un Unstable Dependency se concentra molte funzionalit\`a e molti componenti dipendono da esso. Allo stesso modo, una Deep Hierarchy pu\`o essere un Hublike Dependency e un Unstable Dependency in molti progetti, specie se la gerarchia di classi \`e utilizzata in molti punti del sistema.
+
+  \paragraph{Sviluppi futuri}
+  Per generalizzare meglio all'intero mondo del software libero i risultati del progetto bisognerebbe analizzare pi\`u progetti (magari anche quelli proprio considerati universalmente \textit{inattaccabili} dalla community come \textit{sqlite} o \textit{busybox}) ed estendere l'analisi ad altri linguaggi di programmazione quali C, C++, Python, Rust ... cosa al momento difficile visto che Arcan non supporta molti linguaggi, \`e molto lento, pu\`o riscontrare problemi anche con quelli supportati \footnote{Per qualche ragione \`e impossibile eseguire analisi su progetti Python in quanto non riesce a trovare un runtime anche se presente nell'ambiente} e non \`e preciso nella rilevazione di alcuni tipi di smells.
+
+  \printbibliography[title={Bibliografia}]
+
+\end{document}

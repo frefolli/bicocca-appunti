@@ -1,0 +1,10 @@
+# Type checking
+mypy
+types-PyYAML
+# String matching
+Levenshtein
+# Sparse Matrices
+scipy
+numpy
+# Serialization
+pyyaml

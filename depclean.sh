@@ -1,7 +1,7 @@
 #!/bin/bash
 source clean.sh "no-homo"
 
-BLACKLIST=$BLACKLIST" *.pdf Makefile"
+BLACKLIST=$BLACKLIST" slides.pdf report.pdf appunti.pdf main.pdf Makefile"
 export BLACKLIST
 
 function handler() {

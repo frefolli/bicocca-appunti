@@ -1,4 +1,5 @@
 #!/bin/bash
+source files.sh
 
 function cleanTypeFolder() {
     DIRPATH=$1
@@ -19,17 +20,9 @@ BLACKLIST=$BLACKLIST" *.aux *.dvi *.idx *.out *.log *.ind *.ilg *.bbl *.blg *.bc
 export BLACKLIST
 
 function job() {
-    cleanFolder APAL
-    cleanFolder BIOINF
-    cleanFolder ROPR
-    cleanFolder APS
-    cleanFolder SAF
-    cleanFolder MCOR
-    cleanFolder TCOM
-    cleanFolder TELE
-    cleanFolder ARCH
-    cleanFolder SCMT
-    cleanFolder INFO
+  for discipline in $PDF_DIRS; do
+    cleanFolder $discipline
+  done
 }
 
 function handler() {

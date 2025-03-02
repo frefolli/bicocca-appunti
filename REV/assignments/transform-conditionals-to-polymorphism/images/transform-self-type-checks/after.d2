@@ -1,0 +1,52 @@
+direction: right
+
+cl: Client {
+  shape: class
+}
+a: A {
+  shape: class
+  hook: () -> ()
+}
+b: B {
+  shape: class
+  hook: () -> ()
+  x: () -> ()
+}
+c: C {
+  shape: class
+  hook: () -> ()
+  y: () -> ()
+}
+d: D {
+  shape: class
+  hook: () -> ()
+  z: () -> ()
+}
+b_note: |`java
+  void hook() {
+    ...
+    this.x();
+    ...
+  }
+`|
+b_note -- b.hook
+c_note: |`java
+  void hook() {
+    ...
+    this.y();
+    ...
+  }
+`|
+c_note -- c.hook
+d_note: |`java
+  void hook() {
+    ...
+    this.z();
+    ...
+  }
+`|
+d_note -- d.hook
+cl -- a
+b -> a
+c -> a
+d -> a

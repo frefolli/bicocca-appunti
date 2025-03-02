@@ -1,0 +1,60 @@
+tc: ToolClient {
+  shape: class
+  Read: (Path) -> File
+}
+pm: PluginManager {
+  shape: class
+  add: (Plugin) -> ()
+  remove: void (Tool) -> ()
+  FindToolFor: (Path) -> Tool
+  GetInstance: () -> PluginManager
+}
+p: Plugin {
+  shape: class
+  Plugin: (Tool, ext) -> ()
+  accept: (Path) -> bool
+}
+t: Tool {
+  shape: class
+  openFile: (Path) -> File
+}
+jr: JSONReader {
+  shape: class
+  load: () -> ()
+  unload: () -> ()
+}
+yr: YAMLReader {
+  shape: class
+  load: () -> ()
+  unload: () -> ()
+}
+
+tc -- pm -- p
+p -- t
+jr -> t
+yr -> t
+
+tc_note: |`java
+  File Read(Path) {
+    return PluginManager.GetInstance()
+                        .getToolFor(Path)
+                        .openFile(Path);
+  }
+`|
+tc_note -- tc.Read
+
+jr_load_note: |`java
+  void load() {
+    PluginManager.GetInstance()
+                 .add(new Plugin(this, "json"));
+  }
+`|
+jr_load_note -- jr.load
+
+yr_unload_note: |`java
+  void unload() {
+    PluginManager.GetInstance()
+                 .remove(this);
+  }
+`|
+yr_unload_note -- yr.unload

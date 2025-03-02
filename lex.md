@@ -31,4 +31,6 @@ E' istituita la dicitura "SAF" per "Sicurezza e Affidabilita'"
 
 Sono istituite la diciture TELE, ARCH e SCMT.
 
+# 1 del 02/03/25
+
 # Discussioni in corso

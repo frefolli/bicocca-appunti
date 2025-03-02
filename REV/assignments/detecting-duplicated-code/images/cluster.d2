@@ -1,0 +1,12 @@
+ddc: Detecting Duplicate Code {style: {fill: lightgreen}}
+ccm: Compare Code Mechanically {style: {fill: lightblue}}
+vcd: Visualize Code as Dotplots {style: {fill: lightblue}}
+em: Extract Method {style: {fill: orange}}
+mbcd: Move Behavior Close to Data {style: {fill: orange}}
+tstc: Transform Self Type Checks {style: {fill: orange}}
+
+ddc -> ccm: detect
+ccm -> vcd: understand
+vcd -> em: refactor
+vcd -> mbcd: redistribute
+vcd -> tstc: transform

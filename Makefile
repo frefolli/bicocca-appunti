@@ -21,9 +21,6 @@
 %/Makefile: skel/Makefile
 	cp skel/Makefile %/Makefile
 
-INFO/Makefile: skel/Makefile
-	cp skel/Makefile INFO/Makefile
-
 clean:
 	./clean.sh
 

@@ -1,0 +1,183 @@
+\documentclass{beamer}
+\usepackage{graphicx}
+
+\usetheme{Boadilla}
+\usecolortheme{default}
+
+\title{Transform Conditionals to Polymorphism}
+\subtitle{Software Evolution and Reverse Engineering}
+\author{Refolli~F.~865955}
+%\logo{\includegraphics[height=1cm]{logo_unimib.pdf}}
+
+\newcommand{\putimage}[2] {
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=#2\linewidth]{#1}
+	\end{figure}
+}
+
+\newcommand{\putimagecouple}[4] {
+  \begin{figure}[!htb]
+    \centering
+    \begin{minipage}{0.45\linewidth}
+      \centering
+      \includegraphics[width=\linewidth]{#1}
+      \caption{#2}
+    \end{minipage}
+    \hspace{0.25cm}
+    \begin{minipage}{0.45\linewidth}
+      \centering
+      \includegraphics[width=\linewidth]{#3}
+      \caption{#4}
+    \end{minipage}
+  \end{figure}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Overview of the Cluster}
+  \putimage{images/cluster.png}{1}
+\end{frame}
+
+\begin{frame}
+\frametitle{Index}
+\tableofcontents
+\end{frame}
+
+\section{External checks}
+
+\subsection{Transform Conditionals into Registration}
+\begin{frame}
+\frametitle{Transform Conditionals into Registration}
+\huge Improve the modularity of a system by replacing conditionals in clients with a registration mechanism.
+\end{frame}
+\begin{frame}
+\frametitle{Before}
+  \putimage{images/transform-conditionals-into-registration/before.png}{0.80}
+\end{frame}
+\begin{frame}
+\frametitle{After}
+  \putimage{images/transform-conditionals-into-registration/after.png}{0.70}
+\end{frame}
+\begin{frame}
+\frametitle{KISS}
+  \putimage{images/transform-conditionals-into-registration/simple.png}{0.60}
+\end{frame}
+
+\section{Checks on caller}
+
+\subsection{Transform Client Type Checks}
+\begin{frame}
+\frametitle{Transform Client Type Checks}
+\huge Reduce client/provider coupling by transforming conditional code that tests the type of the provider into a polymorphic call to a new provider method. 
+\end{frame}
+\begin{frame}
+\frametitle{Before}
+  \putimage{images/transform-client-type-checks/before.png}{0.99}
+\end{frame}
+\begin{frame}
+\frametitle{After}
+  \putimage{images/transform-client-type-checks/after.png}{0.99}
+\end{frame}
+
+\subsection{Introduce Null Object}
+\begin{frame}
+\frametitle{Introduce Null Object}
+\huge Eliminate conditional code that tests for null values by applying the Null Object design pattern.
+\end{frame}
+\begin{frame}
+\frametitle{Before}
+  \putimage{images/introduce-null-object/before.png}{0.99}
+\end{frame}
+\begin{frame}
+\frametitle{After}
+  \putimage{images/introduce-null-object/after.png}{0.99}
+\end{frame}
+
+\section{Checks on callee}
+
+\subsection{Transform Self Type Checks}
+\begin{frame}
+\frametitle{Transform Self Type Checks}
+\huge Improve the extensibility of a class by replacing a complex conditional statement with a call to a hook method implemented by subclasses.
+\end{frame}
+\begin{frame}
+\frametitle{Before}
+  \putimage{images/transform-self-type-checks/before.png}{0.99}
+\end{frame}
+\begin{frame}
+\frametitle{After}
+  \putimage{images/transform-self-type-checks/after.png}{0.70}
+\end{frame}
+
+\subsection{Factor Out Strategy}
+\begin{frame}
+\frametitle{Factor Out Strategy}
+\huge Eliminate conditional code that selects a suitable algorithm by applying the Strategy design pattern.
+\end{frame}
+\begin{frame}
+\frametitle{Before}
+  \putimage{images/factor-out-strategy/before.png}{0.99}
+\end{frame}
+\begin{frame}
+\frametitle{After}
+  \putimage{images/factor-out-strategy/after.png}{0.99}
+\end{frame}
+ 
+\subsection{Factor Out State}
+\begin{frame}
+\frametitle{Factor Out State}
+\huge Eliminate complex conditional code over an object’s state by applying the State design pattern.
+\end{frame}
+\begin{frame}
+\frametitle{Before}
+  \putimage{images/factor-out-state/before.png}{0.99}
+\end{frame}
+\begin{frame}
+\frametitle{After}
+  \putimage{images/factor-out-state/after.png}{0.90}
+\end{frame}
+
+\section{Tradeoffs}
+\begin{frame}
+\frametitle{Tradeoffs}
+  \begin{itemize}
+    \item Pros
+      \begin{itemize}
+        \item Component behavior isolation.
+        \item Changes/additions/removal of behavior don't affect (significantly) the clients.
+        \item Behaviors share a common interface.
+      \end{itemize}
+    \item Cons
+      \begin{itemize}
+        \item Difficult to get a large picture of the behavior of the subsystem.
+        \item Explosion of abstractions and classes.
+        \item Manipulation of class instances is heavily bloated (huge number of instances and GC workload).
+        \item Sometimes classes are just a cool namespace mechanism.
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\section{Tips}
+\begin{frame}
+  \frametitle{Tips}
+  \only<2>{\putimage{images/good-switch.png}{0.55}}
+  \only<4>{\putimage{images/vesa-killer.png}{0.80}}
+  \only<6>{\putimagecouple{images/foo-nc.png}{with null checks}{images/foo-monads.png}{with monads}}
+  \begin{enumerate}
+    \item<1,3,5 | alert@1> Explicit checks are not always a problem (it depends on the context), and often can be tolerated / optimal when the number of places in which are done is low or the number of cases is fixed and low.
+    \item<3,5 | alert@3> In some circumstances abstractions are application killers.
+    \item<5 | alert@5> Most of the time a monad is what you wanted.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+\centering
+\Huge
+The End
+\end{frame}
+
+\end{document}

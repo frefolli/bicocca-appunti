@@ -1,0 +1,36 @@
+direction: right
+cl: Client {
+  shape: class
+  m: () -> ()
+}
+ao: AbstractObject {
+  shape: class
+  doit: () -> ()
+}
+ro: RealObject {
+  shape: class
+  doit: () -> ()
+}
+no: NullObject {
+  shape: class
+  doit: () -> ()
+}
+cl_note: |`java
+  void m() {
+    ...
+    a: AbstractObject
+    a.doit();
+    ...
+  }
+`|
+cl_note -- cl.m
+no_note: |`java
+  void doit() {
+    // stuff
+  }
+`|
+no_note -- no.doit
+
+cl -- ao
+ro -> ao
+no -> ao

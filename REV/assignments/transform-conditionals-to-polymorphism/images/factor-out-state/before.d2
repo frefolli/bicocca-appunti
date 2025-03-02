@@ -1,0 +1,18 @@
+direction: right
+A: {
+  shape: class
+  state: enum
+  request: () -> ()
+}
+A_note: |`java
+  void request() {
+    ...
+    switch (state) {
+      case A: state = B; break;
+      case B: state = C; break;
+      case C: state = A; break;
+    }
+    ...
+  }
+`|
+A_note -- A.request

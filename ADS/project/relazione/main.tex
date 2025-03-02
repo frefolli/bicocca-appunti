@@ -1,0 +1,471 @@
+\documentclass[a4paper,11pt,oneside, table]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{imakeidx}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{csquotes}
+\usepackage{caption}
+\usepackage{xcolor}
+\captionsetup[table]{labelfont=it}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={AUSL Piacenza},
+    pdfpagemode=FullScreen,
+    }
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\newtheorem{nota}{Nota}
+
+\usepackage[italian]{babel}
+\usepackage[
+  backend=bibtex,
+  style=numeric,
+  sorting=ydnt
+  ]{biblatex}
+\addbibresource{quotes.bib}
+\makeindex
+
+\newcommand{\putimage}[4] {
+	\begin{figure}[H]
+	    \centering
+	    \includegraphics[width={#4}\linewidth]{#1}
+	    \caption{#2}\label{#3}
+	\end{figure}
+}
+
+\newcommand{\bigimage}[4] {
+	\begin{figure}[H]
+	    \centering
+	    \includegraphics[height={#4}\textheight]{#1}
+	    \caption{#2}\label{#3}
+	\end{figure}
+}
+
+\newcommand{\putsubimage}[5] {
+  \begin{minipage}{{#4}\linewidth}
+	    \centering
+      \includegraphics[width={#5}\linewidth]{#1}
+	    \caption{#2}\label{#3}
+	\end{minipage}
+}
+
+\newcommand{\putimagecouple}[2] {
+  \begin{figure}[!htb]
+      \centering
+      #1
+      \hspace{0.5cm}
+      #2
+  \end{figure}
+}
+
+\newcommand{\putimagequadruple}[4] {
+  \begin{figure}[!htb]
+      \centering
+      #1
+      \hspace{0.5cm}
+      #2
+      \linebreak
+      #3
+      \hspace{0.5cm}
+      #4
+  \end{figure}
+}
+
+\begin{document}
+    \begin{titlepage}
+        \noindent
+        \begin{minipage}[t]{0.19\textwidth}
+            \vspace{-4mm}{\includegraphics[scale=0.85]{logo-er-salute.pdf}}
+        \end{minipage}
+        \begin{minipage}[t]{0.81\textwidth}
+        {
+                \setstretch{1.42}
+                {\textsc{Università degli Studi di Milano - Bicocca}} \\
+                \textbf{Scuola di Scienze} \\
+                \textbf{Dipartimento di Informatica, Sistemistica e Comunicazione} \\
+                \textbf{Corso di laurea magistrale in Informatica} \\
+                \par
+        }
+        \end{minipage}
+    	\vspace{40mm}
+    	\begin{center}
+            {\LARGE{
+                    \setstretch{1.2}
+                    \textbf{Progetto di Architetture del Software}
+                    \par
+            }}
+        \end{center}
+        
+        \vspace{50mm}
+        
+        \vspace{15mm}
+
+        \begin{flushright}
+            {\large \textbf{Relazione di:}} \\
+            \large{Refolli Francesco} \large{865955}
+        \end{flushright}
+        
+        \vspace{40mm}
+        \begin{center}
+            {\large{\bf Anno Accademico 2024-2025}}
+        \end{center}
+        \restoregeometry
+    \end{titlepage}
+
+    \printindex
+    \tableofcontents
+    \renewcommand{\baselinestretch}{1.5}
+
+\section{Introduzione}
+
+\subsection{Traccia}
+
+Si deve progettare e realizzare un sistema di \colorbox{cyan}{monitoraggio remoto} della salute di \colorbox{yellow}{pazienti} e di \colorbox{cyan}{teleriabilitazione} in previsione di un intervento chirurgico.
+I pazienti devono essere monitorati per i \colorbox{red}{parametri fisiologici} e rispetto alle \colorbox{red}{attività della vita quotidiana}, inclusa \colorbox{cyan}{l'identificazione} del fatto che il paziente svolge le \colorbox{red}{attività previste dal piano di riabilitazione}.
+Se alcuni parametri rilevati superano delle \colorbox{red}{soglie}, il sistema \colorbox{cyan}{deve inviare un allarme al medico curante}, \colorbox{yellow}{il quale deve mettersi in contatto con il paziente attraverso una chiamata}.
+Si deve progettare un sistema di telemonitoraggio che:
+
+\begin{enumerate}
+  \item acquisisce \textit{in tempo reale} i dati dai sensori secondo tempistiche definite secondo il piano terapeutico del paziente.
+  \item supporta il medico nella ridefinizione del piano terapeutico (comporta la variazione delle frequenze di acquisizione dei parametri fisiologici).
+  \item deve automaticamente attuare il nuovo piano terapeutico.
+  \item controlla se si verificano situazioni anomale (valori dei parametri fisiologici al di fuori delle soglie).
+  \item nel caso di situazioni anomale, identifica un medico di turno affinché si rechi fisicamente dal paziente per una visita Nel caso di situazioni di allarme (tipo codice rosso), identifica l'ambulanza pi\`u vicina e l'ospedale pi\`u vicino in cui trasportare il paziente.
+  \item notifica il medico di turno identificato inviandogli la cartella sanitaria.
+  \item consente al medico di turno di inviare i parametri rilevati, la diagnosi ed altre informazioni relative allo stato di salute del paziente.
+  \item acquisisce dalla piattaforma di tracciamento le informazioni delle attività della vita quotidiana svolte.
+  \item verifica a fine giornata se nei momenti in cui doveva svolgere degli esercizi di riabilitazione, il paziente li ha svolti realmente.
+\end{enumerate}
+
+\subsection{Legenda}
+
+\begin{itemize}
+  \item \colorbox{cyan}{azioni}
+  \item \colorbox{yellow}{attori}
+  \item \colorbox{red}{dati}
+\end{itemize}
+
+\section{Architettura del Problema}
+
+\subsection{Assunzioni}
+
+\paragraph{I medici}
+\begin{itemize}
+  \item La nomenclatura dei medici \`e la seguente: il medico curante \`e definito \textbf{Medico di Base} (o MB), quello di turno \`e il \textbf{Medico di Turno} (o MT).
+  \item Il Medico di Turno \`e inteso come personale della Guardia Medica o dell'Ospedale in mobilit\`a che pu\`o gestire le anomalie.
+  \item Il Medico di Turno, l'Ambulanza e l'Ospedale possono trovarsi al momento della chiamata in localit\`a diverse.
+  \item Il Medico di Turno ha un elenco di destinatari a cui inviare i dati (specialisti, centralina AUSL) che non comprende il Medico di Base in quanto si assume che egli abbia accesso alle informazioni del suo paziente (aggiornate dal sistema).
+  \item Il Medico di Turno termina la gestione dell'anomalia manualmente e pu\`o aggiungere una diagnosi alla cartella clinica del paziente.
+  \item Si assume che il software con il quale i Medici, l'Ospedale, l'Ambulanza si interfacciano al sistema sia gi\`a esistente e il sistema da sviluppare si debba integrare con essi.
+  \item Si assume che i sensori siano dotati di software proprio con il quale il sistema si deve \textit{"semplicemente"} integrare (caso tipico dei dispositivi IoT/WoT).
+\end{itemize}
+
+\paragraph{Il monitoraggio}
+\begin{itemize}
+  \item Il Piano Terapeutico definisce il monitoraggio di un parametro assieme alle sue soglie (min, max) di normalit\`a e al codice anomalia da assegnare in caso di superamento delle soglie.
+  \item Con "superamento della soglia" si intende un valore vuori dal range (min, max).
+  \item In caso di pi\`u soglie superate, il codice assegnato all'anomalia \`e quello pi\`u grave tra le violazioni.
+  \item Un valore fuori soglia fa scattare l'anomalia se e solo se nel controllo precedente non era gi\`a stata superata.
+  \item I dati rilevati dai sensori dei parametri sanitari sono salvati (cifrati) nel sistema per permettere al Medico di Turno e al Medico di Base di accedere allo storico recente ($< 1$ Mese) del paziente.
+  \item Il sistema effettua i controlli solo quando i valori attualizzati si rendono disponibili (la frequenza di rilevazione di ciascuno \`e definita nel Piano Terapeutico).
+\end{itemize}
+
+\paragraph{Le anomalie}
+\begin{itemize}
+  \item Se una nuova violazione delle soglie avviene mentre la gestione di un'anomalia \`e in atto, il codice dell'anomalia \`e aggiornato mantenendo il codice pi\`u grave.
+  \item Se il codice dell'anomalia \`e promosso da \textbf{non-grave} a \textbf{grave} (locuzione "Anomalia aggravata") allora viene attivata la sotto-procedura di gestione delle emergenze prevista (allerta di Ospedale e Ambulanza).
+  \item L'anomalia gestita \`e salvata nello storico delle anomalia a supporto del Medico di Base (e del Medico di Turno nelle future anomalie).
+\end{itemize}
+
+\paragraph{Le stime}
+\begin{itemize}
+  \item Si prende come bacino d'utenza di riferimento l'AUSL di Piacenza.
+  \item L'area ha una popolazione di circa 280K abitanti e di questi circa il 30 \% \`e un assistito fragile (anziani, malati cronici ... etc).
+  \item I medici di base sono circa 170, e ognuno ha circa 1500 assistiti. Di questi, si assume che il 2.5 \% degli assistiti necessiti di cura domiciliare e/o si sottoponga ad un intervento (con piano terapeutico).
+  \item Ovvero, si parla di circa 45 pazienti per medico di base; in totale nel sistema ci possono essere 7.5K assistiti.
+  \item Il numero di emergenze 118 attivate nell'ultimo anno \`e stato 34K; con un p\`o di approssimazione si p\`uo stimare che la probabilit\`a per un cittadino preso a caso di generare un'urgenza \`e del 12 \%.
+  \item Quindi, nel corso dell'anno ci possono essere in media 930 attivazioni (approssimando a 1000 per stimare anche le anomalie non emergenziali), per un totale di 3 anomalie al giorno.
+  % \item Siccome il sistema deve essere pronto a intervenire in qualsiasi momento \footnote{L'incolumit\`a del paziente \`e da salvaguardare a tutti i costi}, nei calcoli sulle frequenze si stimer\`a 1 attivazione al giorno come emergenza e 1 all'ora come anomalia.
+  \item Siccome esistono parametri fisiologici che devono essere acquisiti con alte frequenze, si stima che un sensore possa in media produrre dati con frequenza di 50 Hz (ovvero 50/secondo).
+\end{itemize}
+
+\subsection{Casi d'Uso}
+
+Sono stati identificati i seguenti casi d'uso:
+\begin{itemize}
+  \item \textbf{U1}: Acquisizione Parametro Sanitario
+  \item \textbf{U2}: Acquisizione ADL
+  \item \textbf{U3}: Acquisizione Attivita' Motoria
+  \item \textbf{U4}: Invia Dati Paziente
+  \item \textbf{U5}: Monitoraggio Anomalie Sanitarie
+  \item \textbf{U6}: Gestione Anomalia
+  \item \textbf{U7}: Controllo Aderenza Piano Terapeutico
+  \item \textbf{U8}: Definizione Piano Terapeutico
+  \item \textbf{U9}: Termina Gestione Anomalia
+\end{itemize}
+
+\putimage{images/Diagramma dei Casi d'Uso.png}{Diagramma dei Casi d'Uso}{png:diagramma-dei-casi-duso}{1}
+
+\subsection{Dati del Problema}
+
+\putimage{images/Diagramma dei Dati.png}{Diagramma dei Dati}{png:diagramma-dei-dati}{1}
+
+\subsection{Attivita' dei Casi d'Uso}
+
+I casi d'uso a loro volta sono stati divisi nelle seguenti attivit\`a. I diagrammi contengono alcune note:
+
+\begin{itemize}
+  \item In Arancio sono indicate delle informazioni di tipo funzionale.
+  \item In Lilla sono indicate delle informazioni sui delay tra le attivit\`a.
+  \item In Blu Scuro sono indicate delle informazioni sulla complessit\`a delle attivit\`a (salvo esplicit\`a indicazione, le attivit\`a del sistema hanno bassa complessit\`a).
+  \item In Verde sono indicate delle informazioni circa le frequenze massime previste per i flussi e le attivit\`a.
+  \item Le frequenze fanno riferimento alla stima di 7.5K pazienti e alla stima di 3 anomalie giornaliere. In particolare si assume che i piani terapeutici siano stati gi\`a definiti al momento dell'inserimento del paziente e che vengano cambiati con la stessa frequenza con cui si verificano le anomalie per i pazienti.
+\end{itemize}
+
+\subsubsection{Acquisizione Parametro Sanitario}
+
+Le frequenze sono alte per via del fatto che solitamente si tratteranno di parametri vitali e quindi \`e importante che il sistema possa ricevere molti dati in tempo reale e possa immagazzinarli per future elaborazioni.
+
+\putimage{images/Diagramma delle Attivita'/Acquisizione Parametro Sanitario.png}{Acquisizione Parametro Sanitario}{png:act:acquisizione-parametro-sanitario}{1}
+
+\subsubsection{Acquisizione ADL}
+
+Le frequenze sono pi\`u basse rispetto alla rilevazione di parametri sanitari perch\`e non rappresentano un pericolo immediato per il paziente ma solo una violazione del suo piano terapeutico.
+
+\putimage{images/Diagramma delle Attivita'/Acquisizione ADL.png}{Acquisizione ADL}{png:act:acquisizione-adl}{1}
+
+\subsubsection{Acquisizione Attivita' Motoria}
+
+Le frequenze sono pi\`u basse rispetto alla rilevazione di parametri sanitari perch\`e non rappresentano un pericolo immediato per il paziente ma solo una violazione del suo piano terapeutico.
+
+\putimage{images/Diagramma delle Attivita'/Acquisizione Attivita' Motoria.png}{Acquisizione Attivit\`a Motoria}{png:act:acquisizione-attivita-motoria}{1}
+
+\subsubsection{Invia Dati Paziente}
+
+Assumo che l'invio dei dati di un paziente sia strettamente correlato al suo stato anomalo.
+
+\putimage{images/Diagramma delle Attivita'/Invia Dati Paziente.png}{Invia Dati Paziente}{png:act:invia-dati-paziente}{1}
+
+\subsubsection{Monitoraggio Anomalie Sanitarie}
+
+Se le rilevazioni di parametri sono molto frequenti allora anche la loro verifica deve essere altrettanto frequente.
+Vale la stima fatta in precedenza sulle anomalie dei pazienti (circa 3 al giorno).
+Una volta rilevata un'anomalia, la sua classificazione deve essere molto rapida perch\`e alcune patologie sono tempo dipendenti.
+
+\putimage{images/Diagramma delle Attivita'/Monitoraggio Anomalie Sanitarie.png}{Monitoraggio Anomalie Sanitarie}{png:act:monitoraggio-anomalie-sanitarie}{1}
+
+\subsubsection{Gestione Anomalia}
+
+L'identificazione delle risorse per gestirla (medico di turno, ambulanza e ospedale) deve essere relativamente rapida per la possibile presenza di patologie tempodipendenti.
+Siccome l'identificazione pu\`o concernere l'accesso di dati in tempo reale per l'allocazione delle risorse e una comunicazione con la centrale operativa, il delay \`e pi\`u rilassato \footnote{\`E un sistema distribuito, dopotutto} e la sua complessit\`a \`e un filo pi\`u complessa rispetto alle altre.
+
+\putimage{images/Diagramma delle Attivita'/Gestione Anomalia.png}{Gestione Anomalia}{png:act:gestione-anomalia}{1}
+
+\subsubsection{Controllo Aderenza Piano Terapeutico}
+
+L'aderenza al piano viene controllata una volta al giorno a mezzanotte \textit{Ovvero allo scadere del giorno} e non essendo un'operazione complessa, n\`e eccessivamente prioritaria, pu\`o essere completata in una decina di minuti.
+
+\putimage{images/Diagramma delle Attivita'/Controllo Aderenza Piano Terapeutico.png}{Controllo Aderenza Piano Terapeutico}{png:act:controllo-aderenza-piano-terapeutico}{1}
+
+\subsubsection{Definizione Piano Terapeutico}
+
+Si assume che la ridefinizione del piano terapeutica sia strettamente correlata allo stato anomalo del paziente. Quindi valgono le considerazioni precedenti sulle frequenze di gestione delle anomalie.
+La ridefinizione del piano terapeutico deve essere completata entro il tempo di una normale sessione interattiva (di solito 30 minuti).
+
+\putimage{images/Diagramma delle Attivita'/Definizione Piano Terapeutico.png}{Definizione Piano Terapeutico}{png:act:definizione-piano-terapeutico}{1}
+
+\subsubsection{Termina Gestione Anomalia}
+
+Valgono le considerazioni precedenti sulle frequenze di gestione delle anomalie.
+Prevedendo un'opzionale dichiarazione di diagnosi, questa funzione deve essere completata entro il tempo di una normale sessione interattiva (di solito 30 minuti).
+
+\putimage{images/Diagramma delle Attivita'/Termina Gestione Anomalia.png}{Termina Gestione Anomalia}{png:act:termina-gestione-anomalia}{1}
+
+\section{Architettura Logica}
+
+Per l'architettura logica sono state realizzate due opzioni di partizionamento che verranno valutate in termini di metriche AL ai fini di scegliere la pi\`u vantaggiosa.
+Per favorire la comprensione, con il termine \textit{modulo} si intende il componente dell'Architettura Logica. Con il termine \textit{componente} ci riferisce invece al concetto di componente dell'Architettura Concreta.
+
+\subsection{Partizionamento livellato}
+
+Il sistema \`e diviso in 4 moduli:
+\begin{itemize}
+  \item \textbf{C4}: Interazione Guidata Umana.
+  \item \textbf{C3}: Gestione Emergenze.
+  \item \textbf{C2}: Elaborazione Dati.
+  \item \textbf{C1}: Acquisizione Dati.
+\end{itemize}
+
+\bigimage{images/Diagramma delle Attivita'/Partizione Logica Livellata.png}{Partizione Logica Livellata}{png:act:partizione-logica-livellata}{1}
+
+Nel diagramma sono presenti dei riquadri color rosa che abbozzano una possibile divisione in componenti concreti nella fase successiva.
+Il partizionamento del sistema \`e legato ad un grado di astrazione rispetto al tipo di attivit\`a che sono eseguite e dal grado di intervento umano. Quindi abbiamo una segregazione di tutte le funzioni che richiedono di elaborare dati in un apposito modulo, in un altro quelle che acquisiscono dati, in un altro la gestione delle emergenze e cos\`i via.
+
+\begin{center}
+  \resizebox{\linewidth}{!}{
+    \begin{tabular}{|l | r | c|}
+      \hline
+      Dimensione & Valore & Motivazione \\
+      \hline
+      Complexity & 30 & La maggior parte di moduli incorpora attivit\`a con livello omogeneo di complessit\`a \\
+      Frequency & 60 & Alcuni moduli hanno attivit\`a con frequenze molto diverse, ma alcuni sono omogenei \\
+      Delay & 70 & Alcuni moduli hanno attivit\`a con delay molto diversi tra loro \\
+      Location & 0 & Le attivit\`a nei moduli eseguono potenzialmente sugli stessi nodi \\
+      Extra flows & 40 & Quasi tutti i moduli scambiano informazioni con sistemi esterni (la Centrale, i rilevatori IoT, ... etc) \\
+      Intra flows & 40 & Generalmente i moduli si scambiano pochi dati, ma i moduli \textit{Acquisizione Dati} e \textit{Elaborazione Dati} sono molto accoppiati \\
+      Sharing & 10 & I moduli non condividono dati se non in streaming (\textit{Buffers}) \\
+      Control flows & 10 & L'unica interazione rilevante \`e il trigger delle anomalie in \textit{Elaborazione Dati} verso la \textit{Gestione Emergenze} \\
+      \hline
+    \end{tabular}
+  }
+\end{center}
+
+\subsection{Partizionamento settoriale}
+
+Il sistema \`e diviso in 4 moduli:
+\begin{itemize}
+  \item \textbf{C1}: Rilevazione di dati in tempo reale.
+  \item \textbf{C2}: Rilevazione e gestione delle anomalie (dall'inizio alla fine).
+  \item \textbf{C3}: Gestione e controllo aderenza ai piani terapeutici.
+  \item \textbf{C4}: L'interfaccia "medicale" che permette ai medici di visualizzare e inviare dati.
+\end{itemize}
+
+\bigimage{images/Diagramma delle Attivita'/Partizione Logica Settoriale.png}{Partizione Logica Settoriale}{png:act:partizione-logica-settoriale}{1}
+
+Nel diagramma sono presenti dei riquadri color rosa che abbozzano una possibile divisione in componenti concreti nella fase successiva.
+Il partizionamento del sistema \`e legato alla frequenza delle attivit\`a (C1) e al tipo di dato che viene processato (C3, C4) e alla comunicazione interna-esterna nella coordinazione del sistema per raggiungere un obiettivo complesso (C2, la gestione di una anomalia dall'inizio alla fine dell'emergenza).
+Di seguito una valutazione della partizione nelle 9 dimensioni definite:
+
+\begin{center}
+  \resizebox{\linewidth}{!}{
+    \begin{tabular}{|l | r | c|}
+      \hline
+      Dimensione & Valore & Motivazione \\
+      \hline
+      Complexity & 30 & La maggior parte di moduli incorpora attivit\`a con livello omogeneo di complessit\`a \\
+      Frequency & 60 & Alcuni moduli hanno attivit\`a con frequenze molto diverse, ma alcuni sono omogenei \\
+      Delay & 60 & Alcuni moduli hanno attivit\`a con delay molto diversi tra loro, ma alcuni sono abbastanza omogenei come ordine di grandezza \\
+      Location & 0 & Le attivit\`a nei moduli eseguono potenzialmente sugli stessi nodi \\
+      Extra flows & 40 & Quasi tutti i moduli scambiano informazioni con sistemi esterni (la Centrale, i rilevatori IoT, ... etc) \\
+      Intra flows & 30 & I moduli si scambiano pochi dati, e sempre al massimo con un solo modulo \\
+      Sharing & 10 & I moduli non condividono dati se non in streaming (\textit{Buffers})\\
+      Control flows & 0 & I moduli tra loro non interagiscono \\
+      \hline
+    \end{tabular}
+  }
+\end{center}
+
+\subsection{Confronto e partizionamento scelto}
+
+Dalle metriche (riportate nelle Figure \ref{png:metriche-livellata} e \ref{png:metriche-settoriale}) risulta che il partizionamento migliore sia quello settoriale.
+
+\putimagecouple
+{\putsubimage{images/metriche-livellata.png}{Partizione per Livelli}{png:metriche-livellata}{0.45}{1}}
+{\putsubimage{images/metriche-settoriale.png}{Partizione Settoriale}{png:metriche-settoriale}{0.45}{1}}
+
+\section{Architettura Concreta}
+
+\subsection{Diagramma dei Componenti}
+
+\putimage{images/Diagramma dei Componenti.png}{Diagramma dei Componenti}{png:diagramma-dei-componenti}{1}
+
+\subsection{Diagrammi di Sequenza}
+
+\subsubsection{Acquisizione ADL}
+
+\putimage{images/Diagramma di Sequenza/Acquisizione ADL.png}{Acquisizione ADL}{png:acquisizione-adl}{1}
+
+
+\subsubsection{Acquisizione Parametro Sanitario}
+
+\putimage{images/Diagramma di Sequenza/Acquisizione Parametro Sanitario.png}{Acquisizione Parametro Sanitario}{png:acquisizione-parametro-sanitario}{1}
+
+
+\subsubsection{Definizione Piano Terapeutico}
+
+\putimage{images/Diagramma di Sequenza/Definizione Piano Terapeutico.png}{Definizione Piano Terapeutico}{png:definizione-piano-terapeutico}{1}
+
+
+\subsubsection{Invia Dati Paziente}
+
+\putimage{images/Diagramma di Sequenza/Invia Dati Paziente.png}{Invia Dati Paziente}{png:invia-dati-paziente}{1}
+
+
+\subsubsection{Termina Gestione Anomalia}
+
+\putimage{images/Diagramma di Sequenza/Termina Gestione Anomalia.png}{Termina Gestione Anomalia}{png:termina-gestione-anomalia}{1}
+
+
+\subsubsection{Acquisizione Attivita' Motoria}
+
+\putimage{images/Diagramma di Sequenza/Acquisizione Attivita' Motoria.png}{Acquisizione Attivita' Motoria}{png:acquisizione-attivita-motoria}{1}
+
+
+\subsubsection{Controllo Aderenza Piano Terapeutico}
+
+\putimage{images/Diagramma di Sequenza/Controllo Aderenza Piano Terapeutico.png}{Controllo Aderenza Piano Terapeutico}{png:controllo-aderenza-piano-terapeutico}{1}
+
+
+\subsubsection{Gestione Anomalia}
+
+\putimage{images/Diagramma di Sequenza/Gestione Anomalia.png}{Gestione Anomalia}{png:gestione-anomalia}{1}
+
+
+\subsubsection{Monitoraggio Anomalie Sanitarie}
+
+\putimage{images/Diagramma di Sequenza/Monitoraggio Anomalie Sanitarie.png}{Monitoraggio Anomalie Sanitarie}{png:monitoraggio-anomalie-sanitarie}{1}
+
+\section{Architettura di Deployment}
+
+\putimage{images/Diagramma di Deployment.png}{Diagramma di Deployment}{png:diagramma-di-deployment}{1}
+
+\section{Analisi di Qualit\`a}
+
+\paragraph{Performance}
+
+Le operazioni onerose per servire un utente non impattano sulle risorse di un altro utente.
+Il nodo dell'utente deve essere abbastanza potente da poter processare tutti i dati provenienti dai sensori.
+
+\paragraph{Security}
+
+I dati emessi dai sensori possono non essere criptati per velocizzare il trasferimento siccome si trovano in prossimit\`a del nodo utente. Invece le comunicazioni tra la centrale, lo storage e il nodo utente devono essere criptate per garantire il rispetto delle normative vigenti in materia di tutela della privacy. HTTPS di per se garantisce un mascheramento del contenuto del pacchetto, ma in base all'implementazione di TLS pu\`o essere necessario utilizzare anche un tunnel cifrato per mantenere segreta anche l'identit\`a della sorgente dei dati \footnote{Per quanto riguarda le comunicazioni nodo personale - cloud}. I dati negli storage locale e globale dovrebbero inoltre essere cifrati per impedire accesso non autorizzato.
+
+\paragraph{Modifiability}
+
+Il sistema \`e modulare, ma alcuni componenti dipendono dalle interfacce esposte per garantire la comunicazione, quindi eventuali modifiche devono essere concertate. Le tecnologie utilizzate nei nodi diversi possono essere diverse.
+
+\paragraph{Availability}
+
+I nodi della centrale operativa e dello storage centrale devono essere replicati per garantire disponibilit\`a in caso di guasti.
+
+\paragraph{Resilience}
+
+Il punto precedente include anche la replicazione in pi\`u zone di rischio diverse, per evitare che una catastrofe ambientale o un incidente nucleare/industriale metta fuori uso tutte le repliche.
+Inoltre, se un sensore si guasta \`e di fondamentale importanza essere in grado di rilevare immediatamente l'evento per evitare che si verifichino anomalie silenziose.
+
+\paragraph{Recoverability}
+
+Se il nodo personale va in crash, e perde di conseguenza tutti i dati nella memoria volatile, grazie al database locale \`e possibile recuperare le informazioni perse per continuare le operazioni. Il componente \textit{RilevaAnomalie} invece pu\`o continuare a operare come prima siccome utilizza solo gli ultimi dati disponibili provenienti dal buffer (o in alternativa utilizzare l'ultimo record nello storage locale se il dato \`e a bassa frequenza di campionamento).
+
+\paragraph{Observability}
+
+I processi nel nodo centrale possono essere facilmente monitorati, ma anche gli eventi significativi nel nodo personale possono essere loggati e inviati alla centrale per verificare l'efficienza del sistema.
+
+\paragraph{Deliverability}
+
+Il nodo personale pu\`o verificare la presenza di aggiornamenti nell'upstream e aggiornare il sistema di conseguenza. \`E preferibile che il nodo personale sia modulare al punto di poter sostituire intere parti del sistema senza provocare un'interruzione del servizio (\textit{Hot Reloading}).
+
+\end{document}

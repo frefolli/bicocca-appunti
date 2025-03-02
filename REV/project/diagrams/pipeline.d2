@@ -1,0 +1,46 @@
+direction: right
+classes: {
+  server: {
+    shape: image
+    icon: https://icons.terrastruct.com/tech/022-server.svg
+  }
+  analytics: {
+    shape: image
+    icon: https://icons.terrastruct.com/essentials%2F001-analytics.svg
+  }
+  arcan: {
+    shape: image
+    icon: ../images/arcan.png
+  }
+  user-agent: {
+    shape: image
+    icon: https://icons.terrastruct.com/tech/laptop.svg
+  }
+  github: {
+    shape: image
+    icon: https://icons.terrastruct.com/dev%2Fgithub.svg
+  }
+  html: {
+    shape: image
+    icon: https://icons.terrastruct.com/dev%2Fhtml5.svg
+  }
+}
+
+User.class: user-agent
+Actuator.class: server
+Arcan: "" {
+  class: arcan
+}
+Analyzer.class: analytics
+GitHub.class: github
+Frontend.class: html
+
+Actuator -> Arcan : "extract smells"
+Actuator -> Analyzer : "analyze smells"
+Actuator -> GitHub : "clone repository"
+
+User -> Actuator : "Job"
+User <- Actuator : "JobId"
+User -> Frontend : "Watch JobId"
+Frontend -> Actuator : "Poll JobId"
+User <- Frontend : "Product"

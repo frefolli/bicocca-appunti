@@ -1,0 +1,18 @@
+direction: right
+A: {
+  shape: class
+  mode: enum
+  operation: () -> ()
+}
+A_note: |`java
+  void operation() {
+    ...
+    switch (this.mode) {
+      case A: ...;
+      case B: ...;
+      case C: ...;
+    }
+    ...
+  }
+`|
+A_note <- A.operation
