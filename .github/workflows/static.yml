@@ -47,6 +47,7 @@ jobs:
             SCMT/appunti.tex
             TCOM/appunti.tex
             TELE/appunti.tex
+            INFO/appunti.tex
             ADS/appunti.tex
             REV/appunti.tex
             IR/appunti.tex
@@ -56,7 +57,7 @@ jobs:
           work_in_root_file_dir: true
       - name: Create Static Dist Directory
         run: |
-          ./static.sh APAL APS ARCH BIOINF MCOR ROPR ROPR/assignments/1 ROPR/assignments/2 ROPR/assignments/3 SAF SCMT TCOM TELE ADS REV IR CC LIT SDL
+          ./static.sh APAL APS ARCH BIOINF MCOR ROPR ROPR/assignments/1 ROPR/assignments/2 ROPR/assignments/3 SAF SCMT INFO TCOM TELE ADS REV IR CC LIT SDL
       - name: Configure Pages
         uses: actions/configure-pages@v2
       - name: Zip and Upload Artifact

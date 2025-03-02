@@ -8,6 +8,8 @@ __Attenzione__: non tutti i pdf sono caricati, se si vuole visionare gli appunti
 
 ## Corsi
 
+Per convenzione gli anni del ciclo magistrale sono enumerati in continuita' con il ciclo triennale.
+
 | Sigla | Anno | Semestre | Corso | Versione | Note | Esito |
 | --- | --- | --- | --- | --- | --- | --- |
 | APAL | 3 | 1 | Analisi e Progettazione di Algoritmi | 1.0.7 |  | 30 |
@@ -21,12 +23,14 @@ __Attenzione__: non tutti i pdf sono caricati, se si vuole visionare gli appunti
 | TELE | 4 | 2 | Sistemi e Servizi di Telecomunicazione | 1.0.0 |  | 29 |
 | ARCH | 4 | 2 | Architetture Dati | 1.0.0 |  | 30L |
 | SCMT | 4 | 2 | Sistemi Complessi: Modelli e Simulazioni | 1.0.0 |  | 30L |
+| INFO | 4 | 2 | Teoria dell'Informazione e Crittografia | 1.0.0 | contiene solo materiale parziale su crittografia | 28 |
 | ADS | 5 | 1 | Architetture del Software | 1.0.0 |  | 30L |
 | REV | 5 | 1 | Reverse Engineering | 1.0.0 | in attesa di verbalizzazione, trasferiro' qui a breve le presentazione e le relazioni del corso | NaN |
 | CC | 5 | 1 | Cloud Computing | 1.0.0 |  | 28 |
 | IR | 5 | 1 | Information Retrieval | 1.0.0 |  | 30 |
 | SDL | 5 | 2 | Laboratorio di Progettazione | 1.0.0 |  | NaN |
 | LIT | 5 | 2 | Linguaggi e Traduttori | 1.0.0 | corso extra Unimi | NaN |
+|  |  |  |  | 1.0.0 |  | NaN |
 
 Nota bene: presto o tardi spostero' questa tabella in un glossario degli acronimi dei corsi, ma non adesso.
 
