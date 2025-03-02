@@ -28,3 +28,15 @@ It's based on n-dimensional vector space (where n is the size of the  vocabulary
 I assume linear independence of terms to simplify computation.
 A document is a linear combination of the terms which appear: $d_j = \Sigma ^{N} _{i = 1} w_{ij} * t_i$.
 Without the assumption of term independence, the cosine similarity of terms should be computed.
+Queries that want to elaborate OR, AND and so on, must use distinct queries and then join the results.
+
+\section{Binary Independence Model}
+
+The Odds of an event A is the ratio $\frac {P(A)} {1 - P(A)}$.
+Search engines can rely on \textit{relevance feedback} (the user marks the found documents with whether they were relevant or not).
+Some assumptions: documents and queries are represented as binary vectors, and query terms / documents are assumed to be Bayes independent.
+
+The probability that the document $x$ is relevant with this query $q$: $P(R = 1|x) = \frac {P(x|R = 1, q)P(R = 1, q)} {P(x, q)}$.
+Then using the concept of odds we compute the Retrieval Status Value: $RSV(x, q) = \frac {P(R = 1|x)} {P(R = 0|x)}$.
+The initial rank uses $P(x|R=1)=0.5$ and $P(x=R=0)=\frac {n}{N}$ (the rate of appearance for that term in documents of the collection).
+Then the probabilities are improved with $P(x|R=1)=\frac {V_t} {V}$ (the number of truly relevant documents over the number of documents) and $P(x=R=0)=\frac {n - V_t}{N - V}$.

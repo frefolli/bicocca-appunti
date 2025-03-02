@@ -1,0 +1,96 @@
+\chapter{28/02/25}
+
+\section{Stutture Dati}
+
+- alberi, grafi, pile, code
+
+\section{Algoritmi}
+
+- visite, backtracking
+
+\subsection{Visita Pre}
+
+Sintesi => $attr(child) = compute(attr(root))$
+
+```
+def preorder(tree, visit):
+  root, children = tree
+  visit(root)
+  for child in children:
+    preorder(child, visit)
+```
+
+\subsection{Visita Post}
+
+Sintesi => $attr(root) = sum([attr(child) for child in children])$
+
+```
+def postorder(tree, visit):
+  root, children = tree
+  for child in children:
+    preorder(child, visit)
+  visit(root)
+```
+
+\subsection{Visita Level}
+
+```
+def levelorder(tree, visit):
+  Q = Queue([])
+
+  Q.enqueue(tree)
+  while len(Q) > 0:
+    tree = Q.dequeue()
+    root, children = tree
+    visit(root)
+    for child in children:
+      Q.enqueue(child)
+```
+
+\section{Grafi}
+
+Diagramma di ASSE
+
+\subsection{Depth First}
+
+```
+def depthfirst(adiacency, start, visit):
+  S = Set({})
+  def recursive(src):
+    S.add(src)
+    visit(src)
+    for dst in adiacency[src]:
+      if dst not S:
+        recursive(dst)
+```
+
+\subsection{Breadth First}
+
+```
+def breadthfirst(adiacency, start, visit):
+  S = Set({})
+  Q = Queue({start})
+  while len(Q) > 0:
+    src = Q.dequeue()
+    S.add(src)
+    visit(src)
+    for dst in adiacency[src]:
+      if dst not S:
+        Q.enqueue(dst)
+```
+
+\subsection{BackTracking}
+
+Abilita' di rendersi conto che il percorso in profondita' non e' ottimale e quindi tornare sui miei passi per processare altri percorsi.
+
+```
+def backtrack(candidate):
+  if reject(candidate):
+    return
+  if accept(candidate):
+    output(candidate)
+  s = first(candidate)
+  while s:
+    backtrack(s)
+    s = next(candidate)
+```
