@@ -29,7 +29,7 @@ Per convenzione gli anni del ciclo magistrale sono enumerati in continuita' con 
 | CC | 5 | 1 | Cloud Computing | 1.0.0 |  | 28 |
 | IR | 5 | 1 | Information Retrieval | 1.0.0 |  | 30 |
 | SDL | 5 | 2 | Laboratorio di Progettazione | 1.0.0 |  | NaN |
-| LIT | 5 | 2 | Linguaggi e Traduttori | 1.0.0 | corso extra Unimi | NaN |
+| LET | 5 | 2 | Linguaggi e Traduttori | 1.0.0 | corso extra Unimi | NaN |
 |  |  |  |  | 1.0.0 |  | NaN |
 
 Nota bene: presto o tardi spostero' questa tabella in un glossario degli acronimi dei corsi, ma non adesso.

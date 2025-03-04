@@ -1,0 +1,40 @@
+\chapter{04/03/2025}
+
+\section{Linguaggi e grammatiche}
+
+Sia $T$ l'insieme dei simboli (\textit{alfabeto}), il linguaggio $L \subset T^{*}$.
+Ci interessano i linguaggi infiniti.
+
+Le descrizioni finite (\textit{grammatica}) non possono descrivere tutti i linguaggi.
+
+Mi immagino il linguaggio delle parole $L = {w_i \; | \; w_i \notin L_i}$. Non esiste una descrizione in grado di catturare tutto (ed esattamente) il linguaggio.
+
+\putimage{images/matrice-1.png}{Si immagina la matrice delle grammatiche e delle parole, dove la cella (ij) rappresenta se la parola j-esima appartiene al linguaggio della descrizione i-esima}{png:matrice-1}
+\putimage{images/matrice-2.png}{}{png:matrice-2}
+
+\section{Grammatiche}
+
+Le grammatiche sono pensate come generatore del linguaggio. Si puo' invertire la relazione e utilizzare le grammatiche per riconoscere le parole del linguaggio.
+Sia $T$ l'insieme dei simboli terminali. Sia $N$ l'insieme dei simboli non terminali (la generazione non e' terminata quando si ottengono, possono essere soggetti ad ulteriori trasformazioni).
+Ex: $T = {a,b}$, $N = {S,U,C,A}$.
+Sia $P = {(T \cup N)^{+} \rightarrow (T \cup N)^{*}}$ l'insieme delle regole di produzione.
+Se $w_0 \rightarrow w_1 \rightarrow w_2 ... \rightarrow w_n$ allora si dice che $w_0 \Rightarrow w_n$.
+Uno dei simboli non terminali, $S$, viene identificato come il simbolo iniziale.
+Una grammatica $G = (T, N, P, S)$. Il linguaggio descritto dalla grammatica $G$ e' $L = {w \in T^{*} \; | \; S \Rightarrow w}$.
+
+\section{Gerarchia di Chomsky}
+
+In base alla forma delle regole di $P$, si determinano dei sottoinsiemi di linguaggi catturabili.
+Se un linguaggio e' riconoscibile con una grammatica di tipo $K$ non significa che non possa essere necessariamente riconosciuta con una grammatica di tipo $K+1$.
+Vice versa se non e' riconoscibile con una grammatica di tipo $K$ allora non e' riconoscibile con una grammatica di tipo $K+1$.
+
+\begin{itemize}
+  \item Tipo $0$: va bene tutto, non ci sono restrizioni.
+  \item Tipo $1$:
+  \begin{itemize}
+    \item (context sensitive), produzioni del tipo $\alpha \sigma_0 \beta \rightarrow \alpha \sigma_1 \beta$. Le parole del "contesto" rimangono uguali.
+    \item (monotone), produzioni dove $|sigma_0| \leq |sigma_1|$. Succede che per produrre parole di lunghezza $N$ uso necessariamente pi\`u regole che per produrre parole di lunghezza $K < N$.
+  \end{itemize}
+\item Tipo $2$: (context free), produzioni del tipo $N \rightarrow (N \cup T)^{*}$. (Formalmente c'e' un problema con le derivazioni nulle, con $\epsilon$, perche' cosi' non sono monotone, ma la linea ufficiale \`e che ce ne sbattiamo).
+  \item Tipo $3$: (espressioni regolari), produzioni del tipo $N \rightarrow T \; N \; | \; N \; T \; T \; T$.
+\end{itemize}
