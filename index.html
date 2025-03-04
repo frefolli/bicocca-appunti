@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bicocca Appunti Index</title>
+    </head>
+    <script>
+        var corsi = [
+          "APAL/appunti.pdf",
+          "BIOINF/appunti.pdf",
+          "ROPR/appunti.pdf",
+          "ROPR/assignments/1/appunti.pdf",
+          "ROPR/assignments/2/appunti.pdf",
+          "ROPR/assignments/3/appunti.pdf",
+          "APS/appunti.pdf",
+          "SAF/appunti.pdf",
+          "ML/appunti.pdf",
+          "TCOM/appunti.pdf",
+          "MCOR/appunti.pdf",
+          "TELE/appunti.pdf",
+          "INFO/appunti.pdf",
+          "ARCH/appunti.pdf",
+          "SCMT/appunti.pdf",
+          "ADS/appunti.pdf",
+          "ADS/project/main.pdf",
+          "ADS/deployability/report.pdf",
+          "REV/appunti.pdf",
+          "REV/project/report.pdf",
+          "REV/project/slides.pdf",
+          "REV/assignments/codescene/slides.pdf",
+          "REV/assignments/detecting-duplicated-code/slides.pdf",
+          "REV/assignments/transform-conditionals-to-polymorphism/slides.pdf",
+          "CC/appunti.pdf",
+          "IR/appunti.pdf",
+          "SDL/appunti.pdf",
+          "LET/appunti.pdf",
+        ];
+
+        let loadLinks = () => {
+            return new Promise((acc, rej) => {
+                let body = document.body;
+                ol = document.createElement("ol");
+                corsi.forEach((el) => {
+                    let li = document.createElement("li");
+                    let a = document.createElement("a");
+                    a.setAttribute("href", `${el}`);
+                    a.innerText = `/${el}`;
+                    li.appendChild(a);
+                    ol.appendChild(li);
+                })
+                body.appendChild(ol);
+                acc();
+            });
+        };
+
+        let loadTitle = () => {
+            return new Promise((acc, rej) => {
+                let body = document.body;
+                let h1 = document.createElement("h1");
+                h1.innerText = "Bicocca Appunti Index";
+                let h2 = document.createElement("h2");
+                h2.innerText = "seleziona il documento che ti interessa";
+                body.appendChild(h1);
+                body.appendChild(h2);
+                acc();
+            });
+        };
+
+        let loadPage = () => {
+            loadTitle().then(loadLinks);
+        };
+    </script>
+    <body onload="loadPage()">
+    </body>
+</html>
