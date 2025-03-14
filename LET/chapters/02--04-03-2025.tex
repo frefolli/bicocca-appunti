@@ -38,3 +38,16 @@ Vice versa se non e' riconoscibile con una grammatica di tipo $K$ allora non e' 
 \item Tipo $2$: (context free), produzioni del tipo $N \rightarrow (N \cup T)^{*}$. (Formalmente c'e' un problema con le derivazioni nulle, con $\epsilon$, perche' cosi' non sono monotone, ma la linea ufficiale \`e che ce ne sbattiamo).
   \item Tipo $3$: (espressioni regolari), produzioni del tipo $N \rightarrow T \; N \; | \; N \; T \; T \; T$.
 \end{itemize}
+
+\paragraph{Production independence}
+
+Sia $L(Ts)$ il linguaggio generato dall'insieme dei simboli terminali/non terminali $Ts$.
+Nelle grammatiche context free,
+\begin{itemize}
+  \item $A \rightarrow B|C $ allora $ L(A) = L(B) \cup L(C)$
+  \item $A \rightarrow BC $ allora $ L(A) = L(B) * L(C)$
+\end{itemize}
+
+\paragraph{Self-embedding}
+
+In una regola ricorsiva, il simbolo non terminale LHS compare anche nelle produzioni RHS.

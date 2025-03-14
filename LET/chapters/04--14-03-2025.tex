@@ -1,0 +1,37 @@
+\chapter{14/03/2025}
+
+\section{Algoritmo di CYK}
+
+Se si trasforma la grammatica $G$ in $G'$, dove le regole di $G'$ sono nella forma $A \rightarrow BC$ oppure $A \rightarrow a$, si pu\`o usare l'algoritmo di CYK.
+Se $A \rightarrow ABC$ posso trasformarlo in $A -> AB'$, $B' -> BC$, per esempio.
+E' un algoritmo di programmazione dinamica dove riempiamo le celle\dots
+
+\begin{itemize}
+  \item $T = O(n^3) * |G|$
+  \item $S = O(n^2) * |G|$
+\end{itemize}
+
+\section{Trasformazioni di Grammatiche}
+
+\subsection{Eliminazione di $\epsilon$-regole}
+
+Se $A \rightarrow \epsilon$ e $B \rightarrow \alpha A \beta$ posso trasformare questa ultima regola in $B \rightarrow \alpha \beta | \alpha A' \beta$, dove $A' \not \rightarrow \epsilon$.
+Cioe' per ogni epsilon-regola, sostituisco le epsilon regole da tutti i punti in cui appaiono con i loro "cloni" corretti.
+Un problema e' che $B$ puo' contenere piu' occorrenze di $A$, che porta ad un numero esponenziale di casi($2^n$). Quindi $|G'| \geq 2^{|G|}$.
+
+\subsection{Eliminazione delle regole unitarie}
+
+Regole del tipo $A \rightarrow B$ di dicono unitarie. In tutti i punti in cui appare con le sue produzioni. Per esempio, se ho $A \rightarrow B | w1 | w2$ e ho una regola $C \rightarrow A$ la rimpiazzero' con $C \rightarrow B | w1 | w2$.
+
+\subsection{Eliminazione dei non solitari}
+
+Le regole nella forma $A \rightarrow \alpha \beta B$ possono essere trasformate in $A \rightarrow \alpha A' B$, $A' \rightarrow \beta$.
+Posso anche trasformare le regole $A \rightarrow \alpha B$ in $A \rightarrow A' B$, $A' \rightarrow \alpha$.
+
+\subsection{Eliminazione delle regole lunghe}
+
+Le regole nella forma $A \rightarrow X_0 X_1 X_2 ... X_n$ si trasformano in $A \rightarrow A' X_2 X_3 ... X_n$, $A' \rightarrow X_0 X_1$.
+
+\subsection{Ricostruzione dell'albero di parsing}
+
+Se mantengo le regole "eliminate" nella grammatica e modifico la funzione di CYK per verificare gli slice, l'algoritmo mi permette di riconoscere anche quei simboli.

@@ -1,0 +1,53 @@
+\chapter{07/03/2025}
+
+\section{Pulizia context free}
+
+\paragraph{Simboli non definiti}
+
+Simboli che non hanno produzioni associate.
+Esempio:
+
+\begin{itemize}
+  \item $S \rightarrow ABC$
+  \item $A \rightarrow a$
+  \item $B \rightarrow b$
+\end{itemize}
+
+\paragraph{Simboli irraggiungibili}
+
+Ci possono essere dei simboli non terminali non raggiungibili dall'espansione della grammatica.
+Esempio:
+
+\begin{itemize}
+  \item $S \rightarrow AB$
+  \item $A \rightarrow a$
+  \item $B \rightarrow b$
+  \item $C \rightarrow c$
+\end{itemize}
+
+\paragraph{Simboli improduttivi}
+
+Ci possono essere dei simboli non terminali che aggiungono un sacco di simboli ma non arrivano mai ad esaurirsi. (attenzione alla ricorsione)
+Esempi:
+
+\begin{itemize}
+  \item $S \rightarrow AB$
+  \item $A \rightarrow a$
+  \item $B \rightarrow bB$
+\end{itemize}
+
+\paragraph{Cicli infiniti}
+
+\begin{itemize}
+  \item $S \rightarrow AB$
+  \item $A \rightarrow a$
+  \item $B \rightarrow bB|b|C$
+  \item $C \rightarrow D$
+  \item $D \rightarrow E$
+  \item $E \rightarrow B$
+\end{itemize}
+
+\paragraph{Chiusura (punti fissi)}
+
+Come con i punti fissi: $o, f(o), f(f(o)), f(f(f(o))) .... S \Rightarrow F(o) = S$.
+Possiamo usare le chiusure per calcolare le proprieta' soprastanti.
