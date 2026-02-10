@@ -25,12 +25,12 @@ Per convenzione gli anni del ciclo magistrale sono enumerati in continuita' con 
 | SCMT | 4 | 2 | Sistemi Complessi: Modelli e Simulazioni | 1.0.0 |  | 30L |
 | INFO | 4 | 2 | Teoria dell'Informazione e Crittografia | 1.0.0 | contiene solo materiale parziale su crittografia | 28 |
 | ADS | 5 | 1 | Architetture del Software | 1.0.0 |  | 30L |
-| REV | 5 | 1 | Reverse Engineering | 1.0.0 | in attesa di verbalizzazione, trasferiro' qui a breve le presentazione e le relazioni del corso | NaN |
+| REV | 5 | 1 | Reverse Engineering | 1.0.0 | in attesa di verbalizzazione, trasferiro' qui a breve le presentazione e le relazioni del corso | 30L |
 | CC | 5 | 1 | Cloud Computing | 1.0.0 |  | 28 |
 | IR | 5 | 1 | Information Retrieval | 1.0.0 |  | 30 |
-| SDL | 5 | 2 | Laboratorio di Progettazione | 1.0.0 |  | NaN |
+| SDL | 5 | 2 | Laboratorio di Progettazione | 1.0.0 |  | 30 |
 | LET | 5 | 2 | Linguaggi e Traduttori | 1.0.0 | corso extra Unimi | NaN |
-|  |  |  |  | 1.0.0 |  | NaN |
+| EA | 6 | NaN | Efficient Algorithms | 1.0.0 | Mettero' principalmente cose utili in vista degli esercizi dell'esame | NaN |
 
 Nota bene: presto o tardi spostero' questa tabella in un glossario degli acronimi dei corsi, ma non adesso.
 

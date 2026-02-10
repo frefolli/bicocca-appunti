@@ -1,0 +1,262 @@
+\chapter{Ukkonen's Wavefront for Edit Distance}
+
+\section{The ED Problem}
+
+Let $a$ be a string of length $m$ which is indexed $a = (a_{1}, ..., a_{i}, ..., a_{m})$.
+
+Let $b$ be a string of length $n$ which is indexed $b = (b_{1}, ..., b_{j}, ..., b_{n})$.
+
+For example, $a = yxxz$ and $b = xyxzy$.
+
+Let $M$ be the matrix $(m + 1) \times (n + 1)$ so that $\forall i \in [0, m],j \in [0,n] \; M[i,j] = ED(a[:i], b[:j])$.
+In other words, M is the matrix of the unweighted edit distance.
+
+\putimage{images/M-matrix.png}{Matrix M for strings $a=$, $b=$}{png:theory-praxis}{0.5}
+
+The matrix M has $m + n - 1$ diagonals, indexed in the range $[-m, n]$. The \textit{0-th} diagonal is the "main" diagonal.
+Therefore, the diagonals of $M$ are indexed as such:
+
+\putimage{images/M-diagonals.png}{Visualization of diagonals of matrix M}{png:theory-praxis}{0.5}
+
+\section{The Wavefront Matrix}
+
+Let $W$ be the matrix $K \times (P + 1)$ where $K$ is the number of diagonals and $P$ is a positive number representing the upper bound of ED value.
+
+Then $\forall k \in [-m,n],p \in [0,P] \; | \; W[k,p] = i$ where $i$ is the largest row index in $M$ such that $M[i,i+k] = p$. Said otherwise, is the largest row index in which a value lying on the diagonal $k$ is equal to $p$.
+
+The index $i$ is often called the $wavefront$ or the $frontier$ of the diagonal with respect to value $p$. It represents the last (largest) value of $i$ so that $D[i,j] \leq p$.
+
+Note that strict equality is needed by the definition of $W[k,p]$, so if a value $p^{I}$ is not contained in the \textit{k-th} diagonal, the value of $W[k,p]$ is $NaN$ (undefined).
+
+Moreover, by definition, the (defined, $\neq NaN$) values of $W[k,p]$ (for a fixed $k$) are a strictly increasing sequence.
+
+Finally, by definition, for $p < |k|$ the value of $W[k,p]$ is $NaN$, or said otherwise, the value of $W[k,p]$ is defined if-and-only-if $p >= |k|$.
+
+\section{ED Matrix from Wavefront Matrix}
+
+If you want to reconstruct $M[i,j]$ from $W[k,p]$ it is sufficient $\forall i \in [0,m],j \in [0,n]$ to find the value $p$ for which $W[k,(p-1)] < i \leq W[k,p]$. A linear scan is sufficient, but of course you can cache the previous $p$ for that column so that you start searching from $p+1$.
+
+\section{Constructing the Wavefront Matrix}
+
+\subsection{Definitions}
+
+\begin{itemize}
+  \item I define $MinD = max(-m, -P)$
+  \item I define $MaxD = min(n, P)$
+\end{itemize}
+
+\subsection{Initialization}
+
+Note that for $k = 0$, $p = |k| - 1 = -1$, so if you pre-compute $W[0,0]$ not only you avoid invalid indexes, but you can also start the iterations of the inductive process from $p = 1$ by using this special procedure.
+In other words, compute $W[0, 0] = LCP(a, b)$, where LCP is the Longest Common Prefix of $a$ and $b$.
+For the reason of this computation, refer to the \textit{Proof} section.
+
+\begin{algorithm}
+  \renewcommand\thealgorithm{}
+  \caption{Wavefront-ED Initialization Procedure}
+  \begin{algorithmic}
+    \Procedure{WF-ED-INIT}{$a[1:m], b[1:n], P$}
+      \State $MinD \gets max(-m, -P)$
+      \State $MaxD \gets min(n, P)$
+      \State $K \gets m + n - 1$
+      \State $W \gets Matrix::New(K, P + 1)$
+      \For{$k \gets MinD$ to $MaxD$}
+        \For{$p \gets 0$ to $P$}
+          \State $W[k, p] \gets NaN$
+        \EndFor
+      \EndFor
+
+      \State \textit{/* Initializes W with k != 0 */}
+      \For{$k \gets MinD$ to $-1$}
+        \State $W[k, |k| - 1] \gets |k| - 1$
+      \EndFor
+      \For{$k \gets 1$ to $MaxD$}
+        \State $W[k, |k| - 1] \gets -1$
+      \EndFor
+
+      \State \textit{/* "Initializes" W with k = 0 */}
+      \State $i \gets 0$
+      \While{$(1 \leq i + 1 \leq m) \land (1 \leq i + 1 \leq n) \land (a[i + 1] = b[i + 1])$}
+        \State $i \gets i + 1$
+      \EndWhile
+      \State $W[0, 0] \gets i$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+Using P = $5$ you would obtain the starting matrix $W$:
+
+\begin{table}[H]
+  \center
+  \captionof{table}{Simply Initialized Matrix $W[k,p]$}
+  \label{tbl:w-matrix-init-1}
+  \resizebox{0.7\linewidth}{!}{
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+        &-4 &-3 &-2 &-1 & 0 & 1 & 2 & 3 & 4 & 5 \\ \hline
+      1 &   &   &   &   &-1 &   &   &   &   &   \\ \hline
+      0 &   &   &   & 0 &   &-1 &   &   &   &   \\ \hline
+      1 &   &   & 1 &   &   &   &-1 &   &   &   \\ \hline
+      2 &   & 2 &   &   &   &   &   &-1 &   &   \\ \hline
+      3 & 3 &   &   &   &   &   &   &   &-1 &   \\ \hline
+      4 &   &   &   &   &   &   &   &   &   &-1 \\ \hline
+      5 &   &   &   &   &   &   &   &   &   &   \\ \hline
+    \end{tabular}
+  }
+\end{table}
+
+Or by simplifying the first iteration as explained before:
+
+\begin{table}[H]
+  \center
+  \captionof{table}{Initialized Matrix $W[k,p]$ with also the $W[0, 0]$ base-case}
+  \label{tbl:w-matrix-init-2}
+  \resizebox{0.7\linewidth}{!}{
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+         &-4 &-3 &-2 &-1 & 0 & 1 & 2 & 3 & 4 & 5 \\ \hline
+      -1 &   &   &   &   &-1 &   &   &   &   &   \\ \hline
+       0 &   &   &   & 0 & 0 &-1 &   &   &   &   \\ \hline
+       1 &   &   & 1 &   &   &   &-1 &   &   &   \\ \hline
+       2 &   & 2 &   &   &   &   &   &-1 &   &   \\ \hline
+       3 & 3 &   &   &   &   &   &   &   &-1 &   \\ \hline
+       4 &   &   &   &   &   &   &   &   &   &-1 \\ \hline
+       5 &   &   &   &   &   &   &   &   &   &   \\ \hline
+    \end{tabular}
+  }
+\end{table}
+
+Here, an empty cell means $NaN$.
+
+\subsection{Inductive Pass}
+
+Note that the value of $NaN + 1$ is equal to $NaN$, as each cell $W[k,p]$ could contain $NaN$.
+Also note that $NaN > x$, where $x \in N$, is always $false$ as $NaN$ is not comparable, therefore the is no need for addind a guard for $t \neq NaN$.
+
+\begin{algorithm}
+  \renewcommand\thealgorithm{}
+  \caption{Wavefront-ED Filling Procedure}
+  \begin{algorithmic}
+    \Procedure{WF-ED-FILL}{$a[1:m], b[1:n], P, W[k, p]$}
+      \State $MinD \gets max(-m, -P)$
+      \State $MaxD \gets min(n, P)$
+      \State $K \gets m + n - 1$
+      \State $W \gets Matrix::New(K, P + 1)$
+      \For{$p \gets 1$ to $P$}
+        \For{$k \gets MinD$ to $MaxD$}
+          \If{$p >= |k|$}
+            \State $choices \gets []$
+            \State \textit{/* substitution */}
+            \State $choices.append(W[k, p - 1] + 1)$
+            \State \textit{/* insertion */}
+            \State $choices.append(W[k - 1, p - 1])$
+            \State \textit{/* deletion */}
+            \State $choices.append(W[k + 1, p - 1] + 1)$
+            \State $t \gets max(choices)$
+            \While{$(1 \leq t + 1 \leq m) \land (1 \leq t + k + 1 \leq n) \land (a[t + 1] = b[t + k + 1])$}
+              \State $t \gets t + 1$
+            \EndWhile
+            \If{$if (t < 1) \lor (t + k < 1) \lor (t > m) \lor (t + k > n)$}
+              \State $t \gets Name$
+            \EndIf
+            \State $W[k, p] = t$
+          \EndIf
+        \EndFor
+      \EndFor
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+\newpage
+
+\subsection{Complete Matrix}
+
+The complete matrix should look like this:
+
+\begin{table}[H]
+  \center
+  \captionof{table}{The Matrix $W[k,p]$ with all values filled by using the definition of $W$}
+  \label{tbl:w-matrix-complete}
+  \resizebox{0.7\linewidth}{!}{
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+        &-4 &-3 &-2 &-1 & 0 & 1 & 2 & 3 & 4 & 5 \\ \hline
+      0 &   &   &   &   & 0 &   &   &   &   &   \\ \hline
+      1 &   &   &   & 2 & 1 & 2 &   &   &   &   \\ \hline
+      2 &   &   & 3 & 3 & 4 & 3 & 2 &   &   &   \\ \hline
+      3 &   & 4 & 4 & 4 &   & 4 & 3 & 2 &   &   \\ \hline
+      4 & 4 &   &   &   &   &   &   &   & 1 &   \\ \hline
+      5 &   &   &   &   &   &   &   &   &   & 0 \\ \hline
+    \end{tabular}
+  }
+\end{table}
+
+By definition, in order to recover $M[m, n]$ you need to find a $p$ such that $W[n - m, p] = m$.
+
+\section{Proof}
+
+%% BEGIN TODO
+%% - Use `equation` environment to highlight formulated results
+%% END   TODO
+
+\subsection{Definitions}
+
+\begin{itemize}
+  \item \textbf{0-based index}: index which starts from zero.
+  \item \textbf{1-based index}: index which starts from one.
+  \item \textbf{snake move}: the act of moving a row index relative to a fixed couple $k, p$ towards it frontier so that the final value is equal (and vice versa) to $W[k, p]$.
+\end{itemize}
+
+\subsection{Preliminaries}
+
+\paragraph{Cell Location}
+
+Given a diagonal $k \in [MinD, MaxD]$ and a row index $t \in [0, m]$, they identify a cell inside the $D[i, j]$ matrix, where $i = t$ and $j = t + k$. Proof:
+\begin{itemize}
+  \item If $k = 0$, then it is immediate that the \textit{t-th} cell in the \textit{k-diagonal} is $D[t, t + k] = D[t, t]$.
+  \item If $k > 0$, since the \textit{k-diagonal} is shifted with a relative offset to the right equal to $k$ with respect to the \textit{0-diagonal}, the \textit{t-th} cell of the \textit{k-diagonal} is shifted to the right of $k$ columns with respect to the \textit{t-th} cell of the \textit{0-diagonal}. The column of the \textit{t-th} cell of the \textit{0-diagonal} is $t$, therefore the column of the \textit{t-th} cell of the \textit{k-diagonal} is $j = t + k$.
+  \item If $k < 0$, since the \textit{k-diagonal} is shifted with a relative offset to the left (or you could say to bottom) equal to $|k|$ with respect to the \textit{0-diagonal}, the \textit{t-th} cell of the \textit{k-diagonal} is shifted to the right of $|k|$ columns with respect to the \textit{t-th} cell of the \textit{0-diagonal}. The column of the \textit{t-th} cell of the \textit{0-diagonal} is $t$, therefore the column of the \textit{t-th} cell of the \textit{k-diagonal} is $j = t + k$ (the negative sign of $k$ shifts automatically to the left the cell).
+\end{itemize}
+
+\paragraph{Snake Move as LCP}
+
+Given a diagonal $k \in [MinD, MaxD]$ and a row index $t \in [0, m]$, thus a cell $D[t, t + k]$, the \textit{snake move} of $t$ with respect to the \textit{k-diagonal} and the cost $p = D[t, t + k]$ yields row index $t_f = t + LCP(a[t + 1:], b[t + k + 1:])$. Proof:
+\begin{itemize}
+  \item By definition of $D$, it follows that $D[t, t + k] = ED(a[:t], b[:t + k])$.
+  \item Speculating, if $t_f \neq t$, then it must follow that $a[t + 1] == b[t + k + 1]$, that is, $D[t, t + k] = D[t + 1, t + k + 1]$.
+  \item Vice Versa, if $a[t + 1] == b[t + k + 1]$, then $t_f$ is equal to the snake move of $t + 1$.
+  \item By definition, $t_f$ is the last position at which it holds that $D[t, t + k] = D[t_f, t_f + k]$.
+  \item Thus, the difference between $t_f$ and $t$ is equal to the number of characters matching on both $a$ and $b$, which in turn is, by definition, $LCP(a[t + 1:], b[t + k + 1:])$.
+  \item Therefore $t_f = t + LCP(a[t + 1:], b[t + k + 1:])$.
+\end{itemize}
+
+\subsection{Initialization (p = 0, generally, p = |k|)}
+
+\paragraph{k = 0}
+
+By definition, $W[k, p]$ should contain the largest row index such that $D[i,i+k] = p$.
+The Longest Common Prefix yields the length of characters matching continuously from the start of strings $a_1,b_1$. If this prefix has length $l$, then the last position $i$ of $a,b$ at which $a_i = b_i$ is $l$. Thus, $l$ is a \textit{1-based index} on $a,b$ but can also be interpreted as a \textit{0-based index} on the $D$ matrix.
+$LCP$ always returns $0$ if-and-only-of the are not matching characters in the front of the strings, thus $0$ is the largest row index such that $D[i,i+k]$ doesn't increase from $0$ to $1$, thus it is the largest row index such that $D[i, i+k] = 0$.
+Otherwise, if $l > 0$, then $D[i,i+k] = D[l,l+k] = D[l,l]$ is the last cell in which the value of $D[i,i+k]$ doesn't increase. Moreover, $D[l,l+k] = D[l - 1, l + k - 1]$ since by LCP we know that $a,b$ share prefixes of length up to $l$ (inclusive). Moreover, $D[l,l+k] = D[0, 0]$ since $D[0, 0] = 0$ and since the value of $D[i, i+k]$ never increased from $i=0$ to $i=l$ (inclusive).
+Deriving $W[0, 0] = LCP(a, b)$. This statement will be also confirmed in later paragraphs.
+
+\paragraph{k != 0}
+
+If $p < |k|$ the $W[k,p]$ is not defined, so the only value assignable is $NaN$, but this is a logical trick, it is not purely mathematically sound. However, as Ukkonen says, it is "convenient" to set values for $p = |k| - 1$, so setting a meaningful value of $W[k,p]$ for the cell precedent to the one which is mathematically defined.
+Since for $k = 0, p = 0$ we have a definite value for $W[k, p]$ and since $k = 0, p = |k| - 1 = -1$ would not be definite, we will only account for $|k| > 0$, or $k \neq 0$.
+
+Let $k > 0$, then $W[k, |k| - 1] = -1$ because $-1$ is the ideal (not really existing since it is out of bound) row preceding the start of diagonal $k$.
+Note that this still "holds" also for $k = 0$, even if, as said before, $p = -1$ is not definite.
+
+Conversely, with $k < 0$, the row preceding the start of diagonal $k$ is $|k|-1$, therefore $W[k, |k| - 1] = |k| - 1$. This is true because each negative diagonal is under the main 0-th diagonal by an increasing relative offset equal to $|K|$. For example, $k = -1$ is shifted downwards by $1$. Moreover, this means that (with $k < 0$) if diagonal $k+1$ starts at row $i$, then diagonal $k$ starts at row $i+1$. We are interested in the row preceding the start of diagonal $k$, which means that the $i = |k| - 1$.
+
+\paragraph{Consequences}
+
+We can further prove for a given $k \in [MinD, MaxD]$ which is the value of $W[k, |k|]$.
+Using the base-cases introduced in the previous paragraph, we denote $t = W[k, |k| - 1] + 1$, which is the row index of the first value of the \textit{k-diagonal}. 
+Using the definition of snake move as stated in the previous section, $W[k, |k|] = t_f = t + LCP(a[t + 1:], b[t + k + 1:])$, therefore we dedure $W[k, |k|] = W[k, |k| - 1] + 1 + LCP(a[W[k, |k| - 1] + 1 + 1:], b[W[k, |k| - 1] + 1 + k + 1:])$ and $W[k, |k|] = W[k, |k| - 1] + 1 + LCP(a[W[k, |k| - 1] + 2:], b[W[k, |k| - 1] + k + 2:])$.
+This confirms also the base-case for $k = 0, p = 0$ as stated above, because $W[k, |k|] = t_f = t + LCP(a[t + 1:], b[t + k + 1:])$ reduces to $W[0, 0] = t_f = 0 + LCP(a[0 + 1:], b[0 + 0 + 1:])$, said otherwise  reduces to $W[0, 0] = LCP(a[1:], b[1:]) = LCP(a, b)$.
+
+\subsection{Iteration (p > 0, generally, p > |k|)}
+
+We have proved the invariant for $W[k, p = |k|]$, now we want to prove that the invarant holds also for $W[k, p > |k|]$.
+The proof by induction will compute $\forall k \in [MinD, MaxD]$, $\forall p \in (|k|, P]$ \textbf{$W[k, p]$} with the reasonable assumption to have computed $\forall k \in [MinD, MaxD]$, $\forall q \in [|k|, p - 1]$ \textbf{$W[k, q]$}.

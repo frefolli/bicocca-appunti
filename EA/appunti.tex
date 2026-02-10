@@ -1,0 +1,101 @@
+\documentclass[a4paper,12pt,oneside]{book}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage[paper=a4paper,margin=1in]{geometry}
+\usepackage{imakeidx}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{caption}
+
+\makeindex
+\newcommand{\putimage}[4] {
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=#4\linewidth]{#1}
+    \caption{\protect#2}\label{#3}
+  \end{figure}
+}
+
+\newcommand{\putsubimage}[5] {
+  \begin{minipage}{#4\linewidth}
+    \centering
+    \includegraphics[width=#5\linewidth]{#1}
+    \caption{#2}\label{#3}
+  \end{minipage}
+}
+
+\newcommand{\putimagecouple}[2] {
+  \begin{figure}[!htb]
+    \centering
+    #1
+    \hspace{0.5cm}
+    #2
+  \end{figure}
+}
+
+\newcommand{\putimagetriple}[3] {
+  \begin{figure}[!htb]
+    \centering
+    #1
+    #2
+    #3
+  \end{figure}
+}
+
+\newcommand{\putimagequadruple}[4] {
+  \begin{figure}[!htb]
+    \centering
+    #1
+    \hspace{0.5cm}
+    #2
+    \linebreak
+    #3
+    \hspace{0.5cm}
+    #4
+  \end{figure}
+}
+
+\begin{document}
+    
+    \begin{titlepage}
+        
+	\vspace{40mm}
+        
+	\begin{center}
+            {\LARGE{
+                    \setstretch{1.2}
+                    \textbf{Appunti di \\ Efficient Algorithms}
+                    \par
+            }}
+        \end{center}
+        
+        \vspace{50mm}
+
+        \begin{flushright}
+            {\large \textbf{A cura di:}} \\
+            \large{Francesco Refolli} \\
+            \large{Matricola 865955} 
+        \end{flushright}
+        
+        \vspace{40mm}
+        \begin{center}
+            {\large{\bf Anno Accademico 2025-2026}}
+        \end{center}
+
+        \restoregeometry
+        
+    \end{titlepage}
+    
+    \printindex
+    \tableofcontents
+    \part{Theory}
+    \include{chapters/wavefront.tex}
+
+    \part{Praxis}
+    \putimage{images/theory-praxis.jpg}{More or Less this is the spirit}{png:theory-praxis}{1.0}
+\end{document}
